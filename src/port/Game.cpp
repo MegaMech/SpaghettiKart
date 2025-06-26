@@ -296,7 +296,9 @@ void CM_DrawBattleBombKarts(s32 cameraId) {
 }
 
 void CM_ClearVehicles(void) {
-    gWorldInstance.Crossings.clear();
+    if (!gWorldInstance.Crossings.empty()) {
+        gWorldInstance.Crossings.clear();
+    }
 }
 
 void CM_CrossingTrigger() {
