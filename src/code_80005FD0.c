@@ -3728,6 +3728,8 @@ void load_track_path(s32 pathIndex) {
             if (!bInvalidPath) {
                 var_v0 = func_80011014(pathDest, path, sp24, pathIndex);
                 gPathCountByPathIndex[pathIndex] = (u16) var_v0;
+            } else {
+                printf("PathTable is invalid. It has %d path points\n  It may also be missing the end tag.\n", i);
             }
         }
     }
@@ -7087,15 +7089,15 @@ void cpu_use_item_strategy(s32 playerId) {
         switch (temp_s0->branch) {
             case CPU_STRATEGY_WAIT_NEXT_ITEM:
                 temp_s0->actorIndex = -1;
-                if (CVarGetInteger("gHarderCPU", 0) == 1) {
-                    if (((gNumPathPointsTraversed[playerId] + (playerId * 0x14) + 0x64) % 0x8 == 0) &&
-                        (temp_s0->timer >= 0x200)) {
+
+                // Harder CPU Items
+                if (((gNumPathPointsTraversed[playerId] + (playerId * 0x14) + 0x64) % 0x8 == 0) &&
+                        (temp_s0->timer >= 0x200) && (CVarGetInteger("gHarderCPU", 0) == true)) {
                         cpu_decisions_branch_item(playerId, &temp_s0->branch,
-                                                  gen_random_item_human((s16) gLapCountByPlayerId[playerId],
+                                                  normal_cpu_gen_random_item((s16) gLapCountByPlayerId[playerId],
                                                                         gGPCurrentRaceRankByPlayerId[playerId]));
-                    }
-                }
-                if ((((playerId * 0x14) + 0x64) < gNumPathPointsTraversed[playerId]) && (temp_s0->timer >= 0x259) &&
+                // Stock CPU Items
+                } else if ((((playerId * 0x14) + 0x64) < gNumPathPointsTraversed[playerId]) && (temp_s0->timer >= 0x259) &&
                     (temp_s0->numItemUse < 3) && (gLapCountByPlayerId[playerId] < 3)) {
                     cpu_decisions_branch_item(playerId, &temp_s0->branch,
                                               cpu_gen_random_item((s16) gLapCountByPlayerId[playerId],
