@@ -8,7 +8,7 @@
 #include "code_80005FD0.h"
 #include "math_util.h"
 #include "code_800029B0.h"
-#include "racing/memory.h"
+#include "racing/memory.h"cpu_decisions_branch_item
 #include "waypoints.h"
 #include "camera.h"
 #include "actors.h"
@@ -7094,7 +7094,7 @@ void cpu_use_item_strategy(s32 playerId) {
                 if (((gNumPathPointsTraversed[playerId] + (playerId * 0x14) + 0x64) % 0x8 == 0) &&
                         (temp_s0->timer >= 0x200) && (CVarGetInteger("gHarderCPU", 0) == true)) {
                         cpu_decisions_branch_item(playerId, &temp_s0->branch,
-                                                  normal_cpu_gen_random_item((s16) gLapCountByPlayerId[playerId],
+                                                  hard_cpu_gen_random_item((s16) gLapCountByPlayerId[playerId],
                                                                         gGPCurrentRaceRankByPlayerId[playerId]));
                 // Stock CPU Items
                 } else if ((((playerId * 0x14) + 0x64) < gNumPathPointsTraversed[playerId]) && (temp_s0->timer >= 0x259) &&
