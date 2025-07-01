@@ -8,7 +8,7 @@
 #include "code_80005FD0.h"
 #include "math_util.h"
 #include "code_800029B0.h"
-#include "racing/memory.h"cpu_decisions_branch_item
+#include "racing/memory.h"
 #include "waypoints.h"
 #include "camera.h"
 #include "actors.h"
