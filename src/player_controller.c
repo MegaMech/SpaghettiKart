@@ -2250,7 +2250,7 @@ void func_8002D268(Player* player, UNUSED Camera* camera, s8 screenId, s8 player
             player->unk_DB4.unkC = 1.5f;
             if (((player->type & PLAYER_HUMAN) == PLAYER_HUMAN) &&
                 ((player->type & PLAYER_INVISIBLE_OR_BOMB) != PLAYER_INVISIBLE_OR_BOMB)) {
-                if (((player->unk_0C2 < 0xB) && (player->unk_0C2 >= 4)) && (gCurrentCourseId == COURSE_BOWSER_CASTLE)) {
+                if (((player->unk_0C2 < 0xB) && (player->unk_0C2 >= 4)) && (IsBowsersCastle())) {
                     func_800CADD0((u8) playerId, player->unk_0C2 / 14.0f);
                 } else {
                     func_800CADD0((u8) playerId, player->unk_0C2 / 25.0f);
@@ -2319,6 +2319,9 @@ void func_8002D268(Player* player, UNUSED Camera* camera, s8 screenId, s8 player
         player->pos[2] = nextZ;
     }
     player->pos[1] = nextY;
+    if (CVarGetInteger("gNoWallColision", 0)) {
+        player->pos[1] = nextY < CVarGetFloat("gMinHeight", 0.0f) ? CVarGetFloat("gMinHeight", 0.0f) : nextY;
+    }
     if ((player->type & PLAYER_HUMAN) && (!(player->type & PLAYER_CPU))) {
         func_8002BB9C(player, &nextX, &nextZ, screenId, playerId, newVelocity);
     }
@@ -2638,7 +2641,7 @@ void control_cpu_movement(Player* player, UNUSED Camera* camera, s8 screenId, s8
     player->unk_044 |= 0x10;
     nextY = gPlayerPathY[playerId];
     player->driftDuration = 0;
-    player->effects &= 0x10;
+    player->effects &= ~DRIFTING_EFFECT;
     func_8002B830(player, playerId, screenId);
     apply_effect(player, playerId, screenId);
     sp84 = 0 * player->unk_064[0] + spDC[0];
