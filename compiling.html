@@ -125,14 +125,14 @@ $(function(){initNavTree('compiling.html',''); initResizable(true); });
             <a href="#fedora">Fedora</a>
           </li>
           <li class="level3">
-            <a href="#arch-1">Arch</a>
+            <a href="#arch">Arch</a>
           </li>
         </ul>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#windows-1">Windows</a>
+    <a href="#windows">Windows</a>
     <ul>
       <li class="level2 empty">
         <ul>
@@ -144,7 +144,7 @@ $(function(){initNavTree('compiling.html',''); initResizable(true); });
     </ul>
   </li>
   <li class="level1">
-    <a href="#macos-1">macOS</a>
+    <a href="#macos">macOS</a>
   </li>
   <li class="level1">
     <a href="#docker">Docker</a>
@@ -173,14 +173,14 @@ Ubuntu</h3>
 Fedora</h3>
 <div class="fragment"><div class="line">sudo dnf install make automake gcc gcc-c++ kernel-devel cmake pkg-config git python3 zlib-devel audiofile-devel capstone</div>
 </div><!-- fragment --><p> and install <a href="https://github.com/DragonMinded/libdragon/releases/tag/toolchain-continuous-prerelease">gcc toolchain of libdragon</a> and add <code>export PATH="/opt/libdragon/bin:$PATH"</code> to ~/.bashrc</p>
-<h3><a class="anchor" id="arch-1"></a>
+<h3><a class="anchor" id="arch"></a>
 Arch</h3>
 <div class="fragment"><div class="line">sudo pacman -S base-devel capstone python</div>
 </div><!-- fragment --><p> Install the following AUR package:</p><ul>
 <li><a href="https://aur.archlinux.org/packages/mips64-elf-binutils">mips64-elf-binutils</a> (AUR)</li>
 </ul>
 <p>Review the <a href="https://github.com/n64decomp/sm64">n64decomp/sm64</a> readme for instructions to compile in other distributions.</p>
-<h1><a class="anchor" id="windows-1"></a>
+<h1><a class="anchor" id="windows"></a>
 Windows</h1>
 <ul>
 <li>Clone the repo or download the zip.</li>
@@ -193,7 +193,7 @@ Setup</h3>
 <li>Open a terminal (cmd or powershell) in the repo folder and run <code>"tools\mingw64\w64devkit.exe"</code> and after <code>make assets &amp;&amp; make -j</code></li>
 <li>Wait for the build to finish and Enjoy!</li>
 </ul>
-<h1><a class="anchor" id="macos-1"></a>
+<h1><a class="anchor" id="macos"></a>
 macOS</h1>
 <p>Install <a href="https://brew.sh">Homebrew</a>, then install the following dependencies: </p><div class="fragment"><div class="line">brew update</div>
 <div class="line">brew install python3 capstone coreutils make pkg-config tehzz/n64-dev/mips64-elf-binutils</div>
