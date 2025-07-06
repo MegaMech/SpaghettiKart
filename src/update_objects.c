@@ -3381,7 +3381,7 @@ s32 func_8007B040(s32 objectIndex, s32 playerId) {
     s32 var_a3;
     s32 var_t3;
     s32 temp_a0;
-    s32 var_v1;
+    s32 item;
     s32 sp50[4];
     s32 sp40[4];
     s32 var_v1_2;
@@ -3393,17 +3393,22 @@ s32 func_8007B040(s32 objectIndex, s32 playerId) {
     if (gModeSelection == GRAND_PRIX) {
         // Boo item
         if (random_int(0x0064U) < 0x51) {
-            var_v1 = gen_random_item_human(gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]);
+            item = gen_random_item_human(gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]);
             // ITEM_NONE is not a valid item for ghost, randomize again
-            while(var_v1 == ITEM_NONE) {
-                var_v1 = gen_random_item_human(gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]);
+            size_t attempts = 0;
+            while (item == ITEM_NONE && attempts < 200) {
+                item = gen_random_item_human(gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]);
+                attempts++;
+            }
+            if (attempts >= 200) {
+                printf("[update_objects.c] [func_8007B040]: Item table has ITEM_NONE set to 100 percent.\n");
             }
         } else {
-            var_v1 = 0;
+            item = 0;
             func_800C9060(playerId, 0x1900A058U);
         }
         var_t3 = 1;
-        gObjectList[objectIndex].textureListIndex = gObjectList[objectIndex].unk_0A2 = var_v1;
+        gObjectList[objectIndex].textureListIndex = gObjectList[objectIndex].unk_0A2 = item;
     } else {
         for (var_v1_2 = 0; var_v1_2 < gPlayerCountSelection1; var_v1_2++) {
             temp_a0 = gItemWindowObjectByPlayerId[var_v1_2];
@@ -3416,11 +3421,11 @@ s32 func_8007B040(s32 objectIndex, s32 playerId) {
             }
         }
         if (var_a3 != 0) {
-            var_v1 = random_int(var_a3);
-            temp_a1 = sp40[var_v1];
+            item = random_int(var_a3);
+            temp_a1 = sp40[item];
             gObjectList[objectIndex].unk_0A2 = temp_a1;
             gObjectList[objectIndex].textureListIndex = temp_a1;
-            temp_v1 = sp50[var_v1];
+            temp_v1 = sp50[item];
             gObjectList[objectIndex].unk_0D1 = temp_v1;
             temp_a0 = gItemWindowObjectByPlayerId[temp_v1];
             sp38 = &gPlayerOne[temp_v1];
