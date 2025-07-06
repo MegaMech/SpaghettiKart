@@ -3361,6 +3361,10 @@ s16 func_8007AFB0(s32 objectIndex, s32 playerId) {
 
     randomItem = gen_random_item_human(gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]);
 
+    if (randomItem == ITEM_NONE) {
+        play_sound2(SOUND_MENU_FILE_NOT_FOUND);
+    }
+
     if (playerHUD[playerId].itemOverride != 0) {
         randomItem = (s16) playerHUD[playerId].itemOverride;
         playerHUD[playerId].itemOverride = 0;
@@ -3387,8 +3391,13 @@ s32 func_8007B040(s32 objectIndex, s32 playerId) {
     var_a3 = 0;
     var_t3 = 0;
     if (gModeSelection == GRAND_PRIX) {
+        // Boo item
         if (random_int(0x0064U) < 0x51) {
             var_v1 = gen_random_item_human(gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]);
+            // ITEM_NONE is not a valid item for ghost, randomize again
+            while(var_v1 == ITEM_NONE) {
+                var_v1 = gen_random_item_human(gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]);
+            }
         } else {
             var_v1 = 0;
             func_800C9060(playerId, 0x1900A058U);
