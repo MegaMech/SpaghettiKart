@@ -2962,9 +2962,9 @@ ItemProbabilities grandPrixHardCPUProbabilityTable[] = {
       .doubleMushroom = 0,
       .tripleMushroom = 15,
       .superMushroom = 5 },
-    { .none = 3,
-      .banana = 3,
-      .bananaBunch = 2,
+    { .none = 0,
+      .banana = 5,
+      .bananaBunch = 3,
       .greenShell = 0,
       .tripleGreenShell = 10,
       .redShell = 20,
@@ -3006,17 +3006,17 @@ ItemProbabilities grandPrixHardCPUProbabilityTable[] = {
       .fakeItemBox = 5,
       .star = 15,
       .boo = 0,
-      .mushroom = 5,
-      .doubleMushroom = 5,
+      .mushroom = 10,
+      .doubleMushroom = 0,
       .tripleMushroom = 25,
       .superMushroom = 10 },
-    { .none = 5,
+    { .none = 0,
       .banana = 0,
       .bananaBunch = 0,
       .greenShell = 0,
       .tripleGreenShell = 0,
       .redShell = 5,
-      .tripleRedShell = 20,
+      .tripleRedShell = 25,
       .blueSpinyShell = 10,
       .thunderbolt = 0,
       .fakeItemBox = 0,
@@ -3026,13 +3026,13 @@ ItemProbabilities grandPrixHardCPUProbabilityTable[] = {
       .doubleMushroom = 0,
       .tripleMushroom = 25,
       .superMushroom = 10 },
-    { .none = 5,
+    { .none = 0,
       .banana = 0,
       .bananaBunch = 0,
       .greenShell = 5,
       .tripleGreenShell = 0,
       .redShell = 5,
-      .tripleRedShell = 20,
+      .tripleRedShell = 25,
       .blueSpinyShell = 10,
       .thunderbolt = 0,
       .fakeItemBox = 0,
@@ -3355,15 +3355,15 @@ u8 hard_cpu_gen_random_item(UNUSED s32 arg0, s16 rank) {
     return gen_random_item(rank, HARD_CPU_TABLE);
 }
 
-s16 func_8007AFB0(s32 objectIndex, s32 arg1) {
+s16 func_8007AFB0(s32 objectIndex, s32 playerId) {
     UNUSED s32 pad[3];
     s16 randomItem;
 
-    randomItem = gen_random_item_human(gLapCountByPlayerId[arg1], gGPCurrentRaceRankByPlayerId[arg1]);
+    randomItem = gen_random_item_human(gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]);
 
-    if (playerHUD[arg1].itemOverride != 0) {
-        randomItem = (s16) playerHUD[arg1].itemOverride;
-        playerHUD[arg1].itemOverride = 0;
+    if (playerHUD[playerId].itemOverride != 0) {
+        randomItem = (s16) playerHUD[playerId].itemOverride;
+        playerHUD[playerId].itemOverride = 0;
     }
 
     func_800729B4(objectIndex, (s32) randomItem);

@@ -6993,6 +6993,9 @@ void func_8001AB00(void) {
 void cpu_decisions_branch_item(UNUSED s32 playerId, s16* branch, s32 itemId) {
     s32 value = -1;
     switch (itemId) {
+        case ITEM_NONE:
+            value = -1;
+            break;
         case ITEM_FAKE_ITEM_BOX:
             value = CPU_STRATEGY_ITEM_FAKE_ITEM_BOX;
             break;
@@ -7021,6 +7024,9 @@ void cpu_decisions_branch_item(UNUSED s32 playerId, s16* branch, s32 itemId) {
 
     if (CVarGetInteger("gHarderCPU", 0) == 1) {
         switch (itemId) {
+            case ITEM_NONE:
+                value = -1;
+                break;
             case ITEM_BANANA_BUNCH:
                 value = CPU_STRATEGY_ITEM_BANANA_BUNCH;
                 break;
