@@ -627,7 +627,7 @@ size_t CM_FindActorIndex(Actor* actor) {
         return std::distance(actors.begin(), it);
     }
     printf("FindActorIndex() actor not found\n");
-    return 0;
+    return -1;
 }
 
 void CM_DeleteActor(size_t index) {
