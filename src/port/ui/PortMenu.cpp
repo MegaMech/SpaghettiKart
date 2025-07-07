@@ -369,7 +369,7 @@ void PortMenu::AddEnhancements() {
 
     AddWidget(path, "Enable Digital Speedometer", WIDGET_CVAR_CHECKBOX)
         .CVar("gEnableDigitalSpeedometer")
-        .Options(CheckboxOptions().Tooltip("Welcome to the new era"));
+        .Options(CheckboxOptions().Tooltip("Welcome to the modern era"));
 
     AddWidget(path, "Harder CPU", WIDGET_CVAR_CHECKBOX).CVar("gHarderCPU");
 
