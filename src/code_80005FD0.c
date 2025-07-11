@@ -7168,7 +7168,7 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_HOLD_BANANA:
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if ((!(BANANA_ACTOR(actor)->flags & 0x8000)) || (BANANA_ACTOR(actor)->type != ACTOR_BANANA) || (BANANA_ACTOR(actor)->state != HELD_BANANA) ||
                 (playerId != BANANA_ACTOR(actor)->playerId)) {
 
@@ -7187,7 +7187,7 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_DROP_BANANA:
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if ((((!(BANANA_ACTOR(actor)->flags & 0x8000)) || (BANANA_ACTOR(actor)->type != ACTOR_BANANA)) ||
                     (BANANA_ACTOR(actor)->state != HELD_BANANA)) ||
                 (playerId != BANANA_ACTOR(actor)->playerId)) {
@@ -7217,7 +7217,7 @@ void cpu_use_item_strategy(s32 playerId) {
         case CPU_STRATEGY_THROW_BANANA:
             cpuStrategy->actorIndex = use_banana_item(player);
             if ((cpuStrategy->actorIndex >= 0) && (cpuStrategy->actorIndex < 100)) {
-                actor = &gActorList[cpuStrategy->actorIndex];
+                actor = GET_ACTOR(cpuStrategy->actorIndex);
                 BANANA_ACTOR(actor)->state = BANANA_ON_GROUND;
                 player->soundEffects |= HOLD_BANANA_SOUND_EFFECT;
                 cpuStrategy->branch = CPU_STRATEGY_HOLD_THROW_BANANA;
@@ -7239,7 +7239,7 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_HOLD_THROW_BANANA:
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if ((((!(BANANA_ACTOR(actor)->flags & 0x8000)) || (BANANA_ACTOR(actor)->type != ACTOR_BANANA)) ||
                     (BANANA_ACTOR(actor)->state != BANANA_ON_GROUND)) ||
                 (playerId != BANANA_ACTOR(actor)->playerId)) {
@@ -7265,7 +7265,7 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_END_THROW_BANANA:
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if ((((!(BANANA_ACTOR(actor)->flags & 0x8000)) || (BANANA_ACTOR(actor)->type != ACTOR_BANANA)) ||
                     (BANANA_ACTOR(actor)->state != BANANA_ON_GROUND)) ||
                 (playerId != BANANA_ACTOR(actor)->playerId)) {
@@ -7307,16 +7307,16 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_HOLD_GREEN_SHELL:
-            actor = &gActorList[cpuStrategy->actorIndex];
-            if ((((!(actor->flags & 0x8000)) || (actor->type != ACTOR_GREEN_SHELL)) ||
-                    (actor->state != HELD_SHELL)) ||
-                (playerId != actor->rot[2])) {
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
+            if ((((!(SHELL_ACTOR(actor)->flags & 0x8000)) || (actor->type != ACTOR_GREEN_SHELL)) ||
+                    (SHELL_ACTOR(actor)->state != HELD_SHELL)) ||
+                (playerId != SHELL_ACTOR(actor)->playerId)) {
 
                 // FAKE
-                if (!(actor->flags & 0x8000)) {}
-                if (actor->type != 7) {}
-                if (actor->state != 0) {}
-                if (actor->rot[0] != playerId) {}
+                if (!(SHELL_ACTOR(actor)->flags & 0x8000)) {}
+                if (SHELL_ACTOR(actor)->type != 7) {}
+                if (SHELL_ACTOR(actor)->state != 0) {}
+                if (SHELL_ACTOR(actor)->rotVelocity != playerId) {}
 
                 cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
                 cpuStrategy->timer = 0;
@@ -7327,10 +7327,10 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_THROW_GREEN_SHELL:
-            actor = &gActorList[cpuStrategy->actorIndex];
-            if ((((!(actor->flags & 0x8000)) || (actor->type != ACTOR_GREEN_SHELL)) ||
-                    (actor->state != HELD_SHELL)) ||
-                (playerId != actor->rot[2])) {
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
+            if ((((!(SHELL_ACTOR(actor)->flags & 0x8000)) || (actor->type != ACTOR_GREEN_SHELL)) ||
+                    (SHELL_ACTOR(actor)->state != HELD_SHELL)) ||
+                (playerId != SHELL_ACTOR(actor)->playerId)) {
 
                 // FAKE
                 if (!(actor->flags & 0x8000)) {}
@@ -7341,7 +7341,7 @@ void cpu_use_item_strategy(s32 playerId) {
                 cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
                 cpuStrategy->timer = 0;
             } else {
-                actor->state = RELEASED_SHELL;
+                SHELL_ACTOR(actor)->state = RELEASED_SHELL;
                 cpuStrategy->timer = 0;
                 cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
             }
@@ -7364,7 +7364,7 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_HOLD_RED_SHELL:
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if ((((!(SHELL_ACTOR(actor)->flags & 0x8000)) || (SHELL_ACTOR(actor)->type != ACTOR_RED_SHELL)) ||
                     (SHELL_ACTOR(actor)->state != HELD_SHELL)) ||
                 (playerId != SHELL_ACTOR(actor)->playerId)) {
@@ -7384,7 +7384,7 @@ void cpu_use_item_strategy(s32 playerId) {
 
         case CPU_STRATEGY_THROW_RED_SHELL:
             clear_expired_strategies(cpuStrategy);
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if ((((!(SHELL_ACTOR(actor)->flags & 0x8000)) || (SHELL_ACTOR(actor)->type != ACTOR_RED_SHELL)) ||
                     (SHELL_ACTOR(actor)->state != HELD_SHELL)) ||
                 (playerId != SHELL_ACTOR(actor)->playerId)) {
@@ -7421,7 +7421,7 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_WAIT_INIT_BANANA_BUNCH:
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if (BANANA_BUNCH_ACTOR(actor)->state == 6) {
 
                 // FAKE
@@ -7461,7 +7461,7 @@ void cpu_use_item_strategy(s32 playerId) {
             if (((cpuStrategy->timer) % 10) == 0) {
                 if (cpuStrategy->numDroppedBananaBunch < 5) {
                     isValidBanana1 = 0;
-                    actor = &gActorList[cpuStrategy->actorIndex];
+                    actor = GET_ACTOR(cpuStrategy->actorIndex);
                     switch (cpuStrategy->numDroppedBananaBunch) {
                         case 0:
                             if (BANANA_BUNCH_ACTOR(actor)->bananaIndices[4] != (-1)) {
@@ -7519,7 +7519,7 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_HOLD_FAKE_ITEM_BOX:
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if ((((!(FAKE_ITEMBOX_ACTOR(actor)->flags & 0x8000)) || (FAKE_ITEMBOX_ACTOR(actor)->type != ACTOR_FAKE_ITEM_BOX)) ||
                     (FAKE_ITEMBOX_ACTOR(actor)->state != 0)) ||
                 (playerId != ((s32) FAKE_ITEMBOX_ACTOR(actor)->playerId))) {
@@ -7538,7 +7538,7 @@ void cpu_use_item_strategy(s32 playerId) {
             break;
 
         case CPU_STRATEGY_THROW_FAKE_ITEM_BOX:
-            actor = &gActorList[cpuStrategy->actorIndex];
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
             if ((((!(FAKE_ITEMBOX_ACTOR(actor)->flags & 0x8000)) || (FAKE_ITEMBOX_ACTOR(actor)->type != ACTOR_FAKE_ITEM_BOX)) ||
                     (FAKE_ITEMBOX_ACTOR(actor)->state != 0)) ||
                 (playerId != ((s32) FAKE_ITEMBOX_ACTOR(actor)->playerId))) {
@@ -7642,6 +7642,46 @@ void cpu_use_item_strategy(s32 playerId) {
                     cpuStrategy->timer = 0;
                     cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
                 }
+            }
+            break;
+        case CPU_STRATEGY_ITEM_BLUE_SPINY_SHELL:
+            if (((s32) gNumActors) < 80) {
+                cpuStrategy->actorIndex = use_blue_shell_item(player);
+                if ((cpuStrategy->actorIndex >= 0) && (cpuStrategy->actorIndex < 0x64)) {
+                    cpuStrategy->branch = CPU_STRATEGY_HOLD_BLUE_SPINY_SHELL;
+                    cpuStrategy->timer = 0;
+                    cpuStrategy->numItemUse += 1;
+                    cpuStrategy->timeBeforeThrow = (random_int(3U) * 0x14) + 0xA;
+                } else {
+                    cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
+                }
+            } else {
+                cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
+            }
+            break;
+        case CPU_STRATEGY_HOLD_BLUE_SPINY_SHELL:
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
+            if ((((!(SHELL_ACTOR(actor)->flags & 0x8000)) || (actor->type != ACTOR_BLUE_SPINY_SHELL)) ||
+                    (SHELL_ACTOR(actor)->state != HELD_SHELL)) ||
+                (playerId != SHELL_ACTOR(actor)->playerId)) {
+                cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
+                cpuStrategy->timer = 0;
+            } else if (cpuStrategy->timeBeforeThrow < cpuStrategy->timer) {
+                cpuStrategy->branch = CPU_STRATEGY_THROW_BLUE_SPINY_SHELL;
+            }
+            break;
+        case CPU_STRATEGY_THROW_BLUE_SPINY_SHELL:
+            clear_expired_strategies(cpuStrategy);
+            actor = GET_ACTOR(cpuStrategy->actorIndex);
+            if ((((!(SHELL_ACTOR(actor)->flags & 0x8000)) || (SHELL_ACTOR(actor)->type != ACTOR_BLUE_SPINY_SHELL)) ||
+                    (SHELL_ACTOR(actor)->state != HELD_SHELL)) ||
+                (playerId != SHELL_ACTOR(actor)->playerId)) {
+                cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
+                cpuStrategy->timer = 0;
+            } else {
+                SHELL_ACTOR(actor)->state = RELEASED_SHELL;
+                cpuStrategy->timer = 0;
+                cpuStrategy->branch = CPU_STRATEGY_WAIT_NEXT_ITEM;
             }
             break;
 
