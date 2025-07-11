@@ -16,7 +16,7 @@
 #include "code_80057C60.h"
 #include "collision.h"
 #include "render_courses.h"
-#include "staff_ghosts.h"
+#include "replays.h"
 #include "code_80005FD0.h"
 #include "render_player.h"
 #include "podium_ceremony_actors.h"
@@ -33,7 +33,7 @@ f32 D_80165230[8];
 UNUSED f32 D_80165250[8];
 s16 D_80165270[8];
 f32 gPlayerCurrentSpeed[8];
-f32 D_801652A0[8];
+f32 gPlayerWaterLevel[8];
 s32 D_801652C0[8];
 s32 D_801652E0[8];
 s16 D_80165300[8];
@@ -47,14 +47,14 @@ UNUSED s32 D_80165348[29];
 Player* D_801653C0[8];
 
 bool gPlayerIsThrottleActive[8];
-s32 D_80165400[8];
+s32 gPlayerAButtonComboActiveThisFrame[8];
 s32 gFrameSinceLastACombo[8];
 s32 gCountASwitch[8];
 bool gIsPlayerTripleAButtonCombo[8];
 s32 gTimerBoostTripleACombo[8];
 
 bool gPlayerIsBrakeActive[8];
-s32 D_801654C0[8];
+s32 gPlayerBButtonComboActiveThisFrame[8];
 s32 gFrameSinceLastBCombo[8];
 s32 gCountBChangement[8];
 bool gIsPlayerTripleBButtonCombo[8];
@@ -81,7 +81,7 @@ void spawn_player(Player* player, s8 playerIndex, f32 startingRow, f32 startingC
     s8 idx;
 
     player->type = PLAYER_INACTIVE;
-    player->unk_08C = 0;
+    player->kartPropulsionStrength = 0;
     player->characterId = characterId;
     player->unk_0B6 = 0;
     player->kartFriction = gKartFrictionTable[player->characterId];
@@ -157,16 +157,16 @@ void spawn_player(Player* player, s8 playerIndex, f32 startingRow, f32 startingC
     player->effects = 0;
     player->unk_0C0 = 0;
     player->unk_07C = 0;
-    player->unk_07A = 0;
+    player->hopFrameCounter = 0;
     player->unk_006 = 0;
     player->lapCount = -1;
-    player->unk_08C = 0.0f;
+    player->kartPropulsionStrength = 0.0f;
     player->unk_090 = 0.0f;
     player->speed = 0.0f;
     player->unk_074 = 0.0f;
     player->type = playerType;
     player->unk_0CA = 0;
-    player->unk_0DE = 0;
+    player->waterInteractionFlags = WATER_NO_INTERACTION;
     player->unk_10C = 0;
     player->unk_0E2 = 0;
     player->unk_0E8 = 0.0f;
@@ -208,7 +208,7 @@ void spawn_player(Player* player, s8 playerIndex, f32 startingRow, f32 startingC
     player->unk_0C8 = 0;
     player->unk_0CA = 0;
     player->boostTimer = 0;
-    player->unk_0DE = 0;
+    player->waterInteractionFlags = WATER_NO_INTERACTION;
     player->unk_0E0 = 0;
     player->unk_0E2 = 0;
     player->unk_10C = 0;
@@ -242,7 +242,7 @@ void spawn_player(Player* player, s8 playerIndex, f32 startingRow, f32 startingC
     player->unk_DB4.unk14 = 0.0f;
     player->unk_084 = 0.0f;
     player->unk_088 = 0.0f;
-    player->unk_08C = 0.0f;
+    player->kartPropulsionStrength = 0.0f;
     player->unk_090 = 0.0f;
     player->speed = 0.0f;
     player->unk_098 = 0.0f;
@@ -256,7 +256,7 @@ void spawn_player(Player* player, s8 playerIndex, f32 startingRow, f32 startingC
     player->kartHopJerk = 0.0f;
     player->kartHopAcceleration = 0.0f;
     player->unk_104 = 0.0f;
-    player->unk_108 = 0.0f;
+    player->hopVerticalOffset = 0.0f;
     player->unk_1F8 = 0.0f;
     player->unk_1FC = 0.0f;
     player->unk_208 = 0.0f;
@@ -304,11 +304,11 @@ void spawn_player(Player* player, s8 playerIndex, f32 startingRow, f32 startingC
     gPlayerLastVelocity[playerIndex][1] = 0.0f;
     gPlayerLastVelocity[playerIndex][2] = 0.0f;
     gPlayerCurrentSpeed[playerIndex] = 0.0f;
-    D_801652A0[playerIndex] = 0.0f;
+    gPlayerWaterLevel[playerIndex] = 0.0f;
     gPlayerIsThrottleActive[playerIndex] = 0;
-    D_80165400[playerIndex] = 0;
+    gPlayerAButtonComboActiveThisFrame[playerIndex] = 0;
     gPlayerIsBrakeActive[playerIndex] = 0;
-    D_801654C0[playerIndex] = 0;
+    gPlayerBButtonComboActiveThisFrame[playerIndex] = 0;
     D_80165340 = 0;
 
     player->tyres[FRONT_LEFT].surfaceType = 0;
@@ -596,14 +596,14 @@ void spawn_players_versus_one_player(f32* arg0, f32* arg1, f32 arg2) {
     } else if (D_8015F890 != 1) {
         spawn_player(gPlayerOne, 0, arg0[0], arg1[0], arg2, 32768.0f, gCharacterSelections[0],
                      PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
-        if (D_80162DD4 == 0) {
+        if (bPlayerGhostDisabled == 0) {
             spawn_player(gPlayerTwo, 1, arg0[0], arg1[0], arg2, 32768.0f, D_80162DE0,
                          PLAYER_EXISTS | PLAYER_HUMAN | PLAYER_START_SEQUENCE | PLAYER_INVISIBLE_OR_BOMB);
         } else {
             spawn_player(gPlayerTwo, 1, arg0[0], arg1[0], arg2, 32768.0f, gCharacterSelections[0],
                          PLAYER_START_SEQUENCE | PLAYER_CPU);
         }
-        if (D_80162DD6 == 0) {
+        if (bCourseGhostDisabled == 0) {
             spawn_player(gPlayerThree, 2, arg0[0], arg1[0], arg2, 32768.0f, D_80162DE4,
                          PLAYER_EXISTS | PLAYER_HUMAN | PLAYER_START_SEQUENCE | PLAYER_INVISIBLE_OR_BOMB);
         } else {
@@ -620,7 +620,7 @@ void spawn_players_versus_one_player(f32* arg0, f32* arg1, f32 arg2) {
             spawn_player(gPlayerTwo, 1, arg0[0], arg1[0], arg2, 32768.0f, gCharacterSelections[0],
                          PLAYER_START_SEQUENCE | PLAYER_CPU);
         }
-        if (D_80162DD6 == 0) {
+        if (bCourseGhostDisabled == 0) {
             spawn_player(gPlayerThree, 2, arg0[0], arg1[0], arg2, 32768.0f, D_80162DE4,
                          PLAYER_EXISTS | PLAYER_HUMAN | PLAYER_START_SEQUENCE | PLAYER_INVISIBLE_OR_BOMB);
         } else {
