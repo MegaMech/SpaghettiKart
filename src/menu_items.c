@@ -8725,8 +8725,8 @@ void func_800A6154(MenuItem* arg0) {
         pause_menu_item_box_cursor(arg0, &sp6C);
     }
     if (arg0->param2 > 0) {
-        gDisplayListHead = func_80098FC8(gDisplayListHead, 0, 0, 0x0000013F, arg0->param2);
-        gDisplayListHead = func_80098FC8(gDisplayListHead, 0, 0xEF - arg0->param2, 0x0000013F, 0x000000EF);
+        gDisplayListHead = func_80098FC8_wide(gDisplayListHead, 0, 0, 0x0000013F, arg0->param2);
+        gDisplayListHead = func_80098FC8_wide(gDisplayListHead, 0, 0xEF - arg0->param2, 0x0000013F, 0x000000EF);
     }
 }
 
