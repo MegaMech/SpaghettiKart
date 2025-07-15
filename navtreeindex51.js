@@ -1,5 +1,6 @@
 var NAVTREEINDEX51 =
 {
+"networking_8h.html#a55e6c7e800d9db21514847b8e14d0af3":[15,0,3,8,1,3],
 "networking_8h.html#a638cf4ec2e59fc36805267df3b8b5cf0":[15,0,3,8,1,14],
 "networking_8h.html#a64f17a6ca0cba5861600194cb67dbd51":[15,0,3,8,1,30],
 "networking_8h.html#a678fa6b5dcf329b34042645d60f8f4c9":[15,0,3,8,1,28],
@@ -33,7 +34,7 @@ var NAVTREEINDEX51 =
 "new__func_8h.html#ac8095e2ec1adbd7e74e655c578968a36":[15,0,3,9,55,0],
 "new__func_8h_source.html":[15,0,3,9,55],
 "objects.html":[0,1],
-"objects.html#objects-1":[0,1,0],
+"objects.html#objects":[0,1,0],
 "objects_8h.html":[15,0,2,16],
 "objects_8h.html#a015cc1fa03690348fb398b9be74ecc15":[15,0,2,16,35],
 "objects_8h.html#a02bd29e49d2089bb6bd1bfe33e360584":[15,0,2,16,87],
@@ -248,6 +249,5 @@ var NAVTREEINDEX51 =
 "osInitialize_8c.html#acfb0fdf45b4ccc5ad77f155cf184c910":[15,0,3,9,76,6],
 "osJamMesg_8c.html":[15,0,3,9,78],
 "osJamMesg_8c.html#ac69f7738a5120910a2f6202d27fb44f4":[15,0,3,9,78,0],
-"osLeoDiskInit_8c.html":[15,0,3,9,79],
-"osLeoDiskInit_8c.html#a681f14ec1eabf80e0a3c82ebcfe9f6b7":[15,0,3,9,79,4]
+"osLeoDiskInit_8c.html":[15,0,3,9,79]
 };
