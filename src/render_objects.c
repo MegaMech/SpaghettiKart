@@ -2630,13 +2630,13 @@ void func_8004E800(s32 playerId) {
     // @port: Tag the transform.
     FrameInterpolation_RecordOpenChild("Player place HUD", playerId);
     if (playerHUD[playerId].unk_81 != 0) {
-        if (playerHUD[playerId].lapCount != 3) {
+        if (playerHUD[playerId].lapCount != MAX_LAPS) { // Not the final lap
             func_8004A384(playerHUD[playerId].rankX + playerHUD[playerId].slideRankX,
                           playerHUD[playerId].rankY + playerHUD[playerId].slideRankY, 0U,
                           playerHUD[playerId].rankScaling, 0x000000FF, D_800E55F8[D_8018CF98[playerId]], 0, 0x000000FF,
                           common_texture_hud_place[D_8018CF98[playerId]], D_0D0068F0, 0x00000080, 0x00000040,
                           0x00000080, 0x00000040);
-        } else {
+        } else { // final lap
             func_8004A384(playerHUD[playerId].rankX + playerHUD[playerId].slideRankX,
                           playerHUD[playerId].rankY + playerHUD[playerId].slideRankY, 0U,
                           playerHUD[playerId].rankScaling, 0x000000FF, D_800E55F8[D_80165594], 0, 0x000000FF,
@@ -2650,14 +2650,14 @@ void func_8004E800(s32 playerId) {
 
 void func_8004E998(s32 playerId) {
     if (playerHUD[playerId].unk_81 != 0) {
-        if (playerHUD[playerId].lapCount != 3) {
+        if (playerHUD[playerId].lapCount != MAX_LAPS) { // Not the final lap
             func_8004A384(playerHUD[playerId].rankX + playerHUD[playerId].slideRankX,
                           playerHUD[playerId].rankY + playerHUD[playerId].slideRankY, 0U,
                           playerHUD[playerId].rankScaling, 0x000000FF,
                           D_800E5618[gGPCurrentRaceRankByPlayerId[playerId]], 0, 0x000000FF,
                           D_0D015258[gGPCurrentRaceRankByPlayerId[playerId]], D_0D006030, 0x00000040, 0x00000040,
                           0x00000040, 0x00000040);
-        } else {
+        } else { // The final lap
             func_8004A384(playerHUD[playerId].rankX + playerHUD[playerId].slideRankX,
                           playerHUD[playerId].rankY + playerHUD[playerId].slideRankY, 0U,
                           playerHUD[playerId].rankScaling, 0x000000FF, D_800E5618[D_80165598], 0, 0x000000FF,
@@ -3332,7 +3332,7 @@ void func_80050E34(s32 playerId, s32 arg1) {
         spB8 = 0;
     }
 
-    if ((IsYoshiValley()) && (lapCount < 3)) {
+    if ((IsYoshiValley()) && (lapCount < MAX_LAPS)) {
         gSPDisplayList(gDisplayListHead++, D_0D007DB8);
         gDPLoadTLUT_pal256(gDisplayListHead++, common_tlut_portrait_bomb_kart_and_question_mark);
         rsp_load_texture(common_texture_portrait_question_mark, 0x00000020, 0x00000020);

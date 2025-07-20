@@ -461,4 +461,4 @@ enum PLACE { FIRST_PLACE, SECOND_PLACE, THIRD_PLACE, FOURTH_PLACE };
  *
  */
 #define MIN_LAPS 0
-#define MAX_LAPS 3
+#define MAX_LAPS CVarGetInteger("gNumLaps", 3)

@@ -487,7 +487,7 @@ void func_8028EF28(void) {
             gPlayers[i].lapCount++;
 
             if ((gPlayers[i].type & PLAYER_HUMAN) != 0) {
-                if (gPlayers[i].lapCount == 3) {
+                if (gPlayers[i].lapCount == MAX_LAPS) {
                     func_8028EEF0(i);
 
                     currentPosition = gPlayers[i].currentRank;
@@ -568,7 +568,7 @@ void func_8028EF28(void) {
                         }
                     }
 
-                } else if (gPlayers[i].lapCount == 2) {
+                } else if (gPlayers[i].lapCount == MAX_LAPS - 1) {
                     if ((gPlayers[i].type & 0x100) != 0) {
                         return;
                     }
@@ -577,7 +577,7 @@ void func_8028EF28(void) {
                         func_800CA49C((u8) i);
                     }
                 }
-            } else if (gPlayers[i].lapCount == 3) {
+            } else if (gPlayers[i].lapCount == MAX_LAPS) {
                 func_8028EEF0(i);
                 if (gModeSelection == TIME_TRIALS) {
                     func_80005AE8(player);
