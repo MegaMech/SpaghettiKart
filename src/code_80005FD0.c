@@ -1212,11 +1212,11 @@ bool func_800088D8(s32 playerId, s16 lapNum, s16 arg2) {
     if (gModeSelection == TIME_TRIALS) {
         return true;
     }
-    if (lapNum < 0) {
+    if (lapNum < MIN_LAPS) {
         return true;
     }
-    if (lapNum >= 4) {
-        lapNum = 3;
+    if (lapNum >= MAX_LAPS + 1) {
+        lapNum = MAX_LAPS;
     }
     if (D_80163330[playerId] == 1) {
         return true;
@@ -1235,7 +1235,7 @@ bool func_800088D8(s32 playerId, s16 lapNum, s16 arg2) {
             if (progress < 0) {
                 progress = -progress;
             }
-            if (lapNum < 3) {
+            if (lapNum < MAX_LAPS) {
                 STEMP_V0 = temp_a3[0];
                 STEMP_V1 = temp_a3[8];
                 interp = gLapCompletionPercentByPlayerId[playerId];
@@ -1262,7 +1262,7 @@ bool func_800088D8(s32 playerId, s16 lapNum, s16 arg2) {
         if (progress < 0) {
             progress = -progress;
         }
-        if (lapNum < 3) {
+        if (lapNum < MAX_LAPS) {
             STEMP_V0 = temp_a3[0];
             STEMP_V1 = temp_a3[8];
             interp = gLapCompletionPercentByPlayerId[playerId];
@@ -1310,7 +1310,7 @@ bool func_800088D8(s32 playerId, s16 lapNum, s16 arg2) {
     if ((var_t1 < 0) || (var_t1 >= 8)) {
         return false;
     }
-    if (lapNum < 3) {
+    if (lapNum < MAX_LAPS) {
         STEMP_V0 = temp_a3[var_t1 + 0];
         STEMP_V1 = temp_a3[var_t1 + 8];
         interp = gLapCompletionPercentByPlayerId[playerId];
