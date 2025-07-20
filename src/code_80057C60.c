@@ -1472,7 +1472,7 @@ void func_8005A14C(s32 playerId) {
         } else {
             gObjectList[objectIndex].primAlpha = 0x00FF;
         }
-        if (lapCount >= 3) {
+        if (lapCount >= MAX_LAPS) {
             gObjectList[objectIndex].direction_angle[2] = 0;
             gObjectList[objectIndex].direction_angle[1] = 0;
             gObjectList[objectIndex].direction_angle[0] = 0;
