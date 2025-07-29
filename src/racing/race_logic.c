@@ -134,7 +134,7 @@ void func_8028E298(void) {
         }
         temp_a2 = gPathIndexByPlayerId[i];
 
-        temp_v0 = ((2 - gPlayers[i].lapCount) * gPathCountByPathIndex[temp_a2]);
+        temp_v0 = ((FINAL_LAP - gPlayers[i].lapCount) * gPathCountByPathIndex[temp_a2]);
         temp_v0 += gPathCountByPathIndex[temp_a2] * (1.0f - gLapCompletionPercentByPlayerId[i]);
         temp_v0 /= 15.0f;
 
@@ -572,7 +572,7 @@ void func_8028EF28(void) {
                         }
                     }
 
-                } else if (gPlayers[i].lapCount == MAX_LAPS - 1) {
+                } else if (gPlayers[i].lapCount == FINAL_LAP) {
                     if ((gPlayers[i].type & 0x100) != 0) {
                         return;
                     }
@@ -798,19 +798,19 @@ void func_8028F970(void) {
     if (gEnableDebugMode) {
         if (gModeSelection != BATTLE) { // Skip laps
             if (gControllerOne->buttonPressed & U_JPAD) {
-                gLapCountByPlayerId[0] = 2;
+                gLapCountByPlayerId[0] = FINAL_LAP;
                 play_sound2(SOUND_MENU_OPTION);
                 printf("[race_logic.c] [func_8028F970] Skipped laps for player 1\n");
             }
             if (gControllerOne->buttonPressed & R_JPAD) {
-                gLapCountByPlayerId[0] = 2;
-                gLapCountByPlayerId[1] = 2;
+                gLapCountByPlayerId[0] = FINAL_LAP;
+                gLapCountByPlayerId[1] = FINAL_LAP;
                 play_sound2(SOUND_MENU_OPTION);
                 printf("[race_logic.c] [func_8028F970] Skipped laps for players 1 & 2\n");
             }
             if (gControllerOne->buttonPressed & D_JPAD) {
                 for (size_t i = 0; i < NUM_PLAYERS; i++) {
-                    gLapCountByPlayerId[i] = 2;
+                    gLapCountByPlayerId[i] = FINAL_LAP;
                 }
                 play_sound2(SOUND_MENU_OPTION);
                 printf("[race_logic.c] [func_8028F970] Skipped laps for all players\n");

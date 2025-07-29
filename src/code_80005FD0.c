@@ -1215,7 +1215,7 @@ bool func_800088D8(s32 playerId, s16 lapNum, s16 arg2) {
     if (lapNum < MIN_LAPS) {
         return true;
     }
-    if (lapNum >= MAX_LAPS + 1) {
+    if (lapNum > MAX_LAPS) {
         lapNum = MAX_LAPS;
     }
     if (D_80163330[playerId] == 1) {
@@ -1481,7 +1481,7 @@ void update_player_path_completion(s32 playerId, Player* player) {
                 if (playerX < 300.0f) {
                     var_v1 = 1;
                     var_t0 = 1;
-                } else if ((playerX < 1300.0f) && (gLapCountByPlayerId[playerId] < 2) && ((D_801634EC == 1))) {
+                } else if ((playerX < 1300.0f) && (gLapCountByPlayerId[playerId] < FINAL_LAP) && ((D_801634EC == 1))) {
                     var_v1 = 1;
                     var_t0 = 1;
                 }
@@ -1490,7 +1490,7 @@ void update_player_path_completion(s32 playerId, Player* player) {
                     var_v1 = 1;
                     var_t0 = 1;
                 } else {
-                    if ((playerX > -1300.0f) && (gLapCountByPlayerId[playerId] < 2) && (D_801634EC == 1)) {
+                    if ((playerX > -1300.0f) && (gLapCountByPlayerId[playerId] < FINAL_LAP) && (D_801634EC == 1)) {
                         var_v1 = 1;
                         var_t0 = 1;
                     }
@@ -1504,7 +1504,7 @@ void update_player_path_completion(s32 playerId, Player* player) {
         if ((var_v1 != 0) && (playerZ <= gPathStartZ)) {
             if (gPathStartZ < previousPlayerZ) {
                 gLapCountByPlayerId[playerId]++;
-                if ((gModeSelection == GRAND_PRIX) && (gLapCountByPlayerId[playerId] == 5)) {
+                if ((gModeSelection == GRAND_PRIX) && (gLapCountByPlayerId[playerId] == FIFTH_LAP)) {
                     if (gGPCurrentRaceRankByPlayerIdDup[playerId] == 7) {
                         // clang-format off
                         for (var_v0 = 0; var_v0 < NUM_PLAYERS; var_v0++) { gLapCountByPlayerId[var_v0]--; } // has to be one line to match
@@ -7114,7 +7114,7 @@ void cpu_use_item_strategy(s32 playerId) {
                                                                    gGPCurrentRaceRankByPlayerId[playerId]));
                 // Stock CPU Items
             } else if ((((playerId * 20) + 100) < gNumPathPointsTraversed[playerId]) && (cpuStrategy->timer >= 0x259) &&
-                       (cpuStrategy->numItemUse < 3) && (gLapCountByPlayerId[playerId] < 3)) {
+                       (cpuStrategy->numItemUse < 3) && (gLapCountByPlayerId[playerId] < MAX_LAPS)) {
                 cpu_decisions_branch_item(
                     playerId, &cpuStrategy->branch,
                     cpu_gen_random_item((s16) gLapCountByPlayerId[playerId], gGPCurrentRaceRankByPlayerId[playerId]));

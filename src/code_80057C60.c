@@ -2595,14 +2595,17 @@ void func_8005CB60(s32 playerId, s32 lapCount) {
             *huhthedeuce += 1;
             if (1) {}
 
-            if (*huhthedeuce == 1) {
+            // Activate lakitu:second_lap if completed lap one and there's more than two total laps.
+            if ((*huhthedeuce == 1) && (MAX_LAPS > 2)) {
                 CM_ActivateSecondLapLakitu(playerId); // func_80079084(playerId);
                 func_800C9060(playerId, SOUND_ARG_LOAD(0x19, 0x00, 0xF0, 0x15));
                 if ((IsLuigiRaceway()) && (D_80165898 == 0) && (gModeSelection != (s32) TIME_TRIALS)) {
                     D_80165898 = 1;
                 }
-            } else if (*huhthedeuce == MAX_LAPS - 1) {
+            // Activate lakitu:final_lap if completed the second last lap and there's more than one total laps.
+            } else if ((*huhthedeuce == FINAL_LAP) && (MAX_LAPS > 1)) {
                 CM_ActivateFinalLapLakitu(playerId); // func_800790B4(playerId);
+            // Activate lakitu:finished_race on completion of all laps.
             } else if (*huhthedeuce == MAX_LAPS) {
                 if ((D_8018D114 == 0) || (D_8018D114 == 1)) {
                         gHUDModes = 0;
