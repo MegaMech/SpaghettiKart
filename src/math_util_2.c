@@ -711,7 +711,6 @@ void func_80042330(s32 x, s32 y, u16 angle, f32 scale) {
 
 void func_80042330_unchanged(s32 x, s32 y, u16 angle, f32 scale) {
     Mat4 matrix;
-    // printf("panel %d %d %d\n", x, (s32)OTRGetDimensionFromLeftEdge(x), (s32)OTRGetDimensionFromLeftEdge(0));
 
     mtxf_translation_x_y_rotate_z_scale_x_y(matrix, x, y, angle, scale);
     // convert_to_fixed_point_matrix(&gGfxPool->mtxHud[gMatrixHudCount], matrix);
@@ -719,6 +718,18 @@ void func_80042330_unchanged(s32 x, s32 y, u16 angle, f32 scale) {
     //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     AddHudMatrix(matrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+}
+
+// Mixing hud and object matrix stacks results in vtx stretching. Therefore, render_clouds() now use the object matrix stack.
+void func_80042330_unchanged_mtx(s32 x, s32 y, u16 angle, f32 scale) {
+    Mat4 matrix;
+
+    mtxf_translation_x_y_rotate_z_scale_x_y(matrix, x, y, angle, scale);
+    // convert_to_fixed_point_matrix(&gGfxPool->mtxHud[gMatrixHudCount], matrix);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxHud[gMatrixHudCount++]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+    AddObjectMatrix(matrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 }
 
 // Allows a different way of lining up the portraits at the end of race sequence
