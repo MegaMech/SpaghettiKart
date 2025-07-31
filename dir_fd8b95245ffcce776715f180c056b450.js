@@ -1,5 +1,6 @@
 var dir_fd8b95245ffcce776715f180c056b450 =
 [
+    [ "audio", "dir_5c60d9618c3805fe15c0bcbefba0a306.html", "dir_5c60d9618c3805fe15c0bcbefba0a306" ],
     [ "interpolation", "dir_693e9fc1d56d07d615a96f6baaa3ee9b.html", "dir_693e9fc1d56d07d615a96f6baaa3ee9b" ],
     [ "resource", "dir_d6c1aceaca3b5d40d9e809aade2680aa.html", "dir_d6c1aceaca3b5d40d9e809aade2680aa" ],
     [ "ui", "dir_d4fecef9a83f235e24caddea49caed82.html", "dir_d4fecef9a83f235e24caddea49caed82" ],
@@ -10,6 +11,7 @@ var dir_fd8b95245ffcce776715f180c056b450 =
     [ "GameExtractor.cpp", "GameExtractor_8cpp.html", "GameExtractor_8cpp" ],
     [ "GameExtractor.h", "GameExtractor_8h.html", "GameExtractor_8h" ],
     [ "GBIMiddleware.cpp", "GBIMiddleware_8cpp.html", "GBIMiddleware_8cpp" ],
+    [ "pak.cpp", "pak_8cpp.html", "pak_8cpp" ],
     [ "ShipUtils.cpp", "ShipUtils_8cpp.html", "ShipUtils_8cpp" ],
     [ "ShipUtils.h", "ShipUtils_8h.html", "ShipUtils_8h" ],
     [ "SpaghettiGui.cpp", "SpaghettiGui_8cpp.html", "SpaghettiGui_8cpp" ],
