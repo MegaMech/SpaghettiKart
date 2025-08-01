@@ -34,7 +34,7 @@ static Mtx* ShadowMatrix[NUM_PLAYERS * 4]; // 8 players * 4 screens
 
 // Reserves perspective, lookAt, and kart matrices at the start of a frame
 void ReserveMatrices(void) {
-    gWorldInstance.Mtx.Objects.reserve(500);
+    gWorldInstance.Mtx.Objects.reserve(500); // Required to prevent corrupt heap memory crashes.
 
     for (size_t i = 0; i < ARRAY_COUNT(PerspectiveMatrix); i++) {
         PerspectiveMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
