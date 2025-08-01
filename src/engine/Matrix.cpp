@@ -26,10 +26,38 @@ Mtx* GetMatrix(std::vector<Mtx>& stack) {
     return &stack.back();
 }
 
+static Mtx* PerspectiveMatrix[4];
+static Mtx* LookAtMatrix[4];
+static Mtx* KartMatrix[NUM_PLAYERS * 4]; // 8 players * 4 screens
+static Mtx* ShadowMatrix[NUM_PLAYERS * 4]; // 8 players * 4 screens
+
+
+// Reserves perspective, lookAt, and kart matrices at the start of a frame
+void ReserveMatrices(void) {
+    gWorldInstance.Mtx.Objects.reserve(500);
+
+    for (size_t i = 0; i < ARRAY_COUNT(PerspectiveMatrix); i++) {
+        PerspectiveMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
+    }
+
+    for (size_t i = 0; i < ARRAY_COUNT(LookAtMatrix); i++) {
+        LookAtMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
+    }
+
+    for (size_t i = 0; i < ARRAY_COUNT(KartMatrix); i++) {
+        KartMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
+    }
+
+    for (size_t i = 0; i < ARRAY_COUNT(ShadowMatrix); i++) {
+        ShadowMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
+    }
+}
+
 /**
- * Use GetMatrix() first
+ * Push a fixed point matrix to the stack
+ * Use GetMatrix() before calling this
  */
-void AddMatrixFixed(std::vector<Mtx>& stack, s32 flags) {
+inline void AddMatrixFixed(std::vector<Mtx>& stack, s32 flags) {
     // Load the matrix
     gSPMatrix(gDisplayListHead++, &stack.back(), flags);
 }
@@ -145,39 +173,39 @@ void AddLocalRotation(Mat4 mat, IRotator rot) {
 extern "C" {
 
     void AddHudMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Hud, mtx, flags);
+        AddMatrix(gWorldInstance.Mtx.Objects, mtx, flags);
     }
 
     void AddPerspMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Persp, mtx, flags);
+        AddMatrix(gWorldInstance.Mtx.Objects, mtx, flags);
     }
 
-    void AddLookAtMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.LookAt, mtx, flags);
-    }
+    // void AddLookAtMatrix(Mat4 mtx, s32 flags) {
+    //     AddMatrix(gWorldInstance.Mtx.Objects, mtx, flags);
+    // }
 
     void AddObjectMatrix(Mat4 mtx, s32 flags) {
         AddMatrix(gWorldInstance.Mtx.Objects, mtx, flags);
     }
 
     void AddShadowMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Shadows, mtx, flags);
+        AddMatrix(gWorldInstance.Mtx.Objects, mtx, flags);
     }
 
     void AddKartMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Karts, mtx, flags);
+        AddMatrix(gWorldInstance.Mtx.Objects, mtx, flags);
     }
 
     void AddEffectMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Effects, mtx, flags);
+        AddMatrix(gWorldInstance.Mtx.Objects, mtx, flags);
     }
 
     void AddEffectMatrixFixed(s32 flags) {
-        AddMatrixFixed(gWorldInstance.Mtx.Effects, flags);
+        AddMatrixFixed(gWorldInstance.Mtx.Objects, flags);
     }
 
     void AddEffectMatrixOrtho(void) {
-        auto& stack = gWorldInstance.Mtx.Effects;
+        auto& stack = gWorldInstance.Mtx.Objects;
         stack.emplace_back();
 
         guOrtho(&stack.back(), 0.0f, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0.0f, -100.0f, 100.0f, 1.0f);
@@ -185,8 +213,54 @@ extern "C" {
         gSPMatrix(gDisplayListHead++, &stack.back(), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     }
 
+    Mtx* GetPerspectiveMatrix(s32 cameraId) {
+        if (cameraId >= 0 && cameraId < ARRAY_COUNT(PerspectiveMatrix)) {
+            return PerspectiveMatrix[cameraId];
+        } else {
+            return NULL;
+        }
+    }
+
+    Mtx* GetLookAtMatrix(s32 cameraId) {
+        if (cameraId >= 0 && cameraId < ARRAY_COUNT(LookAtMatrix)) {
+            return LookAtMatrix[cameraId];
+        } else {
+            return NULL;
+        }
+    }
+
+    void PushPerspectiveMatrix(s32 cameraId, s32 flags) {
+        if (cameraId >= 0 && cameraId < ARRAY_COUNT(PerspectiveMatrix)) {
+            gSPMatrix(gDisplayListHead++, PerspectiveMatrix[cameraId], flags);
+        }
+    }
+
+    void PushLookAtMatrix(s32 cameraId, s32 flags) {
+        if (cameraId >= 0 && cameraId < ARRAY_COUNT(LookAtMatrix)) {
+            gSPMatrix(gDisplayListHead++, LookAtMatrix[cameraId], flags);
+        }
+    }
+
+    // Id is playerId + (screenId * 8)
+    void PushKartMatrix(Mat4 mtx, s32 id, s32 flags) {
+        if (id >= 0 && id < ARRAY_COUNT(KartMatrix)) {
+            FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, KartMatrix[id]);
+            guMtxF2L(mtx, KartMatrix[id]);
+            gSPMatrix(gDisplayListHead++, KartMatrix[id], flags);
+        }
+    }
+
+    // Id is playerId + (screenId * 8)
+    void PushShadowMatrix(Mat4 mtx, s32 id, s32 flags) {
+        if (id >= 0 && id < ARRAY_COUNT(ShadowMatrix)) {
+            FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, ShadowMatrix[id]);
+            guMtxF2L(mtx, ShadowMatrix[id]);
+            gSPMatrix(gDisplayListHead++, ShadowMatrix[id], flags);
+        }
+    }
+
     Mtx* GetEffectMatrix(void) {
-        return GetMatrix(gWorldInstance.Mtx.Effects);
+        return GetMatrix(gWorldInstance.Mtx.Objects);
     }
 
 
