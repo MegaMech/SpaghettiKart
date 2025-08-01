@@ -33,6 +33,7 @@ static Mtx* ShadowMatrix[NUM_PLAYERS * 4]; // 8 players * 4 screens
 
 
 // Reserves perspective, lookAt, and kart matrices at the start of a frame
+// This must be ran at the start of every frame for race_logic_loop(), credits_loop(), and podium_ceremony_loop()
 void ReserveMatrices(void) {
     gWorldInstance.Mtx.Objects.reserve(500); // Required to prevent corrupt heap memory crashes.
 

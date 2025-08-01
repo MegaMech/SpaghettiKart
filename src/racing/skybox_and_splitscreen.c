@@ -921,9 +921,9 @@ void render_screens(s32 mode, s32 cameraId, s32 playerId) {
             render_players_on_screen_four();
             break;
     }
-    func_8029122C(screen, playerId);
+    func_8029122C(screen, playerId); // Track water related
 
-    switch (playerId) {
+    switch (playerId) { // Render player particles or some effect
         case 0:
             func_80021B0C();
             break;
@@ -938,8 +938,8 @@ void render_screens(s32 mode, s32 cameraId, s32 playerId) {
             break;
     };
 
-   render_item_boxes(screen);
-   render_player_snow_effect(mode);
+    render_item_boxes(screen);
+    render_player_snow_effect(mode);
     func_80058BF4(); // Setup texture modes
     if (D_800DC5B8 != 0) {
         func_80058C20(mode); // Setup hud matrix

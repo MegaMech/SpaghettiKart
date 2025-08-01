@@ -48,6 +48,8 @@ void func_80280038(void) {
     ClearMatrixPools();
     Editor_ClearMatrix();
 
+    ReserveMatrices();
+
     gMatrixObjectCount = 0;
     gMatrixEffectCount = 0;
     gMatrixHudCount = 0;

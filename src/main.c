@@ -808,6 +808,8 @@ void race_logic_loop(void) {
     gMatrixObjectCount = 0;
     gMatrixEffectCount = 0;
 
+    ReserveMatrices();
+
     if (gIsGamePaused != 0) {
         func_80290B14();
     }

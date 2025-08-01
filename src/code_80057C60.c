@@ -544,10 +544,13 @@ void render_object(u32 arg0) {
 
 void render_object_p1(void) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[0]),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[0]),
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+
+    PushPerspectiveMatrix(PLAYER_ONE, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    PushLookAtMatrix(PLAYER_ONE, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[0]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[0]),
+    //           G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
 
     // if (gGamestate == ENDING) {
     //     //func_80055F48(PLAYER_ONE);
@@ -560,33 +563,40 @@ void render_object_p1(void) {
 }
 
 void render_object_p2(void) {
-
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[1]),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[1]),
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+
+    PushPerspectiveMatrix(PLAYER_TWO, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    PushLookAtMatrix(PLAYER_TWO, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[1]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[1]),
+    //           G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     // render_bomb_karts_wrap(PLAYER_TWO);
     render_object_for_player(PLAYER_TWO);
 }
 
 void render_object_p3(void) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[2]),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[2]),
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+
+    PushPerspectiveMatrix(PLAYER_THREE, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    PushLookAtMatrix(PLAYER_THREE, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[2]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[2]),
+    //           G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     // render_bomb_karts_wrap(PLAYER_THREE);
     render_object_for_player(PLAYER_THREE);
 }
 
 void render_object_p4(void) {
-
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[3]),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[3]),
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+
+    PushPerspectiveMatrix(PLAYER_FOUR, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    PushLookAtMatrix(PLAYER_FOUR, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[3]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[3]),
+    //           G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     // render_bomb_karts_wrap(PLAYER_FOUR);
     if ((!gDemoMode) && (gPlayerCountSelection1 == 4)) {
         // render_lakitu(PLAYER_FOUR);
@@ -639,10 +649,12 @@ void render_player_snow_effect(u32 arg0) {
 
 void render_player_snow_effect_one(void) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[0]),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[0]),
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    PushPerspectiveMatrix(PLAYER_ONE, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    PushLookAtMatrix(PLAYER_ONE, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[0]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[0]),
+    //           G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     if (gGamestate != ENDING) {
         render_snowing_effect(PLAYER_ONE);
     }
@@ -650,28 +662,34 @@ void render_player_snow_effect_one(void) {
 
 void render_player_snow_effect_two(void) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[1]),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[1]),
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    PushPerspectiveMatrix(PLAYER_TWO, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    PushLookAtMatrix(PLAYER_TWO, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[1]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[1]),
+    //           G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     render_snowing_effect(PLAYER_TWO);
 }
 
 void render_player_snow_effect_three(void) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[2]),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[2]),
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    PushPerspectiveMatrix(PLAYER_THREE, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    PushLookAtMatrix(PLAYER_THREE, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[2]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[2]),
+    //           G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     render_snowing_effect(PLAYER_THREE);
 }
 
 void render_player_snow_effect_four(void) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[3]),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[3]),
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    PushPerspectiveMatrix(PLAYER_FOUR, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    PushLookAtMatrix(PLAYER_FOUR, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxPersp[3]),
+    //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxLookAt[3]),
+    //           G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     render_snowing_effect(PLAYER_FOUR);
 }
 

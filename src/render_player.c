@@ -1527,7 +1527,7 @@ void render_player_shadow(Player* player, s8 playerId, s8 screenId) {
 
     // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxShadow[playerId + (screenId * 8)]),
     //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    AddShadowMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    PushShadowMatrix(mtx, playerId + (screenId * 8), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(gDisplayListHead++, D_0D008D58);
     gDPSetTextureLUT(gDisplayListHead++, G_TT_NONE);
@@ -1579,7 +1579,7 @@ void render_player_shadow_credits(Player* player, s8 playerId, s8 arg2) {
     // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxShadow[playerId + (arg2 * 8)]),
     //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    AddShadowMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    PushShadowMatrix(mtx, playerId + (arg2 * 8), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(gDisplayListHead++, D_0D008D58);
     gDPSetTextureLUT(gDisplayListHead++, G_TT_NONE);
@@ -1659,7 +1659,7 @@ void render_kart(Player* player, s8 playerId, s8 screenId, s8 flipOffset) {
 
     if ((player->effects & BOO_EFFECT) == BOO_EFFECT) {
         if (screenId == playerId) {
-            AddKartMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            PushKartMatrix(mtx, playerId + (screenId * 8), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(gDisplayListHead++, common_setting_render_character);
             gDPLoadTLUT_pal256(gDisplayListHead++, gPlayerPalette);
             gDPSetTextureLUT(gDisplayListHead++, G_TT_RGBA16);
@@ -1674,7 +1674,7 @@ void render_kart(Player* player, s8 playerId, s8 screenId, s8 flipOffset) {
         } else {
             // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxKart[playerId + (screenId * 8)]),
             //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            AddKartMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            PushKartMatrix(mtx, playerId + (screenId * 8), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(gDisplayListHead++, common_setting_render_character);
             gDPLoadTLUT_pal256(gDisplayListHead++, gPlayerPalette);
             gDPSetTextureLUT(gDisplayListHead++, G_TT_RGBA16);
@@ -1691,7 +1691,7 @@ void render_kart(Player* player, s8 playerId, s8 screenId, s8 flipOffset) {
                (player->soundEffects & 0x04000000)) {
         // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxKart[playerId + (screenId * 8)]),
         //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        AddKartMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        PushKartMatrix(mtx, playerId + (screenId * 8), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(gDisplayListHead++, common_setting_render_character);
         gDPLoadTLUT_pal256(gDisplayListHead++, gPlayerPalette);
         gDPSetTextureLUT(gDisplayListHead++, G_TT_RGBA16);
@@ -1703,7 +1703,7 @@ void render_kart(Player* player, s8 playerId, s8 screenId, s8 flipOffset) {
     } else {
         // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxKart[playerId + (screenId * 8)]),
         //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        AddKartMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        PushKartMatrix(mtx, playerId + (screenId * 8), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(gDisplayListHead++, common_setting_render_character);
         gDPLoadTLUT_pal256(gDisplayListHead++, gPlayerPalette);
         gDPSetTextureLUT(gDisplayListHead++, G_TT_RGBA16);
@@ -1772,7 +1772,7 @@ void render_ghost(Player* player, s8 playerId, s8 screenId, s8 flipOffset) {
 
     // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxKart[playerId + (screenId * 8)]),
     //           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    AddKartMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    PushKartMatrix(mtx, playerId + (screenId * 8), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(gDisplayListHead++, common_setting_render_character);
     gDPLoadTLUT_pal256(gDisplayListHead++, gPlayerPalette);
