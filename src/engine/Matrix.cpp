@@ -9,7 +9,7 @@ extern "C" {
 #include "math_util_2.h"
 }
 
-void AddMatrix(std::vector<Mtx>& stack, Mat4 mtx, s32 flags) {
+void AddMatrix(std::deque<Mtx>& stack, Mat4 mtx, s32 flags) {
     // Push a new matrix to the stack
     stack.emplace_back();
 
@@ -21,7 +21,7 @@ void AddMatrix(std::vector<Mtx>& stack, Mat4 mtx, s32 flags) {
     gSPMatrix(gDisplayListHead++, &stack.back(), flags);
 }
 
-Mtx* GetMatrix(std::vector<Mtx>& stack) {
+Mtx* GetMatrix(std::deque<Mtx>& stack) {
     stack.emplace_back();
     return &stack.back();
 }
@@ -29,7 +29,7 @@ Mtx* GetMatrix(std::vector<Mtx>& stack) {
 /**
  * Use GetMatrix() first
  */
-void AddMatrixFixed(std::vector<Mtx>& stack, s32 flags) {
+void AddMatrixFixed(std::deque<Mtx>& stack, s32 flags) {
     // Load the matrix
     gSPMatrix(gDisplayListHead++, &stack.back(), flags);
 }
