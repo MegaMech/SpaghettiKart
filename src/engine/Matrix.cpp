@@ -9,7 +9,7 @@ extern "C" {
 #include "math_util_2.h"
 }
 
-void AddMatrix(std::vector<Mtx>& stack, Mat4 mtx, s32 flags) {
+void AddMatrix(std::deque<Mtx>& stack, Mat4 mtx, s32 flags) {
     // Push a new matrix to the stack
     stack.emplace_back();
 
@@ -21,7 +21,7 @@ void AddMatrix(std::vector<Mtx>& stack, Mat4 mtx, s32 flags) {
     gSPMatrix(gDisplayListHead++, &stack.back(), flags);
 }
 
-Mtx* GetMatrix(std::vector<Mtx>& stack) {
+Mtx* GetMatrix(std::deque<Mtx>& stack) {
     stack.emplace_back();
     return &stack.back();
 }
@@ -35,30 +35,30 @@ static Mtx* ShadowMatrix[NUM_PLAYERS * 4]; // 8 players * 4 screens
 // Reserves perspective, lookAt, and kart matrices at the start of a frame
 // This must be ran at the start of every frame for race_logic_loop(), credits_loop(), and podium_ceremony_loop()
 void ReserveMatrices(void) {
-    gWorldInstance.Mtx.Objects.reserve(500); // Required to prevent corrupt heap memory crashes.
+    // gWorldInstance.Mtx.Objects.reserve(500); // Required to prevent corrupt heap memory crashes.
 
-    for (size_t i = 0; i < ARRAY_COUNT(PerspectiveMatrix); i++) {
-        PerspectiveMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
-    }
+    // for (size_t i = 0; i < ARRAY_COUNT(PerspectiveMatrix); i++) {
+    //     PerspectiveMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
+    // }
 
-    for (size_t i = 0; i < ARRAY_COUNT(LookAtMatrix); i++) {
-        LookAtMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
-    }
+    // for (size_t i = 0; i < ARRAY_COUNT(LookAtMatrix); i++) {
+    //     LookAtMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
+    // }
 
-    for (size_t i = 0; i < ARRAY_COUNT(KartMatrix); i++) {
-        KartMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
-    }
+    // for (size_t i = 0; i < ARRAY_COUNT(KartMatrix); i++) {
+    //     KartMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
+    // }
 
-    for (size_t i = 0; i < ARRAY_COUNT(ShadowMatrix); i++) {
-        ShadowMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
-    }
+    // for (size_t i = 0; i < ARRAY_COUNT(ShadowMatrix); i++) {
+    //     ShadowMatrix[i] = &gWorldInstance.Mtx.Objects.emplace_back();
+    // }
 }
 
 /**
  * Push a fixed point matrix to the stack
  * Use GetMatrix() before calling this
  */
-inline void AddMatrixFixed(std::vector<Mtx>& stack, s32 flags) {
+inline void AddMatrixFixed(std::deque<Mtx>& stack, s32 flags) {
     // Load the matrix
     gSPMatrix(gDisplayListHead++, &stack.back(), flags);
 }
@@ -87,14 +87,14 @@ void SetTextMatrix(Mat4 mf, f32 x, f32 y, f32 arg3, f32 arg4) {
 // AddMatrix but with custom gfx ptr arg and flags are predefined
 Gfx* AddTextMatrix(Gfx* displayListHead, Mat4 mtx) {
     // Push a new matrix to the stack
-    gWorldInstance.Mtx.Effects.emplace_back();
+    gWorldInstance.Mtx.Objects.emplace_back();
 
     // Convert to a fixed-point matrix
-    FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, &gWorldInstance.Mtx.Effects.back());
-    guMtxF2L(mtx, &gWorldInstance.Mtx.Effects.back());
+    FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, &gWorldInstance.Mtx.Objects.back());
+    guMtxF2L(mtx, &gWorldInstance.Mtx.Objects.back());
 
     // Load the matrix
-    gSPMatrix(displayListHead++, &gWorldInstance.Mtx.Effects.back(), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(displayListHead++, &gWorldInstance.Mtx.Objects.back(), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     return displayListHead;
 }
@@ -216,7 +216,7 @@ extern "C" {
 
     Mtx* GetPerspectiveMatrix(s32 cameraId) {
         if (cameraId >= 0 && cameraId < ARRAY_COUNT(PerspectiveMatrix)) {
-            return PerspectiveMatrix[cameraId];
+            return &gWorldInstance.Mtx.Persp[cameraId];
         } else {
             return NULL;
         }
@@ -224,7 +224,7 @@ extern "C" {
 
     Mtx* GetLookAtMatrix(s32 cameraId) {
         if (cameraId >= 0 && cameraId < ARRAY_COUNT(LookAtMatrix)) {
-            return LookAtMatrix[cameraId];
+            return &gWorldInstance.Mtx.LookAt[cameraId];
         } else {
             return NULL;
         }
@@ -232,31 +232,31 @@ extern "C" {
 
     void PushPerspectiveMatrix(s32 cameraId, s32 flags) {
         if (cameraId >= 0 && cameraId < ARRAY_COUNT(PerspectiveMatrix)) {
-            gSPMatrix(gDisplayListHead++, PerspectiveMatrix[cameraId], flags);
+            gSPMatrix(gDisplayListHead++, &gWorldInstance.Mtx.Persp[cameraId], flags);
         }
     }
 
     void PushLookAtMatrix(s32 cameraId, s32 flags) {
         if (cameraId >= 0 && cameraId < ARRAY_COUNT(LookAtMatrix)) {
-            gSPMatrix(gDisplayListHead++, LookAtMatrix[cameraId], flags);
+            gSPMatrix(gDisplayListHead++, &gWorldInstance.Mtx.LookAt[cameraId], flags);
         }
     }
 
     // Id is playerId + (screenId * 8)
     void PushKartMatrix(Mat4 mtx, s32 id, s32 flags) {
         if (id >= 0 && id < ARRAY_COUNT(KartMatrix)) {
-            FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, KartMatrix[id]);
-            guMtxF2L(mtx, KartMatrix[id]);
-            gSPMatrix(gDisplayListHead++, KartMatrix[id], flags);
+            FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, &gWorldInstance.Mtx.Karts[id]);
+            guMtxF2L(mtx, &gWorldInstance.Mtx.Karts[id]);
+            gSPMatrix(gDisplayListHead++, &gWorldInstance.Mtx.Karts[id], flags);
         }
     }
 
     // Id is playerId + (screenId * 8)
     void PushShadowMatrix(Mat4 mtx, s32 id, s32 flags) {
         if (id >= 0 && id < ARRAY_COUNT(ShadowMatrix)) {
-            FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, ShadowMatrix[id]);
-            guMtxF2L(mtx, ShadowMatrix[id]);
-            gSPMatrix(gDisplayListHead++, ShadowMatrix[id], flags);
+            FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, &gWorldInstance.Mtx.Shadows[id]);
+            guMtxF2L(mtx, &gWorldInstance.Mtx.Shadows[id]);
+            gSPMatrix(gDisplayListHead++, &gWorldInstance.Mtx.Shadows[id], flags);
         }
     }
 
@@ -272,8 +272,8 @@ extern "C" {
     void ClearMatrixPools(void) {
         gWorldInstance.Mtx.Hud.clear();
         gWorldInstance.Mtx.Objects.clear();
-        gWorldInstance.Mtx.Shadows.clear();
-        gWorldInstance.Mtx.Karts.clear();
+       // gWorldInstance.Mtx.Shadows.clear();
+       // gWorldInstance.Mtx.Karts.clear();
         gWorldInstance.Mtx.Effects.clear();
     }
 
