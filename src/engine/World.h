@@ -41,13 +41,13 @@ class GameObject; // <-- Editor
 
 class World {
     typedef struct {
-        std::vector<Mtx> Hud;
-        std::vector<Mtx> Objects;
-        std::vector<Mtx> Shadows;
-        std::vector<Mtx> Karts;
-        std::vector<Mtx> Effects;
-        std::vector<Mtx> Persp;
-        std::vector<Mtx> LookAt;
+        std::deque<Mtx> Hud;
+        std::deque<Mtx> Objects;
+        std::deque<Mtx> Shadows;
+        std::deque<Mtx> Karts;
+        std::deque<Mtx> Effects;
+        std::deque<Mtx> Persp;
+        std::deque<Mtx> LookAt;
     } Matrix;
 
 public:
