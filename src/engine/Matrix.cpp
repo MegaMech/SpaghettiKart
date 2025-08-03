@@ -21,6 +21,18 @@ void AddMatrix(std::deque<Mtx>& stack, Mat4 mtx, s32 flags) {
     gSPMatrix(gDisplayListHead++, &stack.back(), flags);
 }
 
+void AddMatrixVec(std::vector<Mtx>& stack, Mat4 mtx, s32 flags) {
+    // Push a new matrix to the stack
+    stack.emplace_back();
+
+    // Convert to a fixed-point matrix
+    FrameInterpolation_RecordMatrixMtxFToMtx((MtxF*)mtx, &stack.back());
+    guMtxF2L(mtx, &stack.back());
+
+    // Load the matrix
+    gSPMatrix(gDisplayListHead++, &stack.back(), flags);
+}
+
 Mtx* GetMatrix(std::deque<Mtx>& stack) {
     stack.emplace_back();
     return &stack.back();
@@ -145,15 +157,15 @@ void AddLocalRotation(Mat4 mat, IRotator rot) {
 extern "C" {
 
     void AddHudMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Hud, mtx, flags);
+    AddMatrix(gWorldInstance.Mtx.Objects, mtx, flags);
     }
 
     void AddPerspMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Persp, mtx, flags);
+        AddMatrixVec(gWorldInstance.Mtx.Persp, mtx, flags);
     }
 
     void AddLookAtMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.LookAt, mtx, flags);
+        AddMatrixVec(gWorldInstance.Mtx.LookAt, mtx, flags);
     }
 
     void AddObjectMatrix(Mat4 mtx, s32 flags) {
@@ -161,11 +173,11 @@ extern "C" {
     }
 
     void AddShadowMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Shadows, mtx, flags);
+        AddMatrixVec(gWorldInstance.Mtx.Shadows, mtx, flags);
     }
 
     void AddKartMatrix(Mat4 mtx, s32 flags) {
-        AddMatrix(gWorldInstance.Mtx.Karts, mtx, flags);
+        AddMatrixVec(gWorldInstance.Mtx.Karts, mtx, flags);
     }
 
     void AddEffectMatrix(Mat4 mtx, s32 flags) {

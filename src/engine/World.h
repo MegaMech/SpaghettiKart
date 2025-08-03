@@ -40,15 +40,20 @@ class OLakitu;
 class GameObject; // <-- Editor
 
 class World {
-    typedef struct {
-        std::deque<Mtx> Hud;
-        std::deque<Mtx> Objects;
-        std::deque<Mtx> Shadows;
-        std::deque<Mtx> Karts;
-        std::deque<Mtx> Effects;
-        std::deque<Mtx> Persp;
-        std::deque<Mtx> LookAt;
-    } Matrix;
+typedef struct Matrix {
+    std::deque<Mtx> Hud;
+    std::deque<Mtx> Objects;
+    std::vector<Mtx> Shadows;
+    std::vector<Mtx> Karts;
+    std::deque<Mtx> Effects;
+    std::vector<Mtx> Persp;
+    std::vector<Mtx> LookAt;
+
+    Matrix()
+        : Hud(100), Objects(1000), Shadows(32),
+          Karts(32), Effects(1000), Persp(4), LookAt(4)
+    {}
+};
 
 public:
     explicit World();
