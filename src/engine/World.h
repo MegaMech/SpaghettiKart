@@ -41,17 +41,17 @@ class GameObject; // <-- Editor
 
 class World {
 typedef struct Matrix {
+    Mtx Screen2D; // Orthogonal projection for UI, skybox, and such
+    Mtx Ortho;
+    std::array<Mtx,4> Persp;
+    std::array<Mtx,4> LookAt;
+    std::array<Mtx, 8 * 4> Karts; // Eight players * four screens
+    std::array<Mtx, 8 * 4> Shadows; // Eight players * four screens
     std::deque<Mtx> Hud;
     std::deque<Mtx> Objects;
-    std::vector<Mtx> Shadows;
-    std::vector<Mtx> Karts;
-    std::deque<Mtx> Effects;
-    std::vector<Mtx> Persp;
-    std::vector<Mtx> LookAt;
 
     Matrix()
-        : Hud(100), Objects(1000), Shadows(32),
-          Karts(32), Effects(1000), Persp(4), LookAt(4)
+        : Hud(200), Objects(1000)
     {}
 };
 
