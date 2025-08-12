@@ -14,6 +14,8 @@ var pak_8cpp =
     [ "osPfsIsPlug", "pak_8cpp.html#ac691a6776302fec53e96582177dc53de", null ],
     [ "osPfsNumFiles", "pak_8cpp.html#a2d4f0879d28331990346268e4f0ebec5", null ],
     [ "osPfsReadWriteFile", "pak_8cpp.html#aa6347a656a96fa696e903d248fad4442", null ],
+    [ "Pfs_PakFile_GetPath", "pak_8cpp.html#a11e606aa976f2c73148d285bd433d647", null ],
+    [ "Pfs_PakHeader_GetPath", "pak_8cpp.html#a846b823d1c71f1025829fe9d99cb9e7a", null ],
     [ "Pfs_PakHeader_Read", "pak_8cpp.html#a62edace7884af7cc2faf629184623d29", null ],
     [ "Pfs_PakHeader_Write", "pak_8cpp.html#ab966dc82ff4a8be6fa900e2fad1cd069", null ]
 ];
