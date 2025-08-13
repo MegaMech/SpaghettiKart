@@ -1,17 +1,31 @@
+
+#define JSON_USE_IMPLICIT_CONVERSIONS 1
+#define JSON_HAS_CPP_20 1
+
 #include "SceneManager.h"
 #include "port/Game.h"
-#include "CoreMath.h"
+#include "engine/CoreMath.h"
 #include "World.h"
 #include "GameObject.h"
 
 #include <iostream>
 #include <fstream>
+#include <optional> // Must be before json.hpp
 #include <nlohmann/json.hpp>
 #include "port/Engine.h"
 #include <libultraship/src/resource/type/Json.h>
 #include "port/resource/type/Minimap.h"
 #include <libultraship/src/resource/File.h>
 #include "port/resource/type/ResourceType.h"
+
+#include "engine/objects/Thwomp.h"
+#include "engine/objects/Snowman.h"
+#include <iostream>
+
+extern "C" {
+#include "common_structs.h"
+#include "actors.h"
+}
 
 namespace Editor {
 
@@ -68,6 +82,7 @@ namespace Editor {
 
     void LoadLevel(std::shared_ptr<Ship::Archive> archive, Course* course, std::string sceneFile) {
         SceneFile = sceneFile;
+    std::cout << "C++ version: " << __cplusplus << std::endl;
 
         if (archive && (course != nullptr)) {
             auto initData = std::make_shared<Ship::ResourceInitData>();
@@ -95,6 +110,11 @@ namespace Editor {
                 }
             } else {
                 std::cerr << "Props data not found in the JSON file!" << std::endl;
+            }
+
+            if (data.contains("Actors")) {
+                auto & actorsJson = data["Actors"];
+                LoadActors(actorsJson);
             }
 
             // Load the Actors (deserialize them)
@@ -153,4 +173,89 @@ namespace Editor {
             }
         }
     }
+
+    // Used to save and load all game actors to the scene file
+    struct SpawnParams {
+        std::optional<int16_t> Type = std::nullopt; // OObject type (ex. Emperor penguin, sliding penguin) or literal actor type for AActors
+        std::optional<int16_t> Behaviour = std::nullopt;
+        std::optional<int32_t> Skin = std::nullopt;
+
+        // std::optional<FVector> Location;
+        // std::optional<IRotator> Rotation;   // int16_t
+        // std::optional<FVector> Scale;
+        // std::optional<FVector> Velocity; // Used by some AActors
+        // std::optional<FVector2D> PatrolStart; // OCrab
+        // std::optional<FVector2D> PatrolEnd;   // OCrab & Hedgehog
+        // std::optional<IPathSpan> PathSpan; // Cheep Cheep
+
+        // // Thwomps
+        // std::optional<int16_t> PrimAlpha; // Thwomp
+        // std::optional<uint16_t> BoundingBoxSize;
+
+        // // Boos
+        // std::optional<uint32_t> Count; // vehicles
+        // std::optional<IPathSpan> LeftExitSpan;  // Disable boo
+        // std::optional<IPathSpan> TriggerSpan;   // Activate boos
+        // std::optional<IPathSpan> RightExitSpan; // Disable boo
+
+
+        // // Vehicles
+        // std::optional<uint32_t> PathIndex; // 0-3 Place vehicle this path
+        // std::optional<uint32_t> PathPoint; // Path point index
+        // std::optional<bool> Bool; // train tender
+        // std::optional<float> Speed; // Train
+        // std::optional<float> SpeedB; // cars, trucks, buses, etc.
+
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE(
+            SpawnParams,
+            Type,
+            Behaviour,
+            Skin
+            // Location,
+            // Rotation,And you 
+            // Scale,
+            // Velocity,
+            // PatrolStart,
+            // PatrolEnd,
+            // PathSpan,
+            // PrimAlpha,
+            // BoundingBoxSize,
+            // Count,
+            // LeftExitSpan,
+            // TriggerSpan,
+            // RightExitSpan,
+            // PathIndex,
+            // PathPoint,
+            // Bool,
+            // Speed,
+            // SpeedB
+        )
+    };
+
+    void LoadActors(const nlohmann::json& actorList) {
+
+        for (const auto& actor : actorList) {
+            std::string name = actor.at("name").get<std::string>();
+            SpawnParams params = actor.at("params").get<SpawnParams>();
+            // SpawnParams params = params.test_to_json(actor)
+
+            if (name == "mk:thwomp") {
+               // gWorldInstance.AddObject(new OThwomp(params));
+            } else if (name == "mk:snowman") {
+                //gWorldInstance.AddObject(new OSnowman(params));
+            } else if (name == "mk:itembox") {
+                // FVector loc = params.Location.value_or(FVector{0, 0, 0});
+                // Vec3f pos = { loc.x, loc.y, loc.z };
+                // Vec3s rot = {0, 0, 0};
+                // Vec3f vel = {0, 0, 0};
+                // add_actor_to_empty_slot(pos, rot, vel, 12); // ACTOR_ITEM_BOX
+            }
+        }
+    }
 }
+
+/* 
+1) Place json export/ import in class
+2) make function
+
+*/

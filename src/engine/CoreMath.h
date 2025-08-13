@@ -1,10 +1,12 @@
 #ifndef CORE_MATH_H
 #define CORE_MATH_H
 
-#include <libultraship.h>
 #ifdef __cplusplus
+#define JSON_HAS_CPP_20 1
 #include <nlohmann/json.hpp>
+using json = nlohmann::json;
 #endif // __cplusplus
+#include <libultraship.h>
 
 /**
  * @file CoreMath.h
@@ -129,6 +131,8 @@ struct IRotator {
     uint16_t pitch, yaw, roll;
 
 #ifdef __cplusplus
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(IRotator, pitch, yaw, roll)
+
     IRotator& operator=(const IRotator& other) {
         pitch = other.pitch;
         yaw   = other.yaw;
@@ -158,7 +162,6 @@ struct IRotator {
             roll  * scale
         );
     }
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE(IRotator, pitch, yaw, roll)
 #endif // __cplusplus
 };
 
@@ -202,9 +205,10 @@ struct FRotator {
  * Usage: IPathSpan(point1, point2) --> IPathSpan(40, 65)
  */
 struct IPathSpan {
-    int Start, End;
+    int32_t Start, End;
 
 #ifdef __cplusplus
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(IPathSpan, Start, End)
     // Default Constructor
     IPathSpan() : Start(0), End(0) {}
 
@@ -230,8 +234,6 @@ struct IPathSpan {
     bool operator!=(const IPathSpan& Other) const {
         return !(*this == Other);
     }
-
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE(IPathSpan, Start, End)
 #endif // __cplusplus
 };
 

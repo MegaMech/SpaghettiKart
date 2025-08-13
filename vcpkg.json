@@ -12,7 +12,6 @@
     "sdl2-net",
     "glew",
     "glfw3",
-    "nlohmann-json",
     "tinyxml2",
     "spdlog",
     "libogg",
