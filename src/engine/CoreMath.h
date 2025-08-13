@@ -2,6 +2,9 @@
 #define CORE_MATH_H
 
 #include <libultraship.h>
+#ifdef __cplusplus
+#include <nlohmann/json.hpp>
+#endif // __cplusplus
 
 /**
  * @file CoreMath.h
@@ -63,6 +66,7 @@ struct FVector {
 
     FVector() : x(0), y(0), z(0) {}
     FVector(float x, float y, float z) : x(x), y(y), z(z) {}
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(FVector, x, y, z)
 #endif // __cplusplus
 };
 
@@ -94,6 +98,7 @@ struct FVector2D {
 
     FVector2D() : x(0), z(0) {}
     FVector2D(float x, float z) : x(x), z(z) {}
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(FVector2D, x, z)
 #endif // __cplusplus
 };
 
@@ -118,7 +123,7 @@ typedef struct IVector2D {
 /**
  * This struct immediately converts float pitch/yaw/roll in degrees to n64 int16_t binary angles 0-0xFFFF == 0-360 degrees
  * ToDegrees() Receive an FRotator of float degrees back.
- * Set() Set an n64 int16_t binary angles 0-0xFFFF
+ * Set() to update an IRotator using n64 int16_t binary angles 0-0xFFFF (ex. IRotator.Set(0, 0x4000, 0) for Y 90 degrees)
  */
 struct IRotator {
     uint16_t pitch, yaw, roll;
@@ -153,12 +158,13 @@ struct IRotator {
             roll  * scale
         );
     }
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(IRotator, pitch, yaw, roll)
 #endif // __cplusplus
 };
 
 /**
  * Use IRotator unless you want to do some math in degrees.
- * Always use ToBinary() or Rotator when sending into matrices or apply translation functions
+ * Always use ToBinary() or IRotator when sending into matrices or apply translation functions
  * Convert from IRotator to FRotator float degrees by doing FRotator(myIRotator);
  */
 struct FRotator {
@@ -224,6 +230,8 @@ struct IPathSpan {
     bool operator!=(const IPathSpan& Other) const {
         return !(*this == Other);
     }
+
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(IPathSpan, Start, End)
 #endif // __cplusplus
 };
 

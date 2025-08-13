@@ -20,11 +20,11 @@ extern "C" {
 /**
  * @arg pos FVector xyz spawn position
  * @arg patrolPoint FVector2D xz patrol to location. Actor automatically calculates the Y value
- * @arg unk unknown. Likely actor type.
+ * @arg behaviour unknown, seems unused.
  */
 class OHedgehog : public OObject {
 public:
-    explicit OHedgehog(const FVector& pos, const FVector2D& patrolPoint, s16 unk);
+    explicit OHedgehog(const FVector& pos, const FVector2D& patrolPoint, s16 behaviour);
 
     ~OHedgehog() {
         _count--;

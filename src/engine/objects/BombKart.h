@@ -50,7 +50,7 @@ class OBombKart : public OObject {
     Collision _Collision;
 
     // Set waypoint to NULL if using a spawn position and not a waypoint.
-    explicit OBombKart(FVector pos, TrackPathPoint* waypoint, uint16_t waypointIndex, uint16_t state, f32 unk_3C);
+    explicit OBombKart(FVector pos, TrackPathPoint* waypoint, uint16_t waypointIndex, uint16_t behaviour, f32 unk_3C);
 
     ~OBombKart() {
         _count--;

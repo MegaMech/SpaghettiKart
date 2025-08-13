@@ -15,7 +15,7 @@ extern "C" {
 
 size_t OHedgehog::_count = 0;
 
-OHedgehog::OHedgehog(const FVector& pos, const FVector2D& patrolPoint, s16 unk) {
+OHedgehog::OHedgehog(const FVector& pos, const FVector2D& patrolPoint, s16 behaviour) {
     Name = "Hedgehog";
     _idx = _count;
     _pos = pos;
@@ -26,7 +26,7 @@ OHedgehog::OHedgehog(const FVector& pos, const FVector2D& patrolPoint, s16 unk) 
     gObjectList[objectId].pos[0] = gObjectList[objectId].origin_pos[0] = pos.x * xOrientation;
     gObjectList[objectId].pos[1] = gObjectList[objectId].surfaceHeight = pos.y + 6.0;
     gObjectList[objectId].pos[2] = gObjectList[objectId].origin_pos[2] = pos.z;
-    gObjectList[objectId].unk_0D5 = (u8) unk;
+    gObjectList[objectId].unk_0D5 = (u8) behaviour;
     gObjectList[objectId].unk_09C = patrolPoint.x * xOrientation;
     gObjectList[objectId].unk_09E = patrolPoint.z;
 
