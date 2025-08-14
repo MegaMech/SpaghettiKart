@@ -51,20 +51,10 @@ namespace Editor {
 
             SaveActors(actors);
 
-            // for (const auto& actor : gWorldInstance.Actors) {
-            //     actors.push_back(actor->to_json());
-            // }
             data["Actors"] = actors;
 
-            // nlohmann::json objects;
-
-            // for (const auto& object : gWorldInstance.Objects) {
-            //     objects.push_back(object->to_json());
-            // }
-            // data["Objects"] = objects;
-
             try {
-                auto dat = data.dump();
+                auto dat = data.dump(2);
                 std::vector<uint8_t> stringify;
                 stringify.assign(dat.begin(), dat.end());
 
@@ -116,9 +106,13 @@ namespace Editor {
                 std::cerr << "Props data not found in the JSON file!" << std::endl;
             }
 
+            /** Populate Track SpawnParams for spawning actors **/
             if (data.contains("Actors")) {
                 auto & actorsJson = data["Actors"];
-                LoadActors(course, actorsJson);
+                for (const auto& actor : actorsJson) {
+                    SpawnParams params = actor.get<SpawnParams>();
+                    course->SpawnList.push_back(params);
+                }
             }
 
             // Load the Actors (deserialize them)
@@ -130,7 +124,7 @@ namespace Editor {
                     Load_AddStaticMeshActor(actorJson);
                 }
             } else {
-                std::cerr << "StaticMeshActor data not found in the JSON file!" << std::endl;
+                SPDLOG_INFO("[SceneManager.cpp] [scene.json] This track contains no StaticMeshActors!");
             }
         }
     }
@@ -181,25 +175,12 @@ namespace Editor {
     void SaveActors(nlohmann::json& actorList) {
         for (const auto& actor : gWorldInstance.Actors) {
             if (actor->Type == 12) { // itembox
-            printf("SAVE ITEMBOX\n");
                 SpawnParams params{};
+                params.Name = get_actor_display_name(actor->Type);
                 params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
 
-                nlohmann::json entry;
-                entry["name"] = get_actor_name(actor->Type);
-                entry["params"] = params;
-
-                actorList.push_back(entry);
+                actorList.push_back(params);
             }
-        }
-    }
-
-    void LoadActors(Course* course, const nlohmann::json& actorList) {
-
-        for (const auto& actor : actorList) {
-            std::string name = actor.at("name").get<std::string>();
-            SpawnParams params = actor.at("params").get<SpawnParams>();
-            course->SpawnList.push_back({name, params});
         }
     }
 }

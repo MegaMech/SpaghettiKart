@@ -295,12 +295,12 @@ void Course::BeginPlay() {
 }
 
 void Course::SpawnActors() {
-    for (const auto& [name, actor] : SpawnList) {
-        if (name == "mk:thwomp") {
+    for (const auto& actor : SpawnList) {
+        if (actor.Name == "mk:thwomp") {
             // gWorldInstance.AddObject(new OThwomp(params));
-        } else if (name == "mk:snowman") {
+        } else if (actor.Name == "mk:snowman") {
             //gWorldInstance.AddObject(new OSnowman(params));
-        } else if (name == "Item Box") {
+        } else if (actor.Name == "Item Box") {
             FVector loc = actor.Location.value_or(FVector{0, 0, 0});
             Vec3f pos = { loc.x, loc.y, loc.z };
             Vec3s rot = {0, 0, 0};

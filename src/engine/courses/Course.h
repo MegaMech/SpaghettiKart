@@ -290,9 +290,10 @@ typedef struct Properties {
 
 // Used to save and load all game actors to the scene file
 struct SpawnParams {
-    std::optional<int16_t> Type = std::nullopt; // OObject type (ex. Emperor penguin, sliding penguin) or literal actor type for AActors
-    std::optional<int16_t> Behaviour = std::nullopt;
-    std::optional<int32_t> Skin = std::nullopt;
+    std::string Name; // Must use format mk:actor_name for stock game, mymodname:myactorname for mods
+    std::optional<int16_t> Type; // OObject type (ex. Emperor penguin, sliding penguin) or literal actor type for AActors
+    std::optional<int16_t> Behaviour;
+    std::optional<std::string> Skin;
 
     std::optional<FVector> Location;
     std::optional<IRotator> Rotation;   // int16_t
@@ -322,6 +323,7 @@ struct SpawnParams {
 
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(
         SpawnParams,
+        Name,
         Type,
         Behaviour,
         Skin,
@@ -366,7 +368,7 @@ public:
     std::optional<FVector> FinishlineSpawnPoint;
     std::string TrackSectionsPtr;
     bool bIsMod = false;
-    std::vector<std::pair<std::string, SpawnParams>> SpawnList;
+    std::vector<SpawnParams> SpawnList;
 
     virtual ~Course() = default;
 

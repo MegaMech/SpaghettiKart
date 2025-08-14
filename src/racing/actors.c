@@ -1431,7 +1431,7 @@ s16 add_actor_to_empty_slot(Vec3f pos, Vec3s rot, Vec3f velocity, s16 actorType)
     gNumActors++;
     struct Actor* actor = CM_AddBaseActor();
     actor_init(actor, pos, rot, velocity, actorType);
-    CM_AddEditorObject(actor, get_actor_name(actor->type));
+    CM_AddEditorObject(actor, get_actor_display_name(actor->type));
     return (s16) CM_GetActorSize() - 1; // Return current index;
 }
 
@@ -2682,7 +2682,7 @@ void update_course_actors(void) {
     check_player_use_item();
 }
 
-const char* get_actor_name(s32 id) {
+const char* get_actor_display_name(s32 id) {
     switch (id) {
         case ACTOR_FALLING_ROCK:
             return "Falling Rock";
@@ -2754,5 +2754,81 @@ const char* get_actor_name(s32 id) {
             return "Yoshi Egg";
         default:
             return "Obj";
+    }
+}
+
+// Returns a namespace:path
+const char* get_actor_resource_location_name(s32 id) {
+    switch (id) {
+        case ACTOR_FALLING_ROCK:
+            return "mk:falling_rock";
+        case ACTOR_GREEN_SHELL:
+            return "mk:green_shell";
+        case ACTOR_RED_SHELL:
+            return "mk:red_shell";
+        case ACTOR_BLUE_SPINY_SHELL:
+            return "mk:blue_spiny_shell";
+        case ACTOR_KIWANO_FRUIT:
+            return "mk:kiwano_fruit";
+        case ACTOR_BANANA:
+            return "mk:banana";
+        case ACTOR_PADDLE_BOAT:
+            return "mk:paddle_boat";
+        case ACTOR_TRAIN_ENGINE:
+            return "mk:train_engine";
+        case ACTOR_TRAIN_TENDER:
+            return "mk:train_tender";
+        case ACTOR_TRAIN_PASSENGER_CAR:
+            return "mk:train_passenger_car";
+        case ACTOR_ITEM_BOX:
+            return "mk:item_box";
+        case ACTOR_HOT_AIR_BALLOON_ITEM_BOX:
+            return "mk:hot_air_balloon_item_box";
+        case ACTOR_FAKE_ITEM_BOX:
+            return "mk:fake_item_box";
+        case ACTOR_PIRANHA_PLANT:
+            return "mk:piranha_plant";
+        case ACTOR_BANANA_BUNCH:
+            return "mk:banana_bunch";
+        case ACTOR_TRIPLE_GREEN_SHELL:
+            return "mk:triple_green_shell";
+        case ACTOR_TRIPLE_RED_SHELL:
+            return "mk:triple_red_shell";
+        case ACTOR_MARIO_SIGN:
+            return "mk:mario_sign";
+        case ACTOR_WARIO_SIGN:
+            return "mk:wario_sign";
+        case ACTOR_RAILROAD_CROSSING:
+            return "mk:railroad_crossing";
+        case ACTOR_TREE_MARIO_RACEWAY:
+            return "mk:tree_mario_raceway";
+        case ACTOR_TREE_YOSHI_VALLEY:
+            return "mk:tree_yoshi_valley";
+        case ACTOR_TREE_ROYAL_RACEWAY:
+            return "mk:tree_royal_raceway";
+        case ACTOR_TREE_MOO_MOO_FARM:
+            return "mk:tree_moo_moo_farm";
+        case ACTOR_PALM_TREE:
+            return "mk:palm_tree";
+        case ACTOR_UNKNOWN_0x1A:
+            return "mk:unknown_0x1a";
+        case ACTOR_UNKNOWN_0x1B:
+            return "mk:unknown_0x1b";
+        case ACTOR_TREE_BOWSERS_CASTLE:
+            return "mk:tree_bowsers_castle";
+        case ACTOR_TREE_FRAPPE_SNOWLAND:
+            return "mk:tree_frappe_snowland";
+        case ACTOR_CACTUS1_KALAMARI_DESERT:
+            return "mk:cactus1_kalamari_desert";
+        case ACTOR_CACTUS2_KALAMARI_DESERT:
+            return "mk:cactus2_kalamari_desert";
+        case ACTOR_CACTUS3_KALAMARI_DESERT:
+            return "mk:cactus3_kalamari_desert";
+        case ACTOR_BUSH_BOWSERS_CASTLE:
+            return "mk:bush_bowsers_castle";
+        case ACTOR_YOSHI_EGG:
+            return "mk:yoshi_egg";
+        default:
+            return "mk:obj";
     }
 }

@@ -14,7 +14,6 @@ namespace Editor {
     void LoadMinimap(std::shared_ptr<Ship::Archive> archive, Course* course, std::string filePath);
 
     void SaveActors(nlohmann::json& actorList);
-    void LoadActors(Course* course, const nlohmann::json& actorList);
     void SpawnActors(std::vector<std::pair<std::string, SpawnParams>> spawnList);
 
     extern std::shared_ptr<Ship::Archive> CurrentArchive; // This is used to retrieve and write the scene data file
