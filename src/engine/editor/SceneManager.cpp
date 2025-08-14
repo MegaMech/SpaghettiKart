@@ -47,12 +47,14 @@ namespace Editor {
             }
             data["StaticMeshActors"] = staticMesh;
 
-            // nlohmann::json actors;
+            nlohmann::json actors;
+
+            SaveActors(actors);
 
             // for (const auto& actor : gWorldInstance.Actors) {
             //     actors.push_back(actor->to_json());
             // }
-            // data["Actors"] = actors;
+            data["Actors"] = actors;
 
             // nlohmann::json objects;
 
@@ -80,6 +82,8 @@ namespace Editor {
         }
     }
 
+
+    /** Do not use gWorldInstance.CurrentCourse during loading! The current track is not guaranteed! **/
     void LoadLevel(std::shared_ptr<Ship::Archive> archive, Course* course, std::string sceneFile) {
         SceneFile = sceneFile;
     std::cout << "C++ version: " << __cplusplus << std::endl;
@@ -114,7 +118,7 @@ namespace Editor {
 
             if (data.contains("Actors")) {
                 auto & actorsJson = data["Actors"];
-                LoadActors(actorsJson);
+                LoadActors(course, actorsJson);
             }
 
             // Load the Actors (deserialize them)
@@ -126,7 +130,7 @@ namespace Editor {
                     Load_AddStaticMeshActor(actorJson);
                 }
             } else {
-                std::cerr << "Actors data not found in the JSON file!" << std::endl;
+                std::cerr << "StaticMeshActor data not found in the JSON file!" << std::endl;
             }
         }
     }
@@ -174,82 +178,28 @@ namespace Editor {
         }
     }
 
-    // Used to save and load all game actors to the scene file
-    struct SpawnParams {
-        std::optional<int16_t> Type = std::nullopt; // OObject type (ex. Emperor penguin, sliding penguin) or literal actor type for AActors
-        std::optional<int16_t> Behaviour = std::nullopt;
-        std::optional<int32_t> Skin = std::nullopt;
+    void SaveActors(nlohmann::json& actorList) {
+        for (const auto& actor : gWorldInstance.Actors) {
+            if (actor->Type == 12) { // itembox
+            printf("SAVE ITEMBOX\n");
+                SpawnParams params{};
+                params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
 
-        // std::optional<FVector> Location;
-        // std::optional<IRotator> Rotation;   // int16_t
-        // std::optional<FVector> Scale;
-        // std::optional<FVector> Velocity; // Used by some AActors
-        // std::optional<FVector2D> PatrolStart; // OCrab
-        // std::optional<FVector2D> PatrolEnd;   // OCrab & Hedgehog
-        // std::optional<IPathSpan> PathSpan; // Cheep Cheep
+                nlohmann::json entry;
+                entry["name"] = get_actor_name(actor->Type);
+                entry["params"] = params;
 
-        // // Thwomps
-        // std::optional<int16_t> PrimAlpha; // Thwomp
-        // std::optional<uint16_t> BoundingBoxSize;
+                actorList.push_back(entry);
+            }
+        }
+    }
 
-        // // Boos
-        // std::optional<uint32_t> Count; // vehicles
-        // std::optional<IPathSpan> LeftExitSpan;  // Disable boo
-        // std::optional<IPathSpan> TriggerSpan;   // Activate boos
-        // std::optional<IPathSpan> RightExitSpan; // Disable boo
-
-
-        // // Vehicles
-        // std::optional<uint32_t> PathIndex; // 0-3 Place vehicle this path
-        // std::optional<uint32_t> PathPoint; // Path point index
-        // std::optional<bool> Bool; // train tender
-        // std::optional<float> Speed; // Train
-        // std::optional<float> SpeedB; // cars, trucks, buses, etc.
-
-        NLOHMANN_DEFINE_TYPE_INTRUSIVE(
-            SpawnParams,
-            Type,
-            Behaviour,
-            Skin
-            // Location,
-            // Rotation,And you 
-            // Scale,
-            // Velocity,
-            // PatrolStart,
-            // PatrolEnd,
-            // PathSpan,
-            // PrimAlpha,
-            // BoundingBoxSize,
-            // Count,
-            // LeftExitSpan,
-            // TriggerSpan,
-            // RightExitSpan,
-            // PathIndex,
-            // PathPoint,
-            // Bool,
-            // Speed,
-            // SpeedB
-        )
-    };
-
-    void LoadActors(const nlohmann::json& actorList) {
+    void LoadActors(Course* course, const nlohmann::json& actorList) {
 
         for (const auto& actor : actorList) {
             std::string name = actor.at("name").get<std::string>();
             SpawnParams params = actor.at("params").get<SpawnParams>();
-            // SpawnParams params = params.test_to_json(actor)
-
-            if (name == "mk:thwomp") {
-               // gWorldInstance.AddObject(new OThwomp(params));
-            } else if (name == "mk:snowman") {
-                //gWorldInstance.AddObject(new OSnowman(params));
-            } else if (name == "mk:itembox") {
-                // FVector loc = params.Location.value_or(FVector{0, 0, 0});
-                // Vec3f pos = { loc.x, loc.y, loc.z };
-                // Vec3s rot = {0, 0, 0};
-                // Vec3f vel = {0, 0, 0};
-                // add_actor_to_empty_slot(pos, rot, vel, 12); // ACTOR_ITEM_BOX
-            }
+            course->SpawnList.push_back({name, params});
         }
     }
 }

@@ -19,6 +19,14 @@
 #include "port/Game.h"
 #include "src/engine/editor/SceneManager.h"
 
+#include "World.h"
+
+extern "C" {
+#include "common_structs.h"
+#include "actors.h"
+#include "collision.h"
+}
+
 namespace Editor {
 
     ContentBrowserWindow::~ContentBrowserWindow() {
@@ -78,6 +86,23 @@ namespace Editor {
             contentFlag = !contentFlag;
         }
     }
+
+    // For C-actors
+    std::unordered_map<std::string, std::function<void(const FVector&)>> CActorList = {
+        { "Item Box", [](const FVector& pos) {
+              Vec3f position = {pos.x, pos.y, pos.z};
+              Vec3s rot = {0, 0, 0};
+              Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, 12); // item box
+            s32 height = spawn_actor_on_surface(position[0], position[1] + 10.0f, position[2]);
+
+            Actor* actor = CM_GetActor(id);
+            actor->unk_08 = height;
+            actor->velocity[0] = position[1];
+            actor->pos[1] = height - 20.0f;
+
+        }},
+    };
 
     std::unordered_map<std::string, std::function<AActor*(const FVector&)>> ActorList = {
         { "Mario Sign", [](const FVector& pos) { return new AMarioSign(pos); } },
@@ -166,6 +191,19 @@ namespace Editor {
         FVector pos = GetPositionAheadOfCamera(300.0f);
 
         size_t i_actor = 0;
+        for (const auto& actor : CActorList) {
+            if ((i_actor != 0) && (i_actor % 10 == 0)) {
+            } else {
+                ImGui::SameLine();
+            }
+            std::string label = fmt::format("{}##{}", actor.first, i_actor);
+            if (ImGui::Button(label.c_str())) {
+                actor.second(pos);
+            }
+            
+            i_actor += 1;
+        }
+
         for (const auto& actor : ActorList) {
             if ((i_actor != 0) && (i_actor % 10 == 0)) {
             } else {

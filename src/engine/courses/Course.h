@@ -5,6 +5,8 @@
 #include "CoreMath.h"
 
 #ifdef __cplusplus
+#include <optional>
+#include <nlohmann/json.hpp>
 #include "engine/objects/Lakitu.h"
 #include "port/resource/type/TrackSections.h"
 extern "C" {
@@ -286,6 +288,64 @@ typedef struct Properties {
 
 #ifdef __cplusplus
 
+// Used to save and load all game actors to the scene file
+struct SpawnParams {
+    std::optional<int16_t> Type = std::nullopt; // OObject type (ex. Emperor penguin, sliding penguin) or literal actor type for AActors
+    std::optional<int16_t> Behaviour = std::nullopt;
+    std::optional<int32_t> Skin = std::nullopt;
+
+    std::optional<FVector> Location;
+    std::optional<IRotator> Rotation;   // int16_t
+    std::optional<FVector> Scale;
+    std::optional<FVector> Velocity; // Used by some AActors
+    std::optional<FVector2D> PatrolStart; // OCrab
+    std::optional<FVector2D> PatrolEnd;   // OCrab & Hedgehog
+    std::optional<IPathSpan> PathSpan; // Cheep Cheep
+
+    // Thwomps
+    std::optional<int16_t> PrimAlpha; // Thwomp
+    std::optional<uint16_t> BoundingBoxSize;
+
+    // Boos
+    std::optional<uint32_t> Count; // vehicles
+    std::optional<IPathSpan> LeftExitSpan;  // Disable boo
+    std::optional<IPathSpan> TriggerSpan;   // Activate boos
+    std::optional<IPathSpan> RightExitSpan; // Disable boo
+
+
+    // Vehicles
+    std::optional<uint32_t> PathIndex; // 0-3 Place vehicle this path
+    std::optional<uint32_t> PathPoint; // Path point index
+    std::optional<bool> Bool; // train tender
+    std::optional<float> Speed; // Train
+    std::optional<float> SpeedB; // cars, trucks, buses, etc.
+
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(
+        SpawnParams,
+        Type,
+        Behaviour,
+        Skin,
+        Location,
+        Rotation,
+        Scale,
+        Velocity,
+        PatrolStart,
+        PatrolEnd,
+        PathSpan,
+        PrimAlpha,
+        BoundingBoxSize,
+        Count,
+        LeftExitSpan,
+        TriggerSpan,
+        RightExitSpan,
+        PathIndex,
+        PathPoint,
+        Bool,
+        Speed,
+        SpeedB
+    )
+};
+
 class World; // <-- Forward declare
 
 class Course {
@@ -306,6 +366,7 @@ public:
     std::optional<FVector> FinishlineSpawnPoint;
     std::string TrackSectionsPtr;
     bool bIsMod = false;
+    std::vector<std::pair<std::string, SpawnParams>> SpawnList;
 
     virtual ~Course() = default;
 
@@ -322,6 +383,7 @@ public:
      * Actor spawning should go here.
      */
     virtual void BeginPlay();
+    void SpawnActors();
     virtual void TestPath();
     virtual void InitClouds();
     virtual void UpdateClouds(s32, Camera*);

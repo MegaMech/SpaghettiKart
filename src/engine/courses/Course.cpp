@@ -6,6 +6,7 @@
 #include "port/Game.h"
 #include "port/resource/type/TrackPathPointData.h"
 #include "port/resource/type/TrackSections.h"
+#include "engine/editor/SceneManager.h"
 
 extern "C" {
 #include "main.h"
@@ -290,6 +291,32 @@ void Course::LoadTextures() {
 
 void Course::BeginPlay() {
     TestPath();
+    this->SpawnActors();
+}
+
+void Course::SpawnActors() {
+    for (const auto& [name, actor] : SpawnList) {
+        if (name == "mk:thwomp") {
+            // gWorldInstance.AddObject(new OThwomp(params));
+        } else if (name == "mk:snowman") {
+            //gWorldInstance.AddObject(new OSnowman(params));
+        } else if (name == "Item Box") {
+            FVector loc = actor.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+
+            s32 id = add_actor_to_empty_slot(pos, rot, vel, 12); // item box
+            s32 height = spawn_actor_on_surface(pos[0], pos[1] + 10.0f, pos[2]);
+
+            Actor* actor = CM_GetActor(id);
+            actor->unk_08 = height;
+            actor->velocity[0] = pos[1];
+            actor->pos[1] = height - 20.0f;
+
+        }
+
+    }
 }
 
 void Course::InitClouds() {
