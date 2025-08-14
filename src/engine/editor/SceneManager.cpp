@@ -203,9 +203,3 @@ namespace Editor {
         }
     }
 }
-
-/* 
-1) Place json export/ import in class
-2) make function
-
-*/
