@@ -300,7 +300,6 @@ void Course::SpawnActors() {
     for (const auto& actor : SpawnList) {
         auto it = gActorRegistry.find(actor.Name);
         if (it != gActorRegistry.end() && it->second.spawnFunc) {
-            printf("ACTOR FOUND!\n");
             it->second.spawnFunc(actor);
         } else {
             printf("Actor not found %s\n", actor.Name.c_str());

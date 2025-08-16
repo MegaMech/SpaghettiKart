@@ -1059,7 +1059,6 @@ void spawn_item_box(Vec3f pos) {
     if ((gModeSelection == TIME_TRIALS) || (gPlaceItemBoxes == 0) || (gGamestate == CREDITS_SEQUENCE)) {
         return;
     }
-    printf("POS %f %f %f\n", pos);
 
     pos[0] *= gCourseDirection;
 

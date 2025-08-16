@@ -132,7 +132,7 @@ namespace Editor {
         { "ChainChomp", [](const FVector& pos) { return new OChainChomp(); } },
         { "Flagpole", [](const FVector& pos) { return new OFlagpole(pos, 0); } },
         { "Hedgehog", [](const FVector& pos) { return new OHedgehog(pos, FVector2D(0, 10), 0); } },
-        { "HotAirBalloon", [](const FVector& pos) { return new OHotAirBalloon(pos); } },
+        { "HotAirBalloon", [](const FVector& pos) { return OHotAirBalloon::Spawn(pos); } },
         { "Lakitu", [](const FVector& pos) { return new OLakitu(0, OLakitu::LakituType::STARTER); } },
         // { "Mole", [](const FVector& pos) { return new OMole(pos, ); } }, // <-- Needs a group
         { "Chick Penguin", [](const FVector& pos) { return new OPenguin(pos, 0, OPenguin::PenguinType::CHICK, OPenguin::Behaviour::SLIDE3); } },

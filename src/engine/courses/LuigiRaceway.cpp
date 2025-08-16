@@ -182,9 +182,9 @@ void LuigiRaceway::BeginPlay() {
     spawn_all_item_boxes((struct ActorSpawnData*) LOAD_ASSET_RAW(d_course_luigi_raceway_item_box_spawns));
 
     if (gGamestate == CREDITS_SEQUENCE) {
-        gWorldInstance.AddObject(new OHotAirBalloon(FVector(-1250.0f, 0.0f, 1110.0f)));
+        OHotAirBalloon::Spawn(FVector(-1250.0f, 0.0f, 1110.0f));
     } else { // Normal gameplay
-        gWorldInstance.AddObject(new OHotAirBalloon(FVector(-176.0, 0.0f, -2323.0f)));
+        OHotAirBalloon::Spawn(FVector(-176.0, 0.0f, -2323.0f));
         gWorldInstance.AddObject(new OGrandPrixBalloons(FVector(-140, -44, -215)));
     }
 

@@ -21,28 +21,28 @@ OSnowman::OSnowman(const SpawnParams& params) {
     Name = "Snowman";
     ResourceName = "mk:snowman";
     _idx = _count;
-    _pos = params.Location.value_or(FVector(0, 0, 0));
+    Pos = params.Location.value_or(FVector(0, 0, 0));
 
     find_unused_obj_index(&_headIndex);
     init_object(_headIndex, 0);
     _objectIndex = _headIndex;
-    gObjectList[_headIndex].origin_pos[0] = _pos.x * xOrientation;
-    gObjectList[_headIndex].origin_pos[1] = _pos.y + 5.0 + 3.0;
-    gObjectList[_headIndex].origin_pos[2] = _pos.z;
-    gObjectList[_headIndex].pos[0] = _pos.x * xOrientation;
-    gObjectList[_headIndex].pos[1] = _pos.y + 5.0 + 3.0;
-    gObjectList[_headIndex].pos[2] = _pos.z;
+    gObjectList[_headIndex].origin_pos[0] = Pos.x * xOrientation;
+    gObjectList[_headIndex].origin_pos[1] = Pos.y + 5.0 + 3.0;
+    gObjectList[_headIndex].origin_pos[2] = Pos.z;
+    gObjectList[_headIndex].pos[0] = Pos.x * xOrientation;
+    gObjectList[_headIndex].pos[1] = Pos.y + 5.0 + 3.0;
+    gObjectList[_headIndex].pos[2] = Pos.z;
 
     find_unused_obj_index(&_bodyIndex);
     init_object(_bodyIndex, 0);
-    gObjectList[_bodyIndex].origin_pos[0] = _pos.x * xOrientation;
-    gObjectList[_bodyIndex].origin_pos[1] = _pos.y + 3.0;
-    gObjectList[_bodyIndex].origin_pos[2] = _pos.z;
+    gObjectList[_bodyIndex].origin_pos[0] = Pos.x * xOrientation;
+    gObjectList[_bodyIndex].origin_pos[1] = Pos.y + 3.0;
+    gObjectList[_bodyIndex].origin_pos[2] = Pos.z;
     gObjectList[_bodyIndex].unk_0D5 = 0; // Section Id no longer used.
 
-    gObjectList[_bodyIndex].pos[0] = _pos.x * xOrientation;
-    gObjectList[_bodyIndex].pos[1] = _pos.y + 3.0;
-    gObjectList[_bodyIndex].pos[2] = _pos.z;
+    gObjectList[_bodyIndex].pos[0] = Pos.x * xOrientation;
+    gObjectList[_bodyIndex].pos[1] = Pos.y + 3.0;
+    gObjectList[_bodyIndex].pos[2] = Pos.z;
 
     _count++;
 }

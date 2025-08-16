@@ -7,6 +7,7 @@
 
 #include "engine/objects/Thwomp.h"
 #include "engine/objects/Snowman.h"
+#include "engine/objects/HotAirBalloon.h"
 
 extern "C" {
 #include "actors.h"
@@ -23,6 +24,7 @@ void RegisterActor(const std::string& name,
 void Registry_SpawnActor(SpawnParams& params) {
     auto it = gActorRegistry.find(params.Name);
     if (it != gActorRegistry.end() && it->second.spawnFunc) {
+        printf("[Registry] Spawned %s\n", params.Name.c_str());
         it->second.spawnFunc(params);
     }
 }
@@ -33,7 +35,6 @@ void RegisterGameActors() {
             FVector loc = actor.Location.value_or(FVector{0, 0, 0});
             Vec3f pos = { loc.x, loc.y, loc.z };
             spawn_item_box(pos);
-            printf("SPAWNED ITEMBOX\n");
         }
     );
 
@@ -46,6 +47,12 @@ void RegisterGameActors() {
     RegisterActor("mk:snowman",
         [](const SpawnParams& params) {
             gWorldInstance.AddObject(new OSnowman(params));
+        }
+    );
+
+    RegisterActor("mk:hot_air_balloon",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OHotAirBalloon(params));
         }
     );
 }

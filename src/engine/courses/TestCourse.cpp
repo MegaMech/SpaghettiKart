@@ -29,6 +29,7 @@
 #include "engine/objects/Crab.h"
 #include "engine/objects/Boos.h"
 #include "engine/objects/GrandPrixBalloons.h"
+#include "engine/objects/Thwomp.h"
 
 extern "C" {
     #include "main.h"
@@ -282,7 +283,7 @@ void TestCourse::BeginPlay() {
 //    gWorldInstance.AddActor(new ABowserStatue(FVector(-200, 0, 0), ABowserStatue::Behaviour::CRUSH));
 
 //    gWorldInstance.AddObject(new OBoos(10, IPathSpan(0, 5), IPathSpan(18, 23), IPathSpan(25, 50)));
-
+    //OThwomp::Spawn(0, 0, 0, 1.0f, 0, 1, 7);
     gVehicle2DPathPoint = test_course_path2D;
     gVehicle2DPathLength = 53;
     D_80162EB0 = spawn_actor_on_surface(test_course_path2D[0].x, 2000.0f, test_course_path2D[0].z);
