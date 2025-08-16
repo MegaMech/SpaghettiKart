@@ -7,14 +7,9 @@
 #include "Cup.h"
 #include "vehicles/Train.h"
 #include "vehicles/Car.h"
-#include "objects/BombKart.h"
 #include "PlayerBombKart.h"
 #include "vehicles/Train.h"
 #include "TrainCrossing.h"
-#include "objects/Thwomp.h"
-#include "objects/Penguin.h"
-#include "objects/Seagull.h"
-#include "objects/Lakitu.h"
 #include <memory>
 #include <unordered_map>
 #include "Actor.h"

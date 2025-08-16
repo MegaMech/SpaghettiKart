@@ -49,6 +49,7 @@
 #include "engine/editor/EditorMath.h"
 #include "engine/editor/SceneManager.h"
 #include "engine/Rulesets.h"
+#include "engine/Registry.h"
 
 #ifdef _WIN32
 #include <locale.h>
@@ -164,6 +165,7 @@ void CustomEngineInit() {
     // gModelLoader.Add(bowserStatueList);
 
     // gModelLoader.Load();
+    RegisterGameActors();
 }
 
 void CustomEngineDestroy() {
@@ -202,10 +204,6 @@ void SetMarioRaceway(void) {
     gWorldInstance.CurrentCup = gMushroomCup;
     gWorldInstance.CurrentCup->CursorPosition = 3;
     gWorldInstance.CupIndex = 0;
-}
-
-World* GetWorld(void) {
-    return &gWorldInstance;
 }
 
 u32 WorldNextCup(void) {

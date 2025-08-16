@@ -2,9 +2,14 @@
 
 #include <libultraship.h>
 #include <vector>
-
 #include "engine/World.h"
+#include "engine/SpawnParams.h"
+#include "engine/CoreMath.h"
+
 #include "engine/objects/Object.h"
+
+class World;
+extern World gWorldInstance;
 
 extern "C" {
 #include "macros.h"
@@ -44,7 +49,24 @@ public:
 
     States State = States::DISABLED;
 
-    explicit OThwomp(s16 x, s16 z, s16 direction, f32 scale, s16 behaviour, s16 primAlpha, u16 boundingBoxSize = 7);
+    // This is simply a helper function to keep Spawning code clean
+    static inline OThwomp* Spawn(s16 x, s16 z, s16 direction, f32 scale, s16 behaviour, s16 primAlpha, u16 boundingBoxSize = 7) {
+        IRotator rot;
+        rot.Set(0, direction, 0);
+        
+        SpawnParams params = {
+            .Name = "mk:thwomp",
+            .Behaviour = behaviour,
+            .Location = FVector(x, 0, z),
+            .Rotation = rot,
+            .Scale = FVector(0, scale, 0),
+            .PrimAlpha = primAlpha,
+            .BoundingBoxSize = boundingBoxSize
+        };
+        return static_cast<OThwomp*>(gWorldInstance.AddObject(new OThwomp(params)));
+    }
+
+    explicit OThwomp(const SpawnParams& params);
 
     ~OThwomp() {
         _count--;
@@ -54,6 +76,7 @@ public:
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick60fps() override;
     virtual void Draw(s32 cameraId) override;
     void SetVisibility(s32 objectIndex);

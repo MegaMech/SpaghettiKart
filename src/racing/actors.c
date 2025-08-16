@@ -1050,6 +1050,32 @@ void spawn_all_item_boxes(struct ActorSpawnData* spawnData) {
     }
 }
 
+// Not from decomp
+void spawn_item_box(Vec3f pos) {
+    Vec3f startingVelocity;
+    Vec3s startingRot;
+    // struct ItemBox *itemBox;
+
+    if ((gModeSelection == TIME_TRIALS) || (gPlaceItemBoxes == 0) || (gGamestate == CREDITS_SEQUENCE)) {
+        return;
+    }
+    printf("POS %f %f %f\n", pos);
+
+    pos[0] *= gCourseDirection;
+
+    startingRot[0] = random_u16();
+    startingRot[1] = random_u16();
+    startingRot[2] = random_u16();
+    s32 id = add_actor_to_empty_slot(pos, startingRot, startingVelocity, ACTOR_ITEM_BOX);
+    f32 height = spawn_actor_on_surface(pos[0], pos[1] + 10.0f, pos[2]);
+
+    struct ItemBox* box = (struct ItemBox*) CM_GetActor(id);
+
+    box->resetDistance = height;
+    box->origY = pos[1];
+    box->pos[1] = height - 20.0f;
+}
+
 void init_kiwano_fruit(void) {
     Vec3f sp64;
     Vec3f sp58;

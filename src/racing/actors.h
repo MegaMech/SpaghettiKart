@@ -74,6 +74,7 @@ void spawn_falling_rocks(struct ActorSpawnData*);
 void update_actor_falling_rocks(struct FallingRock*);
 void spawn_foliage(struct ActorSpawnData*);
 void spawn_all_item_boxes(struct ActorSpawnData*);
+void spawn_item_box(Vec3f pos);
 void init_kiwano_fruit(void);
 void destroy_all_actors(void);
 void spawn_course_actors(void);

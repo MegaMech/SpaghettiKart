@@ -1,6 +1,7 @@
 #pragma once
 
 #include <libultraship.h>
+#include "engine/SpawnParams.h"
 
 extern "C" {
     #include "camera.h"
@@ -12,6 +13,7 @@ public:
     uint8_t uuid[16];
     Object o;
     const char* Name = "";
+    const char* ResourceName = "";
     bool bPendingDestroy = false;
     s32 _objectIndex = -1;
 
@@ -25,4 +27,5 @@ public:
     virtual void Expire();
     virtual void Destroy(); // Mark object for deletion at the start of the next frame
     virtual void Reset();
+    virtual void SetSpawnParams(SpawnParams& params);
 };

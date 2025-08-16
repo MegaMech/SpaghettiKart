@@ -8,6 +8,8 @@
 #ifdef __cplusplus
 #include "engine/editor/Editor.h"
 class Course;
+struct Properties;
+class World;
 extern "C" {
 #endif
 #include "camera.h"

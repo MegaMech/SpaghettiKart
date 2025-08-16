@@ -3,6 +3,7 @@
 #include "UIWidgets.h"
 #include "libultraship/src/Context.h"
 #include "port/Engine.h"
+#include "SpawnParams.h"
 
 #include <imgui.h>
 #include <map>
@@ -138,10 +139,10 @@ namespace Editor {
         { "Penguin", [](const FVector& pos) { return new OPenguin(pos, 0, OPenguin::PenguinType::ADULT, OPenguin::Behaviour::CIRCLE); } },
         { "Emperor Penguin", [](const FVector& pos) { return new OPenguin(pos, 0, OPenguin::PenguinType::EMPEROR, OPenguin::Behaviour::STRUT); } },
         { "Seagull", [](const FVector& pos) { return new OSeagull(pos); } },
-        { "Thwomp", [](const FVector& pos) { return new OThwomp(pos.x, pos.z, 0, 1.0f, 0, 0, 2.0f); } },
+        { "Thwomp", [](const FVector& pos) { return OThwomp::Spawn(pos.x, pos.z, 0, 1.0f, 0, 0, 7); } },
         { "Trashbin", [](const FVector& pos) { return new OTrashBin(pos, IRotator(0, 0, 0), 1.0f, OTrashBin::Behaviour::MUNCHING); } },
         { "Trophy", [](const FVector& pos) { return new OTrophy(pos, OTrophy::TrophyType::GOLD_150, OTrophy::Behaviour::ROTATE2); } },
-        { "Snowman", [](const FVector& pos) { return new OSnowman(pos); } },
+        { "Snowman", [](const FVector& pos) { return OSnowman::Spawn(pos); } },
         { "Podium", [](const FVector& pos) { return new OPodium(pos); } },
         { "Balloons", [](const FVector& pos) { return new OGrandPrixBalloons(pos); } },
     };
@@ -230,7 +231,7 @@ namespace Editor {
 
             std::string label = fmt::format("{}##{}", object.first, i_object);
             if (ImGui::Button(label.c_str())) {
-                gWorldInstance.AddObject(object.second(pos));
+                object.second(pos);
             }
             i_object += 1;
         }

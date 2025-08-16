@@ -9,6 +9,7 @@
 #include "engine/actors/Finishline.h"
 #include "engine/objects/BombKart.h"
 #include "engine/objects/Crab.h"
+#include "engine/objects/Seagull.h"
 #include "assets/koopa_troopa_beach_data.h"
 
 extern "C" {

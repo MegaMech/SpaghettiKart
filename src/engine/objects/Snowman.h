@@ -19,7 +19,16 @@ extern "C" {
 
 class OSnowman : public OObject {
 public:
-    explicit OSnowman(const FVector& pos);
+    // This is simply a helper function to keep Spawning code clean
+    static inline OSnowman* Spawn(FVector pos) {
+        SpawnParams params = {
+            .Name = "mk:snowman",
+            .Location = FVector(pos.x, pos.y, pos.z),
+        };
+        return static_cast<OSnowman*>(gWorldInstance.AddObject(new OSnowman(params)));
+    }
+
+    explicit OSnowman(const SpawnParams& params);
 
     ~OSnowman() {
         _count--;
@@ -29,6 +38,7 @@ public:
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
 

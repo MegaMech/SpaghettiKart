@@ -1,6 +1,7 @@
 #include "Rulesets.h"
 #include "objects/Thwomp.h"
 #include "objects/Trophy.h"
+#include "objects/BombKart.h"
 
 extern "C" {
 #include "code_800029B0.h"

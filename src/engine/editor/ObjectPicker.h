@@ -5,6 +5,7 @@
 #include "Collision.h"
 #include "Gizmo.h"
 #include "GameObject.h"
+#include "engine/Matrix.h"
 
 namespace Editor {
     class ObjectPicker {

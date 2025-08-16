@@ -140,8 +140,8 @@ void ObjectPicker::Draw() {
         float y = (cameras[0].pos[1] + ray.y * 800);
         float z = (cameras[0].pos[2] + ray.z * 800);
 
-        ApplyMatrixTransformations((float(*)[4])&CursorMtx, FVector(x, y, z), rot, scale);
-        Editor_AddMatrix((float(*)[4])&CursorMtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        ApplyMatrixTransformations(CursorMtx, FVector(x, y, z), rot, scale);
+        Editor_AddMatrix(CursorMtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(gDisplayListHead++, (Gfx*)"__OTR__tracks/sphere");
     }
 }

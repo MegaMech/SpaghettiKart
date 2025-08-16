@@ -17,33 +17,44 @@ static const char* sSnowmanHeadList[] = { d_course_frappe_snowland_snowman_head 
 
 size_t OSnowman::_count = 0;
 
-OSnowman::OSnowman(const FVector& pos) {
+OSnowman::OSnowman(const SpawnParams& params) {
     Name = "Snowman";
+    ResourceName = "mk:snowman";
     _idx = _count;
-    _pos = pos;
+    _pos = params.Location.value_or(FVector(0, 0, 0));
 
     find_unused_obj_index(&_headIndex);
     init_object(_headIndex, 0);
     _objectIndex = _headIndex;
-    gObjectList[_headIndex].origin_pos[0] = pos.x * xOrientation;
-    gObjectList[_headIndex].origin_pos[1] = pos.y + 5.0 + 3.0;
-    gObjectList[_headIndex].origin_pos[2] = pos.z;
-    gObjectList[_headIndex].pos[0] = pos.x * xOrientation;
-    gObjectList[_headIndex].pos[1] = pos.y + 5.0 + 3.0;
-    gObjectList[_headIndex].pos[2] = pos.z;
+    gObjectList[_headIndex].origin_pos[0] = _pos.x * xOrientation;
+    gObjectList[_headIndex].origin_pos[1] = _pos.y + 5.0 + 3.0;
+    gObjectList[_headIndex].origin_pos[2] = _pos.z;
+    gObjectList[_headIndex].pos[0] = _pos.x * xOrientation;
+    gObjectList[_headIndex].pos[1] = _pos.y + 5.0 + 3.0;
+    gObjectList[_headIndex].pos[2] = _pos.z;
 
     find_unused_obj_index(&_bodyIndex);
     init_object(_bodyIndex, 0);
-    gObjectList[_bodyIndex].origin_pos[0] = pos.x * xOrientation;
-    gObjectList[_bodyIndex].origin_pos[1] = pos.y + 3.0;
-    gObjectList[_bodyIndex].origin_pos[2] = pos.z;
+    gObjectList[_bodyIndex].origin_pos[0] = _pos.x * xOrientation;
+    gObjectList[_bodyIndex].origin_pos[1] = _pos.y + 3.0;
+    gObjectList[_bodyIndex].origin_pos[2] = _pos.z;
     gObjectList[_bodyIndex].unk_0D5 = 0; // Section Id no longer used.
 
-    gObjectList[_bodyIndex].pos[0] = pos.x * xOrientation;
-    gObjectList[_bodyIndex].pos[1] = pos.y + 3.0;
-    gObjectList[_bodyIndex].pos[2] = pos.z;
+    gObjectList[_bodyIndex].pos[0] = _pos.x * xOrientation;
+    gObjectList[_bodyIndex].pos[1] = _pos.y + 3.0;
+    gObjectList[_bodyIndex].pos[2] = _pos.z;
 
     _count++;
+}
+
+void OSnowman::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = std::string(ResourceName);
+    params.Location = FVector(
+        object->pos[0],
+        object->pos[1],
+        object->pos[2]
+    );
 }
 
 void OSnowman::Tick() {

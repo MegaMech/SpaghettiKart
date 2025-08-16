@@ -18,6 +18,7 @@
 #include <libultraship/src/resource/File.h>
 #include "port/resource/type/ResourceType.h"
 
+#include "engine/objects/Object.h"
 #include "engine/objects/Thwomp.h"
 #include "engine/objects/Snowman.h"
 #include <iostream>
@@ -111,7 +112,9 @@ namespace Editor {
                 auto & actorsJson = data["Actors"];
                 for (const auto& actor : actorsJson) {
                     SpawnParams params = actor.get<SpawnParams>();
-                    course->SpawnList.push_back(params);
+                    if (!params.Name.empty()) {
+                        course->SpawnList.push_back(params);
+                    }
                 }
             }
 
@@ -176,9 +179,20 @@ namespace Editor {
         for (const auto& actor : gWorldInstance.Actors) {
             if (actor->Type == 12) { // itembox
                 SpawnParams params{};
-                params.Name = get_actor_display_name(actor->Type);
+                params.Name = get_actor_resource_location_name(actor->Type);
                 params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
 
+                actorList.push_back(params);
+            }
+        }
+
+        for (const auto& object : gWorldInstance.Objects) {
+            SpawnParams params{};
+            object->SetSpawnParams(params);
+
+            // Unimplemented objects should not be added to the SpawnList
+            // The name field is required. If not set, then its not implemented yet.
+            if (!params.Name.empty()) {
                 actorList.push_back(params);
             }
         }

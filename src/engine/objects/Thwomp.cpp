@@ -2,6 +2,8 @@
 #include <libultra/gbi.h>
 #include "Thwomp.h"
 #include <vector>
+#include "engine/courses/Course.h"
+#include "engine/World.h"
 
 #include "port/Game.h"
 #include "port/interpolation/FrameInterpolation.h"
@@ -48,30 +50,54 @@ s16 D_800E597C[] = { 0x0000, 0x0000, 0x4000, 0x8000, 0x8000, 0xc000 };
 size_t OThwomp::_count = 0;
 size_t OThwomp::_rand = 0;
 
-OThwomp::OThwomp(s16 x, s16 z, s16 direction, f32 scale, s16 behaviour, s16 primAlpha, u16 boundingBoxSize) {
+OThwomp::OThwomp(const SpawnParams& params) { // s16 x, s16 z, s16 direction, f32 scale, s16 behaviour, s16 primAlpha, u16 boundingBoxSize) {
+    FVector loc = params.Location.value_or(FVector{0, 0, 0});
+    IRotator rot = params.Rotation.value_or(IRotator{0, 0, 0});
+    uint16_t boundingBox = params.BoundingBoxSize.value_or(0);
+    int16_t behaviour = params.Behaviour.value_or(0);
+    int16_t primAlpha = params.PrimAlpha.value_or(0);
+    FVector scale = params.Scale.value_or(FVector(0, 0, 0));
+
     Name = "Thwomp";
+    ResourceName = "mk:thwomp";
     _idx = _count;
-    _faceDirection = direction;
-    _boundingBoxSize = boundingBoxSize;
+    _faceDirection = rot.yaw;
+    _boundingBoxSize = boundingBox;
     State = (States)behaviour;
+
 
     find_unused_obj_index(&_objectIndex);
 
     s32 objectId = _objectIndex;
     init_object(objectId, 0);
-    gObjectList[objectId].origin_pos[0] = x * xOrientation;
-    gObjectList[objectId].origin_pos[2] = z;
+    gObjectList[objectId].origin_pos[0] = loc.x * xOrientation;
+    gObjectList[objectId].origin_pos[2] = loc.z;
     gObjectList[objectId].unk_0D5 = behaviour;
     gObjectList[objectId].primAlpha = primAlpha;
-    gObjectList[objectId].boundingBoxSize = boundingBoxSize + 5;
+    gObjectList[objectId].boundingBoxSize = boundingBox + 5;
 
-    if (scale == 0.0f) {
-        scale = 1.0f;
+    if (scale.y == 0.0f) {
+        scale.y = 1.0f;
     }
 
-    gObjectList[objectId].sizeScaling = scale;
+    gObjectList[objectId].sizeScaling = scale.y;
 
     _count++;
+}
+
+void OThwomp::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = std::string(ResourceName);
+    params.Location = FVector(
+        object->origin_pos[0],
+        object->origin_pos[1],
+        object->origin_pos[2]
+    );
+    params.Rotation = IRotator(0, object->orientation[1], 0);
+    params.Scale = FVector(0, object->sizeScaling, 0);
+    params.Behaviour = object->unk_0D5;
+    params.PrimAlpha = object->primAlpha;
+    params.BoundingBoxSize = object->boundingBoxSize;
 }
 
 void OThwomp::Tick60fps() { // func_80081210

@@ -1,59 +1,51 @@
-// #include <vector>
-// #include <functional>
-// #include <iostream>
-// #include <map>
+#include <functional>
+#include <unordered_map>
+#include <string>
 
-// #include "Registry.h"
-// #include "Course.h"
-// #include "port/Game.h"
+#include "Registry.h"
+#include "engine/CoreMath.h"
 
-// template <class T> Registry<T>::Registry() {
-// }
+#include "engine/objects/Thwomp.h"
+#include "engine/objects/Snowman.h"
 
-// template <class T> void Registry<T>::Add(std::string id, std::function<T*()> fn) {
-//     // need to handle duplicate registration
-//     ContentVault[id] = fn;
-// }
+extern "C" {
+#include "actors.h"
+}
 
-// template <class T>
-// void Registry<T>::AddArgs(std::string id) {
-//     ArgsVault[id] = [](Args&&... args) -> T* {
-//         return new T(std::forward<Args>(args)...);
-//     };
-// }
+std::unordered_map<std::string, ActorRegistryEntry> gActorRegistry;
 
-// template <class T>
-// T* Registry<T>::Get(std::string id) {
-//     auto it = ContentVault.find(id);
-//     if (it != ContentVault.end()) {
-//         return it->second();
-//     }
-//     return nullptr;
-// }
+void RegisterActor(const std::string& name,
+                   std::function<void(const SpawnParams&)> spawnFunc)
+{
+    gActorRegistry[name] = { spawnFunc };
+}
 
-// // Available Registries
-// Registry<Course> Courses;
-// Registry<Cup> Cups;
-// Registry<AActor> Actors;
+void Registry_SpawnActor(SpawnParams& params) {
+    auto it = gActorRegistry.find(params.Name);
+    if (it != gActorRegistry.end() && it->second.spawnFunc) {
+        it->second.spawnFunc(params);
+    }
+}
 
-// void AddCourse(std::string id, Course* course) {
-//     Courses.Add(id, [course]() { return course; });
-//     course->Id = id;
-// }
+void RegisterGameActors() {
+    RegisterActor("mk:item_box",
+        [](const SpawnParams& actor) {
+            FVector loc = actor.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            spawn_item_box(pos);
+            printf("SPAWNED ITEMBOX\n");
+        }
+    );
 
-// void AddCup(std::string id, Cup* cup) {
-//     Cups.Add(id, [cup]() { return cup; });
-//     //cup->Id = id;
-// }
+    RegisterActor("mk:thwomp",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OThwomp(params));
+        }
+    );
 
-// void AddActor(std::string id, AActor* actor) {
-//     Actors.Add(id, [actor]() { return actor; });
-// }
-
-// void AddStockContent() {
-//     AddActor("mk:banana", new AMarioSign({0, 0, 0}));
-// }
-
-// template class Registry<Course>;
-// template class Registry<Cup>;
-// template class Registry<AActor>;
+    RegisterActor("mk:snowman",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OSnowman(params));
+        }
+    );
+}

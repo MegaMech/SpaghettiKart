@@ -4,6 +4,7 @@
 #include "../CoreMath.h"
 #include <libultra/types.h>
 #include "../World.h"
+#include "engine/Matrix.h"
 
 #include "Light.h"
 #include "port/Engine.h"
