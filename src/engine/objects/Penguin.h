@@ -17,14 +17,14 @@ extern "C" {
 
 class OPenguin : public OObject {
 public:
-    enum PenguinType : uint32_t {
+    enum PenguinType : int16_t {
         CHICK,
         ADULT,
         CREDITS,
         EMPEROR
     };
 
-    enum Behaviour : uint16_t {
+    enum Behaviour : int16_t {
         DISABLED,
         STRUT, // Emperor penguin
         CIRCLE, // Waddle in a circle
@@ -38,8 +38,24 @@ public:
     f32 Diameter = 0.0f; // Waddle in a circle around the spawn point at this diameter.
     uint16_t MirrorModeAngleOffset;
 
-    explicit OPenguin(FVector pos, u16 direction, PenguinType type, Behaviour behaviour);
+    explicit OPenguin(const SpawnParams& params);
 
+    // This is simply a helper function to keep Spawning code clean
+    static inline OPenguin* Spawn(FVector pos, u16 direction, u16 mirrorModeAngleOffset, f32 diameter, PenguinType type, Behaviour behaviour) {
+        IRotator rot;
+        rot.Set(0, direction, mirrorModeAngleOffset);
+        SpawnParams params = {
+            .Name = "mk:penguin",
+            .Type = type,
+            .Behaviour = behaviour,
+            .Location = pos,
+            .Rotation = rot,
+            .Speed = diameter, // Diameter of the walking circle
+        };
+        return static_cast<OPenguin*>(gWorldInstance.AddObject(new OPenguin(params)));
+    }
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     virtual void Reset() override;
@@ -55,6 +71,7 @@ private:
     void InitOtherPenguin(s32 objectIndex);
 
     static bool _toggle;
+    FVector _pos;
     PenguinType _type;
     Behaviour _bhv;
 };

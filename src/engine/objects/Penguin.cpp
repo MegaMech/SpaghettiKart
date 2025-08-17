@@ -34,22 +34,25 @@ extern s8 gPlayerCount;
 }
 
 
-OPenguin::OPenguin(FVector pos, u16 direction, PenguinType type, Behaviour behaviour) {
+OPenguin::OPenguin(const SpawnParams& params) {
     Name = "Penguin";
-    _type = type;
-    _bhv = behaviour;
-
+    ResourceName = "mk:penguin";
+    _type = static_cast<PenguinType>(params.Type.value_or(0));
+    _bhv = static_cast<Behaviour>(params.Behaviour.value_or(0));
+    _pos = params.Location.value_or(FVector(0, 0, 0));
+    Diameter = params.Speed.value_or(0.0f);
+    MirrorModeAngleOffset = params.Rotation.value_or(IRotator(0, 0, 0)).roll; // roll is used to save mirro mode angle offset
     find_unused_obj_index(&_objectIndex);
 
     init_object(_objectIndex, 0);
 
     Object *object = &gObjectList[_objectIndex];
-    object->origin_pos[0] = pos.x * xOrientation;
-    object->origin_pos[1] = pos.y;
-    object->origin_pos[2] = pos.z;
-    object->unk_0C6 = direction;
+    object->origin_pos[0] = _pos.x * xOrientation;
+    object->origin_pos[1] = _pos.y;
+    object->origin_pos[2] = _pos.z;
+    object->unk_0C6 = params.Rotation.value_or(IRotator(0, 0, 0)).yaw;
 
-    switch(type) {
+    switch(_type) {
         case PenguinType::CHICK:
             object->surfaceHeight = 5.0f;
             object->sizeScaling = 0.04f;
@@ -70,6 +73,22 @@ OPenguin::OPenguin(FVector pos, u16 direction, PenguinType type, Behaviour behav
             object->boundingBoxSize = 0x000C;
             break;
     }
+}
+
+void OPenguin::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:penguin";
+    params.Type = _type;
+    params.Behaviour = _bhv;
+        params.Location = FVector(
+        object->pos[0],
+        object->pos[1],
+        object->pos[2]
+    );
+    IRotator rot;
+    rot.Set(0, object->unk_0C6, MirrorModeAngleOffset);
+    params.Rotation = rot;
+    params.Speed = object->unk_01C[1]; // Circle diameter
 }
 
 void OPenguin::Tick(void) {

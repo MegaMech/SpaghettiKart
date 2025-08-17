@@ -101,4 +101,40 @@ void RegisterGameActors() {
             gWorldInstance.AddObject(new OBoos(params));
         }
     );
+
+    RegisterActor("mk:trophy",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OTrophy(params));
+        }
+    );
+
+    RegisterActor("mk:trash_bin",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OTrashBin(params));
+        }
+    );
+
+    RegisterActor("mk:seagull",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OSeagull(params));
+        }
+    );
+
+    RegisterActor("mk:chain_chomp",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OChainChomp());
+        }
+    );
+
+    RegisterActor("mk:podium",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OPodium(params));
+        }
+    );
+
+    RegisterActor("mk:penguin",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OPenguin(params));
+        }
+    );
 }

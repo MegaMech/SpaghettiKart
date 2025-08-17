@@ -24,8 +24,18 @@ public:
 
 public:
 
-    explicit OPodium(const FVector& pos);
+    explicit OPodium(const SpawnParams& params);
 
+    // This is simply a helper function to keep Spawning code clean
+    static inline OPodium* Spawn(const FVector& pos) {
+        SpawnParams params = {
+            .Name = "mk:podium",
+            .Location = pos,
+        };
+        return static_cast<OPodium*>(gWorldInstance.AddObject(new OPodium(params)));
+    }
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void func_8008629C(s32 objectIndex, s32 arg1);

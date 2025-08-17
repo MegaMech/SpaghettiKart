@@ -271,7 +271,7 @@ void TestCourse::BeginPlay() {
     // gWorldInstance.AddActor(new OSeagull(2, pos));
     // gWorldInstance.AddActor(new OSeagull(3, pos));
     // gWorldInstance.AddObject(new OCheepCheep(FVector(0, 40, 0), OCheepCheep::CheepType::RACE, IPathSpan(0, 10)));
-    gWorldInstance.AddObject(new OTrophy(FVector(0,0,0), OTrophy::TrophyType::GOLD, OTrophy::Behaviour::GO_FISH));
+    OTrophy::Spawn(FVector(0,0,0), OTrophy::TrophyType::GOLD, OTrophy::Behaviour::GO_FISH);
     //gWorldInstance.AddObject(new OSnowman(FVector(0, 0, 0)));
     //gWorldInstance.AddObject(new OTrashBin(FVector(0.0f, 0.0f, 0.0f), IRotator(0, 90, 0), 1.0f, OTrashBin::Behaviour::MUNCHING));
 

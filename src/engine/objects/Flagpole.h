@@ -28,7 +28,7 @@ public:
         IRotator rot;
         rot.Set(0, direction, 0);
         SpawnParams params = {
-            .Name = "mk:hot_air_balloon",
+            .Name = "mk:flagpole",
             .Location = pos,
             .Rotation = rot,
         };

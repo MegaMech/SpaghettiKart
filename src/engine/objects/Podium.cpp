@@ -25,9 +25,10 @@ extern Vec3s D_800E634C[];
 //     { 0xf380, 0x0013, 0xfe14 },
 // };
 
-OPodium::OPodium(const FVector& pos) {
+OPodium::OPodium(const SpawnParams& params) {
     Name = "Podium";
-    _pos = pos;
+    ResourceName = "mk:podium";
+    _pos = params.Location.value_or(FVector(0, 0, 0));
 
     find_unused_obj_index(&_podium1Index);
     find_unused_obj_index(&_podium2Index);
@@ -35,6 +36,16 @@ OPodium::OPodium(const FVector& pos) {
 
     //init_object(objectIndex, 0);
     //set_obj_origin_pos(objectIndex, pos.x - 1.5, pos.y, pos.z);
+}
+
+void OPodium::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:podium";
+    params.Location = FVector(
+        object->pos[0],
+        object->pos[1],
+        object->pos[2]
+    );
 }
 
 void OPodium::Tick() { // func_80086604

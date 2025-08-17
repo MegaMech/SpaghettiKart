@@ -53,7 +53,7 @@ public:
     static inline OThwomp* Spawn(s16 x, s16 z, s16 direction, f32 scale, s16 behaviour, s16 primAlpha, u16 boundingBoxSize = 7) {
         IRotator rot;
         rot.Set(0, direction, 0);
-        
+
         SpawnParams params = {
             .Name = "mk:thwomp",
             .Behaviour = behaviour,

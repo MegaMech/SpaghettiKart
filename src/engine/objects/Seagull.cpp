@@ -31,12 +31,11 @@ SplineData* D_800E633C[] = { &D_800E6034, &D_800E60F0, &D_800E61B4, &D_800E6280 
 
 size_t OSeagull::_count = 0;
 
-OSeagull::OSeagull(FVector pos) {
+OSeagull::OSeagull(const SpawnParams& params) {
     Name = "Seagull";
+    ResourceName = "mk:seagull";
     _idx = _count;
-    _pos.x = pos.x;
-    _pos.y = pos.y;
-    _pos.z = pos.z;
+    _pos = params.Location.value_or(FVector(0, 0, 0));
 
     s16 randZ;
     s16 randX;
@@ -50,7 +49,7 @@ OSeagull::OSeagull(FVector pos) {
     init_object(_objectIndex, 0);
 
 
-    set_obj_origin_pos(_objectIndex, pos.x, pos.y, pos.z);
+    set_obj_origin_pos(_objectIndex, _pos.x, _pos.y, _pos.z);
     if (_idx < (NUM_SEAGULLS / 2)) {
         gObjectList[_objectIndex].unk_0D5 = 0;
     } else {
@@ -58,6 +57,16 @@ OSeagull::OSeagull(FVector pos) {
     }
 
     _count++;
+}
+
+void OSeagull::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:seagull";
+    params.Location = FVector(
+        object->origin_pos[0],
+        object->origin_pos[1],
+        object->origin_pos[2]
+    );
 }
 
 void OSeagull::Tick() {

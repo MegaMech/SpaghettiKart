@@ -176,8 +176,8 @@ void PodiumCeremony::BeginPlay() {
     spawn_piranha_plants((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_royal_raceway_piranha_plant_spawn));
 
     OCheepCheep::Spawn(FVector((f32)-3202, (f32)19, (f32)-478), OCheepCheep::Behaviour::PODIUM_CEREMONY, IPathSpan(0, 0));
-    gWorldInstance.AddObject(new OPodium(FVector((f32)-3202, (f32)19, (f32)-478)));
-    
+    OPodium::Spawn(FVector((f32)-3202, (f32)19, (f32)-478));
+
     FVector pos = {0, 90.0f, 0};
 
     OTrophy::TrophyType type = OTrophy::TrophyType::BRONZE;
@@ -197,7 +197,7 @@ void PodiumCeremony::BeginPlay() {
             break;
     }
 
-    OTrophy* trophy = reinterpret_cast<OTrophy*>(gWorldInstance.AddObject(new OTrophy(pos, type, OTrophy::Behaviour::PODIUM_CEREMONY)));
+    OTrophy::Spawn(pos, type, OTrophy::Behaviour::PODIUM_CEREMONY);
 
     OBombKart::Spawn(3, 3, OBombKart::States::PODIUM_CEREMONY, 1.25f);
     OBombKart::Spawn(3, 40, 0, 1.0f);

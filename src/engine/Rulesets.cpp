@@ -44,6 +44,6 @@ void Rulesets::PostInit() {
     }
 
     if (CVarGetInteger("gGoFish", false) == true) {
-        gWorldInstance.AddObject(new OTrophy(FVector(0,0,0), OTrophy::TrophyType::GOLD, OTrophy::Behaviour::GO_FISH));
+        OTrophy::Spawn(FVector(0,0,0), OTrophy::TrophyType::GOLD, OTrophy::Behaviour::GO_FISH);
     }
 }

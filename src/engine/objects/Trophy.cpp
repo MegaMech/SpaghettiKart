@@ -20,12 +20,13 @@ extern "C" {
 #include "menu_items.h"
 }
 
-OTrophy::OTrophy(const FVector& pos, TrophyType trophy, Behaviour bhv) {
+OTrophy::OTrophy(const SpawnParams& params) {
     Name = "Trophy";
-    _trophy = trophy;
-    _spawnPos = pos;
+    ResourceName = "mk:trophy";
+    _type = static_cast<TrophyType>(params.Type.value_or(0));
+    _spawnPos = params.Location.value_or(FVector(0, 0, 0));
     _spawnPos.y += 16.0f; // Adjust the height so the trophy sits on the surface when positioned to 0,0,0
-    _bhv = bhv;
+    _bhv = static_cast<Behaviour>(params.Behaviour.value_or(0));
 
     find_unused_obj_index(&_objectIndex);
 
@@ -34,7 +35,7 @@ OTrophy::OTrophy(const FVector& pos, TrophyType trophy, Behaviour bhv) {
     // Thus this will need to be changed if that's not desired.
     gTrophyIndex = _objectIndex;
 
-    if (bhv == OTrophy::Behaviour::PODIUM_CEREMONY) {
+    if (_bhv == OTrophy::Behaviour::PODIUM_CEREMONY) {
         _toggleVisibility = &D_801658CE;
     } else {
         _toggle = 1;
@@ -47,7 +48,7 @@ OTrophy::OTrophy(const FVector& pos, TrophyType trophy, Behaviour bhv) {
         init_object(_objectIndex, 0);
     }
 
-    switch (trophy) {
+    switch (_type) {
         case TrophyType::GOLD:
             gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl10;
             break;
@@ -91,6 +92,18 @@ OTrophy::OTrophy(const FVector& pos, TrophyType trophy, Behaviour bhv) {
     object->pos[2] = _spawnPos.z;
 
     _emitter = reinterpret_cast<StarEmitter*>(gWorldInstance.AddEmitter(new StarEmitter()));
+}
+
+void OTrophy::SetSpawnParams(SpawnParams& params) {
+    Object *object = &gObjectList[_objectIndex];
+    params.Name = "mk:trophy";
+    params.Type = _type;
+    params.Behaviour = _bhv;
+    params.Location = FVector(
+        object->pos[0],
+        object->pos[1],
+        object->pos[2]
+    );
 }
 
 void OTrophy::Tick() { // func_80086D80

@@ -179,15 +179,15 @@ void KoopaTroopaBeach::BeginPlay() {
 
     if (gGamestate == CREDITS_SEQUENCE) {
         for (size_t i = 0; i < NUM_SEAGULLS; i++) {
-            gWorldInstance.AddObject(new OSeagull(FVector(-360.0f, 60.0f, -1300.0f)));
+            OSeagull::Spawn(FVector(-360.0f, 60.0f, -1300.0f));
         }
     } else { // Normal gameplay
         for (size_t i = 0; i < 4; i++) {
-            gWorldInstance.AddObject(new OSeagull(FVector(-985.0f, 15.0f, 1200.0f)));
+            OSeagull::Spawn(FVector(-985.0f, 15.0f, 1200.0f));
         }
 
         for (size_t i = 0; i < 6; i++) {
-            gWorldInstance.AddObject(new OSeagull(FVector(328.0f, 20.0f, 2541.0f)));
+            OSeagull::Spawn(FVector(328.0f, 20.0f, 2541.0f));
         }
     }
 
