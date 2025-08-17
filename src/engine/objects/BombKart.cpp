@@ -45,9 +45,7 @@ OBombKart::OBombKart(const SpawnParams& params) {
         // Set height to the default value of 2000.0f unless Pos[1] is higher.
         // This allows placing these on very high surfaces.
         f32 height = (constPos.y > 2000.0f) ? constPos.y : 2000.0f;
-        //constPos.x = pos.x;
         constPos.y = spawn_actor_on_surface(constPos.x, height, constPos.z);
-        //constPos.z = pos.z;
     } else { // Spawn kart on waypoint
         constPos.x = gTrackPaths[pathIndex][pathPoint].posX;
         constPos.y = gTrackPaths[pathIndex][pathPoint].posY;
