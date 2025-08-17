@@ -205,18 +205,17 @@ void MarioRaceway::BeginPlay() {
     add_actor_to_empty_slot(position, rotation, velocity, ACTOR_MARIO_SIGN);
 
     if (gModeSelection == VERSUS) {
-        FVector pos = { 0, 0, 0 };
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][40], 40, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][100], 100, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][265], 265, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][285], 285, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][420], 420, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
+        OBombKart::Spawn(0, 40, 3, 0.8333333f);
+        OBombKart::Spawn(0, 100, 3, 0.8333333f);
+        OBombKart::Spawn(0, 265, 3, 0.8333333f);
+        OBombKart::Spawn(0, 285, 1, 0.8333333f);
+        OBombKart::Spawn(0, 420, 1, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
     }
 
     if (gGamestate != CREDITS_SEQUENCE) {
-        gWorldInstance.AddObject(new OGrandPrixBalloons(FVector(0, 5, -240)));
+        OGrandPrixBalloons::Spawn(FVector(0, 5, -240));
     }
 }
 

@@ -15,17 +15,34 @@ extern "C" {
 
 size_t OFlagpole::_count = 0;
 
-OFlagpole::OFlagpole(const FVector& pos, s16 direction) {
+OFlagpole::OFlagpole(const SpawnParams& params) {
     Name = "Flagpole";
+    ResourceName = "mk:flagpole";
     _idx = _count;
-    _pos = pos;
-    _direction = direction;
+    _pos = params.Location.value_or(FVector(0, 0, 0));
+    _direction = params.Rotation.value_or(IRotator(0, 0, 0));
 
     find_unused_obj_index(&_objectIndex);
 
     init_object(_objectIndex, 0);
 
     _count++;
+}
+
+void OFlagpole::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:flagpole";
+    params.Location = FVector(
+        object->pos[0],
+        object->pos[1],
+        object->pos[2]
+    );
+    IRotator rot; rot.Set(
+        object->orientation[0],
+        object->orientation[1],
+        object->orientation[2]
+    );
+    params.Rotation = rot;
 }
 
 void OFlagpole::Tick() { // func_80083080
@@ -49,7 +66,7 @@ void OFlagpole::Draw(s32 cameraId) { // func_80055228
 void OFlagpole::func_80055164(s32 objectIndex) { // func_80055164
     if (gObjectList[objectIndex].state >= 2) {
         gSPDisplayList(gDisplayListHead++, (Gfx*)D_0D0077A0);
-        rsp_set_matrix_transformation(gObjectList[objectIndex].pos, gObjectList[objectIndex].direction_angle,
+        rsp_set_matrix_transformation(gObjectList[objectIndex].pos, gObjectList[objectIndex].orientation,
                                       gObjectList[objectIndex].sizeScaling);
         if (gIsGamePaused == 0) {
             gObjectList[objectIndex].unk_0A2 = render_animated_model((Armature*) gObjectList[objectIndex].model,
@@ -69,7 +86,7 @@ void OFlagpole::func_80082F1C(s32 objectIndex) {
     object_next_state(objectIndex);
     set_obj_origin_pos(objectIndex, _pos.x * xOrientation, _pos.y, _pos.z);
     set_obj_origin_offset(objectIndex, 0.0f, 0.0f, 0.0f);
-    set_obj_direction_angle(objectIndex, 0U, _direction, 0U);
+    set_obj_orientation(objectIndex, _direction.pitch, _direction.yaw, _direction.roll); // changed from directional_angle to orientation for editor support
 }
 
 void OFlagpole::func_80083018(s32 objectIndex) {

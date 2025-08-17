@@ -291,14 +291,12 @@ void TestCourse::BeginPlay() {
     //gWorldInstance.AddTrain(ATrain::TenderStatus::HAS_TENDER, 5, 2.5f, 0);
     //gWorldInstance.AddTrain(ATrain::TenderStatus::HAS_TENDER, 5, 2.5f, 8);
 
-    FVector pos2 = { 0, 0, 0 };
-
-    gWorldInstance.AddObject(new OBombKart(pos2, &gTrackPaths[0][25], 25, 4, 0.8333333f));
-    gWorldInstance.AddObject(new OBombKart(pos2, &gTrackPaths[0][45], 45, 4, 0.8333333f));
+    OBombKart::Spawn(0, 25, 4, 0.8333333f);
+    OBombKart::Spawn(0, 45, 4, 0.8333333f);
 
    // gWorldInstance.AddActor(new AShip(FVector(0, 0, 0), AShip::Skin::SHIP3));
 
-//    gWorldInstance.AddObject(new OGrandPrixBalloons(FVector(0, 0, 0)));
+//    OGrandPrixBalloons::Spawn(FVector(0, 0, 0));
 }
 
 void TestCourse::WhatDoesThisDo(Player* player, int8_t playerId) {

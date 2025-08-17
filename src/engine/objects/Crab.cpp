@@ -26,22 +26,35 @@ extern "C" {
 
 size_t OCrab::_count = 0;
 
-OCrab::OCrab(const FVector2D& start, const FVector2D& end) {
+OCrab::OCrab(const SpawnParams& params) {
     Name = "Crab";
+    ResourceName = "mk:crab";
     _idx = _count;
-    _start = start;
-    _end = end;
+    _start = params.PatrolStart.value_or(FVector2D(0, 0));
+    _end = params.PatrolEnd.value_or(FVector2D(0, 0));
 
     find_unused_obj_index(&_objectIndex);
 
     init_object(_objectIndex, 0);
-    gObjectList[_objectIndex].pos[0] = gObjectList[_objectIndex].origin_pos[0] = start.x * xOrientation;
-    gObjectList[_objectIndex].pos[2] = gObjectList[_objectIndex].origin_pos[2] = start.z;
+    gObjectList[_objectIndex].pos[0] = gObjectList[_objectIndex].origin_pos[0] = _start.x * xOrientation;
+    gObjectList[_objectIndex].pos[2] = gObjectList[_objectIndex].origin_pos[2] = _start.z;
 
-    gObjectList[_objectIndex].unk_01C[0] = end.x * xOrientation;
-    gObjectList[_objectIndex].unk_01C[2] = end.z;
+    gObjectList[_objectIndex].unk_01C[0] = _end.x * xOrientation;
+    gObjectList[_objectIndex].unk_01C[2] = _end.z;
 
     _count++;
+}
+
+void OCrab::SetSpawnParams(SpawnParams& params) {
+    params.Name = "mk:crab";
+    params.PatrolStart = FVector2D(
+        gObjectList[_objectIndex].origin_pos[0],
+        gObjectList[_objectIndex].origin_pos[2]
+    );
+    params.PatrolEnd = FVector2D(
+        gObjectList[_objectIndex].unk_01C[0],
+        gObjectList[_objectIndex].unk_01C[2]
+    );
 }
 
 void OCrab::Tick(void) {

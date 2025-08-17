@@ -190,18 +190,16 @@ void RoyalRaceway::BeginPlay() {
     spawn_piranha_plants((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_royal_raceway_piranha_plant_spawn));
 
     if (gModeSelection == VERSUS) {
-        FVector pos = { 0, 0, 0 };
-
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][50], 50, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][100], 100, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][296], 296, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][400], 400, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][746], 746, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
+        OBombKart::Spawn(0, 50, 3, 0.8333333f);
+        OBombKart::Spawn(0, 100, 3, 0.8333333f);
+        OBombKart::Spawn(0, 296, 3, 0.8333333f);
+        OBombKart::Spawn(0, 400, 1, 0.8333333f);
+        OBombKart::Spawn(0, 746, 3, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
     }
     if (gGamestate != CREDITS_SEQUENCE) {
-        gWorldInstance.AddObject(new OGrandPrixBalloons(FVector(-64, 5, -330)));
+        OGrandPrixBalloons::Spawn(FVector(-64, 5, -330));
     }
 }
 

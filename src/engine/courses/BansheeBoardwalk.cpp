@@ -164,8 +164,8 @@ void BansheeBoardwalk::LoadTextures() {
 void BansheeBoardwalk::BeginPlay() {
     spawn_all_item_boxes((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_banshee_boardwalk_item_box_spawns));
 
-    gWorldInstance.AddObject(new OCheepCheep(FVector(xOrientation * -1650.0, -200.0f, -1650.0f),
-                                             OCheepCheep::CheepType::RACE, IPathSpan(160, 170)));
+    OCheepCheep::Spawn(FVector(xOrientation * -1650.0, -200.0f, -1650.0f),
+                                             OCheepCheep::Behaviour::RACE, IPathSpan(160, 170));
 
     OTrashBin::Behaviour bhv;
     if (gModeSelection == TIME_TRIALS) {
@@ -181,21 +181,19 @@ void BansheeBoardwalk::BeginPlay() {
     }
 
     if ((gGamestate != CREDITS_SEQUENCE) && (gModeSelection != TIME_TRIALS)) {
-        gWorldInstance.AddObject(new OBat(FVector(0,0,0), IRotator(0, 0, 90)));
-        gWorldInstance.AddObject(new OBoos(5, IPathSpan(180, 190), IPathSpan(200, 210), IPathSpan(280, 290)));
-        gWorldInstance.AddObject(new OBoos(5, IPathSpan(490, 500), IPathSpan(510, 520), IPathSpan(620, 630)));
+        OBat::Spawn(FVector(0,0,0), IRotator(0, 0, 90));
+        OBoos::Spawn(5, IPathSpan(180, 190), IPathSpan(200, 210), IPathSpan(280, 290));
+        OBoos::Spawn(5, IPathSpan(490, 500), IPathSpan(510, 520), IPathSpan(620, 630));
     }
 
     if (gModeSelection == VERSUS) {
-        FVector pos = { 0, 0, 0 };
-
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][110], 110, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][190], 190, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][250], 250, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][475], 475, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][610], 610, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
+        OBombKart::Spawn(0, 110, 3, 0.8333333f);
+        OBombKart::Spawn(0, 190, 1, 0.8333333f);
+        OBombKart::Spawn(0, 250, 3, 0.8333333f);
+        OBombKart::Spawn(0, 475, 1, 0.8333333f);
+        OBombKart::Spawn(0, 610, 3, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
     }
 }
 

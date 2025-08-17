@@ -49,8 +49,33 @@ class OBombKart : public OObject {
     f32 CenterY; // Center of the circle
     Collision _Collision;
 
+
+    // This is simply a helper function to keep Spawning code clean
+    // Spawn object at a position
+    static inline OBombKart* Spawn(FVector pos, uint16_t behaviour, f32 unk_3C) {
+        SpawnParams params = {
+            .Name = "mk:bomb_kart",
+            .Behaviour = behaviour,
+            .Location = pos,
+            .Speed = unk_3C, // Only used for podium ceremony. Arbitrarily chose Speed for this
+        };
+        return static_cast<OBombKart*>(gWorldInstance.AddObject(new OBombKart(params)));
+    }
+
+    // Spawn object at a point along the tracks path
+    static inline OBombKart* Spawn(uint32_t pathIndex, uint32_t pathPoint, uint16_t behaviour, f32 unk_3C) {
+        SpawnParams params = {
+            .Name = "mk:bomb_kart",
+            .Behaviour = behaviour,
+            .PathIndex = pathIndex,
+            .PathPoint = pathPoint,
+            .Speed = unk_3C, // Only used for podium ceremony. Arbitrarily chose Speed for this
+        };
+        return static_cast<OBombKart*>(gWorldInstance.AddObject(new OBombKart(params)));
+    }
+
     // Set waypoint to NULL if using a spawn position and not a waypoint.
-    explicit OBombKart(FVector pos, TrackPathPoint* waypoint, uint16_t waypointIndex, uint16_t behaviour, f32 unk_3C);
+    explicit OBombKart(const SpawnParams& params);
 
     ~OBombKart() {
         _count--;
@@ -60,6 +85,7 @@ class OBombKart : public OObject {
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void DrawBattle(s32 cameraId);

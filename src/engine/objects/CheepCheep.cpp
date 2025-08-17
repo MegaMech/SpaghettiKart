@@ -17,17 +17,18 @@ extern Vec3s D_800E634C[];
 extern Lights1 D_800E45C0[];
 }
 
-OCheepCheep::OCheepCheep(const FVector& pos, CheepType type, IPathSpan span) {
+OCheepCheep::OCheepCheep(const SpawnParams& params) {
     Name = "Cheep Cheep";
-    _type = type;
-    _spawnPos = pos;
-    _span = span;
+    ResourceName = "mk:cheep_cheep";
+    _behaviour = static_cast<Behaviour>(params.Behaviour.value_or(0));
+    _spawnPos = params.Location.value_or(FVector(0, 0, 0));
+    _span = params.PathSpan.value_or(IPathSpan(0, 0));
 }
 
 void OCheepCheep::Tick() { // update_cheep_cheep
     s32 objectIndex;
-    switch (_type) {
-        case CheepType::RACE:
+    switch (_behaviour) {
+        case Behaviour::RACE:
             UNUSED s32 pad;
 
             OCheepCheep::func_8007BD04(0);
@@ -35,7 +36,7 @@ void OCheepCheep::Tick() { // update_cheep_cheep
             OCheepCheep::func_8007BBBC(objectIndex);
             object_calculate_new_pos_offset(objectIndex);
             break;
-        case CheepType::PODIUM_CEREMONY:
+        case Behaviour::PODIUM_CEREMONY:
             objectIndex = indexObjectList2[0];
             if (D_801658BC == 1) {
                 D_801658BC = 0;
@@ -47,6 +48,18 @@ void OCheepCheep::Tick() { // update_cheep_cheep
             }
             break;
     }
+}
+
+void OCheepCheep::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:cheep_cheep";
+    params.Location = FVector(
+        object->origin_pos[0],
+        object->origin_pos[1],
+        object->origin_pos[2]
+    );
+    params.Behaviour = static_cast<int16_t>(_behaviour);
+    params.PathSpan = IPathSpan(_span.Start, _span.End);
 }
 
 void OCheepCheep::Draw(s32 cameraId) { // func_8005217C

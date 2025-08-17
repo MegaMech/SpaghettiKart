@@ -17,8 +17,10 @@ extern "C" {
 
 size_t OGrandPrixBalloons::_count = 0;
 
-OGrandPrixBalloons::OGrandPrixBalloons(const FVector& pos) {
-    Pos = pos;
+OGrandPrixBalloons::OGrandPrixBalloons(const SpawnParams& params) {
+    Name = "Grand Prix Balloons";
+    ResourceName = "mk:grand_prix_balloons";
+    Pos = params.Location.value_or(FVector(0, 0, 0));
 
     _active = 1;
     if (gPlayerCount == 1) {
@@ -35,6 +37,16 @@ OGrandPrixBalloons::OGrandPrixBalloons(const FVector& pos) {
         find_unused_obj_index(&gObjectParticle3[i]);
         init_object(gObjectParticle3[i], 0);
     }
+}
+
+void OGrandPrixBalloons::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:grand_prix_balloons";
+    params.Location = FVector(
+        object->pos[0],
+        object->pos[1],
+        object->pos[2]
+    );
 }
 
 void OGrandPrixBalloons::Tick() {

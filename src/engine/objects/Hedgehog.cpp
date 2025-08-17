@@ -15,22 +15,36 @@ extern "C" {
 
 size_t OHedgehog::_count = 0;
 
-OHedgehog::OHedgehog(const FVector& pos, const FVector2D& patrolPoint, s16 behaviour) {
+OHedgehog::OHedgehog(const SpawnParams& params) {
     Name = "Hedgehog";
+    ResourceName = "mk:hedgehog";
     _idx = _count;
-    _pos = pos;
+    Pos = params.Location.value_or(FVector(0, 0, 0));
+    FVector2D patrolPoint = params.PatrolEnd.value_or(FVector2D(0, 0));
 
     s32 objectId = indexObjectList2[_idx];
     _objectIndex = objectId;
     init_object(objectId, 0);
-    gObjectList[objectId].pos[0] = gObjectList[objectId].origin_pos[0] = pos.x * xOrientation;
-    gObjectList[objectId].pos[1] = gObjectList[objectId].surfaceHeight = pos.y + 6.0;
-    gObjectList[objectId].pos[2] = gObjectList[objectId].origin_pos[2] = pos.z;
-    gObjectList[objectId].unk_0D5 = (u8) behaviour;
+    gObjectList[objectId].pos[0] = gObjectList[objectId].origin_pos[0] = Pos.x * xOrientation;
+    gObjectList[objectId].pos[1] = gObjectList[objectId].surfaceHeight = Pos.y + 6.0;
+    gObjectList[objectId].pos[2] = gObjectList[objectId].origin_pos[2] = Pos.z;
+    gObjectList[objectId].unk_0D5 = (u8) params.Behaviour.value_or(0);
     gObjectList[objectId].unk_09C = patrolPoint.x * xOrientation;
     gObjectList[objectId].unk_09E = patrolPoint.z;
 
     _count++;
+}
+
+void OHedgehog::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:hedgehog";
+    params.Behaviour = object->unk_0D5;
+    params.Location = FVector(
+        object->pos[0],
+        object->pos[1],
+        object->pos[2]
+    );
+    params.PatrolEnd = FVector2D(object->unk_09C, object->unk_09E);
 }
 
 void OHedgehog::Tick() {

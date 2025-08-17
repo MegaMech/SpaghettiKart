@@ -25,7 +25,7 @@ public:
     static inline OHotAirBalloon* Spawn(FVector pos) {
         SpawnParams params = {
             .Name = "mk:hot_air_balloon",
-            .Location = FVector(pos.x, pos.y, pos.z),
+            .Location = pos,
         };
         return static_cast<OHotAirBalloon*>(gWorldInstance.AddObject(new OHotAirBalloon(params)));
     }

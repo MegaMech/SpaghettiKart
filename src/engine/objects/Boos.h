@@ -36,7 +36,19 @@ extern "C" {
  */
 class OBoos : public OObject {
 public:
-    explicit OBoos(size_t numBoos, const IPathSpan& leftBoundary, const IPathSpan& active, const IPathSpan& rightBoundary);
+    // This is simply a helper function to keep Spawning code clean
+    static inline OBoos* Spawn(size_t numBoos, const IPathSpan& leftBoundary, const IPathSpan& triggerBoundary, const IPathSpan& rightBoundary) {
+        SpawnParams params = {
+            .Name = "mk:boos",
+            .Count = numBoos,
+            .LeftExitSpan = leftBoundary,
+            .TriggerSpan = triggerBoundary,
+            .RightExitSpan = rightBoundary,
+        };
+        return static_cast<OBoos*>(gWorldInstance.AddObject(new OBoos(params)));
+    }
+
+    explicit OBoos(const SpawnParams& params);
 
     ~OBoos() {
         _count--;
@@ -46,6 +58,7 @@ public:
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void func_800523B8(s32 objectIndex, s32 arg1, u32 arg2);

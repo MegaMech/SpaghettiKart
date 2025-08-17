@@ -19,8 +19,13 @@ const char* sBoardwalkTexList[] = { gTextureBat1, gTextureBat2, gTextureBat3, gT
 
 size_t OBat::_count = 0;
 
-OBat::OBat(const FVector& pos, const IRotator& rot) {
+OBat::OBat(const SpawnParams& params) {
     Name = "Bat";
+    ResourceName = "mk:bat";
+
+    //! @warning this likely needs to be rot.Set()
+    IRotator rot = params.Rotation.value_or(IRotator(0, 0, 0));
+
     find_unused_obj_index(&_objectIndex);
 
     init_texture_object(_objectIndex, (uint8_t*) d_course_banshee_boardwalk_bat_tlut, sBoardwalkTexList, 0x20U,
@@ -30,6 +35,19 @@ OBat::OBat(const FVector& pos, const IRotator& rot) {
     gObjectList[_objectIndex].orientation[2] = rot.yaw; // 0x8000
 
     _count++;
+}
+
+void OBat::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:bat";
+    //params.Location = Pos;
+    IRotator rot;
+    rot.Set(
+        object->orientation[0],
+        object->orientation[1],
+        object->orientation[2]
+    );
+    params.Rotation = rot;
 }
 
 void OBat::Tick() {

@@ -23,12 +23,16 @@ extern "C" {
 
 size_t OBoos::_count = 0;
 
-OBoos::OBoos(size_t numBoos, const IPathSpan& leftBoundary, const IPathSpan& active, const IPathSpan& rightBoundary) {
+OBoos::OBoos(const SpawnParams& params) {
     Name = "Boos";
+    ResourceName = "mk:boos";
+
+    size_t numBoos = params.Count.value_or(5);
+
     // Max five boos allowed due to limited splines
     // D_800E5D9C
     if (numBoos > 10) {
-        printf("Boos.cpp: Only 10 boos allowed.\n");
+        printf("[Boos.cpp] Only 10 boos allowed.\n");
         numBoos = 10;
     }
 
@@ -40,9 +44,17 @@ OBoos::OBoos(size_t numBoos, const IPathSpan& leftBoundary, const IPathSpan& act
     }
 
     _numBoos = numBoos;
-    _leftBoundary = leftBoundary;
-    _active = active;
-    _rightBoundary = rightBoundary;
+    _leftBoundary = params.LeftExitSpan.value_or(IPathSpan(0, 10));
+    _active = params.TriggerSpan.value_or(IPathSpan(30, 50));
+    _rightBoundary = params.RightExitSpan.value_or(IPathSpan(80, 100));
+}
+
+void OBoos::SetSpawnParams(SpawnParams& params) {
+    params.Name = "mk:boos";
+    params.Count = _numBoos;
+    params.LeftExitSpan = _leftBoundary;
+    params.TriggerSpan = _active;
+    params.RightExitSpan = _rightBoundary;
 }
 
 void OBoos::Tick() {

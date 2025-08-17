@@ -218,15 +218,13 @@ void KalimariDesert::BeginPlay() {
         }
 
         if (gModeSelection == VERSUS) {
-            FVector pos = { 0, 0, 0 };
-
-            gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][50], 50, 3, 0.8333333f));
-            gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][138], 138, 1, 0.8333333f));
-            gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][280], 280, 3, 0.8333333f));
-            gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][404], 404, 1, 0.8333333f));
-            gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][510], 510, 3, 0.8333333f));
-            gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
-            gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
+            OBombKart::Spawn(0, 50, 3, 0.8333333f);
+            OBombKart::Spawn(0, 138, 1, 0.8333333f);
+            OBombKart::Spawn(0, 280, 3, 0.8333333f);
+            OBombKart::Spawn(0, 404, 1, 0.8333333f);
+            OBombKart::Spawn(0, 510, 3, 0.8333333f);
+            OBombKart::Spawn(0, 0, 0, 0.8333333f);
+            OBombKart::Spawn(0, 0, 0, 0.8333333f);
         }
     }
 }

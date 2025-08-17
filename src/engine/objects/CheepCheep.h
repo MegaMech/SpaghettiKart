@@ -18,18 +18,25 @@ extern "C" {
 
 class OCheepCheep : public OObject {
 public:
-    enum CheepType {
+    enum class Behaviour : int16_t {
         RACE,
         PODIUM_CEREMONY
     };
 
-    enum Behaviour : uint16_t {
-    };
+    // This is simply a helper function to keep Spawning code clean
+    static inline OCheepCheep* Spawn(const FVector& pos, Behaviour behaviour, IPathSpan span) {
+        SpawnParams params = {
+            .Name = "mk:cheep_cheep",
+            .Behaviour = static_cast<int16_t>(behaviour),
+            .Location = pos,
+            .PathSpan = span,
+        };
+        return static_cast<OCheepCheep*>(gWorldInstance.AddObject(new OCheepCheep(params)));
+    }
 
-public:
+    explicit OCheepCheep(const SpawnParams& params);
 
-    explicit OCheepCheep(const FVector& pos, CheepType type, IPathSpan span);
-
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void func_8007BBBC(s32 objectIndex);
@@ -41,7 +48,7 @@ public:
 private:
 
     s32 _idx;
-    CheepType _type;
+    Behaviour _behaviour;
     FVector _spawnPos;
     IPathSpan _span;
 

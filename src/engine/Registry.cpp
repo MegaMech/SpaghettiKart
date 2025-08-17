@@ -5,9 +5,7 @@
 #include "Registry.h"
 #include "engine/CoreMath.h"
 
-#include "engine/objects/Thwomp.h"
-#include "engine/objects/Snowman.h"
-#include "engine/objects/HotAirBalloon.h"
+#include "AllActors.h"
 
 extern "C" {
 #include "actors.h"
@@ -53,6 +51,54 @@ void RegisterGameActors() {
     RegisterActor("mk:hot_air_balloon",
         [](const SpawnParams& params) {
             gWorldInstance.AddObject(new OHotAirBalloon(params));
+        }
+    );
+
+    RegisterActor("mk:hedgehog",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OHedgehog(params));
+        }
+    );
+
+    RegisterActor("mk:grand_prix_balloons",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OGrandPrixBalloons(params));
+        }
+    );
+
+    RegisterActor("mk:flagpole",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OFlagpole(params));
+        }
+    );
+
+    RegisterActor("mk:crab",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OCrab(params));
+        }
+    );
+
+    RegisterActor("mk:cheep_cheep",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OCheepCheep(params));
+        }
+    );
+
+    RegisterActor("mk:bomb_kart",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OBombKart(params));
+        }
+    );
+
+    RegisterActor("mk:bat",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OBat(params));
+        }
+    );
+
+    RegisterActor("mk:boos",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddObject(new OBoos(params));
         }
     );
 }

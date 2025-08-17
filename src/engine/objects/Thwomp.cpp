@@ -93,7 +93,8 @@ void OThwomp::SetSpawnParams(SpawnParams& params) {
         object->origin_pos[1],
         object->origin_pos[2]
     );
-    params.Rotation = IRotator(0, object->orientation[1], 0);
+    IRotator rot; rot.Set(0, object->orientation[1], 0);
+    params.Rotation = rot;
     params.Scale = FVector(0, object->sizeScaling, 0);
     params.Behaviour = object->unk_0D5;
     params.PrimAlpha = object->primAlpha;

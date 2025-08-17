@@ -29,53 +29,73 @@ extern s8 gPlayerCount;
 
 size_t OBombKart::_count = 0;
 
-OBombKart::OBombKart(FVector pos, TrackPathPoint* waypoint, uint16_t waypointIndex, uint16_t behaviour, f32 unk_3C) {
+OBombKart::OBombKart(const SpawnParams& params) {
     Name = "Bomb Kart";
-    _idx = _count;
-    Vec3f _pos = {0, 0, 0};
+    ResourceName = "mk:bomb_kart";
 
-    if (waypoint) { // Spawn kart on waypoint
-        _pos[0] = waypoint->posX;
-        _pos[1] = waypoint->posY;
-        _pos[2] = waypoint->posZ;
-    } else { // Spawn kart on a surface with the provided position
+    _idx = _count;
+    uint32_t pathIndex = params.PathIndex.value_or(0);
+    uint32_t pathPoint = params.PathPoint.value_or(0);
+    FVector constPos;
+
+    // Spawn kart on a surface with the provided position
+    if (params.Location.has_value()) {
+        constPos = params.Location.value();
 
         // Set height to the default value of 2000.0f unless Pos[1] is higher.
         // This allows placing these on very high surfaces.
-        f32 height = (pos.y > 2000.0f) ? pos.y : 2000.0f;
-        _pos[0] = pos.x;
-        _pos[1] = spawn_actor_on_surface(pos.x, height, pos.z);
-        _pos[2] = pos.z;
+        f32 height = (constPos.y > 2000.0f) ? constPos.y : 2000.0f;
+        //constPos.x = pos.x;
+        constPos.y = spawn_actor_on_surface(constPos.x, height, constPos.z);
+        //constPos.z = pos.z;
+    } else { // Spawn kart on waypoint
+        constPos.x = gTrackPaths[pathIndex][pathPoint].posX;
+        constPos.y = gTrackPaths[pathIndex][pathPoint].posY;
+        constPos.z = gTrackPaths[pathIndex][pathPoint].posZ;
     }
 
-    WaypointIndex = waypointIndex;
-    Unk_3C = unk_3C;
-    State = static_cast<States>(behaviour);
+    WaypointIndex = params.PathPoint.value_or(0);
+    Unk_3C = params.Speed.value_or(0);
+    State = static_cast<States>(params.Behaviour.value_or(0));
 
-    Pos[0] = _pos[0];
-    Pos[1] = _pos[1];
-    Pos[2] = _pos[2];
-    _spawnPos[0] = _pos[0];
-    _spawnPos[1] = _pos[1];
-    _spawnPos[2] = _pos[2];
-    CenterY = _pos[1];
-    WheelPos[0][0] = _pos[0];
-    WheelPos[0][1] = _pos[1];
-    WheelPos[0][2] = _pos[2];
-    WheelPos[1][0] = _pos[0];
-    WheelPos[1][1] = _pos[1];
-    WheelPos[1][2] = _pos[2];
-    WheelPos[2][0] = _pos[0];
-    WheelPos[2][1] = _pos[1];
-    WheelPos[2][2] = _pos[2];
-    WheelPos[3][0] = _pos[0];
-    WheelPos[3][1] = _pos[1];
-    WheelPos[3][2] = _pos[2];
-    check_bounding_collision(&_Collision, 2.0f, _pos[0], _pos[1], _pos[2]);
+    Pos[0] = constPos.x;
+    Pos[1] = constPos.y;
+    Pos[2] = constPos.z;
+    _spawnPos[0] = constPos.x;
+    _spawnPos[1] = constPos.y;
+    _spawnPos[2] = constPos.z;
+    CenterY = constPos.y;
+    WheelPos[0][0] = constPos.x;
+    WheelPos[0][1] = constPos.y;
+    WheelPos[0][2] = constPos.z;
+    WheelPos[1][0] = constPos.x;
+    WheelPos[1][1] = constPos.y;
+    WheelPos[1][2] = constPos.z;
+    WheelPos[2][0] = constPos.x;
+    WheelPos[2][1] = constPos.y;
+    WheelPos[2][2] = constPos.z;
+    WheelPos[3][0] = constPos.x;
+    WheelPos[3][1] = constPos.y;
+    WheelPos[3][2] = constPos.z;
+    check_bounding_collision(&_Collision, 2.0f, constPos.x, constPos.y, constPos.z);
 
     find_unused_obj_index(&_objectIndex);
 
     _count++;
+}
+
+void OBombKart::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = "mk:bomb_kart";
+    params.Location = FVector(
+        _spawnPos[0],
+        _spawnPos[1],
+        _spawnPos[2]
+    );
+    params.Behaviour = State;
+    params.PathPoint = WaypointIndex;
+    params.Speed = Unk_3C;
+
 }
 
 void OBombKart::Tick() {

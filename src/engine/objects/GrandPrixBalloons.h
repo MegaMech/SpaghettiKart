@@ -25,7 +25,16 @@ extern "C" {
 class OGrandPrixBalloons : public OObject {
 public:
 
-    explicit OGrandPrixBalloons(const FVector& pos);
+    explicit OGrandPrixBalloons(const SpawnParams& params);
+
+    // This is simply a helper function to keep Spawning code clean
+    static inline OGrandPrixBalloons* Spawn(const FVector& pos) {
+        SpawnParams params = {
+            .Name = "mk:grand_prix_balloons",
+            .Location = pos,
+        };
+        return static_cast<OGrandPrixBalloons*>(gWorldInstance.AddObject(new OGrandPrixBalloons(params)));
+    }
 
     ~OGrandPrixBalloons() {
         _count--;
@@ -35,6 +44,7 @@ public:
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void func_80053D74(s32 objectIndex, UNUSED s32 arg1, s32 vertexIndex);

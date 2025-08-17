@@ -185,19 +185,17 @@ void LuigiRaceway::BeginPlay() {
         OHotAirBalloon::Spawn(FVector(-1250.0f, 0.0f, 1110.0f));
     } else { // Normal gameplay
         OHotAirBalloon::Spawn(FVector(-176.0, 0.0f, -2323.0f));
-        gWorldInstance.AddObject(new OGrandPrixBalloons(FVector(-140, -44, -215)));
+        OGrandPrixBalloons::Spawn(FVector(-140, -44, -215));
     }
 
     if (gModeSelection == VERSUS) {
-        FVector pos = { 0, 0, 0 };
-
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][50], 50, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][200], 200, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][305], 305, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][440], 440, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][515], 515, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
+        OBombKart::Spawn(0, 50, 1, 0.8333333f);
+        OBombKart::Spawn(0, 200, 3, 0.8333333f);
+        OBombKart::Spawn(0, 305, 1, 0.8333333f);
+        OBombKart::Spawn(0, 440, 3, 0.8333333f);
+        OBombKart::Spawn(0, 515, 3, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
     }
 }
 

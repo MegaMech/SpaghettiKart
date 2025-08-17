@@ -124,14 +124,14 @@ namespace Editor {
     };
 
     std::unordered_map<std::string, std::function<OObject*(const FVector&)>> ObjectList = {
-        { "Bat", [](const FVector& pos) { return new OBat(pos, IRotator(0, 0, 0)); } },
-        { "Bomb Kart", [](const FVector& pos) { return new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f); } },
-        // { "Boos", [](const FVector& pos) { return new OBoos(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f); } },
-        { "CheepCheep", [](const FVector& pos) { return new OCheepCheep(pos, OCheepCheep::CheepType::RACE, IPathSpan(0, 10)); } },
-        { "Crab", [](const FVector& pos) { return new OCrab(FVector2D(0, 10), FVector2D(20, 10)); } },
+        { "Bat", [](const FVector& pos) { return OBat::Spawn(pos, IRotator(0, 0, 0)); } },
+        { "Bomb Kart", [](const FVector& pos) { return OBombKart::Spawn(pos, 1, 0.8333333f); } },
+        { "Boos", [](const FVector& pos) { return OBoos::Spawn(5, IPathSpan(0, 50), IPathSpan(60, 90), IPathSpan(100, 140)); } },
+        { "CheepCheep", [](const FVector& pos) { return OCheepCheep::Spawn(pos, OCheepCheep::Behaviour::RACE, IPathSpan(0, 10)); } },
+        { "Crab", [](const FVector& pos) { return OCrab::Spawn(FVector2D(pos.x, pos.z), FVector2D(pos.x + 100, pos.z + 100)); } },
         { "ChainChomp", [](const FVector& pos) { return new OChainChomp(); } },
-        { "Flagpole", [](const FVector& pos) { return new OFlagpole(pos, 0); } },
-        { "Hedgehog", [](const FVector& pos) { return new OHedgehog(pos, FVector2D(0, 10), 0); } },
+        { "Flagpole", [](const FVector& pos) { return OFlagpole::Spawn(pos, 0); } },
+        { "Hedgehog", [](const FVector& pos) { return OHedgehog::Spawn(pos, FVector2D(0, 10), 0); } },
         { "HotAirBalloon", [](const FVector& pos) { return OHotAirBalloon::Spawn(pos); } },
         { "Lakitu", [](const FVector& pos) { return new OLakitu(0, OLakitu::LakituType::STARTER); } },
         // { "Mole", [](const FVector& pos) { return new OMole(pos, ); } }, // <-- Needs a group
@@ -139,12 +139,12 @@ namespace Editor {
         { "Penguin", [](const FVector& pos) { return new OPenguin(pos, 0, OPenguin::PenguinType::ADULT, OPenguin::Behaviour::CIRCLE); } },
         { "Emperor Penguin", [](const FVector& pos) { return new OPenguin(pos, 0, OPenguin::PenguinType::EMPEROR, OPenguin::Behaviour::STRUT); } },
         { "Seagull", [](const FVector& pos) { return new OSeagull(pos); } },
-        { "Thwomp", [](const FVector& pos) { return OThwomp::Spawn(pos.x, pos.z, 0, 1.0f, 0, 0, 7); } },
+        { "Thwomp", [](const FVector& pos) { return OThwomp::Spawn(pos.x, pos.z, 0, 1.0f, 1, 0, 7); } },
         { "Trashbin", [](const FVector& pos) { return new OTrashBin(pos, IRotator(0, 0, 0), 1.0f, OTrashBin::Behaviour::MUNCHING); } },
         { "Trophy", [](const FVector& pos) { return new OTrophy(pos, OTrophy::TrophyType::GOLD_150, OTrophy::Behaviour::ROTATE2); } },
         { "Snowman", [](const FVector& pos) { return OSnowman::Spawn(pos); } },
         { "Podium", [](const FVector& pos) { return new OPodium(pos); } },
-        { "Balloons", [](const FVector& pos) { return new OGrandPrixBalloons(pos); } },
+        { "Balloons", [](const FVector& pos) { return OGrandPrixBalloons::Spawn(pos); } },
     };
 
     void ContentBrowserWindow::AddTrackContent() {

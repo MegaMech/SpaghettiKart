@@ -175,7 +175,7 @@ void PodiumCeremony::BeginPlay() {
     spawn_all_item_boxes((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_royal_raceway_item_box_spawns));
     spawn_piranha_plants((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_royal_raceway_piranha_plant_spawn));
 
-    gWorldInstance.AddObject(new OCheepCheep(FVector((f32)-3202, (f32)19, (f32)-478), OCheepCheep::CheepType::PODIUM_CEREMONY, IPathSpan(0, 0)));
+    OCheepCheep::Spawn(FVector((f32)-3202, (f32)19, (f32)-478), OCheepCheep::Behaviour::PODIUM_CEREMONY, IPathSpan(0, 0));
     gWorldInstance.AddObject(new OPodium(FVector((f32)-3202, (f32)19, (f32)-478)));
     
     FVector pos = {0, 90.0f, 0};
@@ -199,17 +199,16 @@ void PodiumCeremony::BeginPlay() {
 
     OTrophy* trophy = reinterpret_cast<OTrophy*>(gWorldInstance.AddObject(new OTrophy(pos, type, OTrophy::Behaviour::PODIUM_CEREMONY)));
 
-    FVector kart = { 0, 0, 0 };
-    gWorldInstance.AddObject(new OBombKart(kart, &gTrackPaths[3][3], 3, OBombKart::States::PODIUM_CEREMONY, 1.25f));
-    gWorldInstance.AddObject(new OBombKart(kart, &gTrackPaths[3][40], 40, 0, 1.0f));
-    gWorldInstance.AddObject(new OBombKart(kart, &gTrackPaths[3][60], 60, 0, 1.0f));
-    gWorldInstance.AddObject(new OBombKart(kart, &gTrackPaths[3][80], 80, 0, 1.0f));
-    gWorldInstance.AddObject(new OBombKart(kart, &gTrackPaths[3][100], 100, 0, 1.0f));
-    gWorldInstance.AddObject(new OBombKart(kart, &gTrackPaths[3][120], 120, 0, 1.0f));
-    gWorldInstance.AddObject(new OBombKart(kart, &gTrackPaths[3][140], 140, 0, 1.0f));
+    OBombKart::Spawn(3, 3, OBombKart::States::PODIUM_CEREMONY, 1.25f);
+    OBombKart::Spawn(3, 40, 0, 1.0f);
+    OBombKart::Spawn(3, 60, 0, 1.0f);
+    OBombKart::Spawn(3, 80, 0, 1.0f);
+    OBombKart::Spawn(3, 100, 0, 1.0f);
+    OBombKart::Spawn(3, 120, 0, 1.0f);
+    OBombKart::Spawn(3, 140, 0, 1.0f);
 
     if (gGamestate != CREDITS_SEQUENCE) {
-        gWorldInstance.AddObject(new OGrandPrixBalloons(FVector(-64, 5, -330)));
+        OGrandPrixBalloons::Spawn(FVector(-64, 5, -330));
     }
 }
 

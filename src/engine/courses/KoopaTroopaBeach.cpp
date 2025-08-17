@@ -165,16 +165,16 @@ void KoopaTroopaBeach::BeginPlay() {
     spawn_palm_trees((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_koopa_troopa_beach_tree_spawn));
 
     if (gGamestate != CREDITS_SEQUENCE) {
-        gWorldInstance.AddObject(new OCrab(FVector2D(-1809, 625), FVector2D(-1666, 594)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(-1852, 757), FVector2D(-1620, 740)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(-1478, 1842), FVector2D(-1453, 1833)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(-1418, 1967), FVector2D(-1455, 1962)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(-1472, 2112), FVector2D(-1417, 2100)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(-1389, 2152), FVector2D(-1335, 2136)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(218, 693), FVector2D(69, 696)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(235, 528), FVector2D(24, 501)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(268, 406), FVector2D(101, 394)));
-        gWorldInstance.AddObject(new OCrab(FVector2D(223, 318), FVector2D(86, 308)));
+        OCrab::Spawn(FVector2D(-1809, 625), FVector2D(-1666, 594));
+        OCrab::Spawn(FVector2D(-1852, 757), FVector2D(-1620, 740));
+        OCrab::Spawn(FVector2D(-1478, 1842), FVector2D(-1453, 1833));
+        OCrab::Spawn(FVector2D(-1418, 1967), FVector2D(-1455, 1962));
+        OCrab::Spawn(FVector2D(-1472, 2112), FVector2D(-1417, 2100));
+        OCrab::Spawn(FVector2D(-1389, 2152), FVector2D(-1335, 2136));
+        OCrab::Spawn(FVector2D(218, 693), FVector2D(69, 696));
+        OCrab::Spawn(FVector2D(235, 528), FVector2D(24, 501));
+        OCrab::Spawn(FVector2D(268, 406), FVector2D(101, 394));
+        OCrab::Spawn(FVector2D(223, 318), FVector2D(86, 308));
     }
 
     if (gGamestate == CREDITS_SEQUENCE) {
@@ -192,15 +192,13 @@ void KoopaTroopaBeach::BeginPlay() {
     }
 
     if (gModeSelection == VERSUS) {
-        FVector pos = { 0, 0, 0 };
-
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][60], 60, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][120], 120, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][200], 200, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][280], 280, 1, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][435], 435, 3, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
-        gWorldInstance.AddObject(new OBombKart(pos, &gTrackPaths[0][0], 0, 0, 0.8333333f));
+        OBombKart::Spawn(0, 60, 1, 0.8333333f);
+        OBombKart::Spawn(0, 120, 1, 0.8333333f);
+        OBombKart::Spawn(0, 200, 3, 0.8333333f);
+        OBombKart::Spawn(0, 280, 1, 0.8333333f);
+        OBombKart::Spawn(0, 435, 3, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
+        OBombKart::Spawn(0, 0, 0, 0.8333333f);
     }
 }
 

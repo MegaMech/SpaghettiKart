@@ -24,7 +24,18 @@ extern "C" {
  */
 class OHedgehog : public OObject {
 public:
-    explicit OHedgehog(const FVector& pos, const FVector2D& patrolPoint, s16 behaviour);
+    explicit OHedgehog(const SpawnParams& params);
+
+    // This is simply a helper function to keep Spawning code clean
+    static inline OHedgehog* Spawn(const FVector& pos, const FVector2D& patrolPoint, s16 behaviour) {
+        SpawnParams params = {
+            .Name = "mk:hedgehog",
+            .Behaviour = behaviour,
+            .Location = pos,
+            .PatrolEnd = patrolPoint,
+        };
+        return static_cast<OHedgehog*>(gWorldInstance.AddObject(new OHedgehog(params)));
+    }
 
     ~OHedgehog() {
         _count--;
@@ -34,6 +45,7 @@ public:
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
 
@@ -47,7 +59,7 @@ public:
 
 
 private:
-    FVector _pos;
+    FVector Pos;
     static size_t _count;
     size_t _idx;
 };
