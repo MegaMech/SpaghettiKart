@@ -6,6 +6,7 @@
 #include "MarioRaceway.h"
 #include "World.h"
 #include "engine/actors/Finishline.h"
+#include "engine/actors/MarioSign.h"
 #include "engine/objects/Object.h"
 #include "engine/objects/BombKart.h"
 #include "engine/objects/GrandPrixBalloons.h"
@@ -197,12 +198,9 @@ void MarioRaceway::BeginPlay() {
     spawn_foliage((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_mario_raceway_tree_spawns));
     spawn_piranha_plants((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_mario_raceway_piranha_plant_spawns));
     spawn_all_item_boxes((struct ActorSpawnData*)LOAD_ASSET_RAW(d_course_mario_raceway_item_box_spawns));
-    vec3f_set(position, 150.0f, 40.0f, -1300.0f);
-    position[0] *= gCourseDirection;
-    add_actor_to_empty_slot(position, rotation, velocity, ACTOR_MARIO_SIGN);
-    vec3f_set(position, 2520.0f, 0.0f, 1240.0f);
-    position[0] *= gCourseDirection;
-    add_actor_to_empty_slot(position, rotation, velocity, ACTOR_MARIO_SIGN);
+
+    AMarioSign::Spawn(FVector(150.0f, 40.0f, -1300.0f), IRotator(0, 0, 0), FVector(0, 0, 0), FVector(1.0f, 1.0f, 1.0f));
+    AMarioSign::Spawn(FVector(2520.0f, 0.0f, 1240.0f), IRotator(0, 0, 0), FVector(0, 0, 0), FVector(1.0f, 1.0f, 1.0f));
 
     if (gModeSelection == VERSUS) {
         OBombKart::Spawn(0, 40, 3, 0.8333333f);

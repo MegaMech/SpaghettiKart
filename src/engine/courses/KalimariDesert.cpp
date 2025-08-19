@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "KalimariDesert.h"
-#include "World.h"
+#include "engine/World.h"
 #include "engine/actors/Finishline.h"
 #include "engine/objects/BombKart.h"
 #include "kalimari_desert_data.h"
@@ -214,7 +214,7 @@ void KalimariDesert::BeginPlay() {
                 }
             }
 
-            gWorldInstance.AddActor(new ATrain(_tender, _numCarriages, 2.5f, waypoint));
+            ATrain::Spawn(_tender, _numCarriages, 2.5f, waypoint);
         }
 
         if (gModeSelection == VERSUS) {

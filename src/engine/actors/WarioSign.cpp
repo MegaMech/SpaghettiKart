@@ -8,14 +8,52 @@ extern "C" {
 #include "math_util.h"
 #include "main.h"
 #include "actor_types.h"
+#include "code_800029B0.h"
+#include "collision.h"
 }
 
-AWarioSign::AWarioSign(FVector pos) {
+AWarioSign::AWarioSign(const SpawnParams& params) {
     Type = ACTOR_WARIO_SIGN;
     Name = "Wario Sign";
-    Pos[0] = pos.x;
+    ResourceName = "mk:wario_sign";
+
+    FVector pos = params.Location.value_or(FVector(0, 0, 0));
+    Pos[0] = pos.x * gCourseDirection;
     Pos[1] = pos.y;
     Pos[2] = pos.z;
+
+    IRotator rot = params.Rotation.value_or(IRotator(0, 0, 0));
+    Rot[0] = rot.pitch;
+    Rot[1] = rot.yaw;
+    Rot[2] = rot.roll;
+
+    Scale = params.Scale.value_or(FVector(1.0f, 1.0f, 1.0f));
+
+    func_802AAAAC(&Unk30);
+    Flags = -0x8000;
+}
+
+bool AWarioSign::IsMod() {
+    return true;
+}
+
+void AWarioSign::SetSpawnParams(SpawnParams& params) {
+    params.Name = "mk:wario_sign";
+    params.Location = FVector(
+        Pos[0],
+        Pos[1],
+        Pos[2]
+    );
+
+    IRotator rot;
+    rot.Set(
+        Rot[0],
+        Rot[1],
+        Rot[2]
+    );
+    params.Rotation = rot;
+
+    params.Scale = Scale;
 }
 
 void AWarioSign::Tick() {

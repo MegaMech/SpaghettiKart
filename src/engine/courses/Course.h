@@ -84,8 +84,8 @@ typedef struct Properties {
     Vec4f NormalTargetSpeed;
     Vec4f D_0D0096B8;
     Vec4f OffTrackTargetSpeed;
-    TrackPathPoint* PathTable[4];
-    TrackPathPoint* PathTable2[4];
+    TrackPathPoint* PathTable[4]; // Only used for podium ceremony
+    TrackPathPoint* PathTable2[5]; // The fifth entry is for vehicles
     uint8_t* CloudTexture;
     CloudData *Clouds;
     CloudData *CloudList;

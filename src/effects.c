@@ -1711,15 +1711,15 @@ void func_80090178(Player* player, s8 playerId, Vec3f arg2, Vec3f arg3) {
     if (IsYoshiValley()) {
         test = player->nearestPathPointId;
         temp_v1 = &gTrackPaths[gCopyPathIndexByPlayerId[playerId]][test];
-        arg2[0] = temp_v1->posX;
-        arg2[1] = temp_v1->posY;
-        arg2[2] = temp_v1->posZ;
+        arg2[0] = temp_v1->X;
+        arg2[1] = temp_v1->Y;
+        arg2[2] = temp_v1->Z;
         temp_v1 = &gTrackPaths[gCopyPathIndexByPlayerId[playerId]]
                               [(player->nearestPathPointId + 5) %
                                (gPathCountByPathIndex[gCopyPathIndexByPlayerId[playerId]] + 1)];
-        arg3[0] = temp_v1->posX;
-        arg3[1] = temp_v1->posY;
-        arg3[2] = temp_v1->posZ;
+        arg3[0] = temp_v1->X;
+        arg3[1] = temp_v1->Y;
+        arg3[2] = temp_v1->Z;
     } else if (IsBlockFort()) {
         arg2[0] = spF8[playerId];
         arg2[1] = 0.0f;
@@ -1751,13 +1751,13 @@ void func_80090178(Player* player, s8 playerId, Vec3f arg2, Vec3f arg3) {
     } else {
         test = player->nearestPathPointId;
         temp_v1 = &gTrackPaths[0][test];
-        arg2[0] = temp_v1->posX;
-        arg2[1] = temp_v1->posY;
-        arg2[2] = temp_v1->posZ;
+        arg2[0] = temp_v1->X;
+        arg2[1] = temp_v1->Y;
+        arg2[2] = temp_v1->Z;
         temp_v1 = &gTrackPaths[0][(player->nearestPathPointId + 5) % (gPathCountByPathIndex[0] + 1)];
-        arg3[0] = temp_v1->posX;
-        arg3[1] = temp_v1->posY;
-        arg3[2] = temp_v1->posZ;
+        arg3[0] = temp_v1->X;
+        arg3[1] = temp_v1->Y;
+        arg3[2] = temp_v1->Z;
     }
 }
 
@@ -1925,9 +1925,9 @@ void func_80090970(Player* player, s8 playerId, s8 arg2) {
             }
             if (player->unk_0C8 == 0x00FC) {
                 waypoint = gTrackPaths[0];
-                player->pos[0] = waypoint->posX;
-                player->pos[1] = waypoint->posY;
-                player->pos[2] = waypoint->posZ;
+                player->pos[0] = waypoint->X;
+                player->pos[1] = waypoint->Y;
+                player->pos[2] = waypoint->Z;
             }
             move_f32_towards(&player->pos[1], (player->unk_074 + player->boundingBoxSize) - 2.0f, 0.04f);
             player->unk_0C8++;

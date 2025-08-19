@@ -26,6 +26,7 @@
 extern "C" {
 #include "common_structs.h"
 #include "actors.h"
+#include "actor_types.h"
 }
 
 namespace Editor {
@@ -177,12 +178,26 @@ namespace Editor {
 
     void SaveActors(nlohmann::json& actorList) {
         for (const auto& actor : gWorldInstance.Actors) {
-            if (actor->Type == 12) { // itembox
-                SpawnParams params{};
-                params.Name = get_actor_resource_location_name(actor->Type);
-                params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
+            SpawnParams params{};
 
-                actorList.push_back(params);
+            // Only some actors are supported for saving.
+            // Bananas and stuff don't make sense to be saved.
+            switch(actor->Type) {
+                case ACTOR_ITEM_BOX:
+                    params.Name = get_actor_resource_location_name(actor->Type);
+                    params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
+                    actorList.push_back(params);
+                    break;
+                case ACTOR_MARIO_SIGN:
+                case ACTOR_WARIO_SIGN:
+                    actor->SetSpawnParams(params);
+                    actorList.push_back(params);
+                    break;
+                case ACTOR_YOSHI_EGG:
+                    params.Name = get_actor_resource_location_name(actor->Type);
+                    params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
+                    actorList.push_back(params);
+                    break;
             }
         }
 

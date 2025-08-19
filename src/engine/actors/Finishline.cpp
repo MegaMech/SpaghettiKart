@@ -31,9 +31,9 @@ AFinishline::AFinishline(std::optional<FVector> pos) {
         Pos[2] = D_8015F8D0[2] = pos.value().z;
     } else {
         // Set spawn point to the tracks first path point.
-        Pos[0] = D_8015F8D0[0] = gCurrentTrackPath->posX;
-        Pos[1] = D_8015F8D0[1] = (f32) (gCurrentTrackPath->posY - 15);
-        Pos[2] = D_8015F8D0[2] = gCurrentTrackPath->posZ;
+        Pos[0] = D_8015F8D0[0] = gCurrentTrackPath->X;
+        Pos[1] = D_8015F8D0[1] = (f32) (gCurrentTrackPath->Y - 15);
+        Pos[2] = D_8015F8D0[2] = gCurrentTrackPath->Z;
     }
 
     Rot[0] = 0;

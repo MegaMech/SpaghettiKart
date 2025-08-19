@@ -18,7 +18,7 @@ size_t ABoat::_count = 0;
 
 ABoat::ABoat(f32 speed, u32 waypoint) {
     Name = "Paddle Steam Boat";
-    Path2D* temp_a2;
+    TrackPathPoint* temp_a2;
     u16 waypointOffset;
     Index = _count;
     Speed = speed;
@@ -28,9 +28,9 @@ ABoat::ABoat(f32 speed, u32 waypoint) {
 
     waypointOffset = waypoint;
     temp_a2 = &gVehicle2DPathPoint[waypointOffset];
-    Position[0] = temp_a2->x;
+    Position[0] = temp_a2->X;
     Position[1] = D_80162EB2;
-    Position[2] = temp_a2->z;
+    Position[2] = temp_a2->Z;
     WaypointIndex = Index * 0xB4;
     ActorIndex = -1;
 
@@ -62,7 +62,7 @@ bool ABoat::IsMod() {
 }
 
 void ABoat::Tick() {
-    Path2D* waypoint;
+    TrackPathPoint* waypoint;
     struct Actor* paddleBoatActor;
     f32 temp_f26;
     f32 temp_f28;
@@ -107,9 +107,9 @@ void ABoat::Tick() {
         sp94[1] = temp_f28;
         sp94[2] = temp_f30;
         waypoint = &gVehicle2DPathPoint[(WaypointIndex + 5) % gVehicle2DPathLength];
-        sp88[0] = (f32) waypoint->x;
+        sp88[0] = (f32) waypoint->X;
         sp88[1] = (f32) D_80162EB0;
-        sp88[2] = (f32) waypoint->z;
+        sp88[2] = (f32) waypoint->Z;
         temp_a1 = get_angle_between_path(sp94, sp88);
         temp = temp_a1 - RotY;
         var_v1 = temp;

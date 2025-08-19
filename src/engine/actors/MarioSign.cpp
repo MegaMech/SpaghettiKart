@@ -2,21 +2,61 @@
 
 #include <libultra/gbi.h>
 #include <assets/mario_raceway_data.h>
+#include "CoreMath.h"
 
 extern "C" {
 #include "common_structs.h"
 #include "math_util.h"
 #include "main.h"
 #include "actor_types.h"
+#include "code_800029B0.h"
+#include "collision.h"
 }
 
-AMarioSign::AMarioSign(FVector pos) {
+AMarioSign::AMarioSign(const SpawnParams& params) {
     Type = ACTOR_MARIO_SIGN;
     Name = "Mario Sign";
-    Pos[0] = pos.x;
+    ResourceName = "mk:mario_sign";
+
+    FVector pos = params.Location.value_or(FVector(0, 0, 0));
+    Pos[0] = pos.x * gCourseDirection;
     Pos[1] = pos.y;
     Pos[2] = pos.z;
+
+    IRotator rot = params.Rotation.value_or(IRotator(0, 0, 0));
+    Rot[0] = rot.pitch;
+    Rot[1] = rot.yaw;
+    Rot[2] = rot.roll;
+
+    Scale = params.Scale.value_or(FVector(1.0f, 1.0f, 1.0f));
+
+    func_802AAAAC(&Unk30);
+    Flags = -0x8000;
     Flags |= 0x4000;
+    Model = d_course_mario_raceway_dl_sign;
+}
+
+bool AMarioSign::IsMod() {
+    return true;
+}
+
+void AMarioSign::SetSpawnParams(SpawnParams& params) {
+    params.Name = "mk:mario_sign";
+    params.Location = FVector(
+        Pos[0],
+        Pos[1],
+        Pos[2]
+    );
+
+    IRotator rot;
+    rot.Set(
+        Rot[0],
+        Rot[1],
+        Rot[2]
+    );
+    params.Rotation = rot;
+
+    params.Scale = Scale;
 }
 
 void AMarioSign::Tick() {
@@ -49,6 +89,7 @@ void AMarioSign::Draw(Camera *camera) {
         gSPSetGeometryMode(gDisplayListHead++, G_SHADING_SMOOTH);
         gSPClearGeometryMode(gDisplayListHead++, G_LIGHTING);
         mtxf_pos_rotation_xyz(sp40, Pos, Rot);
+
         if (render_set_position(sp40, 0) != 0) {
             gSPDisplayList(gDisplayListHead++, (Gfx*)d_course_mario_raceway_dl_sign);
         }

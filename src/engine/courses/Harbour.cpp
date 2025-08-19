@@ -631,64 +631,6 @@ void Harbour::LoadTextures() {
     dma_textures(gTexturePiranhaPlant9, 0x000003E8U, 0x00000800U); // 0x0300D800
 }
 
-Path2D harbour_path2D[] = {
-    {    0, 0},
-    {    0, -100},
-    {    0, -200},
-    {    0, -300},
-    {    0, -400},
-    {    0, -500},
-    {    0, -600},
-    {    0, -700},
-    {    0, -800},
-    {    0, -900},
-    {    0, -1000},
-    {    0, -1096},    // Main point 1
-    {  100, -1090},
-    {  200, -1085},
-    {  300, -1080},
-    {  400, -1075},
-    {  500, -1072},    // Curve begins to smooth here
-    {  600, -1068},
-    {  700, -1065},
-    {  800, -1063},
-    {  900, -1061},
-    {  984, -1060},    // Main point 2
-    {  990, -900},
-    {  995, -800},
-    {  997, -700},
-    {  998, -600},
-    {  999, -500},
-    {  999, -400},
-    {  999, -300},
-    {  999, -200},
-    {  999, -100},
-    {  999, 0},
-    {  999, 100},
-    {  999, 200},
-    {  999, 300},
-    {  999, 400},
-    {  999, 500},
-    {  999, 600},
-    {  999, 700},
-    {  999, 800},
-    {  999, 900},
-    {  999, 940},      // Main point 3
-    {  900, 945},
-    {  800, 945},
-    {  700, 947},
-    {  600, 948},
-    {  500, 949},
-    {  400, 949},
-    {  300, 949},
-    {  200, 950},
-    {  100, 950},
-    {    0, 950},      // Main point 4
-
-    // End of path
-    { -32768, -32768 } // Terminator
-};
-
 void Harbour::BeginPlay() {
     struct ActorSpawnData itemboxes[] = {
         {   200, 1500, 200 , 0},
@@ -742,19 +684,6 @@ void Harbour::BeginPlay() {
 
 //    gWorldInstance.AddObject(new OBoos(10, IPathSpan(0, 5), IPathSpan(18, 23), IPathSpan(25, 50)));
 
-   // gVehicle2DPathPoint = harbour_path2D;
-    //gVehicle2DPathLength = 53;
-    // D_80162EB0 = spawn_actor_on_surface(harbour_path2D[0].x, 2000.0f, harbour_path2D[0].z);
-
-
-    // DEBUG ONLY TO VISUALIZE PATH
-    // for (size_t i = 0; i < ARRAY_COUNT(harbour_path); i++) {
-    //     if (i % 10 == 1) {
-    //         f32 height = spawn_actor_on_surface(harbour_path[i].posX, 2000.0f, harbour_path[i].posZ);
-    //         Vec3f itemPos = {harbour_path[i].posX, height, harbour_path[i].posZ};
-    //         add_actor_to_empty_slot(itemPos, rot, vel, ACTOR_ITEM_BOX);
-    //     }
-    // }
     //gWorldInstance.AddActor(new AShip(FVector(-1694, -111, 1451), AShip::Skin::GHOSTSHIP));
     //gWorldInstance.AddActor(new AShip(FVector(2811, -83, 966), AShip::Skin::SHIP2));                                                                                                                                                
 }

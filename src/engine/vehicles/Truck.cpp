@@ -28,9 +28,9 @@ ATruck::ATruck(f32 speedA, f32 speedB, TrackPathPoint* path, uint32_t waypoint) 
 
     waypointOffset = waypoint;
     temp_v0 = &path[waypointOffset];
-    Position[0] = (f32) temp_v0->posX;
-    Position[1] = (f32) temp_v0->posY;
-    Position[2] = (f32) temp_v0->posZ;
+    Position[0] = (f32) temp_v0->X;
+    Position[1] = (f32) temp_v0->Y;
+    Position[2] = (f32) temp_v0->Z;
     ActorIndex = -1;
     WaypointIndex = waypointOffset;
     Velocity[0] = 0.0f;

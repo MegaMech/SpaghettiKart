@@ -97,7 +97,7 @@ void OChainChomp::func_80085878(s32 objectIndex, s32 arg1) {
     object->unk_084[8] = (arg1 * 0x12C) + 0x1F4;
     set_obj_origin_pos(objectIndex, 0.0f, -15.0f, 0.0f);
     temp_v0 = &gCurrentTrackPath[(u16) object->unk_084[8]];
-    set_obj_origin_offset(objectIndex, temp_v0->posX, temp_v0->posY, temp_v0->posZ);
+    set_obj_origin_offset(objectIndex, temp_v0->X, temp_v0->Y, temp_v0->Z);
     set_obj_direction_angle(objectIndex, 0U, 0U, 0U);
     object->unk_034 = 4.0f;
     object->type = get_animation_length(d_rainbow_road_unk3, 0);

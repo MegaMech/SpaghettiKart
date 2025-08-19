@@ -1,8 +1,15 @@
 #pragma once
 
 #include <libultraship.h>
-#include "Actor.h"
 #include <vector>
+#include "engine/SpawnParams.h"
+#include "engine/CoreMath.h"
+#include "engine/World.h"
+
+#include "Actor.h"
+
+class World;
+extern World gWorldInstance;
 
 extern "C" {
 #include "main.h"
@@ -37,7 +44,7 @@ class ATrain : public AActor {
     int16_t AnotherSmokeTimer = 0;
     int16_t SmokeTimer = 0;
 
-    explicit ATrain(ATrain::TenderStatus tender, size_t numCarriages, f32 speed, uint32_t waypoint);
+    explicit ATrain(const SpawnParams& params);
 
     ~ATrain() {
         _count--;
@@ -47,6 +54,20 @@ class ATrain : public AActor {
         return _count;
     }
 
+    // This is simply a helper function to keep Spawning code clean
+    static inline ATrain* Spawn(ATrain::TenderStatus tender, size_t numCarriages, f32 speed, uint32_t waypoint) {
+        SpawnParams params = {
+            .Name = "mk:train",
+            .Count = numCarriages,
+            .PathPoint = waypoint,
+            .Bool = tender,
+            .Speed = speed,
+
+        };
+        return static_cast<ATrain*>(gWorldInstance.AddActor(new ATrain(params)));
+    }
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;

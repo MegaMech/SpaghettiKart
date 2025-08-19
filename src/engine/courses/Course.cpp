@@ -101,6 +101,7 @@ Course::Course() {
     Props.PathTable2[1] = NULL;
     Props.PathTable2[2] = NULL;
     Props.PathTable2[3] = NULL;
+    Props.PathTable2[4] = NULL;
 
     Props.Clouds = NULL;
     Props.CloudList = NULL;
@@ -127,18 +128,14 @@ void Course::LoadO2R(std::string trackPath) {
             auto& paths = res->PathList;
 
             size_t i = 0;
+            u16* ptr = &Props.PathSizes.unk0;
             for (auto& path : paths) {
-                if (i == 0) {
-                    Props.PathSizes.unk0 = path.size();
-                    Props.PathTable[0] = (TrackPathPoint*) path.data();
-                    Props.PathTable[1] = NULL;
-                    Props.PathTable[2] = NULL;
-                    Props.PathTable[3] = NULL;
-                    Props.PathTable2[0] = (TrackPathPoint*) path.data();
-                    Props.PathTable2[1] = NULL;
-                    Props.PathTable2[2] = NULL;
-                    Props.PathTable2[3] = NULL;
+                if (i >= ARRAY_COUNT(Props.PathTable2)) {
+                    printf("[Course.cpp] The game can only import 5 paths. Found more than 5. Skipping the rest\n");
+                    break; // Only 5 paths allowed. 4 track, 1 vehicle
                 }
+                ptr[i] = path.size();
+                Props.PathTable2[i] = (TrackPathPoint*) path.data();
 
                 i += 1;
             }
@@ -253,9 +250,9 @@ void Course::TestPath() {
     Vec3f vel = { 0, 0, 0 };
 
     for (size_t i = 0; i < gPathCountByPathIndex[0]; i++) {
-        x = gTrackPaths[0][i].posX;
-        y = gTrackPaths[0][i].posY;
-        z = gTrackPaths[0][i].posZ;
+        x = gTrackPaths[0][i].X;
+        y = gTrackPaths[0][i].Y;
+        z = gTrackPaths[0][i].Z;
 
         if (((x & 0xFFFF) == 0x8000) && ((y & 0xFFFF) == 0x8000) && ((z & 0xFFFF) == 0x8000)) {
             break;

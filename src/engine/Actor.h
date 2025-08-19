@@ -1,14 +1,13 @@
 #pragma once
 
 #include <libultraship.h>
-#include "CoreMath.h"
+#include "engine/SpawnParams.h"
 
 extern "C" {
 #include "macros.h"
 #include "main.h"
 #include "camera.h"
 #include "common_structs.h"
-
 
 class AActor {
 public:
@@ -24,16 +23,18 @@ public:
     /* 0x18 */ Vec3f Pos;
     /* 0x24 */ Vec3f Velocity = {0, 0, 0};
     /* 0x30 */ Collision Unk30;
+    /* 0x   */ const char* Model = "";
     uint8_t uuid[16];
     const char* Name = "";
+    const char* ResourceName = "";
     FVector Scale = {1, 1, 1};
 
-    Gfx* Model = NULL;
 
     virtual ~AActor() = default;  // Virtual destructor for proper cleanup in derived classes
 
     explicit AActor();
 
+    virtual void SetSpawnParams(SpawnParams& params);
     virtual void Tick();
     virtual void Draw(Camera*);
     virtual void Collision(Player* player, AActor* actor);

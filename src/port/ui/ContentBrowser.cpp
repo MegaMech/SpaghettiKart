@@ -91,10 +91,10 @@ namespace Editor {
     // For C-actors
     std::unordered_map<std::string, std::function<void(const FVector&)>> CActorList = {
         { "Item Box", [](const FVector& pos) {
-              Vec3f position = {pos.x, pos.y, pos.z};
-              Vec3s rot = {0, 0, 0};
-              Vec3f vel = {0, 0, 0};
-            s32 id = add_actor_to_empty_slot(position, rot, vel, 12); // item box
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_ITEM_BOX);
             s32 height = spawn_actor_on_surface(position[0], position[1] + 10.0f, position[2]);
 
             Actor* actor = CM_GetActor(id);
@@ -103,11 +103,25 @@ namespace Editor {
             actor->pos[1] = height - 20.0f;
 
         }},
+        { "Yoshi Egg", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_YOSHI_EGG);
+            s32 height = spawn_actor_on_surface(position[0], position[1] + 10.0f, position[2]);
+
+            Actor* actor = CM_GetActor(id);
+            actor->unk_08 = height;
+            actor->velocity[0] = position[1];
+            actor->pos[1] = height - 20.0f;
+        }},
     };
 
     std::unordered_map<std::string, std::function<AActor*(const FVector&)>> ActorList = {
-        { "Mario Sign", [](const FVector& pos) { return new AMarioSign(pos); } },
-        { "Wario Sign", [](const FVector& pos) { return new AWarioSign(pos); } },
+        // The banana gets attached to a player. This needs to be disconnected if this should be used in the editor
+//        { "Banana", [](const FVector& pos) { return gWorldInstance.AddActor(new ABanana(SpawnParams{.Name = "mk:banana", .Location = pos})); } },
+        { "Mario Sign", [](const FVector& pos) { return AMarioSign::Spawn(pos, IRotator(0, 0, 0), FVector(0, 0, 0), FVector(1.0f, 1.0f, 1.0f)); } },
+        { "Wario Sign", [](const FVector& pos) { return AWarioSign::Spawn(pos, IRotator(0, 0, 0), FVector(0, 0, 0), FVector(1.0f, 1.0f, 1.0f)); } },
         { "Cloud", [](const FVector& pos) { return new ACloud(pos); } },
         { "Finishline", [](const FVector& pos) { return new AFinishline(pos); } },
         { "Ghostship", [](const FVector& pos) { return new AShip(pos, AShip::Skin::GHOSTSHIP); } },
@@ -115,7 +129,7 @@ namespace Editor {
         { "Ship_2", [](const FVector& pos) { return new AShip(pos, AShip::Skin::SHIP3); } },
         { "SpaghettiShip", [](const FVector& pos) { return new ASpaghettiShip(pos); } },
         { "Starship", [](const FVector& pos) { return new AStarship(pos); } },
-        { "Train", [](const FVector& pos) { return new ATrain(ATrain::TenderStatus::HAS_TENDER, 4, 2.5f, 0); } },
+        { "Train", [](const FVector& pos) { return ATrain::Spawn(ATrain::TenderStatus::HAS_TENDER, 4, 2.5f, 0); } },
         { "Boat", [](const FVector& pos) { return new ABoat((0.6666666f)/4, 0); } },
         { "Bus", [](const FVector& pos) { return new ABus(2.0f, 2.5f, &gTrackPaths[0][0], 0); } },
         { "Car", [](const FVector& pos) { return new ACar(2.0f, 2.5f, &gTrackPaths[0][0], 0); } },
@@ -129,7 +143,9 @@ namespace Editor {
         { "Boos", [](const FVector& pos) { return OBoos::Spawn(5, IPathSpan(0, 50), IPathSpan(60, 90), IPathSpan(100, 140)); } },
         { "Cheep Cheep", [](const FVector& pos) { return OCheepCheep::Spawn(pos, OCheepCheep::Behaviour::RACE, IPathSpan(0, 10)); } },
         { "Crab", [](const FVector& pos) { return OCrab::Spawn(FVector2D(pos.x, pos.z), FVector2D(pos.x + 100, pos.z + 100)); } },
-        { "Chain Chomp", [](const FVector& pos) { return new OChainChomp(); } },
+
+       // Animation crash
+       // { "Chain Chomp", [](const FVector& pos) { return gWorldInstance.AddObject(new OChainChomp()); } },
         { "Flagpole", [](const FVector& pos) { return OFlagpole::Spawn(pos, 0); } },
         { "Hedgehog", [](const FVector& pos) { return OHedgehog::Spawn(pos, FVector2D(0, 10), 0); } },
         { "Hot Air Balloon", [](const FVector& pos) { return OHotAirBalloon::Spawn(pos); } },
@@ -211,7 +227,8 @@ namespace Editor {
 
             std::string label = fmt::format("{}##{}", actor.first, i_actor);
             if (ImGui::Button(label.c_str())) {
-                gWorldInstance.AddActor(actor.second(pos));
+                //gWorldInstance.AddActor(
+                actor.second(pos);
             }
             i_actor += 1;
         }

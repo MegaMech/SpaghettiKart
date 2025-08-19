@@ -4,6 +4,10 @@
 #include "Train.h"
 #include <vector>
 
+#include "engine/courses/Course.h"
+#include "engine/World.h"
+#include "port/Game.h"
+
 extern "C" {
 #include "macros.h"
 #include "main.h"
@@ -24,14 +28,20 @@ extern "C" {
 
 size_t ATrain::_count = 0;
 
-ATrain::ATrain(ATrain::TenderStatus tender, size_t numCarriages, f32 speed, uint32_t waypoint) {
+ATrain::ATrain(const SpawnParams& params) {
     Name = "Train";
+    ResourceName = "mk:train";
     u16 waypointOffset;
     TrainCarStuff* ptr1;
-    Path2D* pos;
+    TrackPathPoint* pos;
+
 
     Index = _count;
-    Speed = speed;
+    Speed = params.Speed.value_or(0);
+
+    uint32_t numCarriages = params.Count.value_or(0);
+    bool tender = params.Bool.value_or(true);
+    uint32_t pathIndex = params.PathIndex.value_or(0);
 
     // Set to the default value
     std::fill(SmokeParticles, SmokeParticles + 128, NULL_OBJECT_ID);
@@ -42,7 +52,7 @@ ATrain::ATrain(ATrain::TenderStatus tender, size_t numCarriages, f32 speed, uint
 
     // outputs 160 or 392 depending on the train.
     // Wraps the value around to always output a valid waypoint.
-    waypointOffset = waypoint;
+    waypointOffset = (u16)params.PathPoint.value_or(0);
 
     // 120.0f is about the maximum usable value
     for (size_t i = 0; i < PassengerCars.size(); i++) {
@@ -126,6 +136,14 @@ ATrain::ATrain(ATrain::TenderStatus tender, size_t numCarriages, f32 speed, uint
     _count++;
 }
 
+void ATrain::SetSpawnParams(SpawnParams& params) {
+    params.Name = "mk:train";
+    params.Count = NumCars - NUM_TENDERS;
+    params.Bool = Tender.isActive;
+    params.Speed = Speed;
+   // params.PathPoint = waypoint;
+}
+
 bool ATrain::IsMod() {
     return true;
 }
@@ -144,29 +162,31 @@ void ATrain::SyncComponents(TrainCarStuff* trainCar, s16 orientationY) {
         trainCarActor->rot[1] = orientationY;
     }
     trainCarActor->velocity[0] = trainCar->velocity[0];
+    trainCarActor->velocity[1] = trainCar->velocity[1];
     trainCarActor->velocity[2] = trainCar->velocity[2];
 }
 
 void ATrain::Tick() {
-    f32 temp_f20;
     TrainCarStuff* car;
     u16 oldWaypointIndex;
     s16 orientationYUpdate;
-    f32 temp_f22;
     s32 j;
     Vec3f smokePos;
+    FVector temp_f20 = {
+        Locomotive.position[0],
+        Locomotive.position[1],
+        Locomotive.position[2]
+    };
 
     AnotherSmokeTimer += 1;
 
     oldWaypointIndex = (u16) Locomotive.waypointIndex;
 
-    temp_f20 = Locomotive.position[0];
-    temp_f22 = Locomotive.position[2];
-
     orientationYUpdate = update_vehicle_following_path(Locomotive.position, (s16*) &Locomotive.waypointIndex, Speed);
 
-    Locomotive.velocity[0] = Locomotive.position[0] - temp_f20;
-    Locomotive.velocity[2] = Locomotive.position[2] - temp_f22;
+    Locomotive.velocity[0] = Locomotive.position[0] - temp_f20.x;
+    Locomotive.velocity[1] = Locomotive.position[1] - temp_f20.y;
+    Locomotive.velocity[2] = Locomotive.position[2] - temp_f20.z;
 
     sync_train_components(&Locomotive, orientationYUpdate);
 
@@ -191,23 +211,27 @@ void ATrain::Tick() {
     car = &Tender;
 
     if (car->isActive == 1) {
-        temp_f20 = car->position[0];
-        temp_f22 = car->position[2];
+        temp_f20.x = car->position[0];
+        temp_f20.y = car->position[1];
+        temp_f20.z = car->position[2];
         orientationYUpdate = update_vehicle_following_path(car->position, (s16*) &car->waypointIndex, Speed);
-        car->velocity[0] = car->position[0] - temp_f20;
-        car->velocity[2] = car->position[2] - temp_f22;
+        car->velocity[0] = car->position[0] - temp_f20.x;
+        car->velocity[1] = car->position[1] - temp_f20.y;
+        car->velocity[2] = car->position[2] - temp_f20.z;
         sync_train_components(car, orientationYUpdate);
     }
 
     for (j = 0; j < PassengerCars.size(); j++) {
         car = &PassengerCars[j];
         if (car->isActive == 1) {
-            temp_f20 = car->position[0];
-            temp_f22 = car->position[2];
+            temp_f20.x = car->position[0];
+            temp_f20.y = car->position[1];
+            temp_f20.z = car->position[2];
 
             orientationYUpdate = update_vehicle_following_path(car->position, (s16*) &car->waypointIndex, Speed);
-            car->velocity[0] = car->position[0] - temp_f20;
-            car->velocity[2] = car->position[2] - temp_f22;
+            car->velocity[0] = car->position[0] - temp_f20.x;
+            car->velocity[1] = car->position[1] - temp_f20.y;
+            car->velocity[2] = car->position[2] - temp_f20.z;
             sync_train_components(car, orientationYUpdate);
         }
     }

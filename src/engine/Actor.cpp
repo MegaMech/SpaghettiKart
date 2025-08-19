@@ -1,7 +1,9 @@
 #include <libultraship.h>
 #include "Matrix.h"
-
 #include "Actor.h"
+#include "engine/World.h"
+
+
 
 extern "C" {
 #include "math_util.h"
@@ -20,7 +22,7 @@ void AActor::Draw(Camera *camera) {
 
         ApplyMatrixTransformations(mtx, *(FVector*)Pos, *(IRotator*)Rot, Scale);
         if (render_set_position(mtx, 0) != 0) {
-            gSPDisplayList(gDisplayListHead++, Model);
+            gSPDisplayList(gDisplayListHead++, (Gfx*)Model);
         }
     }
 }
@@ -39,3 +41,5 @@ void AActor::SetLocation(FVector pos) {
 FVector AActor::GetLocation() const {
     return FVector(Pos[0], Pos[1], Pos[2]);
 }
+
+void AActor::SetSpawnParams(SpawnParams& params) { }

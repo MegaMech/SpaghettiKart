@@ -138,10 +138,10 @@ PodiumCeremony::PodiumCeremony() {
     Props.PathTable[2] = (TrackPathPoint*)LOAD_ASSET_RAW(podium_ceremony_path_3);
     Props.PathTable[3] = (TrackPathPoint*)LOAD_ASSET_RAW(podium_ceremony_path_4);
 
-    Props.PathTable2[0] = NULL;
-    Props.PathTable2[1] = NULL;
-    Props.PathTable2[2] = NULL;
-    Props.PathTable2[3] = NULL;
+    Props.PathTable2[0] = (TrackPathPoint*)LOAD_ASSET_RAW(podium_ceremony_path);
+    Props.PathTable2[1] = (TrackPathPoint*)LOAD_ASSET_RAW(podium_ceremony_path_2);
+    Props.PathTable2[2] = (TrackPathPoint*)LOAD_ASSET_RAW(podium_ceremony_path_3);
+    Props.PathTable2[3] = (TrackPathPoint*)LOAD_ASSET_RAW(podium_ceremony_path_4);
 
     Props.CloudTexture = (u8*) gTextureExhaust4;
     Props.Clouds = NULL; // no clouds

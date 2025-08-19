@@ -9,6 +9,7 @@
 
 extern "C" {
 #include "actors.h"
+#include "actor_types.h"
 }
 
 std::unordered_map<std::string, ActorRegistryEntry> gActorRegistry;
@@ -29,8 +30,8 @@ void Registry_SpawnActor(SpawnParams& params) {
 
 void RegisterGameActors() {
     RegisterActor("mk:item_box",
-        [](const SpawnParams& actor) {
-            FVector loc = actor.Location.value_or(FVector{0, 0, 0});
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
             Vec3f pos = { loc.x, loc.y, loc.z };
             spawn_item_box(pos);
         }
@@ -135,6 +136,34 @@ void RegisterGameActors() {
     RegisterActor("mk:penguin",
         [](const SpawnParams& params) {
             gWorldInstance.AddObject(new OPenguin(params));
+        }
+    );
+
+    RegisterActor("mk:banana",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ABanana(params));
+        }
+    );
+
+    RegisterActor("mk:mario_sign",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new AMarioSign(params));
+        }
+    );
+
+    RegisterActor("mk:wario_sign",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new AWarioSign(params));
+        }
+    );
+
+    RegisterActor("mk:yoshi_egg",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_YOSHI_EGG);
         }
     );
 }

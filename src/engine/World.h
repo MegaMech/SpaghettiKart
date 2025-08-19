@@ -5,10 +5,7 @@
 #include "engine/courses/Course.h"
 #include "objects/Object.h"
 #include "Cup.h"
-#include "vehicles/Train.h"
-#include "vehicles/Car.h"
 #include "PlayerBombKart.h"
-#include "vehicles/Train.h"
 #include "TrainCrossing.h"
 #include <memory>
 #include <unordered_map>
@@ -28,7 +25,6 @@ class Cup; // <-- Forward declaration
 class OObject;
 class Course;
 class StaticMeshActor;
-class AVehicle;
 class OBombKart;
 class TrainCrossing;
 class OLakitu;
