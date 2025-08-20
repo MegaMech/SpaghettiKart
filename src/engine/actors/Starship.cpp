@@ -15,7 +15,7 @@ AStarship::AStarship(FVector pos) {
     Spawn = pos;
     SetLocation(pos);
     Scale = FVector(1.5, 1.5, 1.5);
-    Model = starship_Cube_mesh;
+    Model = (const char*)starship_Cube_mesh;
 }
 
 void AStarship::Tick() {

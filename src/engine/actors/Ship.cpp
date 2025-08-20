@@ -35,7 +35,7 @@ AShip::AShip(FVector pos, AShip::Skin skin) {
             _skin = ship3_2Ship_mesh;
             break;
     }
-    Model = _skin;
+    Model = (const char*)_skin;
 }
 
 void AShip::Tick() {

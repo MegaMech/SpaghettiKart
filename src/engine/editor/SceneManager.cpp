@@ -1,7 +1,3 @@
-
-#define JSON_USE_IMPLICIT_CONVERSIONS 1
-#define JSON_HAS_CPP_20 1
-
 #include "SceneManager.h"
 #include "port/Game.h"
 #include "engine/CoreMath.h"
