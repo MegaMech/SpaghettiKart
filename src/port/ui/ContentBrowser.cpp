@@ -103,17 +103,129 @@ namespace Editor {
             actor->pos[1] = height - 20.0f;
 
         }},
+        { "Fake Item Box", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_FAKE_ITEM_BOX);
+
+            Actor* actor = CM_GetActor(id);
+            actor->state = 1;
+            actor->velocity[1] = position[1];
+        }},
         { "Yoshi Egg", [](const FVector& pos) {
             Vec3f position = {pos.x, pos.y, pos.z};
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
             s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_YOSHI_EGG);
-            s32 height = spawn_actor_on_surface(position[0], position[1] + 10.0f, position[2]);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        // Needs SpawnData sent into spawn_falling_rocks func
+        // { "Falling Rock", [](const FVector& pos) {
+        //     Vec3f position = {pos.x, pos.y, pos.z};
+        //     Vec3s rot = {0, 0, 0};
+        //     Vec3f vel = {0, 0, 0};
+        //     s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_FALLING_ROCK);
+        //     s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        // }},
+        { "Piranha Plant", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_PIRANHA_PLANT);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
 
-            Actor* actor = CM_GetActor(id);
-            actor->unk_08 = height;
-            actor->velocity[0] = position[1];
-            actor->pos[1] = height - 20.0f;
+        { "Tree (Mario Raceway)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_MARIO_RACEWAY);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Tree (Yoshi Valley)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_YOSHI_VALLEY);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Tree (Royal Raceway)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_ROYAL_RACEWAY);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Tree (Moo Moo Farm)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_MOO_MOO_FARM);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Palm Tree", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_PALM_TREE);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Unknown Plant (0x1A)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_UNKNOWN_0x1A);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Unknown Plant (0x1B)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_UNKNOWN_0x1B);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Tree (Bowser's Castle)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_BOWSERS_CASTLE);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Tree (Frappe Snowland)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_FRAPPE_SNOWLAND);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Cactus 1 (Kalamari Desert)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_CACTUS1_KALAMARI_DESERT);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Cactus 2 (Kalamari Desert)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_CACTUS2_KALAMARI_DESERT);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Cactus 3 (Kalamari Desert)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_CACTUS3_KALAMARI_DESERT);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
+        }},
+        { "Bush (Bowser's Castle)", [](const FVector& pos) {
+            Vec3f position = {pos.x, pos.y, pos.z};
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_BUSH_BOWSERS_CASTLE);
+            s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
         }},
     };
 

@@ -37,6 +37,14 @@ void RegisterGameActors() {
         }
     );
 
+    RegisterActor("mk:fake_item_box",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            spawn_fake_item_box(pos);
+        }
+    );
+
     RegisterActor("mk:thwomp",
         [](const SpawnParams& params) {
             gWorldInstance.AddObject(new OThwomp(params));
@@ -164,6 +172,156 @@ void RegisterGameActors() {
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
             add_actor_to_empty_slot(pos, rot, vel, ACTOR_YOSHI_EGG);
+        }
+    );
+
+    RegisterActor("mk:falling_rock",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_FALLING_ROCK);
+        }
+    );
+
+    RegisterActor("mk:piranha_plant",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_PIRANHA_PLANT);
+        }
+    );
+
+    RegisterActor("mk:tree_mario_raceway",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_MARIO_RACEWAY);
+        }
+    );
+
+    RegisterActor("mk:tree_yoshi_valley",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_YOSHI_VALLEY);
+        }
+    );
+
+    RegisterActor("mk:tree_royal_raceway",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_ROYAL_RACEWAY);
+        }
+    );
+
+    RegisterActor("mk:tree_moo_moo_farm",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_MOO_MOO_FARM);
+        }
+    );
+
+    RegisterActor("mk:palm_tree",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_PALM_TREE);
+        }
+    );
+
+    RegisterActor("mk:unknown_0x1a",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_UNKNOWN_0x1A);
+        }
+    );
+
+    RegisterActor("mk:unknown_0x1b",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_UNKNOWN_0x1B);
+        }
+    );
+
+    RegisterActor("mk:tree_bowsers_castle",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_BOWSERS_CASTLE);
+        }
+    );
+
+    RegisterActor("mk:tree_frappe_snowland",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_FRAPPE_SNOWLAND);
+        }
+    );
+
+    RegisterActor("mk:cactus1_kalamari_desert",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_CACTUS1_KALAMARI_DESERT);
+        }
+    );
+
+    RegisterActor("mk:cactus2_kalamari_desert",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_CACTUS2_KALAMARI_DESERT);
+        }
+    );
+
+    RegisterActor("mk:cactus3_kalamari_desert",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_CACTUS3_KALAMARI_DESERT);
+        }
+    );
+
+    RegisterActor("mk:bush_bowsers_castle",
+        [](const SpawnParams& params) {
+            FVector loc = params.Location.value_or(FVector{0, 0, 0});
+            Vec3f pos = { loc.x, loc.y, loc.z };
+            Vec3s rot = {0, 0, 0};
+            Vec3f vel = {0, 0, 0};
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_BUSH_BOWSERS_CASTLE);
         }
     );
 }

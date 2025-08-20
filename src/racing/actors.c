@@ -50,7 +50,6 @@ char* texture_red_shell[] = {
     texture_red_shell_0, texture_red_shell_1, texture_red_shell_2, texture_red_shell_3,
     texture_red_shell_4, texture_red_shell_5, texture_red_shell_6, texture_red_shell_7,
 };
-u8* D_802BA058;
 
 struct Actor* gActorHotAirBalloonItemBox;
 s8 gTLUTRedShell[512]; // tlut 256
@@ -1073,6 +1072,29 @@ void spawn_item_box(Vec3f pos) {
     box->resetDistance = height;
     box->origY = pos[1];
     box->pos[1] = height - 20.0f;
+}
+
+// Not from decomp
+void spawn_fake_item_box(Vec3f pos) {
+    Vec3f startingVelocity;
+    Vec3s startingRot;
+    // struct ItemBox *itemBox;
+
+    if ((gModeSelection == TIME_TRIALS) || (gPlaceItemBoxes == 0) || (gGamestate == CREDITS_SEQUENCE)) {
+        return;
+    }
+
+    pos[0] *= gCourseDirection;
+
+    startingRot[0] = random_u16();
+    startingRot[1] = random_u16();
+    startingRot[2] = random_u16();
+    s32 id = add_actor_to_empty_slot(pos, startingRot, startingVelocity, ACTOR_FAKE_ITEM_BOX);
+    f32 height = spawn_actor_on_surface(pos[0], pos[1], pos[2]);
+    
+    struct FakeItemBox* box = (struct FakeItemBox*) CM_GetActor(id);
+    box->state = 1;
+    box->targetY = pos[1];
 }
 
 void init_kiwano_fruit(void) {
@@ -2762,7 +2784,7 @@ const char* get_actor_display_name(s32 id) {
         case ACTOR_UNKNOWN_0x1A:
             return "Unknown Plant (0x1A)";
         case ACTOR_UNKNOWN_0x1B:
-            return "Unknown (0x1B)";
+            return "Unknown Plant (0x1B)";
         case ACTOR_TREE_BOWSERS_CASTLE:
             return "Tree (Bowser's Castle)";
         case ACTOR_TREE_FRAPPE_SNOWLAND:

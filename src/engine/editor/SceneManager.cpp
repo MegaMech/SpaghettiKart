@@ -180,10 +180,32 @@ namespace Editor {
             // Bananas and stuff don't make sense to be saved.
             switch(actor->Type) {
                 case ACTOR_ITEM_BOX:
-                    params.Name = get_actor_resource_location_name(actor->Type);
-                    params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
-                    actorList.push_back(params);
-                    break;
+                case ACTOR_FAKE_ITEM_BOX:
+                case ACTOR_FALLING_ROCK:
+                case ACTOR_TREE_MARIO_RACEWAY:
+                case ACTOR_TREE_YOSHI_VALLEY:
+                case ACTOR_TREE_ROYAL_RACEWAY:
+                case ACTOR_TREE_MOO_MOO_FARM:
+                case ACTOR_PALM_TREE:
+                case ACTOR_UNKNOWN_0x1A: // A plant?
+                case ACTOR_UNKNOWN_0x1B:
+                case ACTOR_TREE_BOWSERS_CASTLE:
+                case ACTOR_TREE_FRAPPE_SNOWLAND:
+                case ACTOR_CACTUS1_KALAMARI_DESERT:
+                case ACTOR_CACTUS2_KALAMARI_DESERT:
+                case ACTOR_CACTUS3_KALAMARI_DESERT:
+                case ACTOR_BUSH_BOWSERS_CASTLE:
+                
+                params.Name = get_actor_resource_location_name(actor->Type);
+                params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
+                actorList.push_back(params);
+                break;
+                case ACTOR_PIRANHA_PLANT:
+                params.Name = get_actor_resource_location_name(actor->Type);
+                params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
+                // params.Type = // Need this to use royal raceway version
+                actorList.push_back(params);
+                break;
                 case ACTOR_MARIO_SIGN:
                 case ACTOR_WARIO_SIGN:
                     actor->SetSpawnParams(params);
@@ -191,7 +213,7 @@ namespace Editor {
                     break;
                 case ACTOR_YOSHI_EGG:
                     params.Name = get_actor_resource_location_name(actor->Type);
-                    params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
+                    params.Location = FVector(actor->Velocity[0], actor->Pos[1], actor->Velocity[2]); // Velocity is pathCenter
                     actorList.push_back(params);
                     break;
             }
