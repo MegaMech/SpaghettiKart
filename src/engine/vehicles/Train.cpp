@@ -26,7 +26,9 @@ extern "C" {
 //  #include "common_structs.h"
 }
 
+// The two counts are so we can spawn trains at specific points or use auto distribution
 size_t ATrain::_count = 0;
+std::unordered_map<uint32_t, uint32_t> ATrain::TrainCounts;
 
 ATrain::ATrain(const SpawnParams& params) {
     Name = "Train";
@@ -41,10 +43,32 @@ ATrain::ATrain(const SpawnParams& params) {
 
     uint32_t numCarriages = params.Count.value_or(0);
     bool tender = params.Bool.value_or(true);
+
+    // The path to spawn the train at
     uint32_t pathIndex = params.PathIndex.value_or(0);
+
+    SpawnMode spawnMode = static_cast<SpawnMode>(params.Type.value_or(false));
+
+    switch(spawnMode) {
+        case SpawnMode::POINT: // Spawn train at a specific path point
+            pathPoint = params.PathPoint.value_or(0);
+            break;
+        case SpawnMode::AUTO: // Automatically distribute trains based on a specific path point
+            pathPoint = GetVehiclePathPointDistributed(TrainCounts[pathIndex], params.PathPoint.value_or(0));
+
+            break;
+    }
+
+    TrainCounts[pathIndex] += 1;
 
     // Set to the default value
     std::fill(SmokeParticles, SmokeParticles + 128, NULL_OBJECT_ID);
+
+    // Set the trains path
+    if (IsKalimariDesert()) {
+        gVehiclePath = gVehicle2DPathPoint;
+        gVehiclePathSize = gVehicle2DPathSize;
+    }
 
     for (size_t i = 0; i < numCarriages; i++) {
         PassengerCars.push_back(TrainCarStuff());
@@ -141,6 +165,7 @@ void ATrain::SetSpawnParams(SpawnParams& params) {
     params.Count = NumCars - NUM_TENDERS;
     params.Bool = Tender.isActive;
     params.Speed = Speed;
+    params.Count = PassengerCars.size();
    // params.PathPoint = waypoint;
 }
 

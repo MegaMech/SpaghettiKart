@@ -26,6 +26,7 @@ extern "C" {
 #include "collision.h"
 #include "actors.h"
 #include "math_util.h"
+#include "code_80005FD0.h"
 extern StaffGhost* d_mario_raceway_staff_ghost;
 }
 
@@ -140,6 +141,7 @@ void Course::LoadO2R(std::string trackPath) {
                 i += 1;
             }
         }
+        gVehiclePathSize = Props.PathSizes.unk0;
 
     } else {
         printf("Course.cpp: LoadO2R: trackPath str is empty\n");

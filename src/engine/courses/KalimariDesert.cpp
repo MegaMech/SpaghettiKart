@@ -198,7 +198,7 @@ void KalimariDesert::BeginPlay() {
 
         // Spawn two trains
         for (size_t i = 0; i < _numTrains; ++i) {
-            uint32_t waypoint = CalculateWaypointDistribution(i, _numTrains, gVehicle2DPathLength, centerWaypoint);
+            uint32_t waypoint = CalculateWaypointDistribution(i, _numTrains, gVehiclePathSize, centerWaypoint);
 
             if (CVarGetInteger("gMultiplayerNoFeatureCuts", 0) == false) {
                 // Multiplayer modes have no tender and no carriages

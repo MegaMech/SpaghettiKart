@@ -14,6 +14,8 @@
 #include <libultraship/src/resource/File.h>
 #include "port/resource/type/ResourceType.h"
 
+#include "engine/vehicles/Train.h"
+
 #include "engine/objects/Object.h"
 #include "engine/objects/Thwomp.h"
 #include "engine/objects/Snowman.h"
@@ -175,6 +177,14 @@ namespace Editor {
     void SaveActors(nlohmann::json& actorList) {
         for (const auto& actor : gWorldInstance.Actors) {
             SpawnParams params{};
+
+            if (actor->ResourceName == "mk:train") {
+                actor->SetSpawnParams(params);
+                if (!params.Name.empty()) {
+                    actorList.push_back(params);
+                }
+                continue;
+            }
 
             // Only some actors are supported for saving.
             // Bananas and stuff don't make sense to be saved.

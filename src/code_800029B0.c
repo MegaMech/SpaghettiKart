@@ -188,6 +188,7 @@ void setup_race(void) {
     int i;
 
     LUSLOG_DEBUG("Setup Race!", 0);
+    LUSLOG_DEBUG("Game Speed: %d", gTickLogic);
 
     gPlayerCountSelection1 = gPlayerCount;
     if (gGamestate != RACING) {

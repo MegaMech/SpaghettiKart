@@ -106,7 +106,7 @@ void ABoat::Tick() {
         sp94[0] = temp_f26;
         sp94[1] = temp_f28;
         sp94[2] = temp_f30;
-        waypoint = &gVehicle2DPathPoint[(WaypointIndex + 5) % gVehicle2DPathLength];
+        waypoint = &gVehicle2DPathPoint[(WaypointIndex + 5) % gVehiclePathSize];
         sp88[0] = (f32) waypoint->X;
         sp88[1] = (f32) D_80162EB0;
         sp88[2] = (f32) waypoint->Z;

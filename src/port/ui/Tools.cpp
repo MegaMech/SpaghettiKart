@@ -142,6 +142,11 @@ namespace Editor {
 
         ImGui::SameLine();
 
+        // Alter the game speed
+        ToolsWindow::GameSpeed();
+
+        ImGui::SameLine();
+
         // Toggle hud
         ImGui::PushStyleColor(ImGuiCol_Button, gIsHUDVisible ? ImVec4(0.4f, 0.7f, 0.9f, 1.0f) : defaultColor);
         if (ImGui::Button("Toggle HUD", ImVec2(150, 25))) {
@@ -156,5 +161,35 @@ namespace Editor {
         if (ImGui::Button(ICON_FA_TRASH_O, ImVec2(50, 25))) {
             gEditor.DeleteObject();
         }
+    }
+
+    // Fast Forward the game
+    void ToolsWindow::GameSpeed() {
+        ImVec4 defaultColor = ImGui::GetStyle().Colors[ImGuiCol_Button];
+
+        ImGui::PushStyleColor(ImGuiCol_Button, defaultColor);
+
+        // Decrease
+        if (ImGui::Button("-", ImVec2(25, 25))) {
+            gTickLogic--;
+            if (gTickLogic < 1) gTickLogic = 1; // clamp min
+        }
+
+        ImGui::SameLine();
+
+        // Label with current value
+        std::string label = "Game Speed: " + std::to_string(gTickLogic);
+        if (ImGui::Button(label.c_str(), ImVec2(120, 25))) {
+            gTickLogic = 2; // reset on click
+        }
+
+        ImGui::SameLine();
+
+        // Increase
+        if (ImGui::Button("+", ImVec2(25, 25))) {
+            gTickLogic++;
+        }
+
+        ImGui::PopStyleColor();
     }
 }

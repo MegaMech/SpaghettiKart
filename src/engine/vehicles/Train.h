@@ -23,6 +23,11 @@ extern "C" {
 class ATrain : public AActor {
     public:
 
+    enum SpawnMode : uint16_t {
+        POINT, // Spawn train at a specific path point
+        AUTO,  // Automatically distribute trains based on a specific path point
+    };
+
     enum TenderStatus {
         NO_TENDER,
         HAS_TENDER,
@@ -76,5 +81,7 @@ class ATrain : public AActor {
     void SyncComponents(TrainCarStuff* trainCar, s16 orientationY);
 
 private:
-    static size_t _count;
+    static size_t _count; // Total number of spawned trains
+    //                        pathIdx , trainCount
+    static std::unordered_map<uint32_t, uint32_t> TrainCounts;
 };

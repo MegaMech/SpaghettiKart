@@ -145,8 +145,9 @@ s32 D_801634F0;
 s32 D_801634F4;
 TrackPositionFactorInstruction gPlayerTrackPositionFactorInstruction[10];
 TrackPathPoint* gVehicle2DPathPoint;
+s32 gVehicle2DPathSize;
 TrackPathPoint* gVehiclePath;
-s32 gVehicle2DPathLength;
+size_t gVehiclePathSize;
 TrainStuff gTrainList[NUM_TRAINS];
 u16 isCrossingTriggeredByIndex[NUM_CROSSINGS];
 u16 sCrossingActiveTimer[NUM_CROSSINGS];
@@ -2641,9 +2642,9 @@ s16 find_closest_vehicles_path_point(f32 xPos, UNUSED f32 yPos, f32 zPos, s16 wa
     for (realIndex = waypointIndex - 2; realIndex < waypointIndex + 7; realIndex++) {
         considerIndex = realIndex;
         if (realIndex < 0) {
-            considerIndex = realIndex + gVehicle2DPathLength;
+            considerIndex = realIndex + gVehiclePathSize;
         }
-        considerIndex %= gVehicle2DPathLength;
+        considerIndex %= gVehiclePathSize;
         considerWaypoint = &gVehiclePath[considerIndex];
         xdiff = considerWaypoint->X - xPos;
         zdiff = considerWaypoint->Z - zPos;
@@ -2942,8 +2943,8 @@ s16 update_vehicle_following_path(Vec3f pos, s16* waypointIndex, f32 speed) {
     sp38[2] = pos[2];
     newWaypointIndex = find_closest_vehicles_path_point(origXPos, origYPos, origZPos, *waypointIndex);
     *waypointIndex = newWaypointIndex;
-    farWaypoint1 = (newWaypointIndex + 3) % gVehicle2DPathLength;
-    farWaypoint2 = (newWaypointIndex + 4) % gVehicle2DPathLength;
+    farWaypoint1 = (newWaypointIndex + 3) % gVehiclePathSize;
+    farWaypoint2 = (newWaypointIndex + 4) % gVehiclePathSize;
     temp_a0 = &gVehiclePath[farWaypoint1];
     temp_a2 = &gVehiclePath[farWaypoint2];
     farWaypointAverageX = (temp_a0->X + temp_a2->X) * 0.5f;
@@ -4395,7 +4396,7 @@ void generate_train_path(void) {
     GET_PATH_LENGTH(waypoint)
 
     temp = gVehicle2DPathPoint;
-    gVehicle2DPathLength = generate_2d_path(temp, waypoint, i - 1);
+    gVehicle2DPathSize = generate_2d_path(temp, waypoint, i - 1);
     D_80162EB0 = spawn_actor_on_surface(temp[0].X, 2000.0f, temp[0].Z);
 }
 
@@ -4407,7 +4408,7 @@ void generate_ferry_path(void) {
 
     GET_PATH_LENGTH(waypoint)
 
-    gVehicle2DPathLength = generate_2d_path(gVehicle2DPathPoint, waypoint, i - 1);
+    gVehicle2DPathSize = generate_2d_path(gVehicle2DPathPoint, waypoint, i - 1);
     D_80162EB2 = -40;
 }
 
@@ -4468,7 +4469,7 @@ void init_vehicles_trains(size_t i, size_t numCarriages, f32 speed) {
     // for (i = 0; i < NUM_TRAINS; i++) {
     //  outputs 160 or 392 depending on the train.
     //  Wraps the value around to always output a valid waypoint.
-    waypointOffset = (((i * gVehicle2DPathLength) / 2) + 160) % gVehicle2DPathLength;
+    waypointOffset = (((i * gVehiclePathSize) / 2) + 160) % gVehiclePathSize;
 
     // 120.0f is about the maximum usable value
     gTrainList[i].speed = speed;
@@ -4689,7 +4690,7 @@ void func_80013054(void) {
     isCrossingTriggeredByIndex[1] = 0;
 
     for (i = 0; i < NUM_TRAINS; i++) {
-        temp_f16 = gTrainList[i].locomotive.waypointIndex / ((f32) gVehicle2DPathLength);
+        temp_f16 = gTrainList[i].locomotive.waypointIndex / ((f32) gVehiclePathSize);
         temp_f18 = 0.72017354f;
         temp_f12 = 0.42299348f;
 
@@ -4812,7 +4813,7 @@ void update_vehicle_paddle_boats(void) {
             sp94[0] = temp_f26;
             sp94[1] = temp_f28;
             sp94[2] = temp_f30;
-            waypoint = &gVehiclePath[(paddleBoat->waypointIndex + 5) % gVehicle2DPathLength];
+            waypoint = &gVehiclePath[(paddleBoat->waypointIndex + 5) % gVehiclePathSize];
             sp88[0] = (f32) waypoint->X;
             sp88[1] = (f32) D_80162EB0;
             sp88[2] = (f32) waypoint->Z;
