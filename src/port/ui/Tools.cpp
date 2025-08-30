@@ -145,6 +145,21 @@ namespace Editor {
 
         ImGui::SameLine();
 
+        // Camera mode button (drive kart and freecam)
+        bool isVideoToolSelected = static_cast<bool>(CVarGetInteger("gFreecam", 0));
+        ImGui::PushStyleColor(ImGuiCol_Button, defaultColor);
+        const char* videoToolLabel = isVideoToolSelected 
+            ? ICON_FA_VIDEO_CAMERA " " ICON_FA_PAPER_PLANE 
+            : ICON_FA_VIDEO_CAMERA " " ICON_FA_CAR;
+
+        if (ImGui::Button(videoToolLabel, ImVec2(50, 25))) {
+            CVarSetInteger("gFreecam", !CVarGetInteger("gFreecam", 0));
+        }
+
+        ImGui::PopStyleColor();
+
+        ImGui::SameLine();
+
         // Alter the game speed
         ToolsWindow::GameSpeed();
 

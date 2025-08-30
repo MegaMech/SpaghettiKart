@@ -241,12 +241,12 @@ namespace Editor {
         { "Ship_2", [](const FVector& pos) { return new AShip(pos, AShip::Skin::SHIP3); } },
         { "SpaghettiShip", [](const FVector& pos) { return new ASpaghettiShip(pos); } },
         { "Starship", [](const FVector& pos) { return new AStarship(pos); } },
-        { "Train", [](const FVector& pos) { return ATrain::Spawn(ATrain::TenderStatus::HAS_TENDER, 4, 2.5f, 0); } },
-        { "Boat", [](const FVector& pos) { return new ABoat((0.6666666f)/4, 0); } },
-        { "Bus", [](const FVector& pos) { return new ABus(2.0f, 2.5f, &gTrackPaths[0][0], 0); } },
-        { "Car", [](const FVector& pos) { return new ACar(2.0f, 2.5f, &gTrackPaths[0][0], 0); } },
-        { "Truck", [](const FVector& pos) { return new ATruck(2.0f, 2.5f, &gTrackPaths[0][0], 0); } },
-        { "Tanker Truck", [](const FVector& pos) { return new ATankerTruck(2.0f, 2.5f, &gTrackPaths[0][0], 0); } },
+        { "Train", [](const FVector& pos) { return ATrain::Spawn(ATrain::TenderStatus::HAS_TENDER, 4, 2.5f, 0, 0, ATrain::SpawnMode::AUTO); } },
+        { "Boat", [](const FVector& pos) { return ABoat::Spawn((0.6666666f)/4, 0, 0, ABoat::SpawnMode::AUTO); } },
+        { "Bus", [](const FVector& pos) { return ABus::Spawn(2.0f, 2.5f, 0, 0, ABus::SpawnMode::AUTO); } },
+        { "Car", [](const FVector& pos) { return ACar::Spawn(2.0f, 2.5f, 0, 0, ACar::SpawnMode::AUTO); } },
+        { "Truck", [](const FVector& pos) { return ATruck::Spawn(2.0f, 2.5f, 0, 0, ATruck::SpawnMode::AUTO); } },
+        { "Tanker Truck", [](const FVector& pos) { return ATankerTruck::Spawn(2.0f, 2.5f, 0, 0, ATankerTruck::SpawnMode::AUTO); } },
     };
 
     std::unordered_map<std::string, std::function<OObject*(const FVector&)>> ObjectList = {
@@ -412,7 +412,7 @@ namespace Editor {
                     gWorldInstance.Courses.push_back(std::move(course));
                 } else { // The track does not have a valid scene file
                     const std::string file = dir + "/data_track_sections";
-                    
+
                     // If the track has a data_track_sections file,
                     // then it must at least be a valid track.
                     // So lets add it as an uninitialized track.

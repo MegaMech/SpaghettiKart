@@ -948,11 +948,22 @@ void set_screen(void) {
 
     for (i = 0; i < 4; i++) {
         wrapper->controllers = controller;
-        wrapper->camera = camera;
+        if ((CVarGetInteger("gFreecam", 0) == true) && (i == PLAYER_ONE)) {
+            wrapper->camera = gFreecamCamera;
+        } else {
+            wrapper->camera = camera;
+        }
         wrapper->player = player;
         wrapper->unkC = unk;
-        wrapper->screenWidth = 4;
-        wrapper->screenHeight = 4;
+
+        // Tick is not enabled in the editor, so the screen needs to begin at the proper size.
+        if ((CVarGetInteger("gEditorEnabled", 0) == true) && (gIsEditorPaused) && (i == PLAYER_ONE)) {
+            wrapper->screenWidth = SCREEN_WIDTH;
+            wrapper->screenHeight = SCREEN_HEIGHT;
+        } else { // Normal race start, screen is small
+            wrapper->screenWidth = 4;
+            wrapper->screenHeight = 4;
+        }
         wrapper->pathCounter = 1;
 
         switch (gActiveScreenMode) {

@@ -687,15 +687,13 @@ void process_game_tick(void) {
 
 
     // tick camera
-    // This looks like it should be in the switch.
+    // This looks like it should be in the switch below.
     // But it needs to be here for player 1 to work in all modes.
-    func_8001EE98(gPlayerOne, camera1, 0);
-    // Required if freecam was to have a new camera
-    //if (CVarGetInteger("gFreecam", 0) == true) {
-    //    freecam(gFreecamCamera, gPlayerOne, 0);
-    //} else {
-        //func_8001EE98(gPlayerOne, camera1, 0);
-    //}
+    if (CVarGetInteger("gFreecam", 0) == true) {
+       freecam(gFreecamCamera, gPlayerOne, 0);
+    } else {
+        func_8001EE98(gPlayerOne, camera1, 0);
+    }
 
     // Editor requires this so the camera keeps moving while the game is paused.
     if (gIsEditorPaused == true) {
