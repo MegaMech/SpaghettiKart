@@ -170,6 +170,12 @@ void RegisterGameActors() {
         }
     );
 
+    RegisterActor("mk:falling_rock",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new AFallingRock(params));
+        }
+    );
+
     RegisterActor("mk:yoshi_egg",
         [](const SpawnParams& params) {
             FVector loc = params.Location.value_or(FVector{0, 0, 0});
@@ -177,16 +183,6 @@ void RegisterGameActors() {
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
             add_actor_to_empty_slot(pos, rot, vel, ACTOR_YOSHI_EGG);
-        }
-    );
-
-    RegisterActor("mk:falling_rock",
-        [](const SpawnParams& params) {
-            FVector loc = params.Location.value_or(FVector{0, 0, 0});
-            Vec3f pos = { loc.x, loc.y, loc.z };
-            Vec3s rot = {0, 0, 0};
-            Vec3f vel = {0, 0, 0};
-            add_actor_to_empty_slot(pos, rot, vel, ACTOR_FALLING_ROCK);
         }
     );
 

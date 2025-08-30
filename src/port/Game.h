@@ -71,7 +71,7 @@ bool CM_DoesFinishlineExist();
 
 void CM_InitClouds();
 
-void CM_DrawActors(Camera* camera, struct Actor* actor);
+void CM_DrawActors(Camera* camera);
 void CM_DrawStaticMeshActors();
 
 void CM_TickObjects();

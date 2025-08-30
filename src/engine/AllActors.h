@@ -1,6 +1,7 @@
 #pragma once
 
 #include "actors/Banana.h"
+#include "actors/FallingRock.h"
 #include "actors/MarioSign.h"
 #include "actors/WarioSign.h"
 #include "actors/Cloud.h"

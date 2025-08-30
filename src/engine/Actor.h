@@ -29,10 +29,12 @@ public:
     const char* ResourceName = "";
     FVector Scale = {1, 1, 1};
 
+    SpawnParams _spawnParams;
 
     virtual ~AActor() = default;  // Virtual destructor for proper cleanup in derived classes
 
     explicit AActor();
+    explicit AActor(SpawnParams params);
 
     virtual void SetSpawnParams(SpawnParams& params);
     virtual void Tick();

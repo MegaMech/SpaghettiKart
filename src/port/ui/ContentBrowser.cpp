@@ -120,14 +120,6 @@ namespace Editor {
             s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_YOSHI_EGG);
             s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
         }},
-        // Needs SpawnData sent into spawn_falling_rocks func
-        // { "Falling Rock", [](const FVector& pos) {
-        //     Vec3f position = {pos.x, pos.y, pos.z};
-        //     Vec3s rot = {0, 0, 0};
-        //     Vec3f vel = {0, 0, 0};
-        //     s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_FALLING_ROCK);
-        //     s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
-        // }},
         { "Piranha Plant", [](const FVector& pos) {
             Vec3f position = {pos.x, pos.y, pos.z};
             Vec3s rot = {0, 0, 0};
@@ -232,6 +224,7 @@ namespace Editor {
     std::unordered_map<std::string, std::function<AActor*(const FVector&)>> ActorList = {
         // The banana gets attached to a player. This needs to be disconnected if this should be used in the editor
 //        { "Banana", [](const FVector& pos) { return gWorldInstance.AddActor(new ABanana(SpawnParams{.Name = "mk:banana", .Location = pos})); } },
+        { "Falling Rock", [](const FVector& pos) { return AFallingRock::Spawn(pos, 80); } },
         { "Mario Sign", [](const FVector& pos) { return AMarioSign::Spawn(pos, IRotator(0, 0, 0), FVector(0, 0, 0), FVector(1.0f, 1.0f, 1.0f)); } },
         { "Wario Sign", [](const FVector& pos) { return AWarioSign::Spawn(pos, IRotator(0, 0, 0), FVector(0, 0, 0), FVector(1.0f, 1.0f, 1.0f)); } },
         { "Cloud", [](const FVector& pos) { return new ACloud(pos); } },

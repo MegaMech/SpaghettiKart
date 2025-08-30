@@ -884,6 +884,7 @@ void render_screens(s32 mode, s32 cameraId, s32 playerId) {
 
     // Draw dynamic game objects
     render_course_actors(screen);
+    CM_DrawActors(D_800DC5EC->camera);
     CM_DrawStaticMeshActors();
     render_object(mode);
 

@@ -365,10 +365,12 @@ void CM_TickActors() {
     }
 }
 
-void CM_DrawActors(Camera* camera, struct Actor* actor) {
-    AActor* a = gWorldInstance.ConvertActorToAActor(actor);
-    if (a->IsMod()) {
-        a->Draw(camera);
+void CM_DrawActors(Camera* camera) {
+    //AActor* a = gWorldInstance.ConvertActorToAActor(actor);
+    for (auto& actor : gWorldInstance.Actors) {
+        if (actor->IsMod()) {
+            actor->Draw(camera);
+        }
     }
 }
 

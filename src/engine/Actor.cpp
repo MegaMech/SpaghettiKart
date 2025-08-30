@@ -10,6 +10,9 @@ extern "C" {
 }
 
 AActor::AActor() {}
+AActor::AActor(SpawnParams params) {
+    _spawnParams = std::move(params);
+}
 
 // Virtual functions to be overridden by derived classes
 void AActor::Tick() {  }

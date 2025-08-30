@@ -2521,8 +2521,7 @@ void render_course_actors(struct UnkStruct_800DC5EC* arg0) {
         FrameInterpolation_RecordOpenChild(actor, i);
 
         switch (actor->type) {
-            default: // Draw custom actor
-                CM_DrawActors(D_800DC5EC->camera, actor);
+            default: // Skip custom actor
                 break;
             case ACTOR_TREE_MARIO_RACEWAY:
 
@@ -2558,8 +2557,8 @@ void render_course_actors(struct UnkStruct_800DC5EC* arg0) {
             case ACTOR_CACTUS3_KALAMARI_DESERT:
                 render_actor_tree_cactus3_kalimari_desert(camera, sBillBoardMtx, actor);
                 break;
-            case ACTOR_FALLING_ROCK:
-                render_actor_falling_rock(camera, (struct FallingRock*) actor);
+            case ACTOR_FALLING_ROCK: // now in C++
+                //render_actor_falling_rock(camera, (struct FallingRock*) actor);
                 break;
             case ACTOR_KIWANO_FRUIT:
                 render_actor_kiwano_fruit(camera, sBillBoardMtx, actor);
@@ -2645,8 +2644,8 @@ void update_course_actors(void) {
         }
 
         switch (actor->type) {
-            case ACTOR_FALLING_ROCK:
-                update_actor_falling_rocks((struct FallingRock*) actor);
+            case ACTOR_FALLING_ROCK: // now in C++
+                //update_actor_falling_rocks((struct FallingRock*) actor);
                 break;
             case ACTOR_GREEN_SHELL:
                 update_actor_green_shell((struct ShellActor*) actor);
