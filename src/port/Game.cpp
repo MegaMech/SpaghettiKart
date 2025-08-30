@@ -367,7 +367,7 @@ void CM_TickActors() {
 
 void CM_DrawActors(Camera* camera) {
     //AActor* a = gWorldInstance.ConvertActorToAActor(actor);
-    for (auto& actor : gWorldInstance.Actors) {
+    for (const auto& actor : gWorldInstance.Actors) {
         if (actor->IsMod()) {
             actor->Draw(camera);
         }
