@@ -134,9 +134,12 @@ namespace Editor {
 
         // Play/pause button
         ImGui::PushStyleColor(ImGuiCol_Button, defaultColor);
-        if (ImGui::Button(gIsEditorPaused ? ICON_FA_PLAY : ICON_FA_PAUSE, ImVec2(50, 25))) {
+        if (ImGui::Button(gIsEditorPaused ? ICON_FA_PLAY : ICON_FA_STOP, ImVec2(50, 25))) {
 
             gIsEditorPaused = !gIsEditorPaused;
+            gIsInQuitToMenuTransition = 1;
+            gQuitToMenuTransitionCounter = 5;
+            gGotoMode = RACING;
         }
         ImGui::PopStyleColor();
 

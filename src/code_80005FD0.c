@@ -4398,6 +4398,10 @@ void generate_train_path(void) {
     temp = gVehicle2DPathPoint;
     gVehicle2DPathSize = generate_2d_path(temp, waypoint, i - 1);
     D_80162EB0 = spawn_actor_on_surface(temp[0].X, 2000.0f, temp[0].Z);
+
+    // Set the trains path
+    gVehiclePath = gVehicle2DPathPoint;
+    gVehiclePathSize = gVehicle2DPathSize;
 }
 
 void generate_ferry_path(void) {
@@ -4410,6 +4414,10 @@ void generate_ferry_path(void) {
 
     gVehicle2DPathSize = generate_2d_path(gVehicle2DPathPoint, waypoint, i - 1);
     D_80162EB2 = -40;
+
+    // Set the boats path
+    gVehiclePath = gVehicle2DPathPoint;
+    gVehiclePathSize = gVehicle2DPathSize;
 }
 
 void spawn_vehicle_on_road(Vec3f position, Vec3s rotation, Vec3f velocity, s32 waypointIndex,

@@ -205,7 +205,7 @@ void DKJungle::BeginPlay() {
 
         // The original game only ran vehicle logic every second frame.
         // Thus the speed gets divided by two to set speed to match properly
-        gWorldInstance.AddActor(new ABoat((0.6666666f)/4, 0));
+        ABoat::Spawn((0.6666666f)/4, 0, 0, ABoat::SpawnMode::POINT);
 
         if (gModeSelection == VERSUS) {
             OBombKart::Spawn(0, 50, 3, 0.8333333f);

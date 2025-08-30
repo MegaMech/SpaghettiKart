@@ -198,6 +198,8 @@ void KalimariDesert::BeginPlay() {
 
         // Spawn two trains
         for (size_t i = 0; i < _numTrains; ++i) {
+            // outputs 160 for train 1 and 392 for train 2.
+            // If using more trains, it wraps the value to always output a valid waypoint.
             uint32_t waypoint = CalculateWaypointDistribution(i, _numTrains, gVehiclePathSize, centerWaypoint);
 
             if (CVarGetInteger("gMultiplayerNoFeatureCuts", 0) == false) {
@@ -214,7 +216,7 @@ void KalimariDesert::BeginPlay() {
                 }
             }
 
-            ATrain::Spawn(_tender, _numCarriages, 2.5f, waypoint);
+            ATrain::Spawn(_tender, _numCarriages, 2.5f, 0, waypoint, ATrain::SpawnMode::POINT);
         }
 
         if (gModeSelection == VERSUS) {

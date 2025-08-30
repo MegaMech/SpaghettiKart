@@ -3,6 +3,9 @@
 #include <libultraship.h>
 #include "Actor.h"
 #include <vector>
+#include "engine/SpawnParams.h"
+#include "engine/CoreMath.h"
+#include "engine/World.h"
 
 extern "C" {
 #include "main.h"
@@ -13,6 +16,11 @@ extern "C" {
 
 class ABus : public AActor {
   public:
+    enum SpawnMode : uint16_t {
+        POINT, // Spawn car at a specific path point
+        AUTO,  // Automatically distribute cars based on a specific path point
+    };
+
     const char* Type;
     size_t Index;
     f32 Speed;
@@ -30,7 +38,25 @@ class ABus : public AActor {
     f32 SomeArg4 = 12.5f;
     u32 SoundBits = SOUND_ARG_LOAD(0x51, 0x01, 0x80, 0x03);
 
-    explicit ABus(f32 speedA, f32 speedB, TrackPathPoint* path, uint32_t waypoint);
+    uint32_t PathIndex;
+    uint32_t PathPoint;
+    SpawnMode _spawnMode;
+    float SpeedB;
+
+    // This is simply a helper function to keep Spawning code clean
+    static inline ABus* Spawn(f32 speedA, f32 speedB, uint32_t pathIndex, uint32_t pathPoint, ABus::SpawnMode spawnMode) {
+        SpawnParams params = {
+            .Name = "mk:bus",
+            .Type = static_cast<uint16_t>(spawnMode),
+            .PathIndex = pathIndex,
+            .PathPoint = pathPoint,
+            .Speed = speedA,
+            .SpeedB = speedB
+        };
+        return static_cast<ABus*>(gWorldInstance.AddActor(new ABus(params)));
+    }
+
+    explicit ABus(const SpawnParams& params);
 
     ~ABus() {
         _count--;
@@ -40,6 +66,7 @@ class ABus : public AActor {
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;
@@ -47,4 +74,5 @@ class ABus : public AActor {
 
   private:
     static size_t _count;
+    static std::map<uint32_t, std::vector<uint32_t>> BusCounts;
 };

@@ -3,6 +3,9 @@
 #include <libultraship.h>
 #include "Actor.h"
 #include <vector>
+#include "engine/SpawnParams.h"
+#include "engine/CoreMath.h"
+#include "engine/World.h"
 
 extern "C" {
 #include "main.h"
@@ -12,7 +15,14 @@ extern "C" {
 class ABoat : public AActor {
     public:
 
-    const char* Type = "mk:boat";
+    enum SpawnMode : uint16_t {
+        POINT, // Spawn boat at a specific path point
+        AUTO,  // Automatically distribute boats based on a specific path point
+    };
+
+    SpawnMode _spawnMode;
+
+    const char* Type = "mk:paddle_boat";
     size_t Index;
     bool IsActive; // The paddle wheel boat only shows up if the number of players is < 3
     Vec3f Position;
@@ -27,8 +37,10 @@ class ABoat : public AActor {
     int32_t NextParticlePtr = 0;
     int16_t AnotherSmokeTimer = 0;
     int16_t SmokeTimer = 0;
+    uint32_t PathIndex = 0;
+    uint32_t PathPoint = 0;
 
-    explicit ABoat(f32 speed, uint32_t waypoint);
+    explicit ABoat(const SpawnParams& params);
 
     ~ABoat() {
         _count--;
@@ -38,6 +50,19 @@ class ABoat : public AActor {
         return _count;
     }
 
+    // This is simply a helper function to keep Spawning code clean
+    static inline ABoat* Spawn(f32 speed, uint32_t pathIndex, uint32_t pathPoint, ABoat::SpawnMode spawnMode) {
+        SpawnParams params = {
+            .Name = "mk:paddle_boat",
+            .Type = static_cast<uint16_t>(spawnMode),
+            .PathIndex = pathIndex,
+            .PathPoint = pathPoint,
+            .Speed = speed,
+        };
+        return static_cast<ABoat*>(gWorldInstance.AddActor(new ABoat(params)));
+    }
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;
@@ -45,5 +70,5 @@ class ABoat : public AActor {
     virtual bool IsMod() override;
 private:
     static size_t _count;
-
+    static std::map<uint32_t, std::vector<uint32_t>> BoatCounts;
 };

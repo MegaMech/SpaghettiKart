@@ -1279,7 +1279,7 @@ void func_8003D080(void) {
     }
 
     // Init freecam
-    //freecam_init(player->pos[0], player->pos[1], player->pos[2], player->rotation[1], 1, 4);
+    freecam_init(player->pos[0], player->pos[1], player->pos[2], player->rotation[1], 1, 4);
 
     switch (gActiveScreenMode) {
         case SCREEN_MODE_1P:

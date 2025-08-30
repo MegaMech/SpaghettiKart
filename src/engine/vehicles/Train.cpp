@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "engine/courses/Course.h"
+#include "engine/vehicles/Utils.h"
 #include "engine/World.h"
 #include "port/Game.h"
 
@@ -28,12 +29,12 @@ extern "C" {
 
 // The two counts are so we can spawn trains at specific points or use auto distribution
 size_t ATrain::_count = 0;
-std::unordered_map<uint32_t, uint32_t> ATrain::TrainCounts;
+//       pathIndex,     array of spawn points
+std::map<uint32_t, std::vector<uint32_t>> ATrain::TrainCounts;
 
 ATrain::ATrain(const SpawnParams& params) {
     Name = "Train";
     ResourceName = "mk:train";
-    u16 waypointOffset;
     TrainCarStuff* ptr1;
     TrackPathPoint* pos;
 
@@ -45,53 +46,46 @@ ATrain::ATrain(const SpawnParams& params) {
     bool tender = params.Bool.value_or(true);
 
     // The path to spawn the train at
-    uint32_t pathIndex = params.PathIndex.value_or(0);
+    PathIndex = params.PathIndex.value_or(0);
 
-    SpawnMode spawnMode = static_cast<SpawnMode>(params.Type.value_or(false));
+    _spawnMode = static_cast<SpawnMode>(params.Type.value_or(SpawnMode::POINT));
 
-    switch(spawnMode) {
+    switch(_spawnMode) {
         case SpawnMode::POINT: // Spawn train at a specific path point
-            pathPoint = params.PathPoint.value_or(0);
+            PathPoint = params.PathPoint.value_or(0);
+            TrainCounts[PathIndex].push_back(PathPoint);
             break;
         case SpawnMode::AUTO: // Automatically distribute trains based on a specific path point
-            pathPoint = GetVehiclePathPointDistributed(TrainCounts[pathIndex], params.PathPoint.value_or(0));
-
+            printf("vehicle path size %d\n", gVehiclePathSize);
+            PathPoint = GetVehiclePathPointDistributed(TrainCounts[PathIndex], gVehiclePathSize);
+            TrainCounts[PathIndex].push_back(PathPoint);
+            printf("train spawn path point: %d\n", PathPoint);
             break;
     }
-
-    TrainCounts[pathIndex] += 1;
 
     // Set to the default value
     std::fill(SmokeParticles, SmokeParticles + 128, NULL_OBJECT_ID);
-
-    // Set the trains path
-    if (IsKalimariDesert()) {
-        gVehiclePath = gVehicle2DPathPoint;
-        gVehiclePathSize = gVehicle2DPathSize;
-    }
 
     for (size_t i = 0; i < numCarriages; i++) {
         PassengerCars.push_back(TrainCarStuff());
     }
 
-    // outputs 160 or 392 depending on the train.
-    // Wraps the value around to always output a valid waypoint.
-    waypointOffset = (u16)params.PathPoint.value_or(0);
+    //waypointOffset = (u16)params.PathPoint.value_or(0);
 
     // 120.0f is about the maximum usable value
     for (size_t i = 0; i < PassengerCars.size(); i++) {
-        waypointOffset += 4;
+        PathPoint += 4;
         ptr1 = &PassengerCars[i];
-        pos = &gVehicle2DPathPoint[waypointOffset];
-        set_vehicle_pos_path_point(ptr1, pos, waypointOffset);
+        pos = &gVehicle2DPathPoint[PathPoint];
+        set_vehicle_pos_path_point(ptr1, pos, PathPoint);
     }
     // Smaller offset for the tender
-    waypointOffset += 3;
-    pos = &gVehicle2DPathPoint[waypointOffset];
-    set_vehicle_pos_path_point(&this->Tender, pos, waypointOffset);
-    waypointOffset += 4;
-    pos = &gVehicle2DPathPoint[waypointOffset];
-    set_vehicle_pos_path_point(&Locomotive, pos, waypointOffset);
+    PathPoint += 3;
+    pos = &gVehicle2DPathPoint[PathPoint];
+    set_vehicle_pos_path_point(&this->Tender, pos, PathPoint);
+    PathPoint += 4;
+    pos = &gVehicle2DPathPoint[PathPoint];
+    set_vehicle_pos_path_point(&Locomotive, pos, PathPoint);
 
     // Only use locomotive unless overwritten below.
     NumCars = LOCOMOTIVE_ONLY;
@@ -162,11 +156,13 @@ ATrain::ATrain(const SpawnParams& params) {
 
 void ATrain::SetSpawnParams(SpawnParams& params) {
     params.Name = "mk:train";
+    params.Type = static_cast<uint16_t>(_spawnMode);
     params.Count = NumCars - NUM_TENDERS;
     params.Bool = Tender.isActive;
     params.Speed = Speed;
     params.Count = PassengerCars.size();
-   // params.PathPoint = waypoint;
+    params.PathIndex = PathIndex;
+    params.PathPoint = PathPoint;
 }
 
 bool ATrain::IsMod() {

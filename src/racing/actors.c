@@ -2876,6 +2876,6 @@ const char* get_actor_resource_location_name(s32 id) {
         case ACTOR_YOSHI_EGG:
             return "mk:yoshi_egg";
         default:
-            return "mk:obj";
+            return "mk:actor";
     }
 }

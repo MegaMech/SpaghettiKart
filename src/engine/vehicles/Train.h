@@ -28,6 +28,8 @@ class ATrain : public AActor {
         AUTO,  // Automatically distribute trains based on a specific path point
     };
 
+    SpawnMode _spawnMode;
+
     enum TenderStatus {
         NO_TENDER,
         HAS_TENDER,
@@ -48,6 +50,8 @@ class ATrain : public AActor {
     int32_t NextParticlePtr = 0;
     int16_t AnotherSmokeTimer = 0;
     int16_t SmokeTimer = 0;
+    uint32_t PathIndex = 0;
+    uint32_t PathPoint = 0;
 
     explicit ATrain(const SpawnParams& params);
 
@@ -60,14 +64,15 @@ class ATrain : public AActor {
     }
 
     // This is simply a helper function to keep Spawning code clean
-    static inline ATrain* Spawn(ATrain::TenderStatus tender, size_t numCarriages, f32 speed, uint32_t waypoint) {
+    static inline ATrain* Spawn(ATrain::TenderStatus tender, size_t numCarriages, f32 speed, uint32_t pathIndex, uint32_t waypoint, ATrain::SpawnMode spawnMode) {
         SpawnParams params = {
             .Name = "mk:train",
+            .Type = static_cast<uint16_t>(spawnMode),
             .Count = numCarriages,
+            .PathIndex = pathIndex,
             .PathPoint = waypoint,
             .Bool = tender,
             .Speed = speed,
-
         };
         return static_cast<ATrain*>(gWorldInstance.AddActor(new ATrain(params)));
     }
@@ -82,6 +87,6 @@ class ATrain : public AActor {
 
 private:
     static size_t _count; // Total number of spawned trains
-    //                        pathIdx , trainCount
-    static std::unordered_map<uint32_t, uint32_t> TrainCounts;
+//                  pathIndex, array of spawn points
+    static std::map<uint32_t, std::vector<uint32_t>> TrainCounts;
 };

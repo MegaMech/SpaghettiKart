@@ -648,8 +648,15 @@ void func_8028F4E8(void) {
     }
 }
 
+// Makes screen bigger at start of race.
 void func_8028F588(void) {
     s16 screenWidth;
+
+    if (CVarGetInteger("gEditorEnabled", 0) == true) {
+        D_800DC5EC->screenWidth = SCREEN_WIDTH;
+        D_800DC5EC->screenHeight = SCREEN_HEIGHT;
+        return;
+    }
 
     switch (gActiveScreenMode) { /* irregular */
         case SCREEN_MODE_1P:

@@ -28,6 +28,11 @@ void Registry_SpawnActor(SpawnParams& params) {
     }
 }
 
+// @arg name Must be a resource name such as mk:car
+bool Registry_Find(const std::string& name) {
+    return gActorRegistry.find(name) != gActorRegistry.end();
+}
+
 void RegisterGameActors() {
     RegisterActor("mk:item_box",
         [](const SpawnParams& params) {
@@ -322,6 +327,42 @@ void RegisterGameActors() {
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
             add_actor_to_empty_slot(pos, rot, vel, ACTOR_BUSH_BOWSERS_CASTLE);
+        }
+    );
+
+    RegisterActor("mk:train",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ATrain(params));
+        }
+    );
+
+    RegisterActor("mk:paddle_boat",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ABoat(params));
+        }
+    );
+
+    RegisterActor("mk:car",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ACar(params));
+        }
+    );
+
+    RegisterActor("mk:truck",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ATankerTruck(params));
+        }
+    );
+
+    RegisterActor("mk:tanker_truck",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ATankerTruck(params));
+        }
+    );
+
+    RegisterActor("mk:bus",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ATankerTruck(params));
         }
     );
 }

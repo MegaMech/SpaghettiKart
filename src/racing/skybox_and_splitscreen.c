@@ -762,10 +762,10 @@ void setup_camera(Camera* camera, s32 playerId, s32 cameraId, struct UnkStruct_8
     u16 perspNorm;
 
     // This allows freecam to create a new separate camera
-    // if (CVarGetInteger("gFreecam", 0) == true) {
-    //     freecam_render_setup(gFreecamCamera);
-    //     return;
-    // }
+    if (CVarGetInteger("gFreecam", 0) == true) {
+        freecam_render_setup(gFreecamCamera);
+        return;
+    }
 
     // Tag the camera for the interpolation engine
     FrameInterpolation_RecordOpenChild("camera",
@@ -853,12 +853,12 @@ void render_screens(s32 mode, s32 cameraId, s32 playerId) {
     Camera* camera;
 
     // Required for freecam to have its own camera
-    //if (CVarGetInteger("gFreecam", 0) == true) {
-    //    camera = &gFreecamCamera;
-    //    cameraId = 4;
-    //} else {
+    if (CVarGetInteger("gFreecam", 0) == true) {
+       camera = &cameras[4];
+       cameraId = 4;
+    } else {
         camera = &cameras[cameraId];
-    //}
+    }
     
     if (screenMode == SCREEN_MODE_2P_SPLITSCREEN_HORIZONTAL) {
         gSPSetGeometryMode(gDisplayListHead++, G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH);
@@ -935,7 +935,8 @@ void render_screens(s32 mode, s32 cameraId, s32 playerId) {
     }
 }
 
-void func_802A74BC(void) {
+// Makes the screen small at the start of a race
+void set_screen(void) {
     struct UnkStruct_800DC5EC* wrapper = &D_8015F480[0];
     Player* player = &gPlayers[0];
     Camera* camera = &cameras[0];
@@ -1000,6 +1001,17 @@ void func_802A74BC(void) {
         wrapper++;
         unk += 0x10;
     }
+}
+
+void set_editor_screen(void) {
+    struct UnkStruct_800DC5EC* wrapper = &D_8015F480[0];
+    wrapper->controllers = gControllerOne;
+    wrapper->camera = gFreecamCamera;
+    wrapper->player = gPlayerOne;
+    wrapper->unkC = &D_8015F790[0];
+    wrapper->screenWidth = SCREEN_WIDTH;
+    wrapper->screenHeight = SCREEN_HEIGHT;
+    wrapper->pathCounter = 1;
 }
 
 void copy_framebuffer(s32 arg0, s32 arg1, s32 width, s32 height, u16* source, u16* target) {

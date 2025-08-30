@@ -177,14 +177,7 @@ namespace Editor {
     void SaveActors(nlohmann::json& actorList) {
         for (const auto& actor : gWorldInstance.Actors) {
             SpawnParams params{};
-
-            if (actor->ResourceName == "mk:train") {
-                actor->SetSpawnParams(params);
-                if (!params.Name.empty()) {
-                    actorList.push_back(params);
-                }
-                continue;
-            }
+            bool alreadyProcessed = false;
 
             // Only some actors are supported for saving.
             // Bananas and stuff don't make sense to be saved.
@@ -209,23 +202,34 @@ namespace Editor {
                 params.Name = get_actor_resource_location_name(actor->Type);
                 params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
                 actorList.push_back(params);
+                alreadyProcessed = true;
                 break;
                 case ACTOR_PIRANHA_PLANT:
                 params.Name = get_actor_resource_location_name(actor->Type);
                 params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
                 // params.Type = // Need this to use royal raceway version
                 actorList.push_back(params);
+                alreadyProcessed = true;
                 break;
                 case ACTOR_MARIO_SIGN:
                 case ACTOR_WARIO_SIGN:
                     actor->SetSpawnParams(params);
                     actorList.push_back(params);
+                    alreadyProcessed = true;
                     break;
                 case ACTOR_YOSHI_EGG:
                     params.Name = get_actor_resource_location_name(actor->Type);
                     params.Location = FVector(actor->Velocity[0], actor->Pos[1], actor->Velocity[2]); // Velocity is pathCenter
                     actorList.push_back(params);
+                    alreadyProcessed = true;
                     break;
+            }
+
+            if (!alreadyProcessed) {
+                actor->SetSpawnParams(params);
+                if (!params.Name.empty()) {
+                    actorList.push_back(params);
+                }
             }
         }
 

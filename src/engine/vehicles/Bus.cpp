@@ -1,6 +1,7 @@
 #include <libultraship.h>
 #include "Bus.h"
 #include <vector>
+#include "engine/vehicles/Utils.h"
 
 extern "C" {
 #include "macros.h"
@@ -17,17 +18,34 @@ extern s8 gPlayerCount;
 }
 
 size_t ABus::_count = 0;
+std::map<uint32_t, std::vector<uint32_t>> ABus::BusCounts;
 
-ABus::ABus(f32 speedA, f32 speedB, TrackPathPoint* path, uint32_t waypoint) {
+ABus::ABus(const SpawnParams& params) {
     Name = "Bus";
+    ResourceName = "mk:bus";
     TrackPathPoint* temp_v0;
     u16 waypointOffset;
     s32 numWaypoints = gPathCountByPathIndex[0];
 
     Index = _count;
+    PathIndex = params.PathIndex.value_or(0);
 
-    waypointOffset = waypoint;
-    temp_v0 = &path[waypointOffset];
+    _spawnMode = static_cast<ABus::SpawnMode>(params.Type.value_or(0));
+    switch(_spawnMode) {
+        case SpawnMode::POINT: // Spawn car at a specific path point
+            PathPoint = params.PathPoint.value_or(0);
+            BusCounts[PathIndex].push_back(PathPoint);
+            break;
+        case SpawnMode::AUTO: // Automatically distribute cars based on a specific path point
+            printf("vehicle path size %d\n", gVehiclePathSize);
+            PathPoint = GetVehiclePathPointDistributed(BusCounts[PathIndex], gVehiclePathSize);
+            BusCounts[PathIndex].push_back(PathPoint);
+            printf("train spawn path point: %d\n", PathPoint);
+            break;
+    }
+
+    waypointOffset = PathPoint;
+    temp_v0 = &gTrackPaths[PathIndex][PathPoint];
     Position[0] = (f32) temp_v0->X;
     Position[1] = (f32) temp_v0->Y;
     Position[2] = (f32) temp_v0->Z;
@@ -43,9 +61,9 @@ ABus::ABus(f32 speedA, f32 speedB, TrackPathPoint* path, uint32_t waypoint) {
     }
     SomeMultiplierTheSequel = (f32) ((f64) (f32) (SomeType - 1) * 0.6);
     if (((gCCSelection > CC_50) || (gModeSelection == TIME_TRIALS)) && (SomeType == 2)) {
-        Speed = speedA;
+        Speed = params.Speed.value_or(0);
     } else {
-        Speed = speedB;
+        Speed = SpeedB = params.SpeedB.value_or(0);
     }
     Rotation[0] = 0;
     Rotation[2] = 0;
@@ -60,6 +78,15 @@ ABus::ABus(f32 speedA, f32 speedB, TrackPathPoint* path, uint32_t waypoint) {
     ActorIndex = add_actor_to_empty_slot(Position, Rotation, Velocity, ACTOR_SCHOOL_BUS);
 
     _count++;
+}
+
+void ABus::SetSpawnParams(SpawnParams& params) {
+    params.Name = "mk:bus";
+    params.Type = static_cast<uint16_t>(_spawnMode);
+    params.PathIndex = PathIndex;
+    params.PathPoint = PathPoint;
+    params.Speed = Speed;
+    params.SpeedB = SpeedB;
 }
 
 bool ABus::IsMod() {

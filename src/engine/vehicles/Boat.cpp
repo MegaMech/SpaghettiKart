@@ -1,6 +1,7 @@
 #include <libultraship.h>
 #include "Boat.h"
 #include <vector>
+#include "Utils.h"
 
 extern "C" {
 #include "macros.h"
@@ -15,19 +16,32 @@ extern s8 gPlayerCount;
 }
 
 size_t ABoat::_count = 0;
+std::map<uint32_t, std::vector<uint32_t>> ABoat::BoatCounts;
 
-ABoat::ABoat(f32 speed, u32 waypoint) {
+ABoat::ABoat(const SpawnParams& params) {
     Name = "Paddle Steam Boat";
+    ResourceName = "mk:paddle_boat";
     TrackPathPoint* temp_a2;
-    u16 waypointOffset;
     Index = _count;
-    Speed = speed;
+    Speed = params.Speed.value_or(0);
 
     // Set to the default value
     std::fill(SmokeParticles, SmokeParticles + 128, NULL_OBJECT_ID);
 
-    waypointOffset = waypoint;
-    temp_a2 = &gVehicle2DPathPoint[waypointOffset];
+    _spawnMode = static_cast<SpawnMode>(params.Type.value_or(SpawnMode::POINT));
+
+    switch(_spawnMode) {
+        case SpawnMode::POINT: // Spawn train at a specific path point
+            PathPoint = params.PathPoint.value_or(0);
+            BoatCounts[PathIndex].push_back(PathPoint);
+            break;
+        case SpawnMode::AUTO: // Automatically distribute trains based on a specific path point
+            PathPoint = GetVehiclePathPointDistributed(BoatCounts[PathIndex], gVehiclePathSize);
+            BoatCounts[PathIndex].push_back(PathPoint);
+            break;
+    }
+
+    temp_a2 = &gVehicle2DPathPoint[PathPoint];
     Position[0] = temp_a2->X;
     Position[1] = D_80162EB2;
     Position[2] = temp_a2->Z;
@@ -52,6 +66,14 @@ ABoat::ABoat(f32 speed, u32 waypoint) {
     }
 
     _count++;
+}
+
+void ABoat::SetSpawnParams(SpawnParams& params) {
+    params.Name = "mk:paddle_boat";
+    params.Type = static_cast<uint16_t>(_spawnMode);
+    params.Speed = Speed;
+    params.PathIndex = PathIndex;
+    params.PathPoint = PathPoint;
 }
 
 void ABoat::Draw(Camera* camera) {

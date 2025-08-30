@@ -11,22 +11,25 @@ uint32_t CalculateWaypointDistribution(size_t i, uint32_t numVehicles, size_t nu
     return (uint32_t)(((i * numWaypoints) / numVehicles) + centerWaypoint) % numWaypoints;
 }
 
-// Used to automatically spawn vehicles spread out.
-uint32_t GetVehiclePathPointDistributed(const std::vector<uint32_t>& existingTrains, uint32_t numWaypoints) {
+uint32_t GetVehiclePathPointDistributed(std::vector<uint32_t>& existingTrains, uint32_t numWaypoints) {
     if (existingTrains.empty()) {
         return 0; // first train at start
     }
 
     // Sort trains along path
-    std::vector<uint32_t> sorted = existingTrains;
-    std::sort(sorted.begin(), sorted.end());
+    std::sort(existingTrains.begin(), existingTrains.end());
+
+    if (existingTrains.size() == 1) {
+        // Place train halfway around the path
+        return (existingTrains[0] + numWaypoints / 2) % numWaypoints;
+    }
 
     uint32_t bestGap = 0;
     uint32_t bestPos = 0;
 
-    for (size_t i = 0; i < sorted.size(); i++) {
-        uint32_t start = sorted[i];
-        uint32_t end = sorted[(i + 1) % sorted.size()];
+    for (size_t i = 0; i < existingTrains.size(); i++) {
+        uint32_t start = existingTrains[i];
+        uint32_t end = existingTrains[(i + 1) % existingTrains.size()];
         uint32_t gap = (end + numWaypoints - start) % numWaypoints;
 
         if (gap > bestGap) {
