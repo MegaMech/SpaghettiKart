@@ -5,6 +5,7 @@
 #include <string>
 #include <nlohmann/json.hpp>
 #include "CoreMath.h"
+#include <unordered_map>
 
 // Used to save and load all game actors to the scene file
 struct SpawnParams {
@@ -64,4 +65,29 @@ struct SpawnParams {
         Speed,
         SpeedB
     )
+};
+
+std::unordered_map<std::string, std::string> SpawnLabels {
+    {"Name", "Name"},
+    {"Type", "Type"},
+    {"Behaviour", "Behaviour"},
+    {"Skin", "Skin"},
+    {"Location", "Location"},
+    {"Rotation", "Rotation"},
+    {"Scale", "Scale"},
+    {"Velocity", "Velocity"},
+    {"PatrolStart", "Patrol Start"},
+    {"PatrolEnd", "Patrol End"},
+    {"PathSpan", "Path Span"},
+    {"PrimAlpha", "PrimAlpha"},
+    {"BoundingBoxSize", "Bounding Box Size"},
+    {"Count", "Count"},
+    {"LeftExitSpan", "Left Exit Span"},
+    {"TriggerSpan", "Trigger Span"},
+    {"RightExitSpan", "Right Exit Span"},
+    {"PathIndex", "Path Index"},
+    {"PathPoint", "Path Point"},
+    {"Bool", "Bool"},
+    {"Speed", "Speed"},
+    {"SpeedB", "SpeedB"},
 };

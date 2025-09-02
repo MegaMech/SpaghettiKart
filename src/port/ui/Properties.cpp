@@ -46,8 +46,48 @@ namespace Editor {
             } else {
                 ImGui::Text("Unknown type");
             }
-
+            auto params = obj->_spawnParams;
             ImGui::Text(obj->_spawnParams.Name.c_str());
+
+            if (params.Type.has_value()) {
+                std::string label = GetDisplayLabel<T>("Type");
+                ImGui::Text("%s: %d", label.c_str(), *params.Type);
+            }
+
+            if (params.Behaviour.has_value()) {
+                std::string label = GetDisplayLabel<T>("Behaviour");
+                ImGui::Text("%s: %d", label.c_str(), *params.Behaviour);
+            }
+
+            if (params.Skin.has_value()) {
+                std::string label = GetDisplayLabel<T>("Skin");
+                ImGui::Text("%s: %d", label.c_str(), *params.Skin);
+            }
+
+            if (params.Location.has_value()) {
+                std::string label = GetDisplayLabel<T>("Location");
+                ImGui::Text("%s: %d", label.c_str(), *params.Location);
+            }
+
+            if (params.Rotation.has_value()) {
+                std::string label = GetDisplayLabel<T>("Rotation");
+                ImGui::Text("%s: %d", label.c_str(), *params.Rotation);
+            }
+
+            if (params.Scale.has_value()) {
+                std::string label = GetDisplayLabel<T>("Scale");
+                ImGui::Text("%s: %d", label.c_str(), *params.Scale);
+            }
+
+            if (params.Velocity.has_value()) {
+                std::string label = GetDisplayLabel<T>("Velocity");
+                ImGui::Text("%s: %d", label.c_str(), *params.Velocity);
+            }
+
+            if (params.PatrolStart.has_value()) {
+                std::string label = GetDisplayLabel<T>("Velocity");
+                ImGui::Text("%s: %d", label.c_str(), *params.Velocity);
+            }
 
             if (params.PathPoint.has_value()) {
                 std::string label = GetDisplayLabel<T>("PathPoint");
