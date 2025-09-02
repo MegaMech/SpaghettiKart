@@ -60,6 +60,7 @@ OThwomp::OThwomp(const SpawnParams& params) { // s16 x, s16 z, s16 direction, f3
 
     Name = "Thwomp";
     ResourceName = "mk:thwomp";
+    Model = "d_course_bowsers_castle_dl_thwomp";
     _idx = _count;
     _faceDirection = rot.yaw;
     _boundingBoxSize = boundingBox;

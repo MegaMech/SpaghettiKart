@@ -15,6 +15,10 @@
 #include "port/Game.h"
 #include "src/engine/World.h"
 
+extern "C" {
+#include "actors.h"
+}
+
 namespace Editor {
 
     PropertiesWindow::~PropertiesWindow() {
@@ -22,42 +26,68 @@ namespace Editor {
     }
 
     void PropertiesWindow::DrawElement() {
-        GameObject* selected = gEditor.eObjectPicker.eGizmo._selected;
 
-        if (nullptr == selected) {
-            return;
-        }
+        std::visit([this](auto* obj) {
+            using T = std::decay_t<decltype(*obj)>;  // Get the type the pointer is pointing to
+            if (nullptr == obj) {
+                return;
+            }
 
-        ImGui::Begin("Properties");
+            if constexpr (std::is_same_v<T, AActor>) {
+                if (obj->IsMod()) {
+                    ImGui::Text("Actor: %s", obj->Name);
+                } else {
+                    ImGui::Text("Actor: %s", get_actor_display_name(obj->Type));
+                }
+            } else if constexpr (std::is_same_v<T, OObject>) {
+                ImGui::Text("Object: %s", obj->Name);
+            } else if constexpr (std::is_same_v<T, GameObject>) {
+                ImGui::Text("EditorObject: %s", obj->Name);
+            } else {
+                ImGui::Text("Unknown type");
+            }
 
-        if (selected->Pos) {
+            ImGui::Text(obj->_spawnParams.Name.c_str());
+
+            if (params.PathPoint.has_value()) {
+                std::string label = GetDisplayLabel<T>("PathPoint");
+                ImGui::Text("%s: %d", label.c_str(), *params.PathPoint);
+            }
+
+            if (params.Speed.has_value()) {
+                std::string label = GetDisplayLabel<T>("Speed");
+                ImGui::Text("%s: %.2f", label.c_str(), *params.Speed);
+            }
+
+            ImGui::Begin("Properties");
+
             ImGui::Text("Location");
             ImGui::SameLine();
 
-            bool positionChanged = ImGui::DragFloat3("##Location", &selected->Pos->x, 0.1f);
+            FVector location = obj->GetLocation();
+            FVector locEdit = location;
+            bool positionChanged = ImGui::DragFloat3("##Location", (float*)&locEdit, 0.1f);
 
             ImGui::SameLine();
             if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-                selected->Pos->x = 0.0f;
-                selected->Pos->y = 0.0f;
-                selected->Pos->z = 0.0f;
+                obj->Translate(FVector(0, 0, 0));
                 positionChanged = true; // also counts as a change
             }
 
             if (positionChanged) {
-                gEditor.eObjectPicker.eGizmo.Pos = *selected->Pos;
+                gEditor.eObjectPicker.eGizmo.Pos = obj->GetLocation();
             }
-        }
 
-        if (selected->Rot) {
             ImGui::Text("Rotation");
             ImGui::SameLine();
 
+            IRotator objRot = obj->GetRotation();
+
             // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
             int rot[3] = {
-                selected->Rot->pitch,
-                selected->Rot->yaw,
-                selected->Rot->roll
+                objRot.pitch,
+                objRot.yaw,
+                objRot.roll
             };
 
             if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
@@ -65,43 +95,55 @@ namespace Editor {
                     // Wrap around 0–65535
                     rot[i] = (rot[i] % 65536 + 65536) % 65536;
                 }
-
-                selected->Rot->pitch = static_cast<uint16_t>(rot[0]);
-                selected->Rot->yaw   = static_cast<uint16_t>(rot[1]);
-                selected->Rot->roll  = static_cast<uint16_t>(rot[2]);
+                IRotator newRot;
+                newRot.Set(
+                    static_cast<uint16_t>(rot[0]),
+                    static_cast<uint16_t>(rot[1]),
+                    static_cast<uint16_t>(rot[2])
+                );
+                obj->Rotate(newRot);
             }
 
             ImGui::SameLine();
             if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
-                selected->Rot->pitch = 0;
-                selected->Rot->yaw   = 0;
-                selected->Rot->roll  = 0;
+                obj->Rotate(IRotator(0, 0, 0));
             }
-        }
 
-        if (selected->Scale) {
+            FVector scale = obj->GetScale();
             ImGui::Text("Scale   ");
             ImGui::SameLine();
 
-            ImGui::DragFloat3("##Scale", &selected->Scale->x, 0.1f);
+            ImGui::DragFloat3("##Scale", (float*)&scale, 0.1f);
+            obj->SetScale(scale);
             ImGui::SameLine();
             if (ImGui::Button(ICON_FA_UNDO "##ResetScale")) {
-                selected->Scale->x = 1.0f;
-                selected->Scale->y = 1.0f;
-                selected->Scale->z = 1.0f;
+                obj->SetScale(FVector(1, 1, 1));
+            }
+
+            // This allowed the user to alter the bounding box of the editor selection if it was too small.
+            // if (selected->Collision == GameObject::CollisionType::BOUNDING_BOX) {
+            //     ImGui::Separator();
+            //     ImGui::Text("Editor Bounding Box Size:");
+            //     ImGui::PushID("BoundingBoxSize");
+            //     ImGui::DragFloat("##BoundingBoxSize", &selected->BoundingBoxSize, 0.1f);
+            //     ImGui::SameLine();
+            //     if (ImGui::Button(ICON_FA_UNDO)) { selected->BoundingBoxSize = 2.0f; }
+            //     ImGui::PopID();
+            // }
+
+            ImGui::End();
+
+        }, gEditor.eObjectPicker.eGizmo._selected);
+    }
+
+    template <typename T>
+    std::string GetDisplayLabel(const std::string& fieldName) {
+        if constexpr (requires { T::PropertyLabels(); }) {
+            const auto& labels = T::PropertyLabels();
+            if (auto it = labels.find(fieldName); it != labels.end()) {
+                return it->second;
             }
         }
-
-        if (selected->Collision == GameObject::CollisionType::BOUNDING_BOX) {
-            ImGui::Separator();
-            ImGui::Text("Editor Bounding Box Size:");
-            ImGui::PushID("BoundingBoxSize");
-            ImGui::DragFloat("##BoundingBoxSize", &selected->BoundingBoxSize, 0.1f);
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO)) { selected->BoundingBoxSize = 2.0f; }
-            ImGui::PopID();
-        }
-
-        ImGui::End();
+        return fieldName; // Fallback to field name
     }
 }

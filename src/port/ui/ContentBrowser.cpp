@@ -163,11 +163,11 @@ namespace Editor {
             s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_PALM_TREE);
             s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
         }},
-        { "Unknown Plant (0x1A)", [](const FVector& pos) {
+        { "Tree (Luigi Raceway)", [](const FVector& pos) {
             Vec3f position = {pos.x, pos.y, pos.z};
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
-            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_UNKNOWN_0x1A);
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_LUIGI_RACEWAY);
             s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
         }},
         { "Unknown Plant (0x1B)", [](const FVector& pos) {
@@ -181,7 +181,7 @@ namespace Editor {
             Vec3f position = {pos.x, pos.y, pos.z};
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
-            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_BOWSERS_CASTLE);
+            s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_TREE_PEACH_CASTLE);
             s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
         }},
         { "Tree (Frappe Snowland)", [](const FVector& pos) {

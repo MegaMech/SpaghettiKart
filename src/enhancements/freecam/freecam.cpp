@@ -160,7 +160,7 @@ void freecam_mouse_manager(Camera* camera, Vec3f forwardVector) {
     } else { // Mouse controls
         // Calculate yaw (left/right) and pitch (up/down) changes
         if (wnd->GetMouseState(Ship::LUS_MOUSE_BTN_RIGHT)) {
-            yawChange = mouse.x * MOUSE_SENSITIVITY_X;
+            yawChange = -mouse.x * MOUSE_SENSITIVITY_X;
             pitchChange = mouse.y * MOUSE_SENSITIVITY_Y;
         }
         // Update rotational velocity based on mouse movement

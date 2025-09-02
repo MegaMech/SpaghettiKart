@@ -138,8 +138,8 @@ namespace Editor {
 
         printf("After from_json: Pos(%f, %f, %f), Name: %s, Model: %s\n", 
         actor->Pos.x, actor->Pos.y, actor->Pos.z, actor->Name.c_str(), actor->Model.c_str());
-        gEditor.AddObject(actor->Name.c_str(), &actor->Pos, &actor->Rot, &actor->Scale, (Gfx*) nullptr, 1.0f,
-                        GameObject::CollisionType::BOUNDING_BOX, 20.0f, (int32_t*) &actor->bPendingDestroy, (int32_t) 1);
+        //gEditor.AddObject(actor->Name.c_str(), &actor->Pos, &actor->Rot, &actor->Scale, "", 1.0f,
+        //                GameObject::CollisionType::BOUNDING_BOX, 20.0f, (int32_t*) &actor->bPendingDestroy, (int32_t) 1);
     }
 
     void SetSceneFile(std::shared_ptr<Ship::Archive> archive, std::string sceneFile) {
@@ -190,9 +190,9 @@ namespace Editor {
                 case ACTOR_TREE_ROYAL_RACEWAY:
                 case ACTOR_TREE_MOO_MOO_FARM:
                 case ACTOR_PALM_TREE:
-                case ACTOR_UNKNOWN_0x1A: // A plant?
+                case ACTOR_TREE_LUIGI_RACEWAY: // A plant?
                 case ACTOR_UNKNOWN_0x1B:
-                case ACTOR_TREE_BOWSERS_CASTLE:
+                case ACTOR_TREE_PEACH_CASTLE:
                 case ACTOR_TREE_FRAPPE_SNOWLAND:
                 case ACTOR_CACTUS1_KALAMARI_DESERT:
                 case ACTOR_CACTUS2_KALAMARI_DESERT:

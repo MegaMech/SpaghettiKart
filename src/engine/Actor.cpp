@@ -3,7 +3,8 @@
 #include "Actor.h"
 #include "engine/World.h"
 
-
+// Editor
+#include "engine/editor/Collision.h"
 
 extern "C" {
 #include "math_util.h"
@@ -12,6 +13,15 @@ extern "C" {
 AActor::AActor() {}
 AActor::AActor(SpawnParams params) {
     _spawnParams = std::move(params);
+}
+
+void AActor::BeginPlay() {
+    if ((nullptr != Model) && (Model[0] != '\0')) {
+        // Prevent collision mesh from being generated extra times.
+        if (Triangles.size() == 0) {
+            Editor::GenerateCollisionMesh(this, (Gfx*)LOAD_ASSET_RAW(Model), 1.0f);
+        }
+    }
 }
 
 // Virtual functions to be overridden by derived classes
@@ -32,8 +42,7 @@ void AActor::Draw(Camera *camera) {
 void AActor::Collision(Player* player, AActor* actor) {}
 void AActor::VehicleCollision(s32 playerId, Player* player){}
 void AActor::Destroy() {
-    // Set uuid to zero.
-    memset(uuid, 0, sizeof(uuid));
+    bPendingDestroy = true;
 }
 bool AActor::IsMod() { return false; }
 void AActor::SetLocation(FVector pos) {
@@ -45,4 +54,33 @@ FVector AActor::GetLocation() const {
     return FVector(Pos[0], Pos[1], Pos[2]);
 }
 
+IRotator AActor::GetRotation() const {
+    IRotator rot;
+    rot.Set(Rot[0], Rot[1], Rot[2]);
+    return rot;
+}
+
+FVector AActor::GetScale() const {
+    return Scale;
+}
+
 void AActor::SetSpawnParams(SpawnParams& params) { }
+
+void AActor::Translate(FVector pos) {
+    _spawnParams.Location = pos;
+    Pos[0] = pos.x;
+    Pos[1] = pos.y;
+    Pos[2] = pos.z;
+}
+
+void AActor::Rotate(IRotator rot) {
+    _spawnParams.Rotation = rot;
+    Rot[0] = rot.pitch;
+    Rot[1] = rot.yaw;
+    Rot[2] = rot.roll;
+}
+
+void AActor::SetScale(FVector scale) {
+    _spawnParams.Scale = scale;
+    Scale = scale;
+}

@@ -13,10 +13,11 @@ extern "C" {
 #include "collision.h"
 }
 
-AMarioSign::AMarioSign(const SpawnParams& params) {
+AMarioSign::AMarioSign(const SpawnParams& params) : AActor(params) {
     Type = ACTOR_MARIO_SIGN;
     Name = "Mario Sign";
     ResourceName = "mk:mario_sign";
+    Model = d_course_mario_raceway_dl_sign;
 
     FVector pos = params.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x * gCourseDirection;
@@ -33,7 +34,6 @@ AMarioSign::AMarioSign(const SpawnParams& params) {
     func_802AAAAC(&Unk30);
     Flags = -0x8000;
     Flags |= 0x4000;
-    Model = d_course_mario_raceway_dl_sign;
 }
 
 bool AMarioSign::IsMod() {

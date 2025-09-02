@@ -42,12 +42,13 @@ bool IsInGameScreen() {
 
 FVector ScreenRayTrace() {
     auto wnd = GameEngine::Instance->context->GetWindow();
-    Camera* camera = &cameras[0];
+    Camera* camera = gEditor.eCamera;
 
     Ship::Coords mouse = wnd->GetMousePos();
     auto gfx_current_game_window_viewport = GetInterpreter()->mGameWindowViewport;
     mouse.x -= gfx_current_game_window_viewport.x;
     mouse.y -= gfx_current_game_window_viewport.y;
+
     // Get screen dimensions
     uint32_t width = OTRGetGameViewportWidth();
     uint32_t height = OTRGetGameViewportHeight();
@@ -285,7 +286,6 @@ std::optional<FVector> QueryHandleIntersection(MtxF mtx, Ray ray, const Triangle
     if (IntersectRayTriangle(localRay, tri, t)) {
         FVector localClickPosition = localRay.Origin + localRay.Direction * t;
         FVector worldClickPosition = TransformVecByMatrix(localClickPosition, (float(*)[4])&mtx);
-
         return worldClickPosition; // Stop checking objects if we selected a Gizmo handle
     }
     return std::nullopt;
@@ -411,10 +411,11 @@ void SetRotatorFromDirection(FVector direction, IRotator* rot) {
 }
 
 FVector GetPositionAheadOfCamera(f32 dist) {
-    FVector pos = FVector(cameras[0].pos[0], cameras[0].pos[1], cameras[0].pos[2]);
+    Camera* camera = gEditor.eCamera;
+    FVector pos = FVector(camera->pos[0], camera->pos[1], camera->pos[2]);
 
-    f32 pitch = (cameras[0].rot[2] / 65535.0f) * 360.0f;
-    f32 yaw = (cameras[0].rot[1] / 65535.0f) * 360.0f;
+    f32 pitch = (camera->rot[2] / 65535.0f) * 360.0f;
+    f32 yaw = (camera->rot[1] / 65535.0f) * 360.0f;
 
     // Convert degrees to radians
     pitch = pitch * M_PI / 180.0f;

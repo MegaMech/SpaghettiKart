@@ -151,6 +151,8 @@ struct Actor* CM_GetActor(size_t index);
 void CM_DeleteActor(size_t index);
 struct Actor* CM_AddBaseActor();
 void CM_AddEditorObject(struct Actor* actor, const char* name);
+void CM_ActorBeginPlay(struct Actor* actor);
+void CM_ActorGenerateCollision(struct Actor* actor);
 void Editor_AddLight(s8* direction);
 size_t CM_GetActorSize();
 size_t CM_FindActorIndex(struct Actor* actor);

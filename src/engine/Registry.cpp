@@ -252,7 +252,7 @@ void RegisterGameActors() {
             Vec3f pos = { loc.x, loc.y, loc.z };
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
-            add_actor_to_empty_slot(pos, rot, vel, ACTOR_UNKNOWN_0x1A);
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_LUIGI_RACEWAY);
         }
     );
 
@@ -266,13 +266,13 @@ void RegisterGameActors() {
         }
     );
 
-    RegisterActor("mk:tree_bowsers_castle",
+    RegisterActor("mk:tree_peach_castle",
         [](const SpawnParams& params) {
             FVector loc = params.Location.value_or(FVector{0, 0, 0});
             Vec3f pos = { loc.x, loc.y, loc.z };
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
-            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_BOWSERS_CASTLE);
+            add_actor_to_empty_slot(pos, rot, vel, ACTOR_TREE_PEACH_CASTLE);
         }
     );
 

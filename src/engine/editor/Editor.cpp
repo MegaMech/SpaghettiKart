@@ -39,19 +39,32 @@ namespace Editor {
         printf("Editor: Loading Editor...\n");
         eObjectPicker.Load();
         for (auto& object : eGameObjects) {
-            GenerateCollisionMesh(object, object->Model, 1.0f);
+            GenerateCollisionMesh(object, (Gfx*)object->Model, 1.0f);
             object->Load();
         }
+
         printf("Editor: Loading Complete!\n");
     }
 
-    void Editor::Tick() {
+    void Editor::GenerateCollision() {
+        // for (auto& actor : gWorldInstance.Actors) {
+        //     GenerateCollisionMesh(actor, (Gfx*)actor->Model, 1.0f);
+        // }
+    }
 
+    void Editor::Tick() {
         if (CVarGetInteger("gEditorEnabled", 0) == true) {
             bEditorEnabled = true;
         } else {
             bEditorEnabled = false;
             return;
+        }
+
+        // Set camera
+        if (CVarGetInteger("gFreecam", 0) == true) {
+            eCamera = &cameras[4];
+        } else {
+            eCamera = &cameras[0];
         }
 
         auto wnd = GameEngine::Instance->context->GetWindow();
@@ -63,16 +76,16 @@ namespace Editor {
         Ship::Coords mousePos = wnd->GetMousePos();
         bool isMouseDown = wnd->GetMouseState(Ship::LUS_MOUSE_BTN_LEFT);
 
-        auto it = std::remove_if(eGameObjects.begin(), eGameObjects.end(),
-            [](auto& object) {
-                if (*object->DespawnFlag == object->DespawnValue) {
-                    delete object; // Free the pointed-to memory
-                    return true;   // Remove the pointer from the vector
-                }
-                return false;
-            });
+        //auto it = std::remove_if(eGameObjects.begin(), eGameObjects.end(),
+        //    [](auto& object) {
+        //        if (*object->DespawnFlag == object->DespawnValue) {
+        //            delete object; // Free the pointed-to memory
+        //            return true;   // Remove the pointer from the vector
+        //        }
+        //        return false;
+        //    });
 
-        eGameObjects.erase(it, eGameObjects.end());
+        //eGameObjects.erase(it, eGameObjects.end());
 
         if (isMouseDown && !wasMouseDown) {  
             // Mouse just pressed (Pressed state)
@@ -80,7 +93,7 @@ namespace Editor {
             isDragging = false;
         }
 
-        if (isMouseDown) {  
+        if (isMouseDown) {
             // Mouse is being held (Held state)
             int dx = mousePos.x - mouseStartPos.x;
             int dy = mousePos.y - mouseStartPos.y;
@@ -122,15 +135,16 @@ namespace Editor {
         }
     }
 
-    GameObject* Editor::AddObject(const char* name, FVector* pos, IRotator* rot, FVector* scale, Gfx* model, float collScale, GameObject::CollisionType collision, float boundingBoxSize, int32_t* despawnFlag, int32_t despawnValue) {
+    GameObject* Editor::AddObject(FVector pos, IRotator rot, FVector scale, const char* model, float collScale, GameObject::CollisionType collision, float boundingBoxSize) {
         //printf("After AddObj: Pos(%f, %f, %f), Name: %s, Model: %s\n", 
         // pos->x, pos->y, pos->z, name, model);
-        if (model != nullptr) {
-            eGameObjects.push_back(new GameObject(name, pos, rot, scale, model, {}, collision, boundingBoxSize, despawnFlag, despawnValue));
-            GenerateCollisionMesh(eGameObjects.back(), model, collScale);
+
+        if (nullptr != model && model[0] != '\0') {
+            eGameObjects.push_back(new GameObject(pos, rot, scale, model, {}, collision, boundingBoxSize));
+            GenerateCollisionMesh(eGameObjects.back(), (Gfx*)LOAD_ASSET_RAW(model), collScale);
         } else { // to bounding box or sphere collision
-            eGameObjects.push_back(new GameObject(name, pos, rot, scale, model, {}, GameObject::CollisionType::BOUNDING_BOX,
-                                                10.0f, despawnFlag, despawnValue));
+            eGameObjects.push_back(new GameObject(pos, rot, scale, model, {}, GameObject::CollisionType::BOUNDING_BOX,
+                                                10.0f));
         }
         return eGameObjects.back();
     }
@@ -140,27 +154,37 @@ namespace Editor {
     }
 
     void Editor::ClearObjects() {
+        ResetGizmo();
+
         for (auto& obj : eGameObjects) {
             delete obj;
         }
         eGameObjects.clear();
     }
 
+    // Reset the gizmo
+    void Editor::ResetGizmo() {
+        eObjectPicker.eGizmo._selected = static_cast<GameObject*>(nullptr);
+        eObjectPicker._selected = static_cast<GameObject*>(nullptr);
+        eObjectPicker.eGizmo.Pos = FVector(0, 0, 0);
+        eObjectPicker.eGizmo.Enabled = false;
+    }
+
     void Editor::DeleteObject() {
         Gizmo* gizmo = &eObjectPicker.eGizmo;
 
-        if (gizmo->_selected && gizmo->_selected->DespawnFlag) {
+      /*  if (gizmo->_selected && gizmo->_selected->DespawnFlag) {
             *gizmo->_selected->DespawnFlag = gizmo->_selected->DespawnValue;
             gizmo->_selected = nullptr;
             eObjectPicker._selected = nullptr;
-        }
+        }*/
     }
 
     void Editor::ClearMatrixPool() {
         EditorMatrix.clear();
     }
 
-    void Editor::SelectObjectFromSceneExplorer(GameObject* object) {
+    void Editor::SelectObjectFromSceneExplorer(std::variant<AActor*, OObject*, GameObject*> object) {
         eObjectPicker._selected = object;
         eObjectPicker.eGizmo.Enabled = true;
         eObjectPicker.eGizmo.SetGizmoNoCursor(object);

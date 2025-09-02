@@ -689,6 +689,18 @@ void CM_AddEditorObject(struct Actor* actor, const char* name) {
     gWorldInstance.AddEditorObject(actor, name);
 }
 
+void CM_ActorBeginPlay(struct Actor* actor) {
+    gWorldInstance.ActorBeginPlay(actor);
+}
+
+void CM_ActorGenerateCollision(struct Actor* actor) {
+    AActor* act = gWorldInstance.ConvertActorToAActor(actor);
+
+    if (act->Triangles.size() == 0) {
+        Editor::GenerateCollisionMesh(act, (Gfx*)LOAD_ASSET_RAW(act->Model), 1.0f);
+    }
+}
+
 void Editor_AddLight(s8* direction) {
     static size_t i = 0;
     gEditor.AddLight(("Light "+std::to_string(i)).c_str(), nullptr, direction);

@@ -2,6 +2,7 @@
 
 #include <libultraship.h>
 #include "engine/SpawnParams.h"
+#include "engine/editor/EditorMath.h"
 
 extern "C" {
 #include "macros.h"
@@ -29,7 +30,10 @@ public:
     const char* ResourceName = "";
     FVector Scale = {1, 1, 1};
 
+    std::vector<Triangle> Triangles;
     SpawnParams _spawnParams;
+
+    bool bPendingDestroy = false;
 
     virtual ~AActor() = default;  // Virtual destructor for proper cleanup in derived classes
 
@@ -37,15 +41,23 @@ public:
     explicit AActor(SpawnParams params);
 
     virtual void SetSpawnParams(SpawnParams& params);
+    virtual void BeginPlay();
     virtual void Tick();
     virtual void Draw(Camera*);
     virtual void Collision(Player* player, AActor* actor);
     virtual void VehicleCollision(s32 playerId, Player* player);
     void SetLocation(FVector pos);
-    FVector GetLocation() const;
 
     virtual void Destroy();
     virtual bool IsMod();
+
+    /** Editor functions **/
+    FVector GetLocation() const;
+    IRotator GetRotation() const;
+    FVector GetScale() const;
+    void Translate(FVector pos);
+    void Rotate(IRotator rot);
+    void SetScale(FVector scale);
 };
 
 }

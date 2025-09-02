@@ -236,47 +236,54 @@ void actor_init(struct Actor* actor, Vec3f startingPos, Vec3s startingRot, Vec3f
             actor->unk_08 = 17.0f;
             actor->model = d_course_moo_moo_farm_dl_tree;
             break;
-        case 26:
+        case ACTOR_TREE_LUIGI_RACEWAY:
             actor->flags |= 0x4000;
             actor->state = 0x0043;
             actor->boundingBoxSize = 3.0f;
             actor->unk_08 = 17.0f;
+            actor->model = d_course_luigi_raceway_dl_FC70;
             break;
-        case 28:
+        case ACTOR_TREE_PEACH_CASTLE:
             actor->state = 0x0043;
             actor->flags = -0x8000;
             actor->boundingBoxSize = 3.0f;
             actor->unk_08 = 17.0f;
+            actor->model = d_course_royal_raceway_dl_castle_tree;
             break;
-        case 33:
+        case ACTOR_BUSH_BOWSERS_CASTLE:
             actor->flags |= 0x4000;
             actor->state = 0x0043;
             actor->boundingBoxSize = 3.0f;
             actor->unk_08 = 17.0f;
+            actor->model = d_course_bowsers_castle_dl_bush;
             break;
-        case 29:
+        case ACTOR_TREE_FRAPPE_SNOWLAND:
             actor->flags |= 0x4000;
             actor->state = 0x0043;
             actor->boundingBoxSize = 3.0f;
             actor->unk_08 = 17.0f;
+            actor->model = d_course_frappe_snowland_dl_tree;
             break;
-        case 30:
+        case ACTOR_CACTUS1_KALAMARI_DESERT:
             actor->flags |= 0x4000;
             actor->state = 0x0019;
             actor->boundingBoxSize = 3.0f;
             actor->unk_08 = 7.0f;
+            actor->model = d_course_kalimari_desert_dl_cactus1;
             break;
-        case 31:
+        case ACTOR_CACTUS2_KALAMARI_DESERT:
             actor->flags |= 0x4000;
             actor->state = 0x0019;
             actor->boundingBoxSize = 3.0f;
             actor->unk_08 = 7.0f;
+            actor->model = d_course_kalimari_desert_dl_cactus2;
             break;
-        case 32:
+        case ACTOR_CACTUS3_KALAMARI_DESERT:
             actor->flags |= 0x4000;
             actor->state = 0x0019;
             actor->boundingBoxSize = 3.0f;
             actor->unk_08 = 7.0f;
+            actor->model = d_course_kalimari_desert_dl_cactus3;
             break;
         case ACTOR_PALM_TREE:
             actor->flags |= 0x4000;
@@ -925,6 +932,18 @@ void spawn_palm_trees(struct ActorSpawnData* spawnData) {
         temp_v1 = (struct PalmTree*) CM_GetActor(temp);
 
         temp_v1->variant = temp_s0->someId;
+        switch(temp_v1->variant) {
+            case 0:
+                temp_v1->model = d_course_koopa_troopa_beach_dl_tree_trunk1;
+                break;
+            case 1:
+                temp_v1->model = d_course_koopa_troopa_beach_dl_tree_trunk2;
+                break;
+            case 2:
+                temp_v1->model = d_course_koopa_troopa_beach_dl_tree_trunk3;
+                break;
+        }
+        CM_ActorGenerateCollision(temp_v1);
         check_bounding_collision((Collision*) &temp_v1->unk30, 5.0f, temp_v1->pos[0], temp_v1->pos[1], temp_v1->pos[2]);
         func_802976EC((Collision*) &temp_v1->unk30, temp_v1->rot);
         temp_s0++;
@@ -976,7 +995,7 @@ void spawn_foliage(struct ActorSpawnData* actor) {
                     break;
             }
         } else if (IsLuigiRaceway()) {
-            actorType = 0x001A;
+            actorType = ACTOR_TREE_LUIGI_RACEWAY;
         } else if (IsMooMooFarm()) {
             actorType = 0x0013;
         } else if (IsKalimariDesert()) {
@@ -1478,6 +1497,7 @@ s16 add_actor_to_empty_slot(Vec3f pos, Vec3s rot, Vec3f velocity, s16 actorType)
     gNumActors++;
     struct Actor* actor = CM_AddBaseActor();
     actor_init(actor, pos, rot, velocity, actorType);
+    CM_ActorBeginPlay(actor);
     CM_AddEditorObject(actor, get_actor_display_name(actor->type));
     return (s16) CM_GetActorSize() - 1; // Return current index;
 }
@@ -2206,7 +2226,7 @@ void evaluate_collision_between_player_actor(Player* player, struct Actor* actor
         case ACTOR_TREE_MOO_MOO_FARM:
         case ACTOR_PALM_TREE:
         case 26:
-        case ACTOR_TREE_BOWSERS_CASTLE:
+        case ACTOR_TREE_PEACH_CASTLE:
         case ACTOR_TREE_FRAPPE_SNOWLAND:
         case ACTOR_CACTUS1_KALAMARI_DESERT:
         case ACTOR_CACTUS2_KALAMARI_DESERT:
@@ -2477,16 +2497,8 @@ void render_course_actors(struct UnkStruct_800DC5EC* arg0) {
     struct Actor* actor;
     UNUSED Vec3f sp4C = { 0.0f, 5.0f, 10.0f };
 
-    // Freecam rotY is reversed in the engine for whatever reason
-    f32 sp48 = 0;
-    f32 temp_f0 = 0;
-    if (CVarGetInteger("gFreecam", 0) == true) {
-        sp48 = sins(-camera->rot[1] - 0x8000);
-        temp_f0 = coss(-camera->rot[1] - 0x8000);
-    } else {
-        sp48 = sins(camera->rot[1] - 0x8000);
-        temp_f0 = coss(camera->rot[1] - 0x8000);
-    }
+    f32 sp48 = sins(camera->rot[1] - 0x8000);
+    f32 temp_f0 = coss(camera->rot[1] - 0x8000);
 
     sBillBoardMtx[0][0] = temp_f0;
     sBillBoardMtx[0][2] = -sp48;
@@ -2536,11 +2548,11 @@ void render_course_actors(struct UnkStruct_800DC5EC* arg0) {
             case ACTOR_TREE_MOO_MOO_FARM:
                 render_actor_tree_moo_moo_farm(camera, sBillBoardMtx, actor);
                 break;
-            case ACTOR_UNKNOWN_0x1A:
-                func_80299864(camera, sBillBoardMtx, actor);
+            case ACTOR_TREE_LUIGI_RACEWAY:
+                render_actor_tree_luigi_raceway(camera, sBillBoardMtx, actor);
                 break;
-            case ACTOR_TREE_BOWSERS_CASTLE:
-                render_actor_tree_bowser_castle(camera, sBillBoardMtx, actor);
+            case ACTOR_TREE_PEACH_CASTLE:
+                render_actor_tree_peach_castle(camera, sBillBoardMtx, actor);
                 break;
             case ACTOR_BUSH_BOWSERS_CASTLE:
                 render_actor_bush_bowser_castle(camera, sBillBoardMtx, actor);
@@ -2709,9 +2721,9 @@ void update_course_actors(void) {
             case ACTOR_TREE_ROYAL_RACEWAY:
             case ACTOR_TREE_MOO_MOO_FARM:
             case ACTOR_PALM_TREE:
-            case ACTOR_UNKNOWN_0x1A: // A plant?
+            case ACTOR_TREE_LUIGI_RACEWAY: // A plant?
             case ACTOR_UNKNOWN_0x1B:
-            case ACTOR_TREE_BOWSERS_CASTLE:
+            case ACTOR_TREE_PEACH_CASTLE:
             case ACTOR_TREE_FRAPPE_SNOWLAND:
             case ACTOR_CACTUS1_KALAMARI_DESERT:
             case ACTOR_CACTUS2_KALAMARI_DESERT:
@@ -2780,12 +2792,12 @@ const char* get_actor_display_name(s32 id) {
             return "Tree (Moo Moo Farm)";
         case ACTOR_PALM_TREE:
             return "Palm Tree";
-        case ACTOR_UNKNOWN_0x1A:
-            return "Unknown Plant (0x1A)";
+        case ACTOR_TREE_LUIGI_RACEWAY:
+            return "Tree (Luigi Raceway)";
         case ACTOR_UNKNOWN_0x1B:
             return "Unknown Plant (0x1B)";
-        case ACTOR_TREE_BOWSERS_CASTLE:
-            return "Tree (Bowser's Castle)";
+        case ACTOR_TREE_PEACH_CASTLE:
+            return "Tree (Peach's Castle)";
         case ACTOR_TREE_FRAPPE_SNOWLAND:
             return "Tree (Frappe Snowland)";
         case ACTOR_CACTUS1_KALAMARI_DESERT:
@@ -2856,12 +2868,12 @@ const char* get_actor_resource_location_name(s32 id) {
             return "mk:tree_moo_moo_farm";
         case ACTOR_PALM_TREE:
             return "mk:palm_tree";
-        case ACTOR_UNKNOWN_0x1A:
-            return "mk:unknown_0x1a";
+        case ACTOR_TREE_LUIGI_RACEWAY:
+            return "mk:tree_luigi_raceway";
         case ACTOR_UNKNOWN_0x1B:
             return "mk:unknown_0x1b";
-        case ACTOR_TREE_BOWSERS_CASTLE:
-            return "mk:tree_bowsers_castle";
+        case ACTOR_TREE_PEACH_CASTLE:
+            return "mk:tree_peach_castle";
         case ACTOR_TREE_FRAPPE_SNOWLAND:
             return "mk:tree_frappe_snowland";
         case ACTOR_CACTUS1_KALAMARI_DESERT:
