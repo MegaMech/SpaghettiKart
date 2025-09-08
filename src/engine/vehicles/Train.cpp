@@ -32,7 +32,7 @@ size_t ATrain::_count = 0;
 //       pathIndex,     array of spawn points
 std::map<uint32_t, std::vector<uint32_t>> ATrain::TrainCounts;
 
-ATrain::ATrain(const SpawnParams& params) {
+ATrain::ATrain(const SpawnParams& params) : AActor(params) {
     Name = "Train";
     ResourceName = "mk:train";
     TrainCarStuff* ptr1;

@@ -58,6 +58,8 @@ public:
     void Translate(FVector pos);
     void Rotate(IRotator rot);
     void SetScale(FVector scale);
+
+    virtual std::unordered_map<std::string, std::string> GetPropertyNames();
 };
 
 }

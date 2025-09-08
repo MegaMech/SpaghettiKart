@@ -2,6 +2,7 @@
 #include "port/ui/PortMenu.h"
 #include "UIWidgets.h"
 #include "libultraship/src/Context.h"
+#include <variant>
 
 #include <imgui.h>
 #include <map>
@@ -11,6 +12,7 @@
 #include <common_structs.h>
 #include <defines.h>
 
+#include "engine/SpawnParams.h"
 #include "engine/editor/Editor.h"
 #include "port/Game.h"
 #include "src/engine/World.h"
@@ -28,11 +30,15 @@ namespace Editor {
     void PropertiesWindow::DrawElement() {
 
         std::visit([this](auto* obj) {
+
             using T = std::decay_t<decltype(*obj)>;  // Get the type the pointer is pointing to
             if (nullptr == obj) {
                 return;
             }
 
+            auto& params = obj->_spawnParams;
+
+            // Get the actors display name, handling AActor (and the C version), OObject, and GameObject types
             if constexpr (std::is_same_v<T, AActor>) {
                 if (obj->IsMod()) {
                     ImGui::Text("Actor: %s", obj->Name);
@@ -46,8 +52,8 @@ namespace Editor {
             } else {
                 ImGui::Text("Unknown type");
             }
-            auto params = obj->_spawnParams;
-            ImGui::Text(obj->_spawnParams.Name.c_str());
+
+            ImGui::Text(params.Name.c_str());
 
             if (params.Type.has_value()) {
                 std::string label = GetDisplayLabel<T>("Type");
@@ -76,7 +82,7 @@ namespace Editor {
 
             if (params.Scale.has_value()) {
                 std::string label = GetDisplayLabel<T>("Scale");
-                ImGui::Text("%s: %d", label.c_str(), *params.Scale);
+                ImGui::Text("%s: %f", label.c_str(), *params.Scale);
             }
 
             if (params.Velocity.has_value()) {
@@ -85,8 +91,13 @@ namespace Editor {
             }
 
             if (params.PatrolStart.has_value()) {
-                std::string label = GetDisplayLabel<T>("Velocity");
-                ImGui::Text("%s: %d", label.c_str(), *params.Velocity);
+                std::string label = GetDisplayLabel<T>("PatrolStart");
+                ImGui::Text("%s: %d", label.c_str(), *params.PatrolStart);
+            }
+
+            if (params.Bool.has_value()) {
+                std::string label = obj->GetPropertyNames()["Bool"];
+                ImGui::Text("%s: %d", label.c_str(), *params.Bool);
             }
 
             if (params.PathPoint.has_value()) {
@@ -175,15 +186,5 @@ namespace Editor {
 
         }, gEditor.eObjectPicker.eGizmo._selected);
     }
-
-    template <typename T>
-    std::string GetDisplayLabel(const std::string& fieldName) {
-        if constexpr (requires { T::PropertyLabels(); }) {
-            const auto& labels = T::PropertyLabels();
-            if (auto it = labels.find(fieldName); it != labels.end()) {
-                return it->second;
-            }
-        }
-        return fieldName; // Fallback to field name
-    }
 }
+ 
