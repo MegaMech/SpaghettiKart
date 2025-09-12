@@ -9,17 +9,7 @@ class PropertiesWindow : public Ship::GuiWindow {
 public:
     using Ship::GuiWindow::GuiWindow;
     ~PropertiesWindow();
-
-    template <typename T>
-    std::string GetDisplayLabel(const std::string& fieldName) {
-        if constexpr (requires { T::PropertyLabels(); }) {
-            const auto& labels = T::PropertyLabels();
-            if (auto it = labels.find(fieldName); it != labels.end()) {
-                return it->second;
-            }
-        }
-        return fieldName; // Fallback to field name
-    }
+    void DrawSpawnParamsEditor();
 
     const std::unordered_map<std::string, std::string> SpawnLabels {
         {"Name", "Name"},

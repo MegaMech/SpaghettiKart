@@ -45,5 +45,6 @@ public:
         std::vector<Triangle> Triangles;
         CollisionType Collision;
         float BoundingBoxSize;
+        virtual void DrawEditorProperties() {};
     };
 }

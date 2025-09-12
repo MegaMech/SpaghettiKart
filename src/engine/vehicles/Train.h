@@ -77,24 +77,10 @@ class ATrain : public AActor {
         return static_cast<ATrain*>(gWorldInstance.AddActor(new ATrain(params)));
     }
 
-    static const std::unordered_map<std::string, std::string>& PropertyLabels() {
-        static std::unordered_map<std::string, std::string> labels = {
-            {"Speed", "Train Speed"},
-            {"Count", "Number of Cars"},
-            {"PathIndex", "Track Index"},
-            {"PathPoint", "Path Point"},
-        };
-        return labels;
-    }
-    virtual std::unordered_map<std::string, std::string> GetPropertyNames() override {
-        static std::unordered_map<std::string, std::string> labels = {
-            {"Speed", "Train Speed"},
-            {"Count", "Number of Cars"},
-            {"PathIndex", "Track Index"},
-            {"PathPoint", "Path Point"},
-        };
-        return labels; 
-    }
+
+    virtual void DrawEditorProperties() override {
+        
+    };
 
     virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;

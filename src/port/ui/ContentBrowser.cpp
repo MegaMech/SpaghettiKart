@@ -29,6 +29,7 @@ extern "C" {
 }
 
 namespace Editor {
+    bool bIsTrainWindowOpen = false; // Global because member variables do not work in lambdas
 
     ContentBrowserWindow::~ContentBrowserWindow() {
         SPDLOG_TRACE("destruct content browser window");
@@ -234,7 +235,7 @@ namespace Editor {
         { "Ship_2", [](const FVector& pos) { return new AShip(pos, AShip::Skin::SHIP3); } },
         { "SpaghettiShip", [](const FVector& pos) { return new ASpaghettiShip(pos); } },
         { "Starship", [](const FVector& pos) { return new AStarship(pos); } },
-        { "Train", [](const FVector& pos) { return ATrain::Spawn(ATrain::TenderStatus::HAS_TENDER, 4, 2.5f, 0, 0, ATrain::SpawnMode::AUTO); } },
+        { "Train", [](const FVector& pos) { bIsTrainWindowOpen = true; return nullptr;  } },
         { "Boat", [](const FVector& pos) { return ABoat::Spawn((0.6666666f)/4, 0, 0, ABoat::SpawnMode::AUTO); } },
         { "Bus", [](const FVector& pos) { return ABus::Spawn(2.0f, 2.5f, 0, 0, ABus::SpawnMode::AUTO); } },
         { "Car", [](const FVector& pos) { return ACar::Spawn(2.0f, 2.5f, 0, 0, ACar::SpawnMode::AUTO); } },
@@ -337,6 +338,8 @@ namespace Editor {
             }
             i_actor += 1;
         }
+
+        ContentBrowserWindow::TrainWindow();
     }
 
     void ContentBrowserWindow::AddObjectContent() {
@@ -447,5 +450,83 @@ namespace Editor {
                 Content.push_back(file);
             }
         }
+    }
+
+    /**  Actors that need config windows before spawning  **/
+
+    ATrain* ContentBrowserWindow::TrainWindow() {
+        if (!bIsTrainWindowOpen) {
+            return nullptr;
+        }
+
+        // Setup train window size and position
+        // Set window size constraints (min, max)
+        ImGui::SetNextWindowSizeConstraints(ImVec2(300, 200), ImVec2(FLT_MAX, FLT_MAX));
+
+        // Get the main viewport to find the center of the screen
+        ImGuiViewport* viewport = ImGui::GetMainViewport();
+
+        // Center the window
+        ImGui::SetNextWindowPos(viewport->GetCenter(), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+        // Optional: auto-resize to content
+        ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_Appearing); // Initial size only
+
+        if (ImGui::Begin("Spawn Train")) {
+            static int32_t numCarriages = 4;
+            static ATrain::TenderStatus tender = ATrain::TenderStatus::HAS_TENDER; // Can only disable tender if using no passenger cars
+            static int32_t pathIndex = 0;
+            static int32_t pathPoint = 0;
+            static ATrain::SpawnMode spawnMode = ATrain::SpawnMode::AUTO;
+
+            // Num Carriage Input
+            if (ImGui::InputInt("Carriages", &numCarriages)) {
+                // Clamp to uint32_t range (only lower bound needed if assuming positive values)
+                if (numCarriages < 0) numCarriages = 0;
+            }
+
+            // Setup for has tender settings
+            if (numCarriages > 0) {
+                ImGui::BeginDisabled();
+                // Tender is required if there are any carriages
+                tender = ATrain::TenderStatus::HAS_TENDER;
+            }
+
+            // Convert enum to bool
+            bool hasTender = (tender == ATrain::TenderStatus::HAS_TENDER);
+            if (ImGui::Checkbox("Has Tender", &hasTender)) {
+                tender = hasTender ? ATrain::TenderStatus::HAS_TENDER : ATrain::TenderStatus::NO_TENDER;
+            }
+
+            if (numCarriages > 0) {
+                ImGui::EndDisabled();
+            }
+
+            // Set Spawn Mode
+            bool localSpawnMode = (spawnMode == ATrain::SpawnMode::AUTO);
+            if (ImGui::Checkbox("Place Train Automatically", &localSpawnMode)) {
+                spawnMode = localSpawnMode ? ATrain::SpawnMode::AUTO : ATrain::SpawnMode::POINT;
+            }
+
+            // Set PathIndex and PathPoint
+            if (spawnMode == ATrain::SpawnMode::POINT) {
+                // PathIndex and PathPoint
+                if (ImGui::InputInt("Path Index", &pathIndex)) {
+                    // Clamp to uint32_t range (only lower bound needed if assuming positive values)
+                    if (pathIndex < 0) pathIndex = 0;
+                }
+
+                if (ImGui::InputInt("Path Point", &pathPoint)) {
+                    // Clamp to uint32_t range (only lower bound needed if assuming positive values)
+                    if (pathPoint < 0) pathPoint = 0;
+                }
+            }
+
+            if (ImGui::Button("Spawn")) {
+                bIsTrainWindowOpen = false;
+                return ATrain::Spawn(tender, numCarriages, 2.5f, (uint32_t)pathIndex, (uint32_t)pathPoint, spawnMode);
+            }
+        }
+        ImGui::End();
     }
 }

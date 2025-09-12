@@ -17,6 +17,8 @@
 #include "port/Game.h"
 #include "src/engine/World.h"
 
+#include "engine/vehicles/Train.h"
+
 extern "C" {
 #include "actors.h"
 }
@@ -36,140 +38,43 @@ namespace Editor {
                 return;
             }
 
-            auto& params = obj->_spawnParams;
+            const char* title;
 
             // Get the actors display name, handling AActor (and the C version), OObject, and GameObject types
             if constexpr (std::is_same_v<T, AActor>) {
                 if (obj->IsMod()) {
-                    ImGui::Text("Actor: %s", obj->Name);
+                    title = obj->Name;
                 } else {
-                    ImGui::Text("Actor: %s", get_actor_display_name(obj->Type));
+                    title = get_actor_display_name(obj->Type);
                 }
             } else if constexpr (std::is_same_v<T, OObject>) {
-                ImGui::Text("Object: %s", obj->Name);
+                title = obj->Name;
             } else if constexpr (std::is_same_v<T, GameObject>) {
-                ImGui::Text("EditorObject: %s", obj->Name);
+                title = obj->Name;
             } else {
-                ImGui::Text("Unknown type");
+                title = "Unknown type";
             }
 
-            ImGui::Text(params.Name.c_str());
+            // Center Actor Title Text
+            float windowWidth = ImGui::GetWindowSize().x;
+            float textWidth = ImGui::CalcTextSize(title).x;
 
-            if (params.Type.has_value()) {
-                std::string label = GetDisplayLabel<T>("Type");
-                ImGui::Text("%s: %d", label.c_str(), *params.Type);
+            ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+            // Display actor title
+            ImGui::Text(title);
+
+            auto& params = obj->_spawnParams;
+
+            // Display actor resource name. ex. mk:cloud
+            if (!params.Name.empty()) { // Params is unset for some train components
+                ImGui::Text("Resource Name %s", params.Name.c_str());
             }
 
-            if (params.Behaviour.has_value()) {
-                std::string label = GetDisplayLabel<T>("Behaviour");
-                ImGui::Text("%s: %d", label.c_str(), *params.Behaviour);
-            }
+            }, gEditor.eObjectPicker.eGizmo._selected);
 
-            if (params.Skin.has_value()) {
-                std::string label = GetDisplayLabel<T>("Skin");
-                ImGui::Text("%s: %d", label.c_str(), *params.Skin);
-            }
+            //obj->DrawEditorProperties();
 
-            if (params.Location.has_value()) {
-                std::string label = GetDisplayLabel<T>("Location");
-                ImGui::Text("%s: %d", label.c_str(), *params.Location);
-            }
-
-            if (params.Rotation.has_value()) {
-                std::string label = GetDisplayLabel<T>("Rotation");
-                ImGui::Text("%s: %d", label.c_str(), *params.Rotation);
-            }
-
-            if (params.Scale.has_value()) {
-                std::string label = GetDisplayLabel<T>("Scale");
-                ImGui::Text("%s: %f", label.c_str(), *params.Scale);
-            }
-
-            if (params.Velocity.has_value()) {
-                std::string label = GetDisplayLabel<T>("Velocity");
-                ImGui::Text("%s: %d", label.c_str(), *params.Velocity);
-            }
-
-            if (params.PatrolStart.has_value()) {
-                std::string label = GetDisplayLabel<T>("PatrolStart");
-                ImGui::Text("%s: %d", label.c_str(), *params.PatrolStart);
-            }
-
-            if (params.Bool.has_value()) {
-                std::string label = obj->GetPropertyNames()["Bool"];
-                ImGui::Text("%s: %d", label.c_str(), *params.Bool);
-            }
-
-            if (params.PathPoint.has_value()) {
-                std::string label = GetDisplayLabel<T>("PathPoint");
-                ImGui::Text("%s: %d", label.c_str(), *params.PathPoint);
-            }
-
-            if (params.Speed.has_value()) {
-                std::string label = GetDisplayLabel<T>("Speed");
-                ImGui::Text("%s: %.2f", label.c_str(), *params.Speed);
-            }
-
-            ImGui::Begin("Properties");
-
-            ImGui::Text("Location");
-            ImGui::SameLine();
-
-            FVector location = obj->GetLocation();
-            FVector locEdit = location;
-            bool positionChanged = ImGui::DragFloat3("##Location", (float*)&locEdit, 0.1f);
-
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-                obj->Translate(FVector(0, 0, 0));
-                positionChanged = true; // also counts as a change
-            }
-
-            if (positionChanged) {
-                gEditor.eObjectPicker.eGizmo.Pos = obj->GetLocation();
-            }
-
-            ImGui::Text("Rotation");
-            ImGui::SameLine();
-
-            IRotator objRot = obj->GetRotation();
-
-            // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
-            int rot[3] = {
-                objRot.pitch,
-                objRot.yaw,
-                objRot.roll
-            };
-
-            if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
-                for (size_t i = 0; i < 3; i++) {
-                    // Wrap around 0–65535
-                    rot[i] = (rot[i] % 65536 + 65536) % 65536;
-                }
-                IRotator newRot;
-                newRot.Set(
-                    static_cast<uint16_t>(rot[0]),
-                    static_cast<uint16_t>(rot[1]),
-                    static_cast<uint16_t>(rot[2])
-                );
-                obj->Rotate(newRot);
-            }
-
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
-                obj->Rotate(IRotator(0, 0, 0));
-            }
-
-            FVector scale = obj->GetScale();
-            ImGui::Text("Scale   ");
-            ImGui::SameLine();
-
-            ImGui::DragFloat3("##Scale", (float*)&scale, 0.1f);
-            obj->SetScale(scale);
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetScale")) {
-                obj->SetScale(FVector(1, 1, 1));
-            }
+            PropertiesWindow::DrawSpawnParamsEditor();
 
             // This allowed the user to alter the bounding box of the editor selection if it was too small.
             // if (selected->Collision == GameObject::CollisionType::BOUNDING_BOX) {
@@ -181,10 +86,329 @@ namespace Editor {
             //     if (ImGui::Button(ICON_FA_UNDO)) { selected->BoundingBoxSize = 2.0f; }
             //     ImGui::PopID();
             // }
+    }
 
-            ImGui::End();
+    void PropertiesWindow::DrawSpawnParamsEditor() {
+        std::visit([this](auto* obj) {
+            using T = std::decay_t<decltype(*obj)>;  // Get the type the pointer is pointing to
+            if (nullptr == obj) {
+                return;
+            }
 
+            auto& params = obj->_spawnParams;
+            if (params.Type.has_value()) {
+                ImGui::Text("Type");
+                ImGui::SameLine();
+                int32_t type = static_cast<int16_t>(params.Type.value());
+                if (ImGui::InputInt("##Type", &type)) {
+                    *params.Type = static_cast<int16_t>(type);
+                }
+            }
+
+            if (params.Behaviour.has_value()) {
+                ImGui::Text("Behaviour");
+                ImGui::SameLine();
+                int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
+                if (ImGui::InputInt("##Behaviour", &behaviour)) {
+                    *params.Behaviour = static_cast<int16_t>(behaviour);
+                }
+            }
+
+            if (params.Skin.has_value()) {
+                ImGui::Text("Skin");
+                ImGui::SameLine();
+                // Copy the current string value into a buffer
+                char buffer[256];
+                std::strncpy(buffer, params.Skin->c_str(), sizeof(buffer));
+                buffer[sizeof(buffer) - 1] = '\0'; // Ensure null-termination
+
+                if (ImGui::InputText("##Skin", buffer, sizeof(buffer))) {
+                    *params.Skin = std::string(buffer);
+                }
+            }
+            if (params.Location.has_value()) {
+                ImGui::Text("Location");
+                ImGui::SameLine();
+                FVector location = obj->GetLocation();
+                if (ImGui::DragFloat3("##Location", (float*)&location)) {
+                    obj->Translate(location);
+                    *params.Location = location;
+                    gEditor.eObjectPicker.eGizmo.Pos = location;
+                }
+
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+                    FVector location = FVector(0, 0, 0);
+                    obj->Translate(location);
+                    *params.Location = location;
+                    gEditor.eObjectPicker.eGizmo.Pos = location;
+                }
+            }
+
+            if (params.Rotation.has_value()) {
+                ImGui::Text("Rotation");
+                ImGui::SameLine();
+
+                IRotator objRot = obj->GetRotation();
+
+                // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
+                int rot[3] = {
+                    objRot.pitch,
+                    objRot.yaw,
+                    objRot.roll
+                };
+
+                if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
+                    for (size_t i = 0; i < 3; i++) {
+                        // Wrap around 0–65535
+                        rot[i] = (rot[i] % 65536 + 65536) % 65536;
+                    }
+                    IRotator newRot;
+                    newRot.Set(
+                        static_cast<uint16_t>(rot[0]),
+                        static_cast<uint16_t>(rot[1]),
+                        static_cast<uint16_t>(rot[2])
+                    );
+                    obj->Rotate(newRot);
+                    params.Rotation = newRot;
+                }
+
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
+                    IRotator rot = IRotator(0, 0, 0);
+                    obj->Rotate(rot);
+                    params.Rotation = rot;
+                }
+            }
+
+            if (params.Scale.has_value()) {
+                FVector scale = obj->GetScale();
+                ImGui::Text("Scale   ");
+                ImGui::SameLine();
+
+                ImGui::DragFloat3("##Scale", (float*)&scale, 0.1f);
+                obj->SetScale(scale);
+                params.Scale = scale;
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetScale")) {
+                    FVector scale = FVector(1.0f, 1.0f, 1.0f);
+                    obj->SetScale(scale);
+                    params.Scale = scale;
+                }
+            }
+
+            if (params.Velocity.has_value()) {
+                FVector velocity = params.Velocity.value();
+                ImGui::Text("Velocity");
+                ImGui::SameLine();
+
+                ImGui::DragFloat3("##Velocity", (float*)&velocity, 0.1f);
+                params.Velocity = velocity;
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetVelocity")) {
+                    params.Velocity = FVector(0.0f, 0.0f, 0.0f);
+                }
+            }
+
+            if (params.PatrolStart.has_value()) {
+                FVector2D patrol = params.PatrolStart.value();
+
+                ImGui::Text("Patrol Start");
+                ImGui::SameLine();
+
+                ImGui::DragFloat2("##PatrolStart", (float*)&patrol);
+                params.PatrolStart = patrol;
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPatrolStart")) {
+                    params.PatrolStart = FVector2D(0.0f, 0.0f);
+                }
+            }
+
+            if (params.PatrolEnd.has_value()) {
+                FVector2D patrol = params.PatrolEnd.value();
+
+                ImGui::Text("Patrol End");
+                ImGui::SameLine();
+
+                ImGui::DragFloat2("##PatrolEnd", (float*)&patrol);
+                params.PatrolEnd = patrol;
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPatrolEnd")) {
+                    params.PatrolEnd = FVector2D(0.0f, 0.0f);
+                }
+            }
+
+            if (params.PathSpan.has_value()) {
+                IPathSpan span = params.PathSpan.value();
+
+                ImGui::Text("Path Span");
+                ImGui::SameLine();
+
+                if (ImGui::DragInt2("##PathSpan", (int*)&span)) {
+                    params.PathSpan = span;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPathSpan")) {
+                    params.PathSpan = IPathSpan(0.0f, 0.0f);
+                }
+            }
+
+            if (params.PrimAlpha.has_value()) {
+                int32_t primAlpha = params.PrimAlpha.value();
+                ImGui::Text("Prim Alpha");
+                ImGui::SameLine();
+
+                if (ImGui::InputInt("##PrimAlpha", (int*)&primAlpha)) {
+                    params.PrimAlpha = primAlpha;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPrimAlpha")) {
+                    params.PrimAlpha = 0;
+                }
+            }
+
+            if (params.BoundingBoxSize.has_value()) {
+                int32_t boundingBoxSize = static_cast<int32_t>(params.BoundingBoxSize.value());
+                ImGui::Text("Bounding Box Size");
+                ImGui::SameLine();
+
+                if (ImGui::InputInt("##BoundingBoxSize", (int*)&boundingBoxSize)) {
+                    if (boundingBoxSize < 0) boundingBoxSize = 0;
+                    params.BoundingBoxSize = static_cast<uint16_t>(boundingBoxSize);
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetBoundingBoxSize")) {
+                    params.BoundingBoxSize = 0;
+                }
+            }
+
+            if (params.Count.has_value()) {
+                ImGui::Text("Count");
+                ImGui::SameLine();
+
+                int count = static_cast<int>(*params.Count);
+                if (ImGui::InputInt("##Count", &count)) {
+                    // Clamp to uint32_t range (only lower bound needed if assuming positive values)
+                    if (count < 0) count = 0;
+                    params.Count = static_cast<uint32_t>(count);
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetCount")) {
+                    params.Count = 0;
+                }
+            }
+
+            if (params.LeftExitSpan.has_value()) {
+                ImGui::Text("Left Exit Span");
+                ImGui::SameLine();
+
+                IPathSpan leftExitSpan = *params.LeftExitSpan;
+                if (ImGui::DragInt2("##LeftExitSpan", (int*)&leftExitSpan)) {
+                    params.LeftExitSpan = leftExitSpan;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetLeftExitSpan")) {
+                    params.LeftExitSpan = IPathSpan(0, 0);
+                }
+            }
+
+            if (params.TriggerSpan.has_value()) {
+                ImGui::Text("Trigger Span");
+                ImGui::SameLine();
+
+                IPathSpan triggerSpan = *params.TriggerSpan;
+                if (ImGui::DragInt2("##TriggerSpan", (int*)&triggerSpan)) {
+                    params.TriggerSpan = triggerSpan;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetTriggerSpan")) {
+                    params.TriggerSpan = IPathSpan(0, 0);
+                }
+            }
+
+            if (params.RightExitSpan.has_value()) {
+                ImGui::Text("Right Exit Span");
+                ImGui::SameLine();
+
+                IPathSpan rightExitSpan = *params.RightExitSpan;
+                if (ImGui::DragInt2("##RightExitSpan", (int*)&rightExitSpan)) {
+                    params.RightExitSpan = rightExitSpan;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetRightExitSpan")) {
+                    params.RightExitSpan = IPathSpan(0, 0);
+                }
+            }
+
+            if (params.PathIndex.has_value()) {
+                ImGui::Text("Path Index");
+                ImGui::SameLine();
+
+                int pathIndex = static_cast<int>(params.PathIndex.value());
+                if (ImGui::InputInt("##PathIndex", &pathIndex)) {
+                    if (pathIndex < 0) pathIndex = 0;
+                    params.PathIndex = static_cast<uint32_t>(pathIndex);
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPathIndex")) {
+                    params.PathIndex = 0;
+                }
+            }
+
+            if (params.PathPoint.has_value()) {
+                ImGui::Text("Path Point");
+                ImGui::SameLine();
+
+                int pathPoint = static_cast<int>(params.PathPoint.value());
+                if (ImGui::InputInt("##PathPoint", &pathPoint)) {
+                    if (pathPoint < 0) pathPoint = 0;
+                    params.PathPoint = static_cast<uint32_t>(pathPoint);
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPathPoint")) {
+                    params.PathPoint = 0;
+                }
+            }
+
+            if (params.Bool.has_value()) {
+                ImGui::Text("Bool");
+                ImGui::SameLine();
+
+                bool theBool = params.Bool.value();
+                if (ImGui::Checkbox("##Bool", &theBool)) {
+                    params.Bool = theBool;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetBool")) {
+                    params.Bool = false;
+                }
+            }
+
+            if (params.Speed.has_value()) {
+                ImGui::Text("Speed");
+                ImGui::SameLine();
+
+                float speed = params.Speed.value();
+                if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+                    *params.Speed = speed;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+                    *params.Speed = 0.0f;
+                }
+            }
+
+            if (params.SpeedB.has_value()) {
+                ImGui::Text("SpeedB");
+                ImGui::SameLine();
+
+                float speed = params.SpeedB.value();
+                if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+                    *params.SpeedB = speed;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+                    *params.SpeedB = 0.0f;
+                }
+            }
         }, gEditor.eObjectPicker.eGizmo._selected);
     }
 }
- 
