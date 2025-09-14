@@ -24,9 +24,6 @@ extern "C" {
 }
 
 namespace Editor {
-    int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height,
-        uint8_t resize);
-
     Editor::Editor() {
     }
 
@@ -171,13 +168,13 @@ namespace Editor {
     }
 
     void Editor::DeleteObject() {
-        Gizmo* gizmo = &eObjectPicker.eGizmo;
 
-      /*  if (gizmo->_selected && gizmo->_selected->DespawnFlag) {
-            *gizmo->_selected->DespawnFlag = gizmo->_selected->DespawnValue;
-            gizmo->_selected = nullptr;
-            eObjectPicker._selected = nullptr;
-        }*/
+        std::visit([this](auto* obj) {
+            if (nullptr != obj) {
+                gEditor.ResetGizmo(); // Unselect the object to prevent crashes
+                obj->Destroy();
+            }
+        }, eObjectPicker.eGizmo._selected);
     }
 
     void Editor::ClearMatrixPool() {

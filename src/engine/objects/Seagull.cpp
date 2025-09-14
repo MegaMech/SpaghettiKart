@@ -31,7 +31,7 @@ SplineData* D_800E633C[] = { &D_800E6034, &D_800E60F0, &D_800E61B4, &D_800E6280 
 
 size_t OSeagull::_count = 0;
 
-OSeagull::OSeagull(const SpawnParams& params) {
+OSeagull::OSeagull(const SpawnParams& params) : OObject(params) {
     Name = "Seagull";
     ResourceName = "mk:seagull";
     _idx = _count;

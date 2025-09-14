@@ -40,5 +40,5 @@ public:
     void Translate(FVector pos);
     void Rotate(IRotator rot);
     void SetScale(FVector scale);
-    virtual void DrawEditorProperties() {};
+    virtual void DrawEditorProperties() { DrawDefaultEditorProperties(); };
 };

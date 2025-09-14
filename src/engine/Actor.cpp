@@ -66,6 +66,10 @@ FVector AActor::GetScale() const {
 
 void AActor::SetSpawnParams(SpawnParams& params) { }
 
+SpawnParams& AActor::GetSpawnParams() {
+    return _spawnParams;
+}
+
 void AActor::Translate(FVector pos) {
     _spawnParams.Location = pos;
     Pos[0] = pos.x;
@@ -84,3 +88,4 @@ void AActor::SetScale(FVector scale) {
     _spawnParams.Scale = scale;
     Scale = scale;
 }
+

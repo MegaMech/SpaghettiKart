@@ -57,12 +57,6 @@ class ACar : public AActor {
     s8 SomeFlags = 0;
     s16 SomeType;
 
-    SpawnMode _spawnMode;
-
-    uint32_t PathIndex;
-    uint32_t PathPoint;
-    f32 SpeedB;
-
     f32 SomeArg3 = 11.5f;
     f32 SomeArg4 = 8.5f;
     u32 SoundBits = SOUND_ARG_LOAD(0x51, 0x01, 0x80, 0x05);
@@ -72,6 +66,7 @@ class ACar : public AActor {
     virtual void Draw(Camera*) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;
     virtual bool IsMod() override;
+    virtual void DrawEditorProperties() override;
 
   private:
     static size_t _count;

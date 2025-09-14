@@ -23,7 +23,7 @@ extern "C" {
 
 size_t OBoos::_count = 0;
 
-OBoos::OBoos(const SpawnParams& params) {
+OBoos::OBoos(const SpawnParams& params) : OObject(params) {
     Name = "Boos";
     ResourceName = "mk:boos";
 

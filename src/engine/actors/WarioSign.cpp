@@ -12,7 +12,7 @@ extern "C" {
 #include "collision.h"
 }
 
-AWarioSign::AWarioSign(const SpawnParams& params) {
+AWarioSign::AWarioSign(const SpawnParams& params) : AActor(params) {
     Type = ACTOR_WARIO_SIGN;
     Name = "Wario Sign";
     ResourceName = "mk:wario_sign";

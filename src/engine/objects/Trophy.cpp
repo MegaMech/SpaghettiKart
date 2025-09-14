@@ -20,7 +20,7 @@ extern "C" {
 #include "menu_items.h"
 }
 
-OTrophy::OTrophy(const SpawnParams& params) {
+OTrophy::OTrophy(const SpawnParams& params) : OObject(params) {
     Name = "Trophy";
     ResourceName = "mk:trophy";
     _type = static_cast<TrophyType>(params.Type.value_or(0));
@@ -95,15 +95,15 @@ OTrophy::OTrophy(const SpawnParams& params) {
 }
 
 void OTrophy::SetSpawnParams(SpawnParams& params) {
-    Object *object = &gObjectList[_objectIndex];
-    params.Name = "mk:trophy";
-    params.Type = _type;
-    params.Behaviour = _bhv;
-    params.Location = FVector(
-        object->pos[0],
-        object->pos[1],
-        object->pos[2]
-    );
+    // Object *object = &gObjectList[_objectIndex];
+    // params.Name = "mk:trophy";
+    // params.Type = _type;
+    // params.Behaviour = _bhv;
+    // params.Location = FVector(
+    //     object->pos[0],
+    //     object->pos[1],
+    //     object->pos[2]
+    // );
 }
 
 void OTrophy::Tick() { // func_80086D80

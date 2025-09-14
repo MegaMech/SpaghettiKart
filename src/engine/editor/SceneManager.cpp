@@ -60,12 +60,14 @@ namespace Editor {
 
                 bool wrote = GameEngine::Instance->context->GetResourceManager()->GetArchiveManager()->WriteFile(CurrentArchive, SceneFile, stringify);
                 if (wrote) {
-                    printf("Successfully wrote scene file!\n  Wrote: %s\n", SceneFile.c_str());
+                    // Tell the cache this needs to be reloaded
+                    auto resource = GameEngine::Instance->context->GetResourceManager()->GetCachedResource(SceneFile);
+                    resource->Dirty();
                 } else {
-                    printf("Failed to write scene file!\n");
+                    printf("[SceneManager::SaveLevel] Failed to write scene file!\n");
                 }
             } catch (const nlohmann::json::exception& e) {
-                printf("SceneManager::SaveLevel():\n  JSON error during dump: %s\n", e.what());
+                printf("[SceneManager::SaveLevel]\n  JSON error during dump: %s\n", e.what());
             }
         } else {
             printf("Could not save scene file, SceneFile or CurrentArchive not set\n");
@@ -74,13 +76,11 @@ namespace Editor {
 
 
     /** Do not use gWorldInstance.CurrentCourse during loading! The current track is not guaranteed! **/
-    void LoadLevel(std::shared_ptr<Ship::Archive> archive, Course* course, std::string sceneFile) {
+    void LoadLevel(Course* course, std::string sceneFile) {
         SceneFile = sceneFile;
-    std::cout << "C++ version: " << __cplusplus << std::endl;
-
-        if (archive && (course != nullptr)) {
+        if ((nullptr != course) && (nullptr != course->RootArchive)) {
             auto initData = std::make_shared<Ship::ResourceInitData>();
-            initData->Parent = archive;
+            initData->Parent = course->RootArchive;
             initData->Format = RESOURCE_FORMAT_BINARY;
             initData->ByteOrder = Ship::Endianness::Little;
             initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
@@ -109,12 +109,14 @@ namespace Editor {
             /** Populate Track SpawnParams for spawning actors **/
             if (data.contains("Actors")) {
                 auto & actorsJson = data["Actors"];
+                course->SpawnList.clear();
                 for (const auto& actor : actorsJson) {
                     SpawnParams params = actor.get<SpawnParams>();
                     if (!params.Name.empty()) {
                         course->SpawnList.push_back(params);
                     }
                 }
+                SPDLOG_INFO("[SceneManager] Loaded Scene File!");
             }
 
             // Load the Actors (deserialize them)
@@ -126,7 +128,7 @@ namespace Editor {
                     Load_AddStaticMeshActor(actorJson);
                 }
             } else {
-                SPDLOG_INFO("[SceneManager.cpp] [scene.json] This track contains no StaticMeshActors!");
+                SPDLOG_INFO("[SceneManager::LoadLevel] [scene.json] This track contains no StaticMeshActors!");
             }
         }
     }
@@ -147,11 +149,11 @@ namespace Editor {
         SceneFile = sceneFile;
     }
 
-    void LoadMinimap(std::shared_ptr<Ship::Archive> archive, Course* course, std::string filePath) {
+    void LoadMinimap(Course* course, std::string filePath) {
         printf("LOADING MINIMAP %s\n", filePath.c_str());
-        if (archive) {
+        if ((nullptr != course) && (nullptr != course->RootArchive)) {
             auto initData = std::make_shared<Ship::ResourceInitData>();
-            initData->Parent = archive;
+            initData->Parent = course->RootArchive;
             initData->Format = RESOURCE_FORMAT_BINARY;
             initData->ByteOrder = Ship::Endianness::Little;
             initData->Type = static_cast<uint32_t>(MK64::ResourceType::Minimap);
@@ -226,7 +228,8 @@ namespace Editor {
             }
 
             if (!alreadyProcessed) {
-                actor->SetSpawnParams(params);
+                params = actor->GetSpawnParams();
+                actor->SetSpawnParams(params); // This line needs to get removed. But is fine for now.
                 if (!params.Name.empty()) {
                     actorList.push_back(params);
                 }

@@ -15,7 +15,7 @@ extern "C" {
 
 size_t OHedgehog::_count = 0;
 
-OHedgehog::OHedgehog(const SpawnParams& params) {
+OHedgehog::OHedgehog(const SpawnParams& params) : OObject(params) {
     Name = "Hedgehog";
     ResourceName = "mk:hedgehog";
     _idx = _count;

@@ -733,6 +733,7 @@ void race_logic_loop(void) {
     ClearMatrixPools();
     ClearObjectsMatrixPool();
     Editor_ClearMatrix();
+    Editor_CleanWorld(); // Clears all actors
     gMatrixObjectCount = 0;
     gMatrixEffectCount = 0;
 

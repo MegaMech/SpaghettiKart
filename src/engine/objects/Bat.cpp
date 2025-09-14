@@ -19,7 +19,7 @@ const char* sBoardwalkTexList[] = { gTextureBat1, gTextureBat2, gTextureBat3, gT
 
 size_t OBat::_count = 0;
 
-OBat::OBat(const SpawnParams& params) {
+OBat::OBat(const SpawnParams& params) : OObject(params) {
     Name = "Bat";
     ResourceName = "mk:bat";
 

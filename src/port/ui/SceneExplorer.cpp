@@ -47,6 +47,7 @@ namespace Editor {
             if (ImGui::Button(label.c_str())) {
                 gEditor.SelectObjectFromSceneExplorer(actor);
             }
+
             id += 1;
         }
 

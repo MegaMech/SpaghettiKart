@@ -20,6 +20,7 @@ extern s32 gTrophyIndex;
 #ifdef __cplusplus
 extern Editor::Editor gEditor;
 extern HarbourMastersIntro gMenuIntro;
+extern bool bCleanWorld;
 #endif
 
 Properties* CM_GetProps();
@@ -83,6 +84,7 @@ void CM_DrawEditor();
 void CM_Editor_SetLevelDimensions(s16 minX, s16 maxX, s16 minZ, s16 maxZ, s16 minY, s16 maxY);
 void CM_TickDraw();
 void Editor_ClearMatrix();
+void Editor_CleanWorld();
 
 void CM_TickParticles(void);
 void CM_DrawParticles(s32 cameraId);

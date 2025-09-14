@@ -64,7 +64,6 @@ public:
 
     void DrawStaticMeshActors();
     StaticMeshActor* AddStaticMeshActor(std::string name, FVector pos, IRotator rot, FVector scale, std::string model, int32_t* collision);
-    void DeleteStaticMeshActors();
 
     OObject* AddObject(OObject* object);
 

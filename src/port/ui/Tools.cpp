@@ -35,7 +35,11 @@ namespace Editor {
 
         // Save button
         if (ImGui::Button(ICON_FA_FLOPPY_O, ImVec2(50, 25))) {
-            SaveLevel();
+            if (gIsEditorPaused) {
+                SaveLevel();
+            } else {
+                printf("[Editor] Cannot save while the level is running\n  Please pause the game first!");
+            }
         }
 
         ImGui::SameLine();
@@ -135,7 +139,11 @@ namespace Editor {
         // Play/pause button
         ImGui::PushStyleColor(ImGuiCol_Button, defaultColor);
         if (ImGui::Button(gIsEditorPaused ? ICON_FA_PLAY : ICON_FA_STOP, ImVec2(50, 25))) {
-
+            if (gIsEditorPaused) {
+                SaveLevel();
+            }
+            
+            gEditor.ResetGizmo();
             gIsEditorPaused = !gIsEditorPaused;
             gIsInQuitToMenuTransition = 1;
             gQuitToMenuTransitionCounter = 5;
@@ -179,6 +187,44 @@ namespace Editor {
         if (ImGui::Button(ICON_FA_TRASH_O, ImVec2(50, 25))) {
             gEditor.DeleteObject();
         }
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("Delete Selected Actor");
+            ImGui::EndTooltip();
+        }
+
+        ImGui::SameLine();
+
+        // Delete All button
+        if (ImGui::Button(ICON_FA_INTERNET_EXPLORER, ImVec2(50, 25))) {
+            ImGui::OpenPopup("ConfirmDeleteAllPopup");
+        }
+
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("Delete All Actors");
+            ImGui::EndTooltip();
+        }
+
+        // Confirmation Popup
+        if (ImGui::BeginPopupModal("ConfirmDeleteAllPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("Are you sure you want to delete all actors?\nThis action can be undone if you do not save, and then reload the track.");
+            ImGui::Separator();
+
+            if (ImGui::Button("Yes", ImVec2(120, 0))) {
+                // Defer deletion until race_logic_loop
+                bCleanWorld = true;
+                gEditor.ResetGizmo();
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
+        }
+
     }
 
     // Fast Forward the game

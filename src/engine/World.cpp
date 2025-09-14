@@ -206,17 +206,6 @@ void World::DrawStaticMeshActors() {
     }
 }
 
-void World::DeleteStaticMeshActors() {
-    for (auto it = StaticMeshActors.begin(); it != StaticMeshActors.end();) {
-        if ((*it)->bPendingDestroy) {
-            delete *it;  // Deallocate memory for the actor
-            it = StaticMeshActors.erase(it);  // Remove the pointer from the vector
-        } else {
-            ++it;  // Only increment the iterator if we didn't erase an element
-        }
-    }
-}
-
 OObject* World::AddObject(OObject* object) {
     Objects.push_back(object);
 
@@ -273,7 +262,7 @@ void World::DrawParticles(s32 cameraId) {
 // Sets OObjects or AActors static member variables back to default values
 void World::Reset() {
     for (const auto& object : Objects) {
-        object->Reset();
+        object->Reset(); // Used for OPenguin
     }
 }
 
@@ -286,7 +275,6 @@ Object* World::GetObjectByIndex(size_t index) {
 }
 
 void World::ClearWorld(void) {
-    World::DeleteStaticMeshActors();
     CM_CleanWorld();
 
     // for (size_t i = 0; i < ARRAY_COUNT(gCollisionMesh); i++) {

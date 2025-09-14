@@ -25,7 +25,7 @@ extern Vec3s D_800E634C[];
 //     { 0xf380, 0x0013, 0xfe14 },
 // };
 
-OPodium::OPodium(const SpawnParams& params) {
+OPodium::OPodium(const SpawnParams& params) : OObject(params) {
     Name = "Podium";
     ResourceName = "mk:podium";
     _pos = params.Location.value_or(FVector(0, 0, 0));

@@ -263,7 +263,6 @@ std::pair<AActor*, float> ObjectPicker::CheckAActorRay(Ray ray) {
         if (actor->Triangles.size()) {
             for (const auto& tri : actor->Triangles) {
                 float t;
-                printf("This object has a collision model\n");
                 if (IntersectRayTriangleAndTransform(ray, FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]), tri, t)) {
                     if (t < hitDistance) {
                         hitDistance = t;

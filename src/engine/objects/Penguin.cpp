@@ -34,7 +34,7 @@ extern s8 gPlayerCount;
 }
 
 
-OPenguin::OPenguin(const SpawnParams& params) {
+OPenguin::OPenguin(const SpawnParams& params) : OObject(params) {
     Name = "Penguin";
     ResourceName = "mk:penguin";
     _type = static_cast<PenguinType>(params.Type.value_or(0));
@@ -435,4 +435,53 @@ void OPenguin::InitOtherPenguin(s32 objectIndex) {
 
 void OPenguin::Reset() {
     _toggle = false;
+}
+
+void OPenguin::DrawEditorProperties() {
+    std::visit([](auto* obj) {
+        using T = std::decay_t<decltype(*obj)>;
+        if (nullptr == obj) {
+            return;
+        }
+
+        auto& params = obj->_spawnParams;
+
+        if (params.Type.has_value()) {
+            ImGui::Text("Spawn Mode");
+            ImGui::SameLine();
+
+            int32_t type = static_cast<int32_t>(params.Type.value());
+            const char* items[] = { "CHICK", "ADULT", "CREDITS", "EMPEROR" };
+
+            if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+                *params.Type = static_cast<int16_t>(type);
+            }
+        }
+
+        if (params.Behaviour.has_value()) {
+            ImGui::Text("Spawn Mode");
+            ImGui::SameLine();
+
+            int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
+            const char* items[] = { "DISABLED", "STRUT", "CIRCLE", "SLIDE3", "SLIDE4", "UNK", "SLIDE6" };
+
+            if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
+                *params.Behaviour = static_cast<int16_t>(behaviour);
+            }
+        }
+
+        if (params.Speed.has_value()) {
+            ImGui::Text("Diameter");
+            ImGui::SameLine();
+
+            float speed = params.Speed.value();
+            if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+                *params.Speed = speed;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+                *params.Speed = 0.0f;
+            }
+        }
+    }, gEditor.eObjectPicker.eGizmo._selected);
 }

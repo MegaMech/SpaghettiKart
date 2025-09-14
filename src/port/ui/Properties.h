@@ -3,13 +3,11 @@
 #include <libultraship/libultraship.h>
 #include "port/Game.h"
 
-
 namespace Editor {
 class PropertiesWindow : public Ship::GuiWindow {
 public:
     using Ship::GuiWindow::GuiWindow;
     ~PropertiesWindow();
-    void DrawSpawnParamsEditor();
 
     const std::unordered_map<std::string, std::string> SpawnLabels {
         {"Name", "Name"},

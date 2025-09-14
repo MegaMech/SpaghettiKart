@@ -21,7 +21,7 @@ extern "C" {
 
 #define DEGREES_FLOAT_TO_SHORT(Degrees) ((s16)((Degrees) * (0x8000 / 180.0f)))
 
-OTrashBin::OTrashBin(const SpawnParams& params) {
+OTrashBin::OTrashBin(const SpawnParams& params) : OObject(params) {
     Name = "Trash Bin";
     ResourceName = "mk:trash_bin";
     _pos = params.Location.value_or(FVector(0, 0, 0));

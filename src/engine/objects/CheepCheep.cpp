@@ -17,7 +17,7 @@ extern Vec3s D_800E634C[];
 extern Lights1 D_800E45C0[];
 }
 
-OCheepCheep::OCheepCheep(const SpawnParams& params) {
+OCheepCheep::OCheepCheep(const SpawnParams& params) : OObject(params) {
     Name = "Cheep Cheep";
     ResourceName = "mk:cheep_cheep";
     _behaviour = static_cast<Behaviour>(params.Behaviour.value_or(0));

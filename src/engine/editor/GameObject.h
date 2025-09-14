@@ -8,6 +8,8 @@
 #include <vector>
 #include "engine/SpawnParams.h"
 
+#include "src/port/ui/DefaultProperties.h"
+
 extern "C" {
 #include "common_structs.h"
 }
@@ -34,6 +36,7 @@ public:
         void Translate(FVector pos);
         void Rotate(IRotator rot);
         void SetScale(FVector scale);
+        void Destroy() {};
 
         const char* Name;
         const char* ResourceName;
@@ -45,6 +48,6 @@ public:
         std::vector<Triangle> Triangles;
         CollisionType Collision;
         float BoundingBoxSize;
-        virtual void DrawEditorProperties() {};
+        virtual void DrawEditorProperties() { DrawDefaultEditorProperties(); };
     };
 }

@@ -423,7 +423,7 @@ FVector GetPositionAheadOfCamera(f32 dist) {
 
     // Compute forward vector
     FVector forward(
-        -sinf(yaw),  // X
+        sinf(yaw),  // X
         -sinf(pitch), // Y
         cosf(yaw)               // Z (vertical component)
     );

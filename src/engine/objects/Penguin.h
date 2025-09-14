@@ -59,6 +59,7 @@ public:
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     virtual void Reset() override;
+    virtual void DrawEditorProperties() override;
 private:
     void Behaviours(s32 objectIndex);
     void EmperorPenguin(s32 objectIndex);

@@ -1,7 +1,7 @@
 #ifndef ENGINE_COURSE_H
 #define ENGINE_COURSE_H
 
-#include <libultraship.h>
+#include <libultraship/libultraship.h>
 #include "CoreMath.h"
 
 #ifdef __cplusplus
@@ -308,7 +308,12 @@ public:
     const course_texture* textures = nullptr;
     bool bSpawnFinishline = true;
     std::optional<FVector> FinishlineSpawnPoint;
+
+    // O2R Loading
+    std::shared_ptr<Ship::Archive> RootArchive;
+    std::string SceneFilePtr;
     std::string TrackSectionsPtr;
+
     bool bIsMod = false;
     std::vector<SpawnParams> SpawnList;
 

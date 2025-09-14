@@ -38,11 +38,6 @@ class ABus : public AActor {
     f32 SomeArg4 = 12.5f;
     u32 SoundBits = SOUND_ARG_LOAD(0x51, 0x01, 0x80, 0x03);
 
-    uint32_t PathIndex;
-    uint32_t PathPoint;
-    SpawnMode _spawnMode;
-    float SpeedB;
-
     // This is simply a helper function to keep Spawning code clean
     static inline ABus* Spawn(f32 speedA, f32 speedB, uint32_t pathIndex, uint32_t pathPoint, ABus::SpawnMode spawnMode) {
         SpawnParams params = {
@@ -71,6 +66,7 @@ class ABus : public AActor {
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;
     virtual bool IsMod() override;
+    virtual void DrawEditorProperties() override;
 
   private:
     static size_t _count;

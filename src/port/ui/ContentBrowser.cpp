@@ -401,9 +401,10 @@ namespace Editor {
                     auto archive = manager->GetArchiveFromFile(sceneFile);
                     
                     auto course = std::make_shared<Course>();
+                    course->RootArchive = archive;
                     course->LoadO2R(dir);
-                    LoadLevel(archive, course.get(), sceneFile);
-                    LoadMinimap(archive, course.get(), minimapFile);
+                    LoadLevel(course.get(), sceneFile);
+                    LoadMinimap(course.get(), minimapFile);
                     Tracks.push_back({nullptr, course, sceneFile, name, dir, archive});
                     gWorldInstance.Courses.push_back(std::move(course));
                 } else { // The track does not have a valid scene file

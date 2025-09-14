@@ -35,31 +35,32 @@ std::map<uint32_t, std::vector<uint32_t>> ATrain::TrainCounts;
 ATrain::ATrain(const SpawnParams& params) : AActor(params) {
     Name = "Train";
     ResourceName = "mk:train";
+    _spawnParams.Name = "mk:train";
     TrainCarStuff* ptr1;
     TrackPathPoint* pos;
 
-
     Index = _count;
-    Speed = params.Speed.value_or(0);
 
     uint32_t numCarriages = params.Count.value_or(0);
     bool tender = params.Bool.value_or(true);
 
     // The path to spawn the train at
-    PathIndex = params.PathIndex.value_or(0);
+    uint32_t pathIndex = params.PathIndex.value_or(0);
+    // The point along the path to spawn the train at
+    uint32_t pathPoint = 0;
 
-    _spawnMode = static_cast<SpawnMode>(params.Type.value_or(SpawnMode::POINT));
+    ATrain::SpawnMode _spawnMode = static_cast<SpawnMode>(params.Type.value_or(SpawnMode::POINT));
 
     switch(_spawnMode) {
         case SpawnMode::POINT: // Spawn train at a specific path point
-            PathPoint = params.PathPoint.value_or(0);
-            TrainCounts[PathIndex].push_back(PathPoint);
+            pathPoint = params.PathPoint.value_or(0);
+            TrainCounts[pathIndex].push_back(pathPoint);
             break;
         case SpawnMode::AUTO: // Automatically distribute trains based on a specific path point
             printf("vehicle path size %d\n", gVehiclePathSize);
-            PathPoint = GetVehiclePathPointDistributed(TrainCounts[PathIndex], gVehiclePathSize);
-            TrainCounts[PathIndex].push_back(PathPoint);
-            printf("train spawn path point: %d\n", PathPoint);
+            pathPoint = GetVehiclePathPointDistributed(TrainCounts[pathIndex], gVehiclePathSize);
+            TrainCounts[pathIndex].push_back(pathPoint);
+            printf("train spawn path point: %d\n", pathPoint);
             break;
     }
 
@@ -70,26 +71,22 @@ ATrain::ATrain(const SpawnParams& params) : AActor(params) {
         PassengerCars.push_back(TrainCarStuff());
     }
 
-    //waypointOffset = (u16)params.PathPoint.value_or(0);
-
     // 120.0f is about the maximum usable value
     for (size_t i = 0; i < PassengerCars.size(); i++) {
-        PathPoint += 4;
+        pathPoint += 4;
         ptr1 = &PassengerCars[i];
-        pos = &gVehicle2DPathPoint[PathPoint];
-        set_vehicle_pos_path_point(ptr1, pos, PathPoint);
+        pos = &gVehicle2DPathPoint[pathPoint];
+        set_vehicle_pos_path_point(ptr1, pos, pathPoint);
     }
     // Smaller offset for the tender
-    PathPoint += 3;
-    pos = &gVehicle2DPathPoint[PathPoint];
-    set_vehicle_pos_path_point(&this->Tender, pos, PathPoint);
-    PathPoint += 4;
-    pos = &gVehicle2DPathPoint[PathPoint];
-    set_vehicle_pos_path_point(&Locomotive, pos, PathPoint);
+    pathPoint += 3;
+    pos = &gVehicle2DPathPoint[pathPoint];
+    set_vehicle_pos_path_point(&this->Tender, pos, pathPoint);
+    pathPoint += 4;
+    pos = &gVehicle2DPathPoint[pathPoint];
+    set_vehicle_pos_path_point(&Locomotive, pos, pathPoint);
 
     // Only use locomotive unless overwritten below.
-    NumCars = LOCOMOTIVE_ONLY;
-
     // Fall back in-case someone tries to spawn a train with carriages but no tender; not allowed.
     if (numCarriages > 0) {
         tender = HAS_TENDER;
@@ -100,8 +97,6 @@ ATrain::ATrain(const SpawnParams& params) : AActor(params) {
     for (size_t i = 0; i < numCarriages; i++) {
         PassengerCars[i].isActive = 1;
     }
-
-    NumCars = NUM_TENDERS + numCarriages;
 
     AnotherSmokeTimer = 0;
 
@@ -117,7 +112,7 @@ ATrain::ATrain(const SpawnParams& params) : AActor(params) {
     origXPos = tempLocomotive->position[0];
     origZPos = tempLocomotive->position[2];
     trainCarYRot =
-        update_vehicle_following_path(tempLocomotive->position, (s16*) &tempLocomotive->waypointIndex, Speed);
+        update_vehicle_following_path(tempLocomotive->position, (s16*) &tempLocomotive->waypointIndex, _spawnParams.Speed.value_or(0));
     tempLocomotive->velocity[0] = tempLocomotive->position[0] - origXPos;
     tempLocomotive->velocity[2] = tempLocomotive->position[2] - origZPos;
     vec3s_set(trainCarRot, 0, trainCarYRot, 0);
@@ -128,7 +123,7 @@ ATrain::ATrain(const SpawnParams& params) : AActor(params) {
     if (tempTender->isActive == 1) {
         origXPos = tempTender->position[0];
         origZPos = tempTender->position[2];
-        trainCarYRot = update_vehicle_following_path(tempTender->position, (s16*) &tempTender->waypointIndex, Speed);
+        trainCarYRot = update_vehicle_following_path(tempTender->position, (s16*) &tempTender->waypointIndex, _spawnParams.Speed.value_or(0));
         tempTender->velocity[0] = tempTender->position[0] - origXPos;
         tempTender->velocity[2] = tempTender->position[2] - origZPos;
         vec3s_set(trainCarRot, 0, trainCarYRot, 0);
@@ -142,7 +137,7 @@ ATrain::ATrain(const SpawnParams& params) : AActor(params) {
             origXPos = tempPassengerCar->position[0];
             origZPos = tempPassengerCar->position[2];
             trainCarYRot = update_vehicle_following_path(tempPassengerCar->position,
-                                                         (s16*) &tempPassengerCar->waypointIndex, Speed);
+                                                         (s16*) &tempPassengerCar->waypointIndex, _spawnParams.Speed.value_or(0));
             tempPassengerCar->velocity[0] = tempPassengerCar->position[0] - origXPos;
             tempPassengerCar->velocity[2] = tempPassengerCar->position[2] - origZPos;
             vec3s_set(trainCarRot, 0, trainCarYRot, 0);
@@ -155,14 +150,14 @@ ATrain::ATrain(const SpawnParams& params) : AActor(params) {
 }
 
 void ATrain::SetSpawnParams(SpawnParams& params) {
-    params.Name = "mk:train";
-    params.Type = static_cast<uint16_t>(_spawnMode);
-    params.Count = NumCars - NUM_TENDERS;
-    params.Bool = Tender.isActive;
-    params.Speed = Speed;
-    params.Count = PassengerCars.size();
-    params.PathIndex = PathIndex;
-    params.PathPoint = PathPoint;
+   // params.Name = "mk:train";
+   // params.Type = static_cast<uint16_t>(_spawnMode);
+    //params.Count = NumCars - NUM_TENDERS;
+   // params.Bool = Tender.isActive;
+    //params.Speed = Speed;
+   // params.Count = PassengerCars.size();
+   // params.PathIndex = PathIndex;
+    //params.PathPoint = PathPoint;
 }
 
 bool ATrain::IsMod() {
@@ -203,7 +198,7 @@ void ATrain::Tick() {
 
     oldWaypointIndex = (u16) Locomotive.waypointIndex;
 
-    orientationYUpdate = update_vehicle_following_path(Locomotive.position, (s16*) &Locomotive.waypointIndex, Speed);
+    orientationYUpdate = update_vehicle_following_path(Locomotive.position, (s16*) &Locomotive.waypointIndex, _spawnParams.Speed.value_or(0));
 
     Locomotive.velocity[0] = Locomotive.position[0] - temp_f20.x;
     Locomotive.velocity[1] = Locomotive.position[1] - temp_f20.y;
@@ -235,7 +230,7 @@ void ATrain::Tick() {
         temp_f20.x = car->position[0];
         temp_f20.y = car->position[1];
         temp_f20.z = car->position[2];
-        orientationYUpdate = update_vehicle_following_path(car->position, (s16*) &car->waypointIndex, Speed);
+        orientationYUpdate = update_vehicle_following_path(car->position, (s16*) &car->waypointIndex, _spawnParams.Speed.value_or(0));
         car->velocity[0] = car->position[0] - temp_f20.x;
         car->velocity[1] = car->position[1] - temp_f20.y;
         car->velocity[2] = car->position[2] - temp_f20.z;
@@ -249,7 +244,7 @@ void ATrain::Tick() {
             temp_f20.y = car->position[1];
             temp_f20.z = car->position[2];
 
-            orientationYUpdate = update_vehicle_following_path(car->position, (s16*) &car->waypointIndex, Speed);
+            orientationYUpdate = update_vehicle_following_path(car->position, (s16*) &car->waypointIndex, _spawnParams.Speed.value_or(0));
             car->velocity[0] = car->position[0] - temp_f20.x;
             car->velocity[1] = car->position[1] - temp_f20.y;
             car->velocity[2] = car->position[2] - temp_f20.z;
@@ -318,4 +313,104 @@ s32 ATrain::AddSmoke(s32 trainIndex, Vec3f pos, f32 velocity) {
         init_train_smoke(objectIndex, pos, velocity);
     }
     return objectIndex;
+}
+
+void ATrain::DrawEditorProperties() {
+    //std::visit([](auto* obj) {
+        //using T = std::decay_t<decltype(*obj)>;
+        //if (nullptr == obj) {
+        //    return;
+        //}
+
+        auto& params = _spawnParams;
+
+        if (params.Count.has_value()) {
+            ImGui::Text("Passenger Cars");
+            ImGui::SameLine();
+
+            int count = static_cast<int>(*params.Count);
+            if (ImGui::InputInt("##Count", &count)) {
+                // Clamp to uint32_t range (only lower bound needed if assuming positive values)
+                if (count < 0) count = 0;
+                params.Count = static_cast<uint32_t>(count);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(ICON_FA_UNDO "##ResetCount")) {
+                params.Count = 0;
+            }
+        }
+
+        if (params.Type.has_value()) {
+            ImGui::Text("Spawn Mode");
+            ImGui::SameLine();
+
+            int32_t type = static_cast<int32_t>(params.Type.value());
+            const char* items[] = { "POINT", "AUTO" };
+
+            if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+                *params.Type = static_cast<int16_t>(type);
+            }
+
+            if (type == ATrain::SpawnMode::POINT) {
+                if (params.PathIndex.has_value()) {
+                    ImGui::Text("Path Index");
+                    ImGui::SameLine();
+
+                    int pathIndex = static_cast<int>(params.PathIndex.value());
+                    if (ImGui::InputInt("##PathIndex", &pathIndex)) {
+                        if (pathIndex < 0) pathIndex = 0;
+                        params.PathIndex = static_cast<uint32_t>(pathIndex);
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button(ICON_FA_UNDO "##ResetPathIndex")) {
+                        params.PathIndex = 0;
+                    }
+                }
+
+                if (params.PathPoint.has_value()) {
+                    ImGui::Text("Path Point");
+                    ImGui::SameLine();
+
+                    int pathPoint = static_cast<int>(params.PathPoint.value());
+                    if (ImGui::InputInt("##PathPoint", &pathPoint)) {
+                        if (pathPoint < 0) pathPoint = 0;
+                        params.PathPoint = static_cast<uint32_t>(pathPoint);
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button(ICON_FA_UNDO "##ResetPathPoint")) {
+                        params.PathPoint = 0;
+                    }
+                }
+            }
+
+        }
+
+        if (params.Bool.has_value()) {
+            ImGui::Text("Has Tender");
+            ImGui::SameLine();
+
+            bool theBool = params.Bool.value();
+            if (ImGui::Checkbox("##Bool", &theBool)) {
+                params.Bool = theBool;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(ICON_FA_UNDO "##ResetBool")) {
+                params.Bool = false;
+            }
+        }
+
+        if (params.Speed.has_value()) {
+            ImGui::Text("Speed");
+            ImGui::SameLine();
+
+            float speed = params.Speed.value();
+            if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+                *params.Speed = speed;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+                *params.Speed = 0.0f;
+            }
+        }
+    //}, gEditor.eObjectPicker.eGizmo._selected);
 }

@@ -17,7 +17,7 @@ extern "C" {
 
 size_t OGrandPrixBalloons::_count = 0;
 
-OGrandPrixBalloons::OGrandPrixBalloons(const SpawnParams& params) {
+OGrandPrixBalloons::OGrandPrixBalloons(const SpawnParams& params) : OObject(params) {
     Name = "Grand Prix Balloons";
     ResourceName = "mk:grand_prix_balloons";
     Pos = params.Location.value_or(FVector(0, 0, 0));

@@ -26,7 +26,7 @@ extern "C" {
 
 size_t OCrab::_count = 0;
 
-OCrab::OCrab(const SpawnParams& params) {
+OCrab::OCrab(const SpawnParams& params) : OObject(params) {
     Name = "Crab";
     ResourceName = "mk:crab";
     _idx = _count;

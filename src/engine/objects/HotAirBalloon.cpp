@@ -14,7 +14,7 @@ extern "C" {
 #include "actors.h"
 }
 
-OHotAirBalloon::OHotAirBalloon(const SpawnParams& params) {
+OHotAirBalloon::OHotAirBalloon(const SpawnParams& params) : OObject(params) {
     Name = "Hot Air Balloon";
     ResourceName = "mk:hot_air_balloon";
     Pos = params.Location.value_or(FVector(0, 0, 0));

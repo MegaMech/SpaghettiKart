@@ -119,6 +119,7 @@ void Course::Load(Vtx* vtx, Gfx* gfx) {
 
 void Course::LoadO2R(std::string trackPath) {
     if (!trackPath.empty()) {
+        SceneFilePtr = (trackPath + "/scene.json");
         TrackSectionsPtr = (trackPath + "/data_track_sections");
 
         std::string path_file = (trackPath + "/data_paths").c_str();
@@ -150,6 +151,10 @@ void Course::LoadO2R(std::string trackPath) {
 
 // Load stock and o2r tracks
 void Course::Load() {
+    // Re-load scenefile in-case changes were made in the editor
+      if (!SceneFilePtr.empty()) {
+        Editor::LoadLevel(this, SceneFilePtr);
+    }
 
     // Load from O2R
     if (!TrackSectionsPtr.empty()) {
@@ -220,6 +225,7 @@ void Course::Load() {
 
 // C++ version of parse_course_displaylists()
 void Course::ParseCourseSections(TrackSectionsO2R* sections, size_t size) {
+    printf("\n[Track] Generating Collision Meshes...\n");
     for (size_t i = 0; i < (size / sizeof(TrackSectionsO2R)); i++) {
         if (sections[i].flags & 0x8000) {
             D_8015F59C = 1; // single-sided wall
@@ -236,10 +242,11 @@ void Course::ParseCourseSections(TrackSectionsO2R* sections, size_t size) {
         } else {
             D_8015F5A4 = 0;
         }
-        printf("LOADING DL %s\n", sections[i].addr.c_str());
+        printf("  %s\n", sections[i].addr.c_str());
         generate_collision_mesh((Gfx*) LOAD_ASSET_RAW(sections[i].addr.c_str()), sections[i].surfaceType,
                                 sections[i].sectionId);
     }
+    printf("[Track] Collision Mesh Generation Complete!\n\n");
 }
 
 void Course::TestPath() {
@@ -290,6 +297,7 @@ void Course::LoadTextures() {
 }
 
 void Course::BeginPlay() {
+    printf("[Track] BeginPlay\n");
     TestPath();
     this->SpawnActors();
 }

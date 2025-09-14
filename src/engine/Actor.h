@@ -41,6 +41,7 @@ public:
     explicit AActor(SpawnParams params);
 
     virtual void SetSpawnParams(SpawnParams& params);
+    virtual SpawnParams& GetSpawnParams();
     virtual void BeginPlay();
     virtual void Tick();
     virtual void Draw(Camera*);
@@ -58,8 +59,7 @@ public:
     void Translate(FVector pos);
     void Rotate(IRotator rot);
     void SetScale(FVector scale);
-    virtual void DrawEditorProperties() {};
-
+    virtual void DrawEditorProperties() { DrawDefaultEditorProperties(); };
 };
 
 }

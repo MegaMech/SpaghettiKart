@@ -29,7 +29,7 @@ extern s8 gPlayerCount;
 
 size_t OBombKart::_count = 0;
 
-OBombKart::OBombKart(const SpawnParams& params) {
+OBombKart::OBombKart(const SpawnParams& params) : OObject(params) {
     Name = "Bomb Kart";
     ResourceName = "mk:bomb_kart";
 

@@ -15,7 +15,7 @@ extern "C" {
 
 size_t OFlagpole::_count = 0;
 
-OFlagpole::OFlagpole(const SpawnParams& params) {
+OFlagpole::OFlagpole(const SpawnParams& params) : OObject(params) {
     Name = "Flagpole";
     ResourceName = "mk:flagpole";
     _idx = _count;

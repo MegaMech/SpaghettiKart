@@ -75,6 +75,9 @@ extern "C" void Timer_Update();
 // Create the world instance
 World gWorldInstance;
 
+// Deferred cleaning when clearing all actors in the editor
+bool bCleanWorld = false;
+
 std::shared_ptr<PodiumCeremony> gPodiumCeremony;
 
 Cup* gMushroomCup;
@@ -382,6 +385,8 @@ void CM_BeginPlay() {
     auto course = gWorldInstance.CurrentCourse;
 
     if (course) {
+        Editor::LoadLevel(course.get(), course->SceneFilePtr);
+
         gRulesets.PreInit();
         // Do not spawn finishline in credits or battle mode. And if bSpawnFinishline.
         if ((gGamestate != CREDITS_SEQUENCE) && (gModeSelection != BATTLE)) {
@@ -650,11 +655,13 @@ void CM_DeleteActor(size_t index) {
  * Clean up actors and other game objects.
  */
 void CM_CleanWorld(void) {
+    printf("[Game.cpp] Clean World\n");
     World* world = &gWorldInstance;
     for (auto& actor : world->Actors) {
         delete actor;
     }
 
+    gWorldInstance.Reset(); // Reset OObjects
     for (auto& object : world->Objects) {
         delete object;
     }
@@ -678,7 +685,6 @@ void CM_CleanWorld(void) {
     gWorldInstance.Objects.clear();
     gWorldInstance.Emitters.clear();
     gWorldInstance.Lakitus.clear();
-    gWorldInstance.Reset();
 }
 
 struct Actor* CM_AddBaseActor() {
@@ -709,6 +715,13 @@ void Editor_AddLight(s8* direction) {
 
 void Editor_ClearMatrix() {
     gEditor.ClearMatrixPool();
+}
+
+void Editor_CleanWorld() {
+    if (bCleanWorld) {
+        CM_CleanWorld();
+        bCleanWorld = false;
+    }
 }
 
 size_t CM_GetActorSize() {
