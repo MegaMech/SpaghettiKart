@@ -381,8 +381,9 @@ float CalculateAngle(const FVector& start, const FVector& end) {
 }
 
 void SetDirectionFromRotator(IRotator rot, s8 direction[3]) {
+    rot.yaw += 0xC000; //! @warning dumb hack to align the light properly
     float yaw = (rot.yaw) * (M_PI / 32768.0f);  // Convert from n64 binary angles 0-0xFFFF 0-360 degrees to radians
-    float pitch = rot.pitch * (M_PI / 32768.0f); 
+    float pitch = rot.pitch * (M_PI / 32768.0f);
 
     // Compute unit direction vector
     float x = cosf(yaw) * cosf(pitch);

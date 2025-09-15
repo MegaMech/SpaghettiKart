@@ -365,7 +365,7 @@ namespace Editor {
 
         size_t i_custom = 0;
         for (const auto& file : Content) {
-            if ((i_custom != 0) && (i_custom % 10 == 0)) {
+            if ((i_custom != 0) && (i_custom % 5 == 0)) {
             } else {
                 ImGui::SameLine();
             }

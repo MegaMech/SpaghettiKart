@@ -39,15 +39,16 @@ size_t LightObject::NumLights = 0;
         Rot = IRotator(0, 0, 0);
         Scale = FVector(0.1, 0.1, 0.1);
 
+        _spawnParams.Name = "editor:light";
+        _spawnParams.Location = Pos;
+        _spawnParams.Rotation = Rot;
+
         Direction = direction;
 
         Collision = CollisionType::BOUNDING_BOX;
         BoundingBoxSize = 4.0f;
 
         NumLights += 1;
-
-        // Rotate light to point at the default light direction
-        Rot.yaw += 0x4000;
     }
 
     void LightObject::Load() {
@@ -71,7 +72,8 @@ size_t LightObject::NumLights = 0;
         IRotator centerRot;
         SetRotatorFromDirection(cameraDir, &centerRot);
 
-        // Account for object not facing the correct direction when exported
+        // The sun was exported facing the wrong direction.
+        // Thus, force the sun texture to face the camera.
         centerRot.yaw += 0x4000;
         ApplyMatrixTransformations(mtx_sun, Pos, centerRot, Scale);
         Editor_AddMatrix(mtx_sun, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
