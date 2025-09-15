@@ -37,22 +37,19 @@ extern s8 gPlayerCount;
 OPenguin::OPenguin(const SpawnParams& params) : OObject(params) {
     Name = "Penguin";
     ResourceName = "mk:penguin";
-    _type = static_cast<PenguinType>(params.Type.value_or(0));
-    _bhv = static_cast<Behaviour>(params.Behaviour.value_or(0));
-    _pos = params.Location.value_or(FVector(0, 0, 0));
-    Diameter = params.Speed.value_or(0.0f);
-    MirrorModeAngleOffset = params.Rotation.value_or(IRotator(0, 0, 0)).roll; // roll is used to save mirro mode angle offset
+    _spawnParams.Name = "mk:penguin";
+    FVector pos = params.Location.value_or(FVector(0, 0, 0));
     find_unused_obj_index(&_objectIndex);
 
     init_object(_objectIndex, 0);
 
     Object *object = &gObjectList[_objectIndex];
-    object->origin_pos[0] = _pos.x * xOrientation;
-    object->origin_pos[1] = _pos.y;
-    object->origin_pos[2] = _pos.z;
+    object->origin_pos[0] = pos.x * xOrientation;
+    object->origin_pos[1] = pos.y;
+    object->origin_pos[2] = pos.z;
     object->unk_0C6 = params.Rotation.value_or(IRotator(0, 0, 0)).yaw;
 
-    switch(_type) {
+    switch(static_cast<PenguinType>(_spawnParams.Type.value_or(0))) {
         case PenguinType::CHICK:
             object->surfaceHeight = 5.0f;
             object->sizeScaling = 0.04f;
@@ -76,26 +73,26 @@ OPenguin::OPenguin(const SpawnParams& params) : OObject(params) {
 }
 
 void OPenguin::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:penguin";
-    params.Type = _type;
-    params.Behaviour = _bhv;
-        params.Location = FVector(
-        object->pos[0],
-        object->pos[1],
-        object->pos[2]
-    );
-    IRotator rot;
-    rot.Set(0, object->unk_0C6, MirrorModeAngleOffset);
-    params.Rotation = rot;
-    params.Speed = object->unk_01C[1]; // Circle diameter
+    // Object* object = &gObjectList[_objectIndex];
+    // params.Name = "mk:penguin";
+    // params.Type = _type;
+    // params.Behaviour = _bhv;
+    //     params.Location = FVector(
+    //     object->pos[0],
+    //     object->pos[1],
+    //     object->pos[2]
+    // );
+    // IRotator rot;
+    // rot.Set(0, object->unk_0C6, MirrorModeAngleOffset);
+    // params.Rotation = rot;
+    // params.Speed = object->unk_01C[1]; // Circle diameter
 }
 
 void OPenguin::Tick(void) {
     s32 objectIndex = _objectIndex;
 
     if (gObjectList[objectIndex].state != 0) {
-        if (_type == PenguinType::EMPEROR) {
+        if (static_cast<PenguinType>(_spawnParams.Type.value_or(0)) == PenguinType::EMPEROR) {
             OPenguin::EmperorPenguin(objectIndex);
         } else {
             OPenguin::OtherPenguin(objectIndex);
@@ -163,7 +160,7 @@ void OPenguin::Behaviours(s32 objectIndex) { // func_800850B0
     Object* object;
 
     object = &gObjectList[objectIndex];
-    switch (_bhv) {
+    switch (static_cast<Behaviour>(_spawnParams.Behaviour.value_or(0))) {
         case 1: // emperor
             OPenguin::func_80085080(objectIndex);
             break;
@@ -398,9 +395,9 @@ void OPenguin::InitOtherPenguin(s32 objectIndex) {
 
     // This code has been significantly refactored from the original func_800845C8
     // Into a switch statement instead of checking for the index of the penguin
-    switch(_bhv) {
+    switch(static_cast<Behaviour>(_spawnParams.Behaviour.value_or(0))) {
         case Behaviour::CIRCLE:
-            object->unk_01C[1] = Diameter;
+            object->unk_01C[1] = _spawnParams.Speed.value_or(0.0f);
 
             if (_toggle) {
                 object->unk_0C4 = 0x8000;
@@ -419,7 +416,7 @@ void OPenguin::InitOtherPenguin(s32 objectIndex) {
         case Behaviour::STRUT:
 
             if (gIsMirrorMode) {
-                object->unk_0C6 = MirrorModeAngleOffset;
+                object->unk_0C6 = _spawnParams.Rotation.value_or(IRotator(0, 0, 0)).roll; // Roll is used to save mirror mode angle offset;
             }
 
             set_obj_direction_angle(objectIndex, 0U, object->unk_0C6 + 0x8000, 0U);
@@ -438,13 +435,68 @@ void OPenguin::Reset() {
 }
 
 void OPenguin::DrawEditorProperties() {
-    std::visit([](auto* obj) {
+    std::visit([this](auto* obj) {
         using T = std::decay_t<decltype(*obj)>;
         if (nullptr == obj) {
             return;
         }
 
         auto& params = obj->_spawnParams;
+
+        if (params.Location.has_value()) {
+                ImGui::Text("Location");
+                ImGui::SameLine();
+                FVector location = obj->GetLocation();
+                if (ImGui::DragFloat3("##Location", (float*)&location)) {
+                    obj->Translate(location);
+                    *params.Location = location;
+                    gEditor.eObjectPicker.eGizmo.Pos = location;
+                }
+
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+                    FVector location = FVector(0, 0, 0);
+                    obj->Translate(location);
+                    *params.Location = location;
+                    gEditor.eObjectPicker.eGizmo.Pos = location;
+                }
+            }
+
+            if (params.Rotation.has_value()) {
+                ImGui::Text("Rotation");
+                ImGui::SameLine();
+
+                IRotator objRot = obj->GetRotation();
+
+                // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
+                int rot[3] = {
+                    objRot.pitch,
+                    objRot.yaw,
+                    objRot.roll
+                };
+
+                if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
+                    for (size_t i = 0; i < 3; i++) {
+                        // Wrap around 0–65535
+                        rot[i] = (rot[i] % 65536 + 65536) % 65536;
+                    }
+                    IRotator newRot;
+                    newRot.Set(
+                        static_cast<uint16_t>(rot[0]),
+                        static_cast<uint16_t>(rot[1]),
+                        static_cast<uint16_t>(rot[2])
+                    );
+                    obj->Rotate(newRot);
+                    params.Rotation = newRot;
+                }
+
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
+                    IRotator rot = IRotator(0, 0, 0);
+                    obj->Rotate(rot);
+                    params.Rotation = rot;
+                }
+            }
 
         if (params.Type.has_value()) {
             ImGui::Text("Spawn Mode");
@@ -455,6 +507,30 @@ void OPenguin::DrawEditorProperties() {
 
             if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
                 *params.Type = static_cast<int16_t>(type);
+
+                // Update type values
+                Object* object = &gObjectList[this->_objectIndex];
+                switch(static_cast<PenguinType>(type)) {
+                    case PenguinType::CHICK:
+                        object->surfaceHeight = 5.0f;
+                        object->sizeScaling = 0.04f;
+                        object->boundingBoxSize = 4;
+                        break;
+                    case PenguinType::ADULT:
+                        object->surfaceHeight = -80.0f;
+                        object->sizeScaling = 0.08f;
+                        object->boundingBoxSize = 4;
+                        break;
+                    case PenguinType::CREDITS:
+                        object->surfaceHeight = -80.0f;
+                        object->sizeScaling = 0.08f;
+                        object->sizeScaling = 0.15f;
+                        break;
+                    case PenguinType::EMPEROR:
+                        object->sizeScaling = 0.2f;
+                        object->boundingBoxSize = 0x000C;
+                        break;
+                }
             }
         }
 

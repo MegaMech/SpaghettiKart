@@ -35,9 +35,6 @@ public:
     };
 
 public:
-    f32 Diameter = 0.0f; // Waddle in a circle around the spawn point at this diameter.
-    uint16_t MirrorModeAngleOffset;
-
     explicit OPenguin(const SpawnParams& params);
 
     // This is simply a helper function to keep Spawning code clean
@@ -72,7 +69,4 @@ private:
     void InitOtherPenguin(s32 objectIndex);
 
     static bool _toggle;
-    FVector _pos;
-    PenguinType _type;
-    Behaviour _bhv;
 };

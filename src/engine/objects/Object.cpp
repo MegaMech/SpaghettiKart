@@ -27,6 +27,10 @@ void OObject::Destroy() {
 void OObject::Reset() { }
 void OObject::SetSpawnParams(SpawnParams& params) { }
 
+SpawnParams& OObject::GetSpawnParams() {
+    return _spawnParams;
+}
+
 FVector OObject::GetLocation() const {
     if (_objectIndex != -1) {
         Object* object = &gObjectList[_objectIndex];
@@ -53,6 +57,24 @@ FVector OObject::GetScale() const {
     printf("Editor tried to get null OObject\n");
     return FVector(0, 0, 0);
 }
-void OObject::Translate(FVector pos) {}
-void OObject::Rotate(IRotator rot) {}
-void OObject::SetScale(FVector scale) {}
+
+void OObject::Translate(FVector pos) {
+    if (_objectIndex != -1) {
+        Object* object = &gObjectList[_objectIndex];
+        object->pos[0] = pos.x;
+        object->pos[1] = pos.y;
+        object->pos[2] = pos.z;
+        object->origin_pos[0] = pos.x;
+        object->origin_pos[1] = pos.y;
+        object->origin_pos[2] = pos.z;
+    } else {
+        printf("Editor tried to translate null OObject\n");
+    }
+}
+void OObject::Rotate(IRotator rot) {
+
+}
+
+void OObject::SetScale(FVector scale) {
+    
+}

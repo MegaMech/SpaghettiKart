@@ -238,6 +238,7 @@ namespace Editor {
 
         for (const auto& object : gWorldInstance.Objects) {
             SpawnParams params{};
+            params = object->GetSpawnParams();
             object->SetSpawnParams(params);
 
             // Unimplemented objects should not be added to the SpawnList
