@@ -38,7 +38,7 @@ namespace Editor {
             if (gIsEditorPaused) {
                 SaveLevel();
             } else {
-                printf("[Editor] Cannot save while the level is running\n  Please pause the game first!");
+                printf("[Editor] Cannot save during simulation\n  Please switch back to edit mode!\n\n");
             }
         }
 
