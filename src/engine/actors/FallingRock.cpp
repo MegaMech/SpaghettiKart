@@ -23,6 +23,7 @@ AFallingRock::AFallingRock(SpawnParams params) : AActor(params) {
     Type = ACTOR_FALLING_ROCK;
     Name = "Falling Rock";
     ResourceName = "mk:falling_rock";
+    _spawnParams.Name = "mk:falling_rock";
 
     FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x * gCourseDirection;
@@ -40,18 +41,13 @@ AFallingRock::AFallingRock(SpawnParams params) : AActor(params) {
 }
 
 void AFallingRock::Reset() {
-    RespawnTimer = _spawnParams.Behaviour.value_or(0);
+    RespawnTimer = _spawnParams.Behaviour.value_or(80);
     FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
     Pos[0] = (f32) pos.x * gCourseDirection;
     Pos[1] = (f32) pos.y + 10.0f;
     Pos[2] = (f32) pos.z;
     vec3f_set(Velocity, 0, 0, 0);
     vec3s_set(Rot, 0, 0, 0);
-}
-
-void AFallingRock::SetSpawnParams(SpawnParams& params) {
-    params = _spawnParams;
-    params.Name = "mk:falling_rock";
 }
 
 bool AFallingRock::IsMod() {
@@ -201,4 +197,45 @@ void AFallingRock::Draw(Camera* camera) {
 
     // @port Pop the transform id.
     FrameInterpolation_RecordCloseChild();
+}
+
+void AFallingRock::DrawEditorProperties() {
+    std::visit([this](auto* obj) {
+        using T = std::decay_t<decltype(*obj)>;
+        if (nullptr == obj) {
+            return;
+        }
+
+        auto& params = obj->_spawnParams;
+
+        if (params.Location.has_value()) {
+            ImGui::Text("Location");
+            ImGui::SameLine();
+            FVector location = obj->GetLocation();
+            if (ImGui::DragFloat3("##Location", (float*)&location)) {
+                obj->Translate(location);
+                *params.Location = location;
+                gEditor.eObjectPicker.eGizmo.Pos = location;
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+                FVector location = FVector(0, 0, 0);
+                obj->Translate(location);
+                *params.Location = location;
+                gEditor.eObjectPicker.eGizmo.Pos = location;
+            }
+        }
+
+        if (params.Behaviour.has_value()) {
+            ImGui::Text("Respawn Timer");
+            ImGui::SameLine();
+
+            int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
+
+            if (ImGui::InputInt("##Behaviour", &behaviour)) {
+                    *params.Behaviour = static_cast<int16_t>(behaviour);
+            }
+        }
+    }, gEditor.eObjectPicker.eGizmo._selected);
 }

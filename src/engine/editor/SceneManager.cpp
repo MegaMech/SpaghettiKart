@@ -188,7 +188,6 @@ namespace Editor {
             switch(actor->Type) {
                 case ACTOR_ITEM_BOX:
                 case ACTOR_FAKE_ITEM_BOX:
-                case ACTOR_FALLING_ROCK:
                 case ACTOR_TREE_MARIO_RACEWAY:
                 case ACTOR_TREE_YOSHI_VALLEY:
                 case ACTOR_TREE_ROYAL_RACEWAY:
