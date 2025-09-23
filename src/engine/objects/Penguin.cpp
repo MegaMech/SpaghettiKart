@@ -33,7 +33,6 @@ extern "C" {
 extern s8 gPlayerCount;
 }
 
-
 OPenguin::OPenguin(const SpawnParams& params) : OObject(params) {
     Name = "Penguin";
     ResourceName = "mk:penguin";

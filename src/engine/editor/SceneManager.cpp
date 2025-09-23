@@ -62,7 +62,9 @@ namespace Editor {
                 if (wrote) {
                     // Tell the cache this needs to be reloaded
                     auto resource = GameEngine::Instance->context->GetResourceManager()->GetCachedResource(SceneFile);
-                    resource->Dirty();
+                    if (resource) {
+                        resource->Dirty();
+                    }
                 } else {
                     printf("[SceneManager::SaveLevel] Failed to write scene file!\n");
                 }
@@ -203,7 +205,9 @@ namespace Editor {
                 
                 params.Name = get_actor_resource_location_name(actor->Type);
                 params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
-                actorList.push_back(params);
+                if (!params.Name.empty()) {
+                    actorList.push_back(params);
+                }
                 alreadyProcessed = true;
                 break;
                 case ACTOR_PIRANHA_PLANT:
@@ -213,16 +217,12 @@ namespace Editor {
                 actorList.push_back(params);
                 alreadyProcessed = true;
                 break;
-                case ACTOR_MARIO_SIGN:
-                case ACTOR_WARIO_SIGN:
-                    actor->SetSpawnParams(params);
-                    actorList.push_back(params);
-                    alreadyProcessed = true;
-                    break;
                 case ACTOR_YOSHI_EGG:
                     params.Name = get_actor_resource_location_name(actor->Type);
                     params.Location = FVector(actor->Velocity[0], actor->Pos[1], actor->Velocity[2]); // Velocity is pathCenter
-                    actorList.push_back(params);
+                    if (!params.Name.empty()) {
+                        actorList.push_back(params);
+                    }
                     alreadyProcessed = true;
                     break;
             }

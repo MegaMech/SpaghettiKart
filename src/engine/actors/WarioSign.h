@@ -23,12 +23,12 @@ public:
             .Rotation = rot,
             .Scale = scale,
             .Velocity = velocity,
+            .Speed = 182,
         };
         return static_cast<AWarioSign*>(gWorldInstance.AddActor(new AWarioSign(params)));
     }
 
     virtual bool IsMod() override;
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera*) override;
 };

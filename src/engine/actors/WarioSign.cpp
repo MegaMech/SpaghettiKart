@@ -16,6 +16,7 @@ AWarioSign::AWarioSign(const SpawnParams& params) : AActor(params) {
     Type = ACTOR_WARIO_SIGN;
     Name = "Wario Sign";
     ResourceName = "mk:wario_sign";
+    _spawnParams.Name = "mk:wario_sign";
 
     FVector pos = params.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x * gCourseDirection;
@@ -37,27 +38,8 @@ bool AWarioSign::IsMod() {
     return true;
 }
 
-void AWarioSign::SetSpawnParams(SpawnParams& params) {
-    params.Name = "mk:wario_sign";
-    params.Location = FVector(
-        Pos[0],
-        Pos[1],
-        Pos[2]
-    );
-
-    IRotator rot;
-    rot.Set(
-        Rot[0],
-        Rot[1],
-        Rot[2]
-    );
-    params.Rotation = rot;
-
-    params.Scale = Scale;
-}
-
 void AWarioSign::Tick() {
-    Rot[1] += 0xB6;
+    Rot[1] += _spawnParams.Speed.value_or(182);
 }
 
 void AWarioSign::Draw(Camera *camera) {

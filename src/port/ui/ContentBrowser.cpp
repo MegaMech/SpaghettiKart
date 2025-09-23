@@ -313,7 +313,7 @@ namespace Editor {
 
         size_t i_actor = 0;
         for (const auto& actor : CActorList) {
-            if ((i_actor != 0) && (i_actor % 10 == 0)) {
+            if ((i_actor != 0) && (i_actor % 8 == 0)) {
             } else {
                 ImGui::SameLine();
             }
@@ -326,7 +326,7 @@ namespace Editor {
         }
 
         for (const auto& actor : ActorList) {
-            if ((i_actor != 0) && (i_actor % 10 == 0)) {
+            if ((i_actor != 0) && (i_actor % 8 == 0)) {
             } else {
                 ImGui::SameLine();
             }
