@@ -54,14 +54,10 @@ OBombKart::OBombKart(const SpawnParams& params) : OObject(params) {
 
     WaypointIndex = params.PathPoint.value_or(0);
     Unk_3C = params.Speed.value_or(0);
-    State = static_cast<States>(params.Behaviour.value_or(0));
 
     Pos[0] = constPos.x;
     Pos[1] = constPos.y;
     Pos[2] = constPos.z;
-    _spawnPos[0] = constPos.x;
-    _spawnPos[1] = constPos.y;
-    _spawnPos[2] = constPos.z;
     CenterY = constPos.y;
     WheelPos[0][0] = constPos.x;
     WheelPos[0][1] = constPos.y;
@@ -79,21 +75,13 @@ OBombKart::OBombKart(const SpawnParams& params) : OObject(params) {
 
     find_unused_obj_index(&_objectIndex);
 
-    _count++;
-}
-
-void OBombKart::SetSpawnParams(SpawnParams& params) {
     Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:bomb_kart";
-    params.Location = FVector(
-        _spawnPos[0],
-        _spawnPos[1],
-        _spawnPos[2]
-    );
-    params.Behaviour = State;
-    params.PathPoint = WaypointIndex;
-    params.Speed = Unk_3C;
 
+    object->origin_pos[0] = Pos[0];
+    object->origin_pos[1] = Pos[1];
+    object->origin_pos[2] = Pos[2];
+
+    _count++;
 }
 
 void OBombKart::Tick() {
@@ -130,7 +118,7 @@ void OBombKart::Tick() {
     TrackPathPoint* temp_v0_4;
     Player* player;
 
-    state = State;
+    state = static_cast<OBombKart::States>(_spawnParams.Behaviour.value_or(0));
 
     if (state == States::DISABLED) {
         return;
@@ -155,6 +143,7 @@ void OBombKart::Tick() {
                     if ((((temp_f0 * temp_f0) + (temp_f2 * temp_f2)) + (temp_f12 * temp_f12)) < 25.0f) {
                         circleTimer = 0;
                         state = States::EXPLODE;
+                        _spawnParams.Behaviour = static_cast<int16_t>(States::EXPLODE);
                         player->soundEffects |= 0x400000;
                         player->type &= ~0x2000;
                     }
@@ -169,6 +158,7 @@ void OBombKart::Tick() {
                         temp_f12 = newPos[2] - player->pos[2];
                         if ((((temp_f0 * temp_f0) + (temp_f2 * temp_f2)) + (temp_f12 * temp_f12)) < 25.0f) {
                             state = States::EXPLODE;
+                            _spawnParams.Behaviour = static_cast<int16_t>(States::EXPLODE);
                             circleTimer = 0;
                             if (IsFrappeSnowland()) {
                                 player->soundEffects |= 0x01000000;
@@ -181,7 +171,7 @@ void OBombKart::Tick() {
             }
         }
         switch(state) {
-            case States::CCW:
+            case States::COUNTERCLOCKWISE:
                 circleTimer = (circleTimer + 356) % 360;
                 temp_t6 = (circleTimer * 0xFFFF) / 360;
                 sp118 = coss(temp_t6) * 25.0;
@@ -201,7 +191,7 @@ void OBombKart::Tick() {
                 D_80162FC0[2] = temp_v0_2->Z + temp_f0_3;
                 someRot = (get_angle_between_two_vectors(D_80162FB0, D_80162FC0) * 0xFFFF) / 65520;
                 break;
-            case States::CW:
+            case States::CLOCKWISE:
                 circleTimer = (circleTimer + 4) % 360;
                 temp_t6 = (circleTimer * 0xFFFF) / 360;
                 sp118 = coss(temp_t6) * 25.0;
@@ -308,8 +298,9 @@ void OBombKart::Tick() {
             spA0 = temp_f2_4;
             sp94 = temp_f2_4;
             sp88 = temp_f2_4;
-            if (circleTimer >= 31) {
+            if (circleTimer > 30) {
                 state = States::DISABLED;
+                _spawnParams.Behaviour = static_cast<int16_t>(States::DISABLED);
             }
         } else {
             sp118 = coss(0xFFFF - someRot) * 1.5f;
@@ -344,7 +335,7 @@ void OBombKart::Tick() {
         WaypointIndex = waypoint;
         Unk_3C = unk_3C;
         SomeRot = someRot;
-        State = state;
+        // State = state;
         BounceTimer = bounceTimer;
         CircleTimer = circleTimer;
     }
@@ -391,8 +382,8 @@ void OBombKart::Draw(s32 cameraId) {
     }
 
     // huh???
-    s32 state = State;
-    if (State != States::DISABLED) {
+    OBombKart::States state = static_cast<States>(_spawnParams.Behaviour.value_or(0));
+    if (state != States::DISABLED) {
         gObjectList[_objectIndex].pos[0] = Pos[0];
         gObjectList[_objectIndex].pos[1] = Pos[1];
         gObjectList[_objectIndex].pos[2] = Pos[2];
@@ -404,7 +395,7 @@ void OBombKart::Draw(s32 cameraId) {
             D_80183E80[2] = 0x8000;
             func_800563DC(_objectIndex, cameraId, 0x000000FF);
             OBombKart::SomeRender(camera->pos);
-            if (((u32) temp_s4 < 0x4E21U) && (state != BOMB_STATE_EXPLODED)) {
+            if (((u32) temp_s4 < 0x4E21U) && (state != OBombKart::States::EXPLODE)) {
                 OBombKart::LoadMtx();
             }
         }
@@ -454,7 +445,9 @@ void OBombKart::Waypoint(s32 screenId) {
 
     playerWaypoint = gNearestPathPointByPlayerId[screenId];
     playerHUD[screenId].unk_74 = 0;
-    if ((State == States::EXPLODE) || (State == States::DISABLED)) { return; };
+
+    OBombKart::States state = static_cast<States>(_spawnParams.Behaviour.value_or(0));
+    if ((state == States::EXPLODE) || (state == States::DISABLED)) { return; };
     bombWaypoint = WaypointIndex;
     waypointDiff = bombWaypoint - playerWaypoint;
     if ((waypointDiff < -5) || (waypointDiff > 0x1E)) { return; };
@@ -473,7 +466,7 @@ Player* OBombKart::FindTarget() {
 }
 
 void OBombKart::Chase(Player* player, Vec3f pos) {
-    const f32 speed = 2.7f; // Speed the kart uses in a chase
+    const f32 speed = _spawnParams.SpeedB.value_or(2.7f); // Speed the kart uses in a chase
 
     if (!player) return; // Ensure player is valid
 
@@ -489,18 +482,18 @@ void OBombKart::Chase(Player* player, Vec3f pos) {
     // Reset distance
     if (xz_dist > 700.0f) {
         _target = NULL;
-        pos[0] = _spawnPos[0];
-        pos[1] = _spawnPos[1];
-        pos[2] = _spawnPos[2];
+        pos[0] = gObjectList[_objectIndex].origin_pos[0];
+        pos[1] = gObjectList[_objectIndex].origin_pos[1];
+        pos[2] = gObjectList[_objectIndex].origin_pos[2];
         return;
     }
 
     // Break off the chase if player has boo item
     if (player->effects & BOO_EFFECT) {
         _target = NULL;
-        pos[0] = _spawnPos[0];
-        pos[1] = _spawnPos[1];
-        pos[2] = _spawnPos[2];
+        pos[0] = gObjectList[_objectIndex].origin_pos[0];
+        pos[1] = gObjectList[_objectIndex].origin_pos[1];
+        pos[2] = gObjectList[_objectIndex].origin_pos[2];
         return;
     }
 
@@ -527,4 +520,72 @@ void OBombKart::Chase(Player* player, Vec3f pos) {
     pos[2] = newPosition[2];
 
     check_bounding_collision(&_Collision, 10.0f, pos[0], pos[1], pos[2]);
+}
+
+void OBombKart::Translate(FVector pos) {
+    Pos[0] = pos.x;
+    Pos[1] = pos.y;
+    Pos[2] = pos.z;
+    if (_objectIndex != -1) {
+        Object* object = &gObjectList[_objectIndex];
+        object->pos[0] = pos.x;
+        object->pos[1] = pos.y;
+        object->pos[2] = pos.z;
+        object->origin_pos[0] = pos.x;
+        object->origin_pos[1] = pos.y;
+        object->origin_pos[2] = pos.z;
+    } else {
+        printf("Editor tried to translate null OObject\n");
+    }
+}
+
+void OBombKart::DrawEditorProperties() {
+    auto& params = _spawnParams;
+
+    Object* obj = &gObjectList[_objectIndex];
+
+    if (params.Behaviour.has_value()) {
+        ImGui::Text("Behaviour");
+        ImGui::SameLine();
+
+        int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
+        const char* items[] = { "Disabled", "Counterclockwise", "Clockwise", "Stationary", "Chase", "Explode", "Podium" };
+
+        if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
+            *params.Behaviour = static_cast<int16_t>(behaviour);
+        }
+    }
+
+    if (params.Location.has_value()) {
+        ImGui::Text("Location");
+        ImGui::SameLine();
+        FVector location = FVector(obj->pos[0], obj->pos[1], obj->pos[2]);
+        if (ImGui::DragFloat3("##Location", (float*)&location)) {
+            Translate(location);
+            *params.Location = location;
+            gEditor.eObjectPicker.eGizmo.Pos = location;
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+            FVector location = FVector(0, 0, 0);
+            Translate(location);
+            *params.Location = location;
+            gEditor.eObjectPicker.eGizmo.Pos = location;
+        }
+    }
+
+    if (params.SpeedB.has_value()) {
+        ImGui::Text("Chase Speed");
+        ImGui::SameLine();
+
+        float speed = params.SpeedB.value();
+        if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+            *params.SpeedB = speed;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+            *params.SpeedB = 2.7f;
+        }
+    }
 }

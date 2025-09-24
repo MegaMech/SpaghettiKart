@@ -44,7 +44,6 @@ public:
         return _count;
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void func_80053D74(s32 objectIndex, UNUSED s32 arg1, s32 vertexIndex);

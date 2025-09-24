@@ -37,19 +37,6 @@ OBat::OBat(const SpawnParams& params) : OObject(params) {
     _count++;
 }
 
-void OBat::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:bat";
-    //params.Location = Pos;
-    IRotator rot;
-    rot.Set(
-        object->orientation[0],
-        object->orientation[1],
-        object->orientation[2]
-    );
-    params.Rotation = rot;
-}
-
 void OBat::Tick() {
     s32 var_s2;
     s32 objectIndex;

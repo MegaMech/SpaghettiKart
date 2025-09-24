@@ -45,18 +45,6 @@ OCrab::OCrab(const SpawnParams& params) : OObject(params) {
     _count++;
 }
 
-void OCrab::SetSpawnParams(SpawnParams& params) {
-    params.Name = "mk:crab";
-    params.PatrolStart = FVector2D(
-        gObjectList[_objectIndex].origin_pos[0],
-        gObjectList[_objectIndex].origin_pos[2]
-    );
-    params.PatrolEnd = FVector2D(
-        gObjectList[_objectIndex].unk_01C[0],
-        gObjectList[_objectIndex].unk_01C[2]
-    );
-}
-
 void OCrab::Tick(void) {
     s32 objectIndex = _objectIndex;
     if (gObjectList[objectIndex].state != 0) {

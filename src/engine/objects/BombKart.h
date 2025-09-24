@@ -26,8 +26,8 @@ class OBombKart : public OObject {
   public:
     enum States : uint16_t { // 0,1,3,5
         DISABLED,
-        CCW,
-        CW,
+        COUNTERCLOCKWISE,
+        CLOCKWISE,
         STATIONARY,
         CHASE,
         EXPLODE,
@@ -58,6 +58,7 @@ class OBombKart : public OObject {
             .Behaviour = behaviour,
             .Location = pos,
             .Speed = unk_3C, // Only used for podium ceremony. Arbitrarily chose Speed for this
+            .SpeedB = 2.7f, // Chase speed
         };
         return static_cast<OBombKart*>(gWorldInstance.AddObject(new OBombKart(params)));
     }
@@ -85,9 +86,10 @@ class OBombKart : public OObject {
         return _count;
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
+    virtual void Translate(FVector pos) override;
+    virtual void DrawEditorProperties() override;
     void DrawBattle(s32 cameraId);
     void SomeRender(Vec3f arg1);
     void LoadMtx();
@@ -99,6 +101,5 @@ class OBombKart : public OObject {
     Player* FindTarget();
     void Chase(Player*, Vec3f pos);
 
-    Vec3f _spawnPos;
     Player* _target = NULL;
 };

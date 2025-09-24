@@ -26,10 +26,6 @@ OChainChomp::OChainChomp() {
     _count++;
 }
 
-void OChainChomp::SetSpawnParams(SpawnParams& params) {
-    params.Name = "mk:chain_chomp";
-}
-
 void OChainChomp::Tick() {
     s32 objectIndex;
     Object* object;

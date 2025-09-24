@@ -316,101 +316,94 @@ s32 ATrain::AddSmoke(s32 trainIndex, Vec3f pos, f32 velocity) {
 }
 
 void ATrain::DrawEditorProperties() {
-    //std::visit([](auto* obj) {
-        //using T = std::decay_t<decltype(*obj)>;
-        //if (nullptr == obj) {
-        //    return;
-        //}
+    auto& params = _spawnParams;
 
-        auto& params = _spawnParams;
+    if (params.Count.has_value()) {
+        ImGui::Text("Passenger Cars");
+        ImGui::SameLine();
 
-        if (params.Count.has_value()) {
-            ImGui::Text("Passenger Cars");
-            ImGui::SameLine();
+        int count = static_cast<int>(*params.Count);
+        if (ImGui::InputInt("##Count", &count)) {
+            // Clamp to uint32_t range (only lower bound needed if assuming positive values)
+            if (count < 0) count = 0;
+            params.Count = static_cast<uint32_t>(count);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetCount")) {
+            params.Count = 0;
+        }
+    }
 
-            int count = static_cast<int>(*params.Count);
-            if (ImGui::InputInt("##Count", &count)) {
-                // Clamp to uint32_t range (only lower bound needed if assuming positive values)
-                if (count < 0) count = 0;
-                params.Count = static_cast<uint32_t>(count);
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetCount")) {
-                params.Count = 0;
-            }
+    if (params.Type.has_value()) {
+        ImGui::Text("Spawn Mode");
+        ImGui::SameLine();
+
+        int32_t type = static_cast<int32_t>(params.Type.value());
+        const char* items[] = { "POINT", "AUTO" };
+
+        if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+            *params.Type = static_cast<int16_t>(type);
         }
 
-        if (params.Type.has_value()) {
-            ImGui::Text("Spawn Mode");
-            ImGui::SameLine();
+        if (type == ATrain::SpawnMode::POINT) {
+            if (params.PathIndex.has_value()) {
+                ImGui::Text("Path Index");
+                ImGui::SameLine();
 
-            int32_t type = static_cast<int32_t>(params.Type.value());
-            const char* items[] = { "POINT", "AUTO" };
-
-            if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
-                *params.Type = static_cast<int16_t>(type);
-            }
-
-            if (type == ATrain::SpawnMode::POINT) {
-                if (params.PathIndex.has_value()) {
-                    ImGui::Text("Path Index");
-                    ImGui::SameLine();
-
-                    int pathIndex = static_cast<int>(params.PathIndex.value());
-                    if (ImGui::InputInt("##PathIndex", &pathIndex)) {
-                        if (pathIndex < 0) pathIndex = 0;
-                        params.PathIndex = static_cast<uint32_t>(pathIndex);
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button(ICON_FA_UNDO "##ResetPathIndex")) {
-                        params.PathIndex = 0;
-                    }
+                int pathIndex = static_cast<int>(params.PathIndex.value());
+                if (ImGui::InputInt("##PathIndex", &pathIndex)) {
+                    if (pathIndex < 0) pathIndex = 0;
+                    params.PathIndex = static_cast<uint32_t>(pathIndex);
                 }
-
-                if (params.PathPoint.has_value()) {
-                    ImGui::Text("Path Point");
-                    ImGui::SameLine();
-
-                    int pathPoint = static_cast<int>(params.PathPoint.value());
-                    if (ImGui::InputInt("##PathPoint", &pathPoint)) {
-                        if (pathPoint < 0) pathPoint = 0;
-                        params.PathPoint = static_cast<uint32_t>(pathPoint);
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button(ICON_FA_UNDO "##ResetPathPoint")) {
-                        params.PathPoint = 0;
-                    }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPathIndex")) {
+                    params.PathIndex = 0;
                 }
             }
 
-        }
+            if (params.PathPoint.has_value()) {
+                ImGui::Text("Path Point");
+                ImGui::SameLine();
 
-        if (params.Bool.has_value()) {
-            ImGui::Text("Has Tender");
-            ImGui::SameLine();
-
-            bool theBool = params.Bool.value();
-            if (ImGui::Checkbox("##Bool", &theBool)) {
-                params.Bool = theBool;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetBool")) {
-                params.Bool = false;
-            }
-        }
-
-        if (params.Speed.has_value()) {
-            ImGui::Text("Speed");
-            ImGui::SameLine();
-
-            float speed = params.Speed.value();
-            if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
-                *params.Speed = speed;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
-                *params.Speed = 0.0f;
+                int pathPoint = static_cast<int>(params.PathPoint.value());
+                if (ImGui::InputInt("##PathPoint", &pathPoint)) {
+                    if (pathPoint < 0) pathPoint = 0;
+                    params.PathPoint = static_cast<uint32_t>(pathPoint);
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(ICON_FA_UNDO "##ResetPathPoint")) {
+                    params.PathPoint = 0;
+                }
             }
         }
-    //}, gEditor.eObjectPicker.eGizmo._selected);
+
+    }
+
+    if (params.Bool.has_value()) {
+        ImGui::Text("Has Tender");
+        ImGui::SameLine();
+
+        bool theBool = params.Bool.value();
+        if (ImGui::Checkbox("##Bool", &theBool)) {
+            params.Bool = theBool;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetBool")) {
+            params.Bool = false;
+        }
+    }
+
+    if (params.Speed.has_value()) {
+        ImGui::Text("Speed");
+        ImGui::SameLine();
+
+        float speed = params.Speed.value();
+        if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+            *params.Speed = speed;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+            *params.Speed = 0.0f;
+        }
+    }
 }

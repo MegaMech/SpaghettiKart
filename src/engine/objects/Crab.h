@@ -42,7 +42,6 @@ public:
 
     explicit OCrab(const SpawnParams& params);
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void DrawModel(s32 cameraId);

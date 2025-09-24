@@ -72,9 +72,16 @@ void OObject::Translate(FVector pos) {
     }
 }
 void OObject::Rotate(IRotator rot) {
-
+    if (_objectIndex != -1) {
+        Object* object = &gObjectList[_objectIndex];
+        object->orientation[0] = rot.pitch;
+        object->orientation[1] = rot.yaw;
+        object->orientation[2] = rot.roll;
+    } else {
+        printf("Editor tried to rotate null OObject\n");
+    }
 }
 
 void OObject::SetScale(FVector scale) {
-    
+
 }

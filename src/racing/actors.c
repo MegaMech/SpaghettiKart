@@ -2762,6 +2762,14 @@ const char* get_actor_display_name(s32 id) {
             return "Train Tender";
         case ACTOR_TRAIN_PASSENGER_CAR:
             return "Train Passenger Car";
+        case ACTOR_CAR:
+            return "Car Component";
+        case ACTOR_SCHOOL_BUS:
+            return "Bus Component";
+        case ACTOR_TANKER_TRUCK:
+            return "Tanker Truck Component";
+        case ACTOR_BOX_TRUCK:
+            return "Truck Component";
         case ACTOR_ITEM_BOX:
             return "Item Box";
         case ACTOR_HOT_AIR_BALLOON_ITEM_BOX:

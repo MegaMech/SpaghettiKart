@@ -58,9 +58,9 @@ public:
         return _count;
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
+    virtual void DrawEditorProperties() override;
     void func_800523B8(s32 objectIndex, s32 arg1, u32 arg2);
 
     void func_8007CA70(void);
@@ -81,8 +81,4 @@ private:
 
     bool _isActive = false;
     s32 _playerId = 0;
-
-    IPathSpan _leftBoundary;
-    IPathSpan _active;
-    IPathSpan _rightBoundary;
 };

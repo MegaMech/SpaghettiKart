@@ -44,17 +44,6 @@ OBoos::OBoos(const SpawnParams& params) : OObject(params) {
     }
 
     _numBoos = numBoos;
-    _leftBoundary = params.LeftExitSpan.value_or(IPathSpan(0, 10));
-    _active = params.TriggerSpan.value_or(IPathSpan(30, 50));
-    _rightBoundary = params.RightExitSpan.value_or(IPathSpan(80, 100));
-}
-
-void OBoos::SetSpawnParams(SpawnParams& params) {
-    params.Name = "mk:boos";
-    params.Count = _numBoos;
-    params.LeftExitSpan = _leftBoundary;
-    params.TriggerSpan = _active;
-    params.RightExitSpan = _rightBoundary;
 }
 
 void OBoos::Tick() {
@@ -135,7 +124,9 @@ void OBoos::func_8007CA70(void) {
     if (_isActive == false) {
         _playerId = OBoos::func_8007C9F8();
         point = &gNearestPathPointByPlayerId[_playerId];
-        if ((*point > _active.Start) && (*point < _active.End)) {
+
+        IPathSpan active = _spawnParams.TriggerSpan.value_or(IPathSpan(30, 50));
+        if ((*point > active.Start) && (*point < active.End)) {
             // First group entrance
             OBoos::BooStart(0, _playerId);
         }
@@ -143,11 +134,16 @@ void OBoos::func_8007CA70(void) {
     if (_isActive == true) {
         point = &gNearestPathPointByPlayerId[_playerId];
 
-        if ((*point > _leftBoundary.Start) && (*point < _leftBoundary.End)) {
+        // Left boundary
+        IPathSpan left = _spawnParams.LeftExitSpan.value_or(IPathSpan(0, 10));
+        if ((*point > left.Start) && (*point < left.End)) {
             // First group exit reverse direction
             OBoos::BooExit(0);
         }
-        if ((*point > _rightBoundary.Start) && (*point < _rightBoundary.End)) {
+
+        // Right boundary
+        IPathSpan right = _spawnParams.RightExitSpan.value_or(IPathSpan(80, 100));
+        if ((*point > right.Start) && (*point < right.End)) {
             // First group exit
             OBoos::BooExit(0);
         }
@@ -285,4 +281,68 @@ void OBoos::BooExit(s32 group) {
     }
 
     _isActive = false;
+}
+
+void OBoos::DrawEditorProperties() {
+    auto& params = _spawnParams;
+
+    if (params.Count.has_value()) {
+        ImGui::Text("Num Boos");
+        ImGui::SameLine();
+
+        int count = static_cast<int>(*params.Count);
+        if (ImGui::InputInt("##Count", &count)) {
+            // Clamp to uint32_t range (only lower bound needed if assuming positive values)
+            if (count < 0) count = 0;
+            if (count > 10) count = 10;
+            params.Count = static_cast<uint32_t>(count);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetCount")) {
+            params.Count = 5;
+        }
+    }
+
+
+    if (params.LeftExitSpan.has_value()) {
+        ImGui::Text("Left Exit Span");
+        ImGui::SameLine();
+
+        IPathSpan leftExitSpan = *params.LeftExitSpan;
+        if (ImGui::DragInt2("##LeftExitSpan", (int*)&leftExitSpan)) {
+            params.LeftExitSpan = leftExitSpan;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetLeftExitSpan")) {
+            params.LeftExitSpan = IPathSpan(0, 0);
+        }
+    }
+
+    if (params.TriggerSpan.has_value()) {
+        ImGui::Text("Trigger Span");
+        ImGui::SameLine();
+
+        IPathSpan triggerSpan = *params.TriggerSpan;
+        if (ImGui::DragInt2("##TriggerSpan", (int*)&triggerSpan)) {
+            params.TriggerSpan = triggerSpan;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetTriggerSpan")) {
+            params.TriggerSpan = IPathSpan(0, 0);
+        }
+    }
+
+    if (params.RightExitSpan.has_value()) {
+        ImGui::Text("Right Exit Span");
+        ImGui::SameLine();
+
+        IPathSpan rightExitSpan = *params.RightExitSpan;
+        if (ImGui::DragInt2("##RightExitSpan", (int*)&rightExitSpan)) {
+            params.RightExitSpan = rightExitSpan;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetRightExitSpan")) {
+            params.RightExitSpan = IPathSpan(0, 0);
+        }
+    }
 }

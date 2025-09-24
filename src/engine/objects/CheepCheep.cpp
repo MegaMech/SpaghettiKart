@@ -1,7 +1,9 @@
 #include "CheepCheep.h"
+#include "port/Game.h"
 
 #include "assets/banshee_boardwalk_data.h"
 #include "assets/common_data.h"
+
 
 extern "C" {
 #include "math_util.h"
@@ -21,8 +23,6 @@ OCheepCheep::OCheepCheep(const SpawnParams& params) : OObject(params) {
     Name = "Cheep Cheep";
     ResourceName = "mk:cheep_cheep";
     _behaviour = static_cast<Behaviour>(params.Behaviour.value_or(0));
-    _spawnPos = params.Location.value_or(FVector(0, 0, 0));
-    _span = params.PathSpan.value_or(IPathSpan(0, 0));
 }
 
 void OCheepCheep::Tick() { // update_cheep_cheep
@@ -48,18 +48,6 @@ void OCheepCheep::Tick() { // update_cheep_cheep
             }
             break;
     }
-}
-
-void OCheepCheep::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:cheep_cheep";
-    params.Location = FVector(
-        object->origin_pos[0],
-        object->origin_pos[1],
-        object->origin_pos[2]
-    );
-    params.Behaviour = static_cast<int16_t>(_behaviour);
-    params.PathSpan = IPathSpan(_span.Start, _span.End);
 }
 
 void OCheepCheep::Draw(s32 cameraId) { // func_8005217C
@@ -128,9 +116,11 @@ void OCheepCheep::func_8007BD04(s32 playerId) {
 
     objectIndex = indexObjectList2[0];
     if (gObjectList[objectIndex].state == 0) {
-        if (((s32) gNearestPathPointByPlayerId[playerId] >= _span.Start) &&
-            ((s32) gNearestPathPointByPlayerId[playerId] <= _span.End)) {
-            set_obj_origin_pos(objectIndex, xOrientation * _spawnPos.x, _spawnPos.y, _spawnPos.z);
+        IPathSpan span = _spawnParams.PathSpan.value_or(IPathSpan(0, 0));
+        if (((s32) gNearestPathPointByPlayerId[playerId] >= span.Start) &&
+            ((s32) gNearestPathPointByPlayerId[playerId] <= span.End)) {
+            FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+            set_obj_origin_pos(objectIndex, xOrientation * pos.x, pos.y, pos.z);
             init_object(objectIndex, 1);
         }
     }
@@ -254,4 +244,44 @@ void OCheepCheep::func_8007BFB0(s32 objectIndex) {
     }
     object_add_velocity_offset_y(objectIndex);
     object_calculate_new_pos_offset(objectIndex);
+}
+
+void OCheepCheep::DrawEditorProperties() {
+    auto& params = _spawnParams;
+
+    Object* obj = &gObjectList[_objectIndex];
+
+    if (params.Location.has_value()) {
+        ImGui::Text("Location");
+        ImGui::SameLine();
+        FVector location = FVector(obj->pos[0], obj->pos[1], obj->pos[2]);
+        if (ImGui::DragFloat3("##Location", (float*)&location)) {
+            Translate(location);
+            *params.Location = location;
+            gEditor.eObjectPicker.eGizmo.Pos = location;
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+            FVector location = FVector(0, 0, 0);
+            Translate(location);
+            *params.Location = location;
+            gEditor.eObjectPicker.eGizmo.Pos = location;
+        }
+    }
+
+    if (params.PathSpan.has_value()) {
+        IPathSpan span = params.PathSpan.value();
+
+        ImGui::Text("Path Span");
+        ImGui::SameLine();
+
+        if (ImGui::DragInt2("##PathSpan", (int*)&span)) {
+            params.PathSpan = span;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPathSpan")) {
+            params.PathSpan = IPathSpan(0.0f, 0.0f);
+        }
+    }
 }

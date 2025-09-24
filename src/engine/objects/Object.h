@@ -38,7 +38,7 @@ public:
     FVector GetLocation() const;
     IRotator GetRotation() const;
     FVector GetScale() const;
-    void Translate(FVector pos);
+    virtual void Translate(FVector pos);
     void Rotate(IRotator rot);
     void SetScale(FVector scale);
     virtual void DrawEditorProperties() { DrawDefaultEditorProperties(); };

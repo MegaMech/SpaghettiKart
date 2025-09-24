@@ -39,16 +39,6 @@ OGrandPrixBalloons::OGrandPrixBalloons(const SpawnParams& params) : OObject(para
     }
 }
 
-void OGrandPrixBalloons::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:grand_prix_balloons";
-    params.Location = FVector(
-        object->pos[0],
-        object->pos[1],
-        object->pos[2]
-    );
-}
-
 void OGrandPrixBalloons::Tick() {
     s32 someIndex;
     s32 objectIndex;

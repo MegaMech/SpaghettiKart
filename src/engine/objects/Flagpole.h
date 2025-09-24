@@ -43,7 +43,6 @@ public:
         return _count;
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
 
@@ -53,8 +52,6 @@ public:
     void func_80083060(s32 objectIndex);
 
 private:
-    FVector _pos;
-    IRotator _direction;
     static size_t _count;
     size_t _idx;
 };
