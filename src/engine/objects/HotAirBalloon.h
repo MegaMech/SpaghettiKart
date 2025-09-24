@@ -30,7 +30,6 @@ public:
         return static_cast<OHotAirBalloon*>(gWorldInstance.AddObject(new OHotAirBalloon(params)));
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void func_80055CCC(s32 objectIndex, s32 cameraId);

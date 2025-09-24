@@ -34,16 +34,6 @@ OHotAirBalloon::OHotAirBalloon(const SpawnParams& params) : OObject(params) {
     init_object(_objectIndex, 0);
 }
 
-void OHotAirBalloon::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:hot_air_balloon";
-    params.Location = FVector(
-        object->origin_pos[0],
-        object->origin_pos[1],
-        object->origin_pos[2]
-    );
-}
-
 void OHotAirBalloon::Tick() {
     s32 objectIndex = _objectIndex;
     
