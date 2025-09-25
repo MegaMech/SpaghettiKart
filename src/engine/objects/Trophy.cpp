@@ -23,10 +23,10 @@ extern "C" {
 OTrophy::OTrophy(const SpawnParams& params) : OObject(params) {
     Name = "Trophy";
     ResourceName = "mk:trophy";
-    _type = static_cast<TrophyType>(params.Type.value_or(0));
-    _spawnPos = params.Location.value_or(FVector(0, 0, 0));
-    _spawnPos.y += 16.0f; // Adjust the height so the trophy sits on the surface when positioned to 0,0,0
-    _bhv = static_cast<Behaviour>(params.Behaviour.value_or(0));
+    _type = static_cast<TrophyType>(_spawnParams.Type.value_or(0));
+    FVector spawnPos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    spawnPos.y += 16.0f; // Adjust the height so the trophy sits on the surface when positioned to 0,0,0
+    _bhv = static_cast<Behaviour>(_spawnParams.Behaviour.value_or(0));
 
     find_unused_obj_index(&_objectIndex);
 
@@ -38,7 +38,7 @@ OTrophy::OTrophy(const SpawnParams& params) : OObject(params) {
     if (_bhv == OTrophy::Behaviour::PODIUM_CEREMONY) {
         _toggleVisibility = &D_801658CE;
     } else {
-        _toggle = 1;
+        _toggle = true;
         _toggleVisibility = &_toggle;
         _isMod = true;
     }
@@ -84,26 +84,14 @@ OTrophy::OTrophy(const SpawnParams& params) : OObject(params) {
     }
 
     Object *object = &gObjectList[_objectIndex];
-    object->origin_pos[0] = _spawnPos.x;
-    object->origin_pos[1] = _spawnPos.y;
-    object->origin_pos[2] = _spawnPos.z;
-    object->pos[0] = _spawnPos.x;
-    object->pos[1] = _spawnPos.y;
-    object->pos[2] = _spawnPos.z;
+    object->origin_pos[0] = spawnPos.x;
+    object->origin_pos[1] = spawnPos.y;
+    object->origin_pos[2] = spawnPos.z;
+    object->pos[0] = spawnPos.x;
+    object->pos[1] = spawnPos.y;
+    object->pos[2] = spawnPos.z;
 
     _emitter = reinterpret_cast<StarEmitter*>(gWorldInstance.AddEmitter(new StarEmitter()));
-}
-
-void OTrophy::SetSpawnParams(SpawnParams& params) {
-    // Object *object = &gObjectList[_objectIndex];
-    // params.Name = "mk:trophy";
-    // params.Type = _type;
-    // params.Behaviour = _bhv;
-    // params.Location = FVector(
-    //     object->pos[0],
-    //     object->pos[1],
-    //     object->pos[2]
-    // );
 }
 
 void OTrophy::Tick() { // func_80086D80
@@ -136,8 +124,10 @@ void OTrophy::Tick() { // func_80086D80
         case OTrophy::Behaviour::STATIONARY:
             if (gObjectList[objectIndex].state != 0) {
                     gObjectList[objectIndex].sizeScaling = 0.025f;
-                    set_obj_origin_pos(objectIndex, _spawnPos.x,
-                                    _spawnPos.y + 16.0, _spawnPos.z);
+
+                    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+                    set_obj_origin_pos(objectIndex, pos.x,
+                                    pos.y + 16.0, pos.z);
                     set_obj_origin_offset(objectIndex, 0.0f, 0.0f, 0.0f);
                     set_obj_direction_angle(objectIndex, 0U, 0U, 0U);
                     gObjectList[objectIndex].unk_084[1] = 0x0200;
@@ -366,5 +356,74 @@ void OTrophy::func_80086C6C(s32 objectIndex) {
 
     if (_emitter != nullptr) {
         _emitter->Emit(sp24, D_801658F4);
+    }
+}
+
+void OTrophy::DrawEditorProperties() {
+    auto& params = _spawnParams;
+
+    if (params.Location.has_value()) {
+        ImGui::Text("Location");
+        ImGui::SameLine();
+        FVector location = GetLocation();
+        if (ImGui::DragFloat3("##Location", (float*)&location)) {
+            Translate(location);
+            *params.Location = location;
+            gEditor.eObjectPicker.eGizmo.Pos = location;
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+            FVector location = FVector(0, 0, 0);
+            Translate(location);
+            *params.Location = location;
+            gEditor.eObjectPicker.eGizmo.Pos = location;
+        }
+    }
+
+    if (params.Type.has_value()) {
+        ImGui::Text("Cup");
+        ImGui::SameLine();
+
+        int32_t type = static_cast<int32_t>(params.Type.value());
+        const char* items[] = { "Bronze", "Silver", "Gold", "Bronze 150", "Silver 150", "Gold 150" };
+
+        if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+            *params.Type = static_cast<int16_t>(type);
+
+            switch (type) {
+                case TrophyType::GOLD:
+                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl10;
+                    break;
+                case TrophyType::SILVER:
+                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl12;
+                    break;
+                case TrophyType::BRONZE:
+                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl14;
+                    break;
+                case TrophyType::GOLD_150:
+                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl11;
+                    break;
+                case TrophyType::SILVER_150:
+                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl13;
+                    break;
+                case TrophyType::BRONZE_150:
+                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl15;
+                    break;
+            }
+        }
+    }
+
+    if (params.Behaviour.has_value()) {
+        ImGui::Text("Behaviour");
+        ImGui::SameLine();
+
+        int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
+        const char* items[] = { "Podium Ceremony", "Stationary", "Opposing Dual-axis Rotation", "Single-axis Rotation", "Go Fish" };
+
+        if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
+            *params.Behaviour = static_cast<int16_t>(behaviour);
+            _bhv = static_cast<Behaviour>(behaviour);
+        }
     }
 }
