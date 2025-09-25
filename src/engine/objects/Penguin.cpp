@@ -71,22 +71,6 @@ OPenguin::OPenguin(const SpawnParams& params) : OObject(params) {
     }
 }
 
-void OPenguin::SetSpawnParams(SpawnParams& params) {
-    // Object* object = &gObjectList[_objectIndex];
-    // params.Name = "mk:penguin";
-    // params.Type = _type;
-    // params.Behaviour = _bhv;
-    //     params.Location = FVector(
-    //     object->pos[0],
-    //     object->pos[1],
-    //     object->pos[2]
-    // );
-    // IRotator rot;
-    // rot.Set(0, object->unk_0C6, MirrorModeAngleOffset);
-    // params.Rotation = rot;
-    // params.Speed = object->unk_01C[1]; // Circle diameter
-}
-
 void OPenguin::Tick(void) {
     s32 objectIndex = _objectIndex;
 

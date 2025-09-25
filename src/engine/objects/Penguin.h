@@ -52,7 +52,6 @@ public:
         return static_cast<OPenguin*>(gWorldInstance.AddObject(new OPenguin(params)));
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     virtual void Reset() override;

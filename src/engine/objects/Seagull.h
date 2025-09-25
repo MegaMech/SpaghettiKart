@@ -38,7 +38,6 @@ public:
         return static_cast<OSeagull*>(gWorldInstance.AddObject(new OSeagull(params)));
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
 
@@ -48,7 +47,6 @@ public:
     void func_8008241C(s32 objectIndex, s32 arg1);
     void func_80082714(s32 objectIndex, s32 arg1);
 private:
-    FVector _pos;
     static size_t _count;
     s32 _idx;
     bool _toggle;

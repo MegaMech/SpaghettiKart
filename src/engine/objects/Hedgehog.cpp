@@ -22,63 +22,48 @@ OHedgehog::OHedgehog(const SpawnParams& params) : OObject(params) {
     Pos = params.Location.value_or(FVector(0, 0, 0));
     FVector2D patrolPoint = params.PatrolEnd.value_or(FVector2D(0, 0));
 
-    s32 objectId = indexObjectList2[_idx];
-    _objectIndex = objectId;
-    init_object(objectId, 0);
-    gObjectList[objectId].pos[0] = gObjectList[objectId].origin_pos[0] = Pos.x * xOrientation;
-    gObjectList[objectId].pos[1] = gObjectList[objectId].surfaceHeight = Pos.y + 6.0;
-    gObjectList[objectId].pos[2] = gObjectList[objectId].origin_pos[2] = Pos.z;
-    gObjectList[objectId].unk_0D5 = (u8) params.Behaviour.value_or(0);
-    gObjectList[objectId].unk_09C = patrolPoint.x * xOrientation;
-    gObjectList[objectId].unk_09E = patrolPoint.z;
+    find_unused_obj_index(&_objectIndex);
+
+    init_object(_objectIndex, 0);
+    gObjectList[_objectIndex].pos[0] = gObjectList[_objectIndex].origin_pos[0] = Pos.x * xOrientation;
+    gObjectList[_objectIndex].pos[1] = gObjectList[_objectIndex].surfaceHeight = Pos.y + 6.0;
+    gObjectList[_objectIndex].pos[2] = gObjectList[_objectIndex].origin_pos[2] = Pos.z;
+    gObjectList[_objectIndex].unk_0D5 = (u8) params.Behaviour.value_or(9);
+    gObjectList[_objectIndex].unk_09C = patrolPoint.x * xOrientation;
+    gObjectList[_objectIndex].unk_09E = patrolPoint.z;
 
     _count++;
 }
 
-void OHedgehog::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:hedgehog";
-    params.Behaviour = object->unk_0D5;
-    params.Location = FVector(
-        object->pos[0],
-        object->pos[1],
-        object->pos[2]
-    );
-    params.PatrolEnd = FVector2D(object->unk_09C, object->unk_09E);
-}
-
 void OHedgehog::Tick() {
-    s32 objectIndex = indexObjectList2[_idx];
-
-    OHedgehog::func_800833D0(objectIndex, _idx);
-    OHedgehog::func_80083248(objectIndex);
-    OHedgehog::func_80083474(objectIndex);
+    OHedgehog::func_800833D0(_objectIndex, _idx);
+    OHedgehog::func_80083248(_objectIndex);
+    OHedgehog::func_80083474(_objectIndex);
 
     // This func clears a bit from all hedgehogs. This results in setting the height of all hedgehogs to zero.
     // The solution is to only clear the bit from the current instance; `self` or `this`
     // func_80072120(indexObjectList2, NUM_HEDGEHOGS);
-    clear_object_flag(objectIndex, 0x00600000); // The fix
+    clear_object_flag(_objectIndex, 0x00600000); // The fix
 }
 
 void OHedgehog::Draw(s32 cameraId) {
-    s32 objectIndex = indexObjectList2[_idx];
-    u32 something = func_8008A364(objectIndex, cameraId, 0x4000U, 0x000003E8);
+    u32 something = func_8008A364(_objectIndex, cameraId, 0x4000U, 0x000003E8);
 
     if (CVarGetInteger("gNoCulling", 0) == 1) {
         something = MIN(something, 0x52211U - 1);
     }
-    if (is_obj_flag_status_active(objectIndex, VISIBLE) != 0) {
-        set_object_flag(objectIndex, 0x00200000);
+    if (is_obj_flag_status_active(_objectIndex, VISIBLE) != 0) {
+        set_object_flag(_objectIndex, 0x00200000);
         if (something < 0x2711U) {
-            set_object_flag(objectIndex, 0x00000020);
+            set_object_flag(_objectIndex, 0x00000020);
         } else {
-            clear_object_flag(objectIndex, 0x00000020);
+            clear_object_flag(_objectIndex, 0x00000020);
         }
         if (something < 0x57E41U) {
-            set_object_flag(objectIndex, 0x00400000);
+            set_object_flag(_objectIndex, 0x00400000);
         }
         if (something < 0x52211U) {
-            OHedgehog::func_800555BC(objectIndex, cameraId);
+            OHedgehog::func_800555BC(_objectIndex, cameraId);
         }
     }
 }
@@ -127,7 +112,7 @@ void OHedgehog::func_8004A870(s32 objectIndex, f32 arg1) {
 
 const char* sHedgehogTexList[] = { d_course_yoshi_valley_hedgehog };
 
-void OHedgehog::func_8008311C(s32 objectIndex, s32 arg1) {
+void OHedgehog::func_8008311C(s32 objectIndex, s32 id) {
     Object* object;
     Vtx* vtx = (Vtx*) LOAD_ASSET_RAW(common_vtx_hedgehog);
 
@@ -142,7 +127,7 @@ void OHedgehog::func_8008311C(s32 objectIndex, s32 arg1) {
     object_next_state(objectIndex);
     set_obj_origin_offset(objectIndex, 0.0f, 0.0f, 0.0f);
     set_obj_orientation(objectIndex, 0U, 0U, 0x8000U);
-    object->unk_034 = ((arg1 % 6) * 0.1) + 0.5;
+    object->unk_034 = ((id % 6) * 0.1) + 0.5;
     func_80086E70(objectIndex);
     set_object_flag(objectIndex, 0x04000600);
     object->boundingBoxSize = 2;
@@ -182,12 +167,12 @@ void OHedgehog::func_80083248(s32 objectIndex) {
     }
 }
 
-void OHedgehog::func_800833D0(s32 objectIndex, s32 arg1) {
+void OHedgehog::func_800833D0(s32 objectIndex, s32 id) {
     switch (gObjectList[objectIndex].state) {
         case 0:
             break;
         case 1:
-            OHedgehog::func_8008311C(objectIndex, arg1);
+            OHedgehog::func_8008311C(objectIndex, id);
             break;
         case 2:
             func_80072D3C(objectIndex, 0, 1, 4, -1);

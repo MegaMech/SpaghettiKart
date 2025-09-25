@@ -30,7 +30,7 @@ public:
     static inline OHedgehog* Spawn(const FVector& pos, const FVector2D& patrolPoint, s16 behaviour) {
         SpawnParams params = {
             .Name = "mk:hedgehog",
-            .Behaviour = behaviour,
+            .Behaviour = behaviour, // Appears to be unused
             .Location = pos,
             .PatrolEnd = patrolPoint,
         };
@@ -45,7 +45,6 @@ public:
         return _count;
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
 
