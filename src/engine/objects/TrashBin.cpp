@@ -38,18 +38,6 @@ OTrashBin::OTrashBin(const SpawnParams& params) : OObject(params) {
     }
 }
 
-void OTrashBin::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:trash_bin";
-    params.Behaviour = _bhv;
-    params.Scale = FVector(0, _scale, 0);
-    params.Location = FVector(
-        object->pos[0],
-        object->pos[1],
-        object->pos[2]
-    );
-}
-
 void OTrashBin::Tick() {
     OTrashBin::func_8007E00C(_objectIndex);
 

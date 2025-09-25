@@ -86,5 +86,4 @@ void OObject::Rotate(IRotator rot) {
 }
 
 void OObject::SetScale(FVector scale) {
-
 }

@@ -47,8 +47,6 @@ public:
         JAILED // Has no collision
     };
 
-    States State = States::DISABLED;
-
     // This is simply a helper function to keep Spawning code clean
     static inline OThwomp* Spawn(s16 x, s16 z, s16 direction, f32 scale, s16 behaviour, s16 primAlpha, u16 boundingBoxSize = 7) {
         IRotator rot;
@@ -76,9 +74,9 @@ public:
         return _count;
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick60fps() override;
     virtual void Draw(s32 cameraId) override;
+    virtual void DrawEditorProperties() override;
     void SetVisibility(s32 objectIndex);
     void func_80080B28(s32 objectIndex, s32 playerId);
     void DrawModel(s32);

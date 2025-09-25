@@ -39,7 +39,6 @@ public:
 
     explicit OTrashBin(const SpawnParams& params);
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void func_8007E00C(s32 objectIndex);
