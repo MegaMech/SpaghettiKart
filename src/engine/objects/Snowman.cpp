@@ -47,16 +47,6 @@ OSnowman::OSnowman(const SpawnParams& params) : OObject(params) {
     _count++;
 }
 
-void OSnowman::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = std::string(ResourceName);
-    params.Location = FVector(
-        object->pos[0],
-        object->pos[1],
-        object->pos[2]
-    );
-}
-
 void OSnowman::Tick() {
     s32 var_s3;
     s32 var_s4;
@@ -357,6 +347,31 @@ void OSnowman::func_80083B0C(s32 objectIndex) {
     gObjectList[objectIndex].boundingBoxSize = 2;
     gObjectList[objectIndex].unk_034 = 1.5f;
     set_object_flag(objectIndex, 0x04000210);
+}
+
+void OSnowman::Translate(FVector pos) {
+    if ((_objectIndex != -1) && (_bodyIndex != -1)) {
+        _spawnParams.Location = pos;
+
+        Object* object = &gObjectList[_objectIndex];
+
+        object->pos[0] = pos.x;
+        object->pos[1] = pos.y;
+        object->pos[2] = pos.z;
+        object->origin_pos[0] = pos.x;
+        object->origin_pos[1] = pos.y;
+        object->origin_pos[2] = pos.z;
+
+        object = &gObjectList[_bodyIndex];
+        object->pos[0] = pos.x;
+        object->pos[1] = pos.y - 5.0;
+        object->pos[2] = pos.z;
+        object->origin_pos[0] = pos.x;
+        object->origin_pos[1] = pos.y - 5.0;
+        object->origin_pos[2] = pos.z;
+    } else {
+        printf("Editor tried to translate null OObject\n");
+    }
 }
 
 void OSnowman::func_80083538(s32 objectIndex, Vec3f arg1, s32 arg2, s32 arg3) {

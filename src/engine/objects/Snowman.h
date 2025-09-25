@@ -38,9 +38,9 @@ public:
         return _count;
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
+    virtual void Translate(FVector pos) override;
 
     void DrawHead(s32);
     void DrawBody(s32);
