@@ -60,7 +60,10 @@ FVector OObject::GetScale() const {
 
 void OObject::Translate(FVector pos) {
     if (_objectIndex != -1) {
+        _spawnParams.Location = pos;
+
         Object* object = &gObjectList[_objectIndex];
+
         object->pos[0] = pos.x;
         object->pos[1] = pos.y;
         object->pos[2] = pos.z;
