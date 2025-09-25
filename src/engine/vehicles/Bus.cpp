@@ -82,15 +82,6 @@ ABus::ABus(const SpawnParams& params) : AActor(params) {
     _count++;
 }
 
-void ABus::SetSpawnParams(SpawnParams& params) {
-    // params.Name = "mk:bus";
-    // params.Type = static_cast<uint16_t>(_spawnMode);
-    // params.PathIndex = PathIndex;
-    // params.PathPoint = PathPoint;
-    // params.Speed = Speed;
-    // params.SpeedB = SpeedB;
-}
-
 bool ABus::IsMod() {
     return true;
 }

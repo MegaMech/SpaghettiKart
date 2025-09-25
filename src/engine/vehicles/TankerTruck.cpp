@@ -83,15 +83,6 @@ ATankerTruck::ATankerTruck(const SpawnParams& params) : AActor(params) {
     _count++;
 }
 
-void ATankerTruck::SetSpawnParams(SpawnParams& params) {
-    // params.Name = "mk:tanker_truck";
-    // params.Type = static_cast<uint16_t>(_spawnMode);
-    // params.PathIndex = PathIndex;
-    // params.PathPoint = PathPoint;
-    // params.Speed = Speed;
-    // params.SpeedB = SpeedB;
-}
-
 bool ATankerTruck::IsMod() {
     return true;
 }

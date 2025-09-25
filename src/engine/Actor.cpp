@@ -64,8 +64,6 @@ FVector AActor::GetScale() const {
     return Scale;
 }
 
-void AActor::SetSpawnParams(SpawnParams& params) { }
-
 SpawnParams& AActor::GetSpawnParams() {
     return _spawnParams;
 }

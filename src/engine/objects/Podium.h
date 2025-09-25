@@ -35,7 +35,6 @@ public:
         return static_cast<OPodium*>(gWorldInstance.AddObject(new OPodium(params)));
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     void func_8008629C(s32 objectIndex, s32 arg1);

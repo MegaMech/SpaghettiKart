@@ -25,7 +25,6 @@ void OObject::Destroy() {
     bPendingDestroy = true;
 }
 void OObject::Reset() { }
-void OObject::SetSpawnParams(SpawnParams& params) { }
 
 SpawnParams& OObject::GetSpawnParams() {
     return _spawnParams;

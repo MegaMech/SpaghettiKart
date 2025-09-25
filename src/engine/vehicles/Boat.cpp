@@ -72,14 +72,6 @@ ABoat::ABoat(const SpawnParams& params) : AActor(params) {
     _count++;
 }
 
-void ABoat::SetSpawnParams(SpawnParams& params) {
-    // params.Name = "mk:paddle_boat";
-    // params.Type = static_cast<uint16_t>(_spawnMode);
-    // params.Speed = Speed;
-    // params.PathIndex = PathIndex;
-    // params.PathPoint = PathPoint;
-}
-
 void ABoat::Draw(Camera* camera) {
 }
 

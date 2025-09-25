@@ -84,15 +84,6 @@ ACar::ACar(const SpawnParams& params) : AActor(params) {
     _count++;
 }
 
-void ACar::SetSpawnParams(SpawnParams& params) {
-    // params.Name = "mk:car";
-    // params.Type = _spawnMode;
-    // params.PathIndex = PathIndex;
-    // params.PathPoint = PathPoint;
-    // params.Speed = Speed;
-    // params.SpeedB = SpeedB;
-}
-
 bool ACar::IsMod() {
     return true;
 }

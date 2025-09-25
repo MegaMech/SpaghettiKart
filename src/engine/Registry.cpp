@@ -361,4 +361,28 @@ void RegisterGameActors() {
             gWorldInstance.AddActor(new ATankerTruck(params));
         }
     );
+
+    RegisterActor("hm:spaghetti_ship",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ASpaghettiShip(params));
+        }
+    );
+
+    RegisterActor("hm:ship",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new AShip(params));
+        }
+    );
+
+    RegisterActor("hm:starship",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new AStarship(params));
+        }
+    );
+
+    RegisterActor("hm:cloud",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new ACloud(params));
+        }
+    );
 }

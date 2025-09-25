@@ -13,7 +13,6 @@ public:
     virtual ~ABanana() override = default;
 
     // Virtual functions to be overridden by derived classes
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera*) override;
     virtual void Collision(Player*, AActor*) override;

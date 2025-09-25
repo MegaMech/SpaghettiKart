@@ -3,6 +3,7 @@
 #include "Cloud.h"
 #include "engine/Actor.h"
 #include "engine/World.h"
+#include "port/Game.h"
 
 extern "C" {
 #include "macros.h"
@@ -15,11 +16,14 @@ extern f32 gKartHopInitialVelocityTable[];
 extern f32 gKartGravityTable[];
 }
 
-ACloud::ACloud(FVector pos) {
+ACloud::ACloud(const SpawnParams& params) : AActor(params) {
 	Name = "Cloud";
+    ResourceName = "hm:cloud";
+    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
 	Pos[0] = pos.x;
 	Pos[1] = pos.y;
 	Pos[2] = pos.z;
+
 	Rot[0] = 0;
 	Rot[1] = 0;
 	Rot[2] = 0;
@@ -36,7 +40,7 @@ void ACloud::Tick() {
         Timer++; // Increment timer
     }
 
-    if (Timer > 500) { // Time has expired, reset the actor and player
+    if (Timer > _spawnParams.Type.value_or(500)) { // Time has expired, reset the actor and player
         PickedUp = false;
         if (_player) {
             gKartHopInitialVelocityTable[_player->characterId] = OldHop; // reset back to normal
@@ -72,8 +76,10 @@ void ACloud::Collision(Player* player, AActor* actor) {
 
             OldHop = gKartHopInitialVelocityTable[player->characterId];
             OldGravity = gKartGravityTable[player->characterId];
-            gKartHopInitialVelocityTable[player->characterId] = Hop;
-            gKartGravityTable[player->characterId] = Gravity;
+            // Hop height
+            gKartHopInitialVelocityTable[player->characterId] = _spawnParams.Speed.value_or(3.0f);
+            // How strong gravity is
+            gKartGravityTable[player->characterId] = _spawnParams.SpeedB.value_or(200.0f);
         }
     }
 }
@@ -134,9 +140,69 @@ Gfx mat_cloud_cutout[] = {
 Gfx cloud_mesh[] = {
     // gsSPClearGeometryMode(G_LIGHTING),
     // gsSPVertex(cloud_mesh_vtx_cull + 0, 8, 0),
-    gsSPSetGeometryMode(G_LIGHTING),
+    //gsSPSetGeometryMode(G_LIGHTING),
     // gsSPCullDisplayList(0, 7),
     gsSPDisplayList(mat_cloud_cutout),
     gsSPDisplayList(cloud_mesh_tri_0),
     gsSPEndDisplayList(),
 };
+
+void ACloud::DrawEditorProperties() {
+    auto& params = _spawnParams;
+
+    if (params.Location.has_value()) {
+        ImGui::Text("Location");
+        ImGui::SameLine();
+        FVector location = FVector(Pos[0], Pos[1], Pos[2]);
+        if (ImGui::DragFloat3("##Location", (float*)&location)) {
+            Translate(location);
+            *params.Location = location;
+            gEditor.eObjectPicker.eGizmo.Pos = location;
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+            FVector location = FVector(0, 0, 0);
+            Translate(location);
+            *params.Location = location;
+            gEditor.eObjectPicker.eGizmo.Pos = location;
+        }
+    }
+
+    if (params.Type.has_value()) {
+        ImGui::Text("Effect Timer");
+        ImGui::SameLine();
+        int32_t type = static_cast<int16_t>(params.Type.value());
+        if (ImGui::InputInt("##Type", &type)) {
+            *params.Type = static_cast<int16_t>(type);
+        }
+    }
+
+    if (params.Speed.has_value()) {
+        ImGui::Text("Hop");
+        ImGui::SameLine();
+
+        float speed = params.Speed.value();
+        if (ImGui::DragFloat("##Speed", &speed, 0.01f)) {
+            *params.Speed = speed;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+            *params.Speed = 0.0f;
+        }
+    }
+
+    if (params.SpeedB.has_value()) {
+        ImGui::Text("Gravity");
+        ImGui::Text("Higher value = stronger gravity");
+
+        float speed = params.SpeedB.value();
+        if (ImGui::DragFloat("##SpeedB", &speed, 1.0f)) {
+            *params.SpeedB = speed;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetSpeedB")) {
+            *params.SpeedB = 0.0f;
+        }
+    }
+}

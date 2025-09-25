@@ -83,15 +83,6 @@ ATruck::ATruck(const SpawnParams& params) : AActor(params) {
     _count++;
 }
 
-void ATruck::SetSpawnParams(SpawnParams& params) {
-    // params.Name = "mk:truck";
-    // params.Type = static_cast<uint16_t>(_spawnMode);
-    // params.PathIndex = PathIndex;
-    // params.PathPoint = PathPoint;
-    // params.Speed = Speed;
-    // params.SpeedB = SpeedB;
-}
-
 bool ATruck::IsMod() {
     return true;
 }

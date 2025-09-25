@@ -391,7 +391,12 @@ void CM_BeginPlay() {
         // Do not spawn finishline in credits or battle mode. And if bSpawnFinishline.
         if ((gGamestate != CREDITS_SEQUENCE) && (gModeSelection != BATTLE)) {
             if (course->bSpawnFinishline) {
-                gWorldInstance.AddActor(new AFinishline(course->FinishlineSpawnPoint));
+                if (course->FinishlineSpawnPoint.has_value()) {
+                    AFinishline::Spawn(course->FinishlineSpawnPoint.value(), IRotator(0, 0, 0));
+                } else {
+                    AFinishline::Spawn();
+                }
+            
             }
         }
         gEditor.AddLight("Sun", nullptr, D_800DC610[1].l->l.dir);

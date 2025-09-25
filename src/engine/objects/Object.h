@@ -33,7 +33,6 @@ public:
     virtual void Expire();
     virtual void Destroy(); // Mark object for deletion at the start of the next frame
     virtual void Reset();
-    virtual void SetSpawnParams(SpawnParams& params);
     virtual SpawnParams& GetSpawnParams();
     FVector GetLocation() const;
     IRotator GetRotation() const;

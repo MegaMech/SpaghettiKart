@@ -58,7 +58,6 @@ class ABoat : public AActor {
         return static_cast<ABoat*>(gWorldInstance.AddActor(new ABoat(params)));
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;

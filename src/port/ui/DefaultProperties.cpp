@@ -315,11 +315,11 @@
                 ImGui::SameLine();
 
                 float speed = params.SpeedB.value();
-                if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+                if (ImGui::DragFloat("##SpeedB", &speed, 0.1f)) {
                     *params.SpeedB = speed;
                 }
                 ImGui::SameLine();
-                if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+                if (ImGui::Button(ICON_FA_UNDO "##ResetSpeedB")) {
                     *params.SpeedB = 0.0f;
                 }
             }

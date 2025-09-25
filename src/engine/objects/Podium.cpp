@@ -38,16 +38,6 @@ OPodium::OPodium(const SpawnParams& params) : OObject(params) {
     //set_obj_origin_pos(objectIndex, pos.x - 1.5, pos.y, pos.z);
 }
 
-void OPodium::SetSpawnParams(SpawnParams& params) {
-    Object* object = &gObjectList[_objectIndex];
-    params.Name = "mk:podium";
-    params.Location = FVector(
-        object->pos[0],
-        object->pos[1],
-        object->pos[2]
-    );
-}
-
 void OPodium::Tick() { // func_80086604
     if ((D_8016347C != 0) && (D_802874D8.unk1D < 3)) {
         if (D_801658C6 == 0) {

@@ -10,14 +10,21 @@ extern "C" {
 #include "courses/harbour/ship_model.h"
 }
 
-ASpaghettiShip::ASpaghettiShip(FVector pos) {
+ASpaghettiShip::ASpaghettiShip(const SpawnParams& params) : AActor(params) {
     Name = "Spaghetti Ship";
+    ResourceName = "hm:spaghetti_ship";
+
+    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x;
     Pos[1] = pos.y;
     Pos[2] = pos.z;
-    Spawn = pos;
-    Spawn.y += 10;
-    Scale = {0.4, 0.4, 0.4};
+
+    Scale = _spawnParams.Scale.value_or(FVector(0, 0, 0));
+
+    IRotator rot = _spawnParams.Rotation.value_or(IRotator(0, 0, 0));
+    Rot[0] = rot.pitch;
+    Rot[1] = rot.yaw;
+    Rot[2] = rot.roll;
 }
 
 void ASpaghettiShip::Tick() {
@@ -28,8 +35,9 @@ void ASpaghettiShip::Tick() {
     angle += speed; // Increment the angle to move in a circle
 
     // Update the position based on a circular path
-    Pos[0] = Spawn.x + radius * cosf(angle);
-    Pos[2] = Spawn.z + radius * sinf(angle);
+    FVector spawn = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    Pos[0] = spawn.x + radius * cosf(angle);
+    Pos[2] = spawn.z + radius * sinf(angle);
 
     // Rotate to face forward along the circle
     Rot[1] = -static_cast<int16_t>(angle * (32768.0f / M_PI / 2.0f));

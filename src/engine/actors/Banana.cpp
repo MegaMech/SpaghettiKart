@@ -10,7 +10,7 @@ void update_actor_banana(struct BananaActor*);
 void render_actor_banana(Camera*, float[4][4], struct BananaActor*);
 }
 
-ABanana::ABanana(const SpawnParams& params) {
+ABanana::ABanana(const SpawnParams& params) : AActor(params) {
     Name = "Banana";
     ResourceName = "mk:banana";
 
@@ -49,16 +49,6 @@ ABanana::ABanana(const SpawnParams& params) {
     Unk30.orientationVector[0] = 0.0f;
     Unk30.orientationVector[1] = 1.0f;
     Unk30.orientationVector[2] = 0.0f;
-}
-
-void ABanana::SetSpawnParams(SpawnParams& params) {
-    params.Name = "mk:banana";
-    params.Location = FVector(
-        Pos[0],
-        Pos[1],
-        Pos[2]
-    );
-    params.Velocity = FVector(0, 0, 0);
 }
 
 void ABanana::Tick() { 

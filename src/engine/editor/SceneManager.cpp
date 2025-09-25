@@ -228,7 +228,6 @@ namespace Editor {
 
             if (!alreadyProcessed) {
                 params = actor->GetSpawnParams();
-                actor->SetSpawnParams(params); // This line needs to get removed. But is fine for now.
                 if (!params.Name.empty()) {
                     actorList.push_back(params);
                 }
@@ -238,7 +237,6 @@ namespace Editor {
         for (const auto& object : gWorldInstance.Objects) {
             SpawnParams params{};
             params = object->GetSpawnParams();
-            object->SetSpawnParams(params);
 
             // Unimplemented objects should not be added to the SpawnList
             // The name field is required. If not set, then its not implemented yet.

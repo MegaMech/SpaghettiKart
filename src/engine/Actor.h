@@ -40,7 +40,6 @@ public:
     explicit AActor();
     explicit AActor(SpawnParams params);
 
-    virtual void SetSpawnParams(SpawnParams& params);
     virtual SpawnParams& GetSpawnParams();
     virtual void BeginPlay();
     virtual void Tick();

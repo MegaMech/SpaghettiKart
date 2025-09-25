@@ -61,7 +61,7 @@ class ATrain : public AActor {
     static inline ATrain* Spawn(ATrain::TenderStatus tender, size_t numCarriages, f32 speed, uint32_t pathIndex, uint32_t pathPoint, ATrain::SpawnMode spawnMode) {
         SpawnParams params = {
             .Name = "mk:train",
-            .Type = static_cast<uint16_t>(spawnMode),
+            .Type = static_cast<int16_t>(spawnMode),
             .Count = numCarriages,
             .PathIndex = pathIndex,
             .PathPoint = pathPoint,
@@ -71,7 +71,6 @@ class ATrain : public AActor {
         return static_cast<ATrain*>(gWorldInstance.AddActor(new ATrain(params)));
     }
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;

@@ -61,7 +61,6 @@ class ACar : public AActor {
     f32 SomeArg4 = 8.5f;
     u32 SoundBits = SOUND_ARG_LOAD(0x51, 0x01, 0x80, 0x05);
 
-    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera*) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;

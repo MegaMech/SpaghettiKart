@@ -149,17 +149,6 @@ ATrain::ATrain(const SpawnParams& params) : AActor(params) {
     _count++;
 }
 
-void ATrain::SetSpawnParams(SpawnParams& params) {
-   // params.Name = "mk:train";
-   // params.Type = static_cast<uint16_t>(_spawnMode);
-    //params.Count = NumCars - NUM_TENDERS;
-   // params.Bool = Tender.isActive;
-    //params.Speed = Speed;
-   // params.Count = PassengerCars.size();
-   // params.PathIndex = PathIndex;
-    //params.PathPoint = PathPoint;
-}
-
 bool ATrain::IsMod() {
     return true;
 }
