@@ -50,6 +50,7 @@
 #include "engine/editor/SceneManager.h"
 #include "engine/Rulesets.h"
 #include "engine/Registry.h"
+#include "RegisteredActors.h"
 
 #ifdef _WIN32
 #include <locale.h>

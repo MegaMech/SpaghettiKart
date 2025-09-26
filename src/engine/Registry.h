@@ -9,5 +9,6 @@ struct ActorRegistryEntry {
 
 extern std::unordered_map<std::string, ActorRegistryEntry> gActorRegistry;
 
-void RegisterGameActors();
 void Registry_SpawnActor(SpawnParams& params);
+void RegisterActor(const std::string& name,
+                   std::function<void(const SpawnParams&)> spawnFunc);

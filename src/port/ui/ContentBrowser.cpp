@@ -250,8 +250,8 @@ namespace Editor {
         { "Cheep Cheep", [](const FVector& pos) { return OCheepCheep::Spawn(pos, OCheepCheep::Behaviour::RACE, IPathSpan(0, 10)); } },
         { "Crab", [](const FVector& pos) { return OCrab::Spawn(FVector2D(pos.x, pos.z), FVector2D(pos.x + 100, pos.z + 100)); } },
 
-       // Animation crash
-       // { "Chain Chomp", [](const FVector& pos) { return gWorldInstance.AddObject(new OChainChomp()); } },
+        // Animation crash
+        // { "Chain Chomp", [](const FVector& pos) { return gWorldInstance.AddObject(new OChainChomp()); } },
         { "Flagpole", [](const FVector& pos) { return OFlagpole::Spawn(pos, 0); } },
         { "Hedgehog", [](const FVector& pos) { return OHedgehog::Spawn(pos, FVector2D(0, 10), 0); } },
         { "Hot Air Balloon", [](const FVector& pos) { return OHotAirBalloon::Spawn(pos); } },
