@@ -126,14 +126,6 @@ void World::PreviousCourse() {
 
 AActor* World::AddActor(AActor* actor) {
     Actors.push_back(actor);
-
-    if (actor->Model != NULL) {
-        //gEditor.AddObject(actor->Name, (FVector*) &actor->Pos, (IRotator*)&actor->Rot, &actor->Scale,
-        //                  (Gfx*) LOAD_ASSET_RAW(actor->Model), 1.0f, Editor::GameObject::CollisionType::VTX_INTERSECT,
-        //                  0.0f, (int32_t*) &actor->Type, 0);
-    } else {
-        //gEditor.AddObject(actor->Name, (FVector*) &actor->Pos, (IRotator*)&actor->Rot, &actor->Scale, nullptr, 1.0f, Editor::GameObject::CollisionType::VTX_INTERSECT, 0.0f, (int32_t*)&actor->Type, 0);
-    }
     actor->BeginPlay();
     return Actors.back();
 }
@@ -150,14 +142,6 @@ struct Actor* World::AddBaseActor() {
 void World::ActorBeginPlay(Actor* actor) {
     AActor* act = ConvertActorToAActor(actor);
     act->BeginPlay();
-}
-
-void World::AddEditorObject(Actor* actor, const char* name) {
-    if (actor->model != NULL) {
-        //gEditor.AddObject(name, (FVector*) &actor->pos, (IRotator*)&actor->rot, nullptr, actor->model, 1.0f, Editor::GameObject::CollisionType::VTX_INTERSECT, 0.0f, (int32_t*)&actor->type, 0);
-    } else {
-        //gEditor.AddObject(name, (FVector*) &actor->pos, (IRotator*)&actor->rot, nullptr, nullptr, 1.0f, Editor::GameObject::CollisionType::VTX_INTERSECT, 0.0f, (int32_t*)&actor->type, 0);
-    }
 }
 
 /**
@@ -195,8 +179,6 @@ void World::TickActors() {
 StaticMeshActor* World::AddStaticMeshActor(std::string name, FVector pos, IRotator rot, FVector scale, std::string model, int32_t* collision) {
     StaticMeshActors.push_back(new StaticMeshActor(name, pos, rot, scale, model, collision));
     auto actor = StaticMeshActors.back();
-    //auto gameObj = gEditor.AddObject(actor->Name.c_str(), &actor->Pos, &actor->Rot, &actor->Scale, actor->Model.c_str(), 1.0f,
-    //                  Editor::GameObject::CollisionType::VTX_INTERSECT, 0.0f, (int32_t*) &actor->bPendingDestroy, (int32_t) true);
     return actor;
 }
 
@@ -209,15 +191,11 @@ void World::DrawStaticMeshActors() {
 OObject* World::AddObject(OObject* object) {
     Objects.push_back(object);
 
-    if (object->_objectIndex != -1) {
-        Object* cObj = &gObjectList[object->_objectIndex];
-
-        if (cObj->model != NULL) {
-            //gEditor.AddObject(object->Name, (FVector*) &cObj->origin_pos[0], (IRotator*)&cObj->orientation, nullptr, cObj->model, 1.0f, Editor::GameObject::CollisionType::VTX_INTERSECT, 0.0f, &object->_objectIndex, -1);
-        } else {
-            //gEditor.AddObject(object->Name, (FVector*) &cObj->origin_pos[0], (IRotator*)&cObj->orientation, nullptr, nullptr, 1.0f, Editor::GameObject::CollisionType::VTX_INTERSECT, 0.0f, &object->_objectIndex, -1);
-        }
-    }
+    // This is an example of how to get the C object.
+    // However, nothing is being done with it, so it's been commented out.
+    // if (object->_objectIndex != -1) {
+    //     Object* cObj = &gObjectList[object->_objectIndex];
+    // }
 
     return Objects.back();
 }

@@ -142,8 +142,6 @@ namespace Editor {
 
         printf("After from_json: Pos(%f, %f, %f), Name: %s, Model: %s\n", 
         actor->Pos.x, actor->Pos.y, actor->Pos.z, actor->Name.c_str(), actor->Model.c_str());
-        //gEditor.AddObject(actor->Name.c_str(), &actor->Pos, &actor->Rot, &actor->Scale, "", 1.0f,
-        //                GameObject::CollisionType::BOUNDING_BOX, 20.0f, (int32_t*) &actor->bPendingDestroy, (int32_t) 1);
     }
 
     void SetSceneFile(std::shared_ptr<Ship::Archive> archive, std::string sceneFile) {

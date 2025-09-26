@@ -1498,7 +1498,6 @@ s16 add_actor_to_empty_slot(Vec3f pos, Vec3s rot, Vec3f velocity, s16 actorType)
     struct Actor* actor = CM_AddBaseActor();
     actor_init(actor, pos, rot, velocity, actorType);
     CM_ActorBeginPlay(actor);
-    CM_AddEditorObject(actor, get_actor_display_name(actor->type));
     return (s16) CM_GetActorSize() - 1; // Return current index;
 }
 

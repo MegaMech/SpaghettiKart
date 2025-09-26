@@ -51,7 +51,6 @@ void ObjectPicker::SelectObject(std::vector<GameObject*> objects) {
                 eGizmo.SetGizmo(_selected, ray);
                 eGizmo.Enabled = true;
             } else {
-                //eGizmo.Disable();
                 eGizmo.Enabled = false;
                 _selected = static_cast<GameObject*>(nullptr);
             }

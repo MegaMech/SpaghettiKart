@@ -224,6 +224,11 @@ void OTrophy::Draw(s32 cameraId) {
     if (*_toggleVisibility == true) {
         object = &gObjectList[listIndex];
         if (object->state >= 2) {
+            // Prevents a perspective glitch
+            if (CVarGetInteger("gFreecam", 0) == true) {
+                cameraId = 4;
+            }
+
             gSPMatrix(gDisplayListHead++, GetPerspMatrix(cameraId),
                     G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
             gSPMatrix(gDisplayListHead++, GetLookAtMatrix(cameraId),

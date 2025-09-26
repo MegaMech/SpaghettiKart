@@ -142,7 +142,7 @@ void Course::LoadO2R(std::string trackPath) {
                 i += 1;
             }
         }
-        gVehiclePathSize = Props.PathSizes.unk0;
+        gVehiclePathSize = Props.PathSizes.unk0; // This is likely incorrect.
 
     } else {
         printf("Course.cpp: LoadO2R: trackPath str is empty\n");

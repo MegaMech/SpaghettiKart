@@ -697,10 +697,6 @@ struct Actor* CM_AddBaseActor() {
     return (struct Actor*) gWorldInstance.AddBaseActor();
 }
 
-void CM_AddEditorObject(struct Actor* actor, const char* name) {
-    gWorldInstance.AddEditorObject(actor, name);
-}
-
 void CM_ActorBeginPlay(struct Actor* actor) {
     gWorldInstance.ActorBeginPlay(actor);
 }

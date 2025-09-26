@@ -55,7 +55,6 @@ public:
     AActor* AddActor(AActor* actor);
     struct Actor* AddBaseActor();
     void ActorBeginPlay(Actor* actor);
-    void AddEditorObject(Actor* actor, const char* name);
     AActor* GetActor(size_t index);
 
     void TickActors();
