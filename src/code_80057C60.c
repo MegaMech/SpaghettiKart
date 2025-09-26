@@ -548,7 +548,7 @@ void render_object_p1(void) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
 
     if (CVarGetInteger("gFreecam", 0) == true) {
-        playerIdx = 4;
+        playerIdx = CAMERA_FREECAM;
     }
 
     gSPMatrix(gDisplayListHead++, GetPerspMatrix(playerIdx),
@@ -649,7 +649,7 @@ void render_player_snow_effect_one(void) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
 
     if (CVarGetInteger("gFreecam", 0) == true) {
-        playerIdx = 4;
+        playerIdx = CAMERA_FREECAM;
     }
 
     gSPMatrix(gDisplayListHead++, GetPerspMatrix(playerIdx),

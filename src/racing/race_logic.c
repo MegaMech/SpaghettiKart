@@ -648,7 +648,10 @@ void func_8028F4E8(void) {
     }
 }
 
-// Makes screen bigger at start of race.
+/**
+ * On race launch, the screen starts small and quickly gets bigger
+ * as an effect.
+ */
 void func_8028F588(void) {
     s16 screenWidth;
 

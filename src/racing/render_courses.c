@@ -225,7 +225,7 @@ void func_8029122C(struct UnkStruct_800DC5EC* arg0, s32 playerId) {
         case PLAYER_ONE:
             size_t playerIdx = PLAYER_ONE; 
             if (CVarGetInteger("gFreecam", 0) == true) {
-                playerIdx = 4;
+                playerIdx = CAMERA_FREECAM;
             }
             gSPMatrix(gDisplayListHead++, GetPerspMatrix(playerIdx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);

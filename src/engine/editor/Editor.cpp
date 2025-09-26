@@ -60,7 +60,7 @@ namespace Editor {
 
         // Set camera
         if (CVarGetInteger("gFreecam", 0) == true) {
-            eCamera = &cameras[4];
+            eCamera = &cameras[CAMERA_FREECAM];
         } else {
             eCamera = &cameras[0];
         }

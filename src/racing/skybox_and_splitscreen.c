@@ -854,8 +854,8 @@ void render_screens(s32 mode, s32 cameraId, s32 playerId) {
 
     // Required for freecam to have its own camera
     if (CVarGetInteger("gFreecam", 0) == true) {
-       camera = &cameras[4];
-       cameraId = 4;
+       camera = &cameras[CAMERA_FREECAM];
+       cameraId = CAMERA_FREECAM;
     } else {
         camera = &cameras[cameraId];
     }

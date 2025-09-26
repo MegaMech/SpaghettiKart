@@ -226,7 +226,7 @@ void OTrophy::Draw(s32 cameraId) {
         if (object->state >= 2) {
             // Prevents a perspective glitch
             if (CVarGetInteger("gFreecam", 0) == true) {
-                cameraId = 4;
+                cameraId = CAMERA_FREECAM;
             }
 
             gSPMatrix(gDisplayListHead++, GetPerspMatrix(cameraId),
