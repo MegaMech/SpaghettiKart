@@ -54,6 +54,7 @@ namespace Editor {
             bEditorEnabled = true;
         } else {
             bEditorEnabled = false;
+            gIsEditorPaused = false; // Prevents game being paused with the editor closed.
             return;
         }
 

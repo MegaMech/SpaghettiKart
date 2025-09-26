@@ -690,7 +690,7 @@ void process_game_tick(void) {
     // This looks like it should be in the switch below.
     // But it needs to be here for player 1 to work in all modes.
     if (CVarGetInteger("gFreecam", 0) == true) {
-       freecam(gFreecamCamera, gPlayerOne, 0);
+        freecam(gFreecamCamera, gPlayerOne, 0);
     } else {
         func_8001EE98(gPlayerOne, camera1, 0);
     }
