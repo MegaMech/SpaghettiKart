@@ -33,9 +33,9 @@ AFinishline::AFinishline(const SpawnParams& params) : AActor(params) {
         Pos[2] = D_8015F8D0[2] = pos.z;
     } else {
         // Set spawn point to the tracks first path point.
-        Pos[0] = D_8015F8D0[0] = gCurrentTrackPath->X;
-        Pos[1] = D_8015F8D0[1] = (f32) (gCurrentTrackPath->Y - 15);
-        Pos[2] = D_8015F8D0[2] = gCurrentTrackPath->Z;
+        Pos[0] = D_8015F8D0[0] = gCurrentTrackPath->x;
+        Pos[1] = D_8015F8D0[1] = (f32) (gCurrentTrackPath->y - 15);
+        Pos[2] = D_8015F8D0[2] = gCurrentTrackPath->z;
     }
 
     IRotator rot = _spawnParams.Rotation.value_or(IRotator(0, 0, 0));

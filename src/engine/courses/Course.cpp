@@ -259,9 +259,9 @@ void Course::TestPath() {
     Vec3f vel = { 0, 0, 0 };
 
     for (size_t i = 0; i < gPathCountByPathIndex[0]; i++) {
-        x = gTrackPaths[0][i].X;
-        y = gTrackPaths[0][i].Y;
-        z = gTrackPaths[0][i].Z;
+        x = gTrackPaths[0][i].x;
+        y = gTrackPaths[0][i].y;
+        z = gTrackPaths[0][i].z;
 
         if (((x & 0xFFFF) == 0x8000) && ((y & 0xFFFF) == 0x8000) && ((z & 0xFFFF) == 0x8000)) {
             break;

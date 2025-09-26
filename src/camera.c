@@ -377,10 +377,10 @@ void func_8001CA78(UNUSED Player* player, Camera* camera, Vec3f arg2, f32* arg3,
     if (IsToadsTurnpike()) {
         var_f14 = sp5C[0];
     } else {
-        var_f14 = sp5C[0] + temp_s2->X;
+        var_f14 = sp5C[0] + temp_s2->x;
     }
     temp_f16 = D_80165230[7] + sp5C[2];
-    temp_f18 = sp5C[1] + (temp_s2->Y + D_80164A30);
+    temp_f18 = sp5C[1] + (temp_s2->y + D_80164A30);
     arg2[0] += (var_f14 - camera->lookAt[0]) * 1;
     arg2[1] += (temp_f18 - camera->lookAt[1]) * 1;
     arg2[2] += (temp_f16 - camera->lookAt[2]) * 1;
@@ -388,10 +388,10 @@ void func_8001CA78(UNUSED Player* player, Camera* camera, Vec3f arg2, f32* arg3,
     if (IsToadsTurnpike()) {
         var_f14 = sp68[0];
     } else {
-        var_f14 = sp68[0] + temp_s2->X;
+        var_f14 = sp68[0] + temp_s2->x;
     }
     temp_f16 = D_80165230[7] + sp68[2];
-    temp_f18 = sp68[1] + (temp_s2->Y + D_80164A30 + 6.0f);
+    temp_f18 = sp68[1] + (temp_s2->y + D_80164A30 + 6.0f);
     move_f32_towards(&D_80164A30, 0, 0.02f);
     posX = camera->pos[0];
     *arg3 = ((var_f14 - posX) * 1) + posX;

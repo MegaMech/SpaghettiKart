@@ -47,9 +47,9 @@ ABoat::ABoat(const SpawnParams& params) : AActor(params) {
     }
 
     temp_a2 = &gVehicle2DPathPoint[pathPoint];
-    Position[0] = temp_a2->X;
+    Position[0] = temp_a2->x;
     Position[1] = D_80162EB2;
-    Position[2] = temp_a2->Z;
+    Position[2] = temp_a2->z;
     WaypointIndex = Index * 0xB4;
     ActorIndex = -1;
 
@@ -126,9 +126,9 @@ void ABoat::Tick() {
         sp94[1] = temp_f28;
         sp94[2] = temp_f30;
         waypoint = &gVehicle2DPathPoint[(WaypointIndex + 5) % gVehiclePathSize];
-        sp88[0] = (f32) waypoint->X;
+        sp88[0] = (f32) waypoint->x;
         sp88[1] = (f32) D_80162EB0;
-        sp88[2] = (f32) waypoint->Z;
+        sp88[2] = (f32) waypoint->z;
         temp_a1 = get_angle_between_path(sp94, sp88);
         temp = temp_a1 - RotY;
         var_v1 = temp;

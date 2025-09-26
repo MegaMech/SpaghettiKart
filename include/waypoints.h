@@ -12,9 +12,9 @@ enum {
 };
 
 typedef struct {
-    /* 0x00 */ s16 X;
-    /* 0x02 */ s16 Y;
-    /* 0x04 */ s16 Z;
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
+    /* 0x04 */ s16 z;
     /* 0x06 */ u16 trackSectionId;
 } TrackPathPoint; // size = 0x08
 

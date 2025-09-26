@@ -47,9 +47,9 @@ OBombKart::OBombKart(const SpawnParams& params) : OObject(params) {
         f32 height = (constPos.y > 2000.0f) ? constPos.y : 2000.0f;
         constPos.y = spawn_actor_on_surface(constPos.x, height, constPos.z);
     } else { // Spawn kart on waypoint
-        constPos.x = gTrackPaths[pathIndex][pathPoint].X;
-        constPos.y = gTrackPaths[pathIndex][pathPoint].Y;
-        constPos.z = gTrackPaths[pathIndex][pathPoint].Z;
+        constPos.x = gTrackPaths[pathIndex][pathPoint].x;
+        constPos.y = gTrackPaths[pathIndex][pathPoint].y;
+        constPos.z = gTrackPaths[pathIndex][pathPoint].z;
     }
 
     WaypointIndex = params.PathPoint.value_or(0);
@@ -177,18 +177,18 @@ void OBombKart::Tick() {
                 sp118 = coss(temp_t6) * 25.0;
                 temp_f0_3 = sins(temp_t6) * 25.0;
                 temp_v0_2 = &gTrackPaths[0][waypoint];
-                newPos[0] = temp_v0_2->X + sp118;
+                newPos[0] = temp_v0_2->x + sp118;
                 newPos[1] = CenterY + 3.5f;
-                newPos[2] = temp_v0_2->Z + temp_f0_3;
+                newPos[2] = temp_v0_2->z + temp_f0_3;
                 D_80162FB0[0] = newPos[0];
                 D_80162FB0[1] = newPos[1];
                 D_80162FB0[2] = newPos[2];
                 temp_t7 = (((circleTimer + 1) % 360) * 0xFFFF) / 360;
                 sp118 = coss(temp_t7) * 25.0;
                 temp_f0_3 = sins(temp_t7) * 25.0;
-                D_80162FC0[0] = temp_v0_2->X + sp118;
-                D_80162FC0[1] = temp_v0_2->Y;
-                D_80162FC0[2] = temp_v0_2->Z + temp_f0_3;
+                D_80162FC0[0] = temp_v0_2->x + sp118;
+                D_80162FC0[1] = temp_v0_2->y;
+                D_80162FC0[2] = temp_v0_2->z + temp_f0_3;
                 someRot = (get_angle_between_two_vectors(D_80162FB0, D_80162FC0) * 0xFFFF) / 65520;
                 break;
             case States::CLOCKWISE:
@@ -197,18 +197,18 @@ void OBombKart::Tick() {
                 sp118 = coss(temp_t6) * 25.0;
                 temp_f0_3 = sins(temp_t6) * 25.0;
                 temp_v0_2 = &gTrackPaths[0][waypoint];
-                newPos[0] = temp_v0_2->X + sp118;
+                newPos[0] = temp_v0_2->x + sp118;
                 newPos[1] = CenterY + 3.5f;
-                newPos[2] = temp_v0_2->Z + temp_f0_3;
+                newPos[2] = temp_v0_2->z + temp_f0_3;
                 D_80162FB0[0] = newPos[0];
                 D_80162FB0[1] = newPos[1];
                 D_80162FB0[2] = newPos[2];
                 temp_t7 = (((circleTimer + 1) % 360) * 0xFFFF) / 360;
                 sp118 = coss(temp_t7) * 25.0;
                 temp_f0_3 = sins(temp_t7) * 25.0;
-                D_80162FC0[0] = temp_v0_2->X + sp118;
-                D_80162FC0[1] = temp_v0_2->Y;
-                D_80162FC0[2] = temp_v0_2->Z + temp_f0_3;
+                D_80162FC0[0] = temp_v0_2->x + sp118;
+                D_80162FC0[1] = temp_v0_2->y;
+                D_80162FC0[2] = temp_v0_2->z + temp_f0_3;
                 someRot = (get_angle_between_two_vectors(D_80162FB0, D_80162FC0) * 0xFFFF) / 65520;
                 break;
             case States::STATIONARY:
@@ -226,13 +226,13 @@ void OBombKart::Tick() {
                     }
                     if (((s32) waypoint) < 0x1A) {
                         temp_v0_2 = &gTrackPaths[3][(waypoint + 1) % gPathCountByPathIndex[3]];
-                        D_80162FB0[0] = temp_v0_2->X;
-                        D_80162FB0[1] = temp_v0_2->Y;
-                        D_80162FB0[2] = temp_v0_2->Z;
+                        D_80162FB0[0] = temp_v0_2->x;
+                        D_80162FB0[1] = temp_v0_2->y;
+                        D_80162FB0[2] = temp_v0_2->z;
                         temp_v0_4 = &gTrackPaths[3][(waypoint + 2) % gPathCountByPathIndex[3]];
-                        D_80162FC0[0] = temp_v0_4->X;
-                        D_80162FC0[1] = temp_v0_4->Y;
-                        D_80162FC0[2] = temp_v0_4->Z;
+                        D_80162FC0[0] = temp_v0_4->x;
+                        D_80162FC0[1] = temp_v0_4->y;
+                        D_80162FC0[2] = temp_v0_4->z;
                         someRot = (get_angle_between_two_vectors(D_80162FB0, D_80162FC0) * 0xFFFF) / 65520;
                     } else {
                         D_80162FB0[0] = newPos[0];
@@ -274,13 +274,13 @@ void OBombKart::Tick() {
                 break;
             case States::EXPLODE:
                 temp_v0_2 = &gTrackPaths[0][waypoint];
-                D_80162FB0[0] = temp_v0_2->X;
-                D_80162FB0[1] = temp_v0_2->Y;
-                D_80162FB0[2] = temp_v0_2->Z;
+                D_80162FB0[0] = temp_v0_2->x;
+                D_80162FB0[1] = temp_v0_2->y;
+                D_80162FB0[2] = temp_v0_2->z;
                 temp_v0_4 = &gTrackPaths[0][(waypoint + 1) % gPathCountByPathIndex[0]];
-                D_80162FC0[0] = temp_v0_4->X;
-                D_80162FC0[1] = temp_v0_4->Y;
-                D_80162FC0[2] = temp_v0_4->Z;
+                D_80162FC0[0] = temp_v0_4->x;
+                D_80162FC0[1] = temp_v0_4->y;
+                D_80162FC0[2] = temp_v0_4->z;
                 newPos[1] += 3.0f - (circleTimer * 0.3f);
                 someRot = (get_angle_between_two_vectors(D_80162FB0, D_80162FC0) * 0xFFFF) / 65520;
                 break;

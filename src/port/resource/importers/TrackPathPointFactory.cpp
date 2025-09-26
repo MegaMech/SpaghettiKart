@@ -20,9 +20,9 @@ ResourceFactoryBinaryTrackPathPointsV0::ReadResource(std::shared_ptr<Ship::File>
 
     for (uint32_t i = 0; i < count; i++) {
         TrackPathPoint data;
-        data.X = reader->ReadInt16();
-        data.Y = reader->ReadInt16();
-        data.Z = reader->ReadInt16();
+        data.x = reader->ReadInt16();
+        data.y = reader->ReadInt16();
+        data.z = reader->ReadInt16();
         data.trackSectionId = reader->ReadUInt16();
 
         section->TrackPathPointList.push_back(data);
@@ -52,9 +52,9 @@ ResourceFactoryXMLTrackPathPointsV0::ReadResource(std::shared_ptr<Ship::File> fi
 
         while (pointElem != nullptr) {
             TrackPathPoint point;
-            point.X = pointElem->IntAttribute("X");
-            point.Y = pointElem->IntAttribute("Y");
-            point.Z = pointElem->IntAttribute("Z");
+            point.x = pointElem->IntAttribute("X");
+            point.y = pointElem->IntAttribute("Y");
+            point.z = pointElem->IntAttribute("Z");
             point.trackSectionId = pointElem->IntAttribute("ID");
 
             waypointPath.push_back(point); // Push to temp vector

@@ -51,9 +51,9 @@ ACar::ACar(const SpawnParams& params) : AActor(params) {
 
     waypointOffset = pathPoint;
     temp_v0 = &gTrackPaths[pathIndex][pathPoint];
-    Position[0] = (f32) temp_v0->X;
-    Position[1] = (f32) temp_v0->Y;
-    Position[2] = (f32) temp_v0->Z;
+    Position[0] = (f32) temp_v0->x;
+    Position[1] = (f32) temp_v0->y;
+    Position[2] = (f32) temp_v0->z;
     ActorIndex = -1;
     WaypointIndex = waypointOffset;
     Velocity[0] = 0.0f;

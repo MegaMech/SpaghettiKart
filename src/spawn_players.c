@@ -878,9 +878,9 @@ void func_8003C0F0(void) {
         func_8000EEDC();
     } else if (!IsPodiumCeremony()) {
         init_course_path_point();
-        sp5E = (f32) gTrackPaths[0][0].X;
-        sp5C = (f32) gTrackPaths[0][0].Z;
-        sp5A = (f32) gTrackPaths[0][0].Y;
+        sp5E = (f32) gTrackPaths[0][0].x;
+        sp5C = (f32) gTrackPaths[0][0].z;
+        sp5A = (f32) gTrackPaths[0][0].y;
         if (IsToadsTurnpike()) {
             sp5E = 0;
         }
