@@ -25,6 +25,7 @@ ATruck::ATruck(const SpawnParams& params) : AActor(params) {
     Name = "Truck";
     ResourceName = "mk:truck";
     _spawnParams.Name = "mk:truck";
+    BoundingBoxSize = 2.0f;
     TrackPathPoint* temp_v0;
     u16 waypointOffset;
     s32 numWaypoints = gPathCountByPathIndex[0];

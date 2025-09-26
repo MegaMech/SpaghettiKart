@@ -24,6 +24,13 @@ AStarship::AStarship(const SpawnParams& params) : AActor(params) {
     Model = (const char*)starship_Cube_mesh;
 }
 
+void AStarship::BeginPlay() {
+    // Prevent collision mesh from being generated extra times.
+    if (Triangles.size() == 0) {
+        Editor::GenerateCollisionMesh(this, (Gfx*)Model, 1.0f);
+    }
+}
+
 void AStarship::Tick() {
     static float angle = 0.0f;
 

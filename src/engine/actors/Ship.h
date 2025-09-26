@@ -36,6 +36,7 @@ public:
     }
 
     virtual void Tick() override;
+    virtual void BeginPlay() override;
     virtual bool IsMod() override;
     virtual void DrawEditorProperties() override;
 private:

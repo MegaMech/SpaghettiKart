@@ -26,6 +26,7 @@ ACar::ACar(const SpawnParams& params) : AActor(params) {
     Name = "Car";
     ResourceName = "mk:car";
     _spawnParams.Name = "mk:car";
+    BoundingBoxSize = 2.0f;
     TrackPathPoint* temp_v0;
     u16 waypointOffset;
     s32 numWaypoints = gPathCountByPathIndex[0];

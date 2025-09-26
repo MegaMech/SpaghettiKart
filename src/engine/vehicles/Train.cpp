@@ -36,6 +36,7 @@ ATrain::ATrain(const SpawnParams& params) : AActor(params) {
     Name = "Train";
     ResourceName = "mk:train";
     _spawnParams.Name = "mk:train";
+    BoundingBoxSize = 2.0f;
     TrainCarStuff* ptr1;
     TrackPathPoint* pos;
 

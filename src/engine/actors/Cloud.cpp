@@ -33,6 +33,14 @@ ACloud::ACloud(const SpawnParams& params) : AActor(params) {
     BoundingBoxSize = 2.0f;
 }
 
+extern Gfx cloud_mesh[];
+void ACloud::BeginPlay() {
+    // Prevent collision mesh from being generated extra times.
+    if (Triangles.size() == 0) {
+        Editor::GenerateCollisionMesh(this, (Gfx*)cloud_mesh, 1.0f);
+    }
+}
+
 void ACloud::Tick() {
     Rot[1] += 0x200;
 
@@ -50,8 +58,6 @@ void ACloud::Tick() {
         Timer = 0;
     }
 }
-
-extern Gfx cloud_mesh[];
 
 void ACloud::Draw(Camera* camera) {
     Mat4 mtx;

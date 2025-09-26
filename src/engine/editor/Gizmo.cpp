@@ -98,7 +98,6 @@ void Gizmo::SetGizmo(const std::variant<AActor*, OObject*, GameObject*>& object,
     std::visit([this](auto* obj) {
         _selected = obj;
         this->Pos = obj->GetLocation();
-        printf("gizmo pos %f %f %f\n", Pos.x, Pos.y, Pos.z);
     }, object);
 }
 

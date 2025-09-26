@@ -23,6 +23,7 @@ ABoat::ABoat(const SpawnParams& params) : AActor(params) {
     Name = "Paddle Steam Boat";
     ResourceName = "mk:paddle_boat";
     _spawnParams.Name = "mk:paddle_boat";
+    BoundingBoxSize = 2.0f;
     TrackPathPoint* temp_a2;
     Index = _count;
     Speed = _spawnParams.Speed.value_or(0);

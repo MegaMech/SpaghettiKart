@@ -40,6 +40,13 @@ AShip::AShip(const SpawnParams& params) : AActor(params) {
     Model = (const char*)_skin;
 }
 
+void AShip::BeginPlay() {
+    // Prevent collision mesh from being generated extra times.
+    if (Triangles.size() == 0) {
+        Editor::GenerateCollisionMesh(this, (Gfx*)_skin, Scale.y);
+    }
+}
+
 void AShip::Tick() {
     // static float angle = 0.0f; // Keeps track of the ship's rotation around the circle
     // float radius = 150.0f;      // The radius of the circular path

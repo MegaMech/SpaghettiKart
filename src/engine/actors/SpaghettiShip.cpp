@@ -13,13 +13,14 @@ extern "C" {
 ASpaghettiShip::ASpaghettiShip(const SpawnParams& params) : AActor(params) {
     Name = "Spaghetti Ship";
     ResourceName = "hm:spaghetti_ship";
+    BoundingBoxSize = 3.0f;
 
     FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x;
     Pos[1] = pos.y;
     Pos[2] = pos.z;
 
-    Scale = _spawnParams.Scale.value_or(FVector(0, 0, 0));
+    Scale = _spawnParams.Scale.value_or(FVector(0.4f, 0.4f, 0.4f));
 
     IRotator rot = _spawnParams.Rotation.value_or(IRotator(0, 0, 0));
     Rot[0] = rot.pitch;

@@ -24,6 +24,7 @@ std::map<uint32_t, std::vector<uint32_t>> ABus::BusCounts;
 ABus::ABus(const SpawnParams& params) : AActor(params) {
     Name = "Bus";
     ResourceName = "mk:bus";
+    BoundingBoxSize = 2.0f;
     TrackPathPoint* temp_v0;
     u16 waypointOffset;
     s32 numWaypoints = gPathCountByPathIndex[0];

@@ -49,6 +49,13 @@ AFinishline::AFinishline(const SpawnParams& params) : AActor(params) {
     BoundingBoxSize = 0.0f;
 }
 
+void AFinishline::BeginPlay() {
+    // Prevent collision mesh from being generated extra times.
+    if (Triangles.size() == 0) {
+        Editor::GenerateCollisionMesh(this, (Gfx*)LOAD_ASSET_RAW(D_0D001B90), 1.0f);
+    }
+}
+
 void AFinishline::Tick() {
 }
 
