@@ -1,8 +1,5 @@
 var NAVTREEINDEX84 =
 {
-"structma__data__source__vtable.html#aa863c7add3492eb3f8f88e2fc28adf5d":[17,0,184,5],
-"structma__data__source__vtable.html#ab998329d21ee97dbfb4addb87a8b994d":[17,0,184,2],
-"structma__data__source__vtable.html#ad2f36e1a58013d3134a93404c9da3054":[17,0,184,0],
 "structma__decoder.html":[17,0,185],
 "structma__decoder.html#a1741b49094767c189819ecfedfee4d02":[17,0,185,2],
 "structma__decoder.html#a3273945625f6c13a8e8e2eba3014d5e8":[17,0,185,19],
@@ -249,5 +246,8 @@ var NAVTREEINDEX84 =
 "structma__encoder.html#ab89740617738dd621c127ae6617b60a7":[17,0,203,3],
 "structma__encoder.html#ae1aa671d30cfac5c30ba7bf3449ebc41":[17,0,203,0],
 "structma__encoder.html#ae90f7fbf8ed783f8b9a352a2625cdfd9":[17,0,203,9],
-"structma__encoder__config.html":[17,0,204]
+"structma__encoder__config.html":[17,0,204],
+"structma__encoder__config.html#a4ffca1d45a84ad47572623930c63d8ee":[17,0,204,3],
+"structma__encoder__config.html#a80148a3c86a0b560d2b7bbc28acbb105":[17,0,204,1],
+"structma__encoder__config.html#a864adf3fcd36519d3b9d46ab9527cf4c":[17,0,204,0]
 };

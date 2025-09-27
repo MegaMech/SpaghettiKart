@@ -1,8 +1,5 @@
 var NAVTREEINDEX78 =
 {
-"structReverbRingBufferItem.html#ae7d1e45b22c2ec70d50e3dcf0a142983":[17,0,383,3],
-"structReverbRingBufferItem.html#aecb154fdd65e01e1dc121b3b204943c3":[17,0,383,0],
-"structReverbSettingsEU.html":[17,0,384],
 "structReverbSettingsEU.html#a1fa00252ed7fddbb38d9dc241ce45749":[17,0,384,0],
 "structReverbSettingsEU.html#a5cb7d8eaeef42b0369bd170bca7ed72f":[17,0,384,2],
 "structReverbSettingsEU.html#aba10615f395a40b1695db5a576298b4f":[17,0,384,1],
@@ -249,5 +246,8 @@ var NAVTREEINDEX78 =
 "structSequenceChannel.html#a84d7c255c7bbc4df3d4840580b5f8819":[17,0,393,12],
 "structSequenceChannel.html#a86118c5e4c57c5cd83f9b0eda9b892c2":[17,0,393,6],
 "structSequenceChannel.html#a88afac12f721bc4ccc1f402618b49121":[17,0,393,25],
-"structSequenceChannel.html#a8c82a0041bd75994697dafc694d6c646":[17,0,393,40]
+"structSequenceChannel.html#a8c82a0041bd75994697dafc694d6c646":[17,0,393,40],
+"structSequenceChannel.html#a931ca3d182c264a8cc5a5143c1d3b560":[17,0,393,19],
+"structSequenceChannel.html#aaa0ea8943c6b8d1cd4d9b7011dcc9779":[17,0,393,9],
+"structSequenceChannel.html#aaa63661308a45bc9c410c831888136d6":[17,0,393,24]
 };

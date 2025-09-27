@@ -1,8 +1,5 @@
 var NAVTREEINDEX75 =
 {
-"structGfxPool.html#a394e0a1d01dd843336dedfdd7b357a89":[17,0,132,4],
-"structGfxPool.html#a42d7257d731853b49605659bfcb607bf":[17,0,132,6],
-"structGfxPool.html#a6412eaab6e773364bbe4a114f7ce5381":[17,0,132,2],
 "structGfxPool.html#a705e6036f85bdb4c3f708e0e938610db":[17,0,132,8],
 "structGfxPool.html#a70f20c70d9af0bf2e7001d904987cb0e":[17,0,132,12],
 "structGfxPool.html#a7b4ba3aad2315e3d209f42511c456cb6":[17,0,132,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX75 =
 "structModelLoader_1_1CourseMap.html":[17,0,315,0],
 "structModelLoader_1_1LoadModelList.html":[17,0,315,1],
 "structModelLoader_1_1LoadModelList.html#a2c55c44b1a459330092cbdca53878a81":[17,0,315,1,3],
-"structModelLoader_1_1LoadModelList.html#a536a46e1097d1549dd987abad84ccacf":[17,0,315,1,5]
+"structModelLoader_1_1LoadModelList.html#a536a46e1097d1549dd987abad84ccacf":[17,0,315,1,5],
+"structModelLoader_1_1LoadModelList.html#a87f1f2f58260d2c63cf14750cc48fdc4":[17,0,315,1,1],
+"structModelLoader_1_1LoadModelList.html#a8c009b61ba0915b31eb864b4860bc5e9":[17,0,315,1,4],
+"structModelLoader_1_1LoadModelList.html#a90e6b1b0ff63dccc27107dba7b25887f":[17,0,315,1,0]
 };

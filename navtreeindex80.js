@@ -1,8 +1,5 @@
 var NAVTREEINDEX80 =
 {
-"structTrackSectionsO2R.html#a0deba07df881ceb9c2f11fe082af3bd9":[17,0,450,0],
-"structTrackSectionsO2R.html#a386f5f12c36e052bdd209f7ecf7e68ef":[17,0,450,3],
-"structTrackSectionsO2R.html#a7aa303cbc301417d8c93336ce13de273":[17,0,450,2],
 "structTrackSectionsO2R.html#afee03b5d9e6dde4d070710e79c482f67":[17,0,450,1],
 "structTrainCar.html":[17,0,451],
 "structTrainCar.html#a0c4a8df640964eaecd78ababa075c9b3":[17,0,451,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX80 =
 "structUnkPlayerInner.html#a6974d5df4db5e26209e24cb761cd8e1b":[17,0,467,7],
 "structUnkPlayerInner.html#a85e38ce8eaca82e50f553226a3fcb5bc":[17,0,467,9],
 "structUnkPlayerInner.html#aa1be6c2b9fdeb8782170fdaed5c4e5ac":[17,0,467,2],
-"structUnkPlayerInner.html#ab08701f7620c12d402ae3913b4c063e7":[17,0,467,8]
+"structUnkPlayerInner.html#ab08701f7620c12d402ae3913b4c063e7":[17,0,467,8],
+"structUnkPlayerInner.html#ab82bb5befad0712d146a7c6b80ca4268":[17,0,467,10],
+"structUnkPlayerInner.html#ac05d528f4daf478bc0ea48c2a83ee9a6":[17,0,467,6],
+"structUnkPlayerInner.html#ae23910b17fe14843b067cf07a158da0b":[17,0,467,4]
 };

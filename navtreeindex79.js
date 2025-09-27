@@ -1,8 +1,5 @@
 var NAVTREEINDEX79 =
 {
-"structSequenceChannel.html#a931ca3d182c264a8cc5a5143c1d3b560":[17,0,393,19],
-"structSequenceChannel.html#aaa0ea8943c6b8d1cd4d9b7011dcc9779":[17,0,393,9],
-"structSequenceChannel.html#aaa63661308a45bc9c410c831888136d6":[17,0,393,24],
 "structSequenceChannel.html#ab43f4dc03aa765bcdc052d6b59072554":[17,0,393,32],
 "structSequenceChannel.html#aba80ebc742588c90ece54666ed0cfc00":[17,0,393,44],
 "structSequenceChannel.html#abf2b47257aa645eda0acca176e25d10a":[17,0,393,18],
@@ -249,5 +246,8 @@ var NAVTREEINDEX79 =
 "structTrackSectionsI.html#a8f2ba4781a6eff3e7a13abf678cc0cf3":[17,0,449,2],
 "structTrackSectionsI.html#acfdbf1ddbc243019642409ff3422efb4":[17,0,449,1],
 "structTrackSectionsI.html#aff11083f81a72bfe003420a1d7a3bec2":[17,0,449,0],
-"structTrackSectionsO2R.html":[17,0,450]
+"structTrackSectionsO2R.html":[17,0,450],
+"structTrackSectionsO2R.html#a0deba07df881ceb9c2f11fe082af3bd9":[17,0,450,0],
+"structTrackSectionsO2R.html#a386f5f12c36e052bdd209f7ecf7e68ef":[17,0,450,3],
+"structTrackSectionsO2R.html#a7aa303cbc301417d8c93336ce13de273":[17,0,450,2]
 };

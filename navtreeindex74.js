@@ -1,8 +1,5 @@
 var NAVTREEINDEX74 =
 {
-"structCinematicCamera.html#af040f105d6492058ce51aad952a6849f":[17,0,87,6],
-"structCollision.html":[17,0,88],
-"structCollision.html#a0efc6bf3ed2c3d042e5b81dcd7679ed4":[17,0,88,6],
 "structCollision.html#a1f4571abf7b64d0f1e2ee7cf70b63079":[17,0,88,4],
 "structCollision.html#a2c6db6518aadaa5bc3f380c444bcfdf0":[17,0,88,0],
 "structCollision.html#a7e2e601b4ea17e62338548b33e740fef":[17,0,88,5],
@@ -249,5 +246,8 @@ var NAVTREEINDEX74 =
 "structFreeCam.html#abf52276d5652fa16e8bfa7112ed8c288":[17,0,122,1],
 "structGfxPool.html":[17,0,132],
 "structGfxPool.html#a02b315fc7893c7d8693f8d675ade4799":[17,0,132,3],
-"structGfxPool.html#a383e380ba49ea2ba6c12d961dccf32f8":[17,0,132,5]
+"structGfxPool.html#a383e380ba49ea2ba6c12d961dccf32f8":[17,0,132,5],
+"structGfxPool.html#a394e0a1d01dd843336dedfdd7b357a89":[17,0,132,4],
+"structGfxPool.html#a42d7257d731853b49605659bfcb607bf":[17,0,132,6],
+"structGfxPool.html#a6412eaab6e773364bbe4a114f7ce5381":[17,0,132,2]
 };

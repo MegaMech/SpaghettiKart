@@ -1,8 +1,5 @@
 var NAVTREEINDEX97 =
 {
-"unionMtx2.html#ad2bbe35e4606145f027ed1b53697a0d0":[17,0,318,2],
-"unionMtx2.html#addf34ff580685e645fb24671780fa102":[17,0,318,0],
-"unionReverbBits.html":[17,0,380],
 "unionReverbBits.html#a097f0981e060c03cdd0f5b45c0e5c01a":[17,0,380,0],
 "unionReverbBits.html#a395ca89e82139bcaf63c939ac327cc93":[17,0,380,1],
 "unionTheWhyUnion.html":[17,0,443],
@@ -249,5 +246,8 @@ var NAVTREEINDEX97 =
 "update__objects_8c.html#ad285aa918529bd748888d37ff511a5d1":[18,0,3,69,93],
 "update__objects_8c.html#ad2b9deb416ecea685a4dcddd5b5ccce4":[18,0,3,69,211],
 "update__objects_8c.html#ad44c53b9400e14a1222584ef55fa41db":[18,0,3,69,155],
-"update__objects_8c.html#ad8cfa13e8a52335aed87848456e4bab3":[18,0,3,69,47]
+"update__objects_8c.html#ad8cfa13e8a52335aed87848456e4bab3":[18,0,3,69,47],
+"update__objects_8c.html#ad933b25fd16dccc7b5c1c2adca9e5187":[18,0,3,69,124],
+"update__objects_8c.html#ad9ed099200f3dfa5dadc29b91dea90f9":[18,0,3,69,150],
+"update__objects_8c.html#adb84f91341a8ce4d15d3242630d3e5e2":[18,0,3,69,201]
 };
