@@ -12,7 +12,11 @@ extern "C" {
 
 AActor::AActor() {}
 AActor::AActor(SpawnParams params) {
-    _spawnParams = std::move(params);
+    ResourceName = "mk:actor"; // This needs to be overridden in derived classes
+    SpawnPos = params.Location.value_or(FVector{0.0f, 0.0f, 0.0f});
+    SpawnRot = params.Rotation.value_or(IRotator{0, 0, 0});
+    SpawnScale = params.Scale.value_or(FVector(0, 0, 0));
+    Speed = params.Speed.value_or(0.0f);
 }
 
 void AActor::BeginPlay() {
@@ -64,26 +68,30 @@ FVector AActor::GetScale() const {
     return Scale;
 }
 
-SpawnParams& AActor::GetSpawnParams() {
-    return _spawnParams;
+void AActor::SetSpawnParams(SpawnParams& params) {
+    params.Name = ResourceName;
+    params.Location = SpawnPos;
+    params.Rotation = SpawnRot;
+    params.Scale = SpawnScale;
+    params.Speed = Speed;
 }
 
 void AActor::Translate(FVector pos) {
-    _spawnParams.Location = pos;
+    SpawnPos = pos;
     Pos[0] = pos.x;
     Pos[1] = pos.y;
     Pos[2] = pos.z;
 }
 
 void AActor::Rotate(IRotator rot) {
-    _spawnParams.Rotation = rot;
+    SpawnRot = rot;
     Rot[0] = rot.pitch;
     Rot[1] = rot.yaw;
     Rot[2] = rot.roll;
 }
 
 void AActor::SetScale(FVector scale) {
-    _spawnParams.Scale = scale;
+    SpawnScale = scale;
     Scale = scale;
 }
 

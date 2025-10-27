@@ -51,19 +51,18 @@ size_t OThwomp::_count = 0;
 size_t OThwomp::_rand = 0;
 
 OThwomp::OThwomp(const SpawnParams& params) : OObject(params) { // s16 x, s16 z, s16 direction, f32 scale, s16 behaviour, s16 primAlpha, u16 boundingBoxSize) {
-    FVector loc = _spawnParams.Location.value_or(FVector{0, 0, 0});
-    IRotator rot = _spawnParams.Rotation.value_or(IRotator{0, 0, 0});
-    uint16_t boundingBox = _spawnParams.BoundingBoxSize.value_or(0);
-    int16_t behaviour = _spawnParams.Behaviour.value_or(0);
-    int16_t primAlpha = _spawnParams.PrimAlpha.value_or(0);
-    FVector scale = _spawnParams.Scale.value_or(FVector(0, 0, 0));
+    FVector loc = params.Location.value_or(FVector{0, 0, 0});
+    IRotator rot = params.Rotation.value_or(IRotator{0, 0, 0});
+    BoundingBoxSize = params.BoundingBoxSize.value_or(0);
+    Behaviour = static_cast<OThwomp::States>(params.Behaviour.value_or(1));
+    PrimAlpha = params.PrimAlpha.value_or(0);
+    FVector scale = params.Scale.value_or(FVector(0, 0, 0));
 
     Name = "Thwomp";
     ResourceName = "mk:thwomp";
     Model = "d_course_bowsers_castle_dl_thwomp";
     _idx = _count;
     _faceDirection = rot.yaw;
-    _boundingBoxSize = boundingBox;
 
     find_unused_obj_index(&_objectIndex);
 
@@ -71,9 +70,9 @@ OThwomp::OThwomp(const SpawnParams& params) : OObject(params) { // s16 x, s16 z,
     init_object(objectId, 0);
     gObjectList[objectId].origin_pos[0] = loc.x * xOrientation;
     gObjectList[objectId].origin_pos[2] = loc.z;
-    gObjectList[objectId].unk_0D5 = behaviour;
-    gObjectList[objectId].primAlpha = primAlpha;
-    gObjectList[objectId].boundingBoxSize = boundingBox + 5;
+    gObjectList[objectId].unk_0D5 = Behaviour;
+    gObjectList[objectId].primAlpha = PrimAlpha;
+    gObjectList[objectId].boundingBoxSize = BoundingBoxSize + 5;
 
     if (scale.y == 0.0f) {
         scale.y = 1.0f;
@@ -82,6 +81,23 @@ OThwomp::OThwomp(const SpawnParams& params) : OObject(params) { // s16 x, s16 z,
     gObjectList[objectId].sizeScaling = scale.y;
 
     _count++;
+}
+
+void OThwomp::SetSpawnParams(SpawnParams& params) {
+    Object* object = &gObjectList[_objectIndex];
+    params.Name = std::string(ResourceName);
+    params.Location = FVector(
+        object->origin_pos[0],
+        object->origin_pos[1],
+        object->origin_pos[2]
+    );
+    IRotator rot; rot.Set(0, object->orientation[1], 0);
+    params.Rotation = rot;
+    params.Scale = FVector(0, object->sizeScaling, 0);
+    params.Behaviour = Behaviour;
+    params.PrimAlpha = PrimAlpha;
+    params.BoundingBoxSize = BoundingBoxSize;
+
 }
 
 void OThwomp::Tick60fps() { // func_80081210
@@ -104,23 +120,23 @@ void OThwomp::Tick60fps() { // func_80081210
     }
 
     if (gObjectList[_objectIndex].state != 0) {
-        switch (static_cast<OThwomp::States>(_spawnParams.Behaviour.value_or(0))) {
-            case STATIONARY:
+        switch(Behaviour) {
+            case States::STATIONARY:
                 OThwomp::StationaryBehaviour(_objectIndex);
                 break;
-            case MOVE_AND_ROTATE:
+            case States::MOVE_AND_ROTATE:
                 OThwomp::MoveAndRotateBehaviour(_objectIndex);
                 break;
-            case MOVE_FAR:
+            case States::MOVE_FAR:
                 OThwomp::MoveFarBehaviour(_objectIndex);
                 break;
-            case STATIONARY_FAST:
+            case States::STATIONARY_FAST:
                 OThwomp::StationaryFastBehaviour(_objectIndex);
                 break;
-            case JAILED:
+            case States::JAILED:
                 OThwomp::JailedBehaviour(_objectIndex);
                 break;
-            case SLIDE:
+            case States::SLIDE:
                 OThwomp::SlidingBehaviour(_objectIndex);
                 break;
         }
@@ -649,7 +665,7 @@ void OThwomp::func_80080B28(s32 objectIndex, s32 playerId) {
                 }
             } else if ((temp_f0 <= 17.5) && (func_80072320(objectIndex, 1) != 0) &&
                        (is_within_horizontal_distance_of_player(objectIndex, player,
-                                                                (player->speed * 0.5) + _boundingBoxSize) != 0)) {
+                                                                (player->speed * 0.5) + BoundingBoxSize) != 0)) {
                 if ((player->type & 0x8000) && !(player->type & 0x100)) {
                     if (is_obj_flag_status_active(objectIndex, 0x04000000) != 0) {
                         func_80072180();
@@ -712,7 +728,7 @@ void OThwomp::Draw(s32 cameraId) {
         objectIndex = gObjectParticle3[i];
         if (objectIndex != NULL_OBJECT_ID) {
             object = &gObjectList[objectIndex];
-            if ((object->state > 0) && (static_cast<OThwomp::States>(_spawnParams.Behaviour.value_or(0)) == States::MOVE_FAR)) {
+            if ((object->state > 0) && (Behaviour == States::MOVE_FAR)) {
                 rsp_set_matrix_transformation(object->pos, object->orientation, object->sizeScaling);
                 gSPVertex(gDisplayListHead++, (uintptr_t) D_0D005C00, 3, 0);
                 gSPDisplayList(gDisplayListHead++, (Gfx*) D_0D006930);
@@ -731,7 +747,7 @@ void OThwomp::Draw(s32 cameraId) {
         objectIndex = gObjectParticle2[i];
         if (objectIndex != NULL_OBJECT_ID) {
             object = &gObjectList[objectIndex];
-            if ((object->state >= 2) && (static_cast<OThwomp::States>(_spawnParams.Behaviour.value_or(0)) == States::MOVE_AND_ROTATE)) {
+            if ((object->state >= 2) && (Behaviour == States::MOVE_AND_ROTATE)) {
                 func_8004B138(0x000000FF, 0x000000FF, 0x000000FF, (s32) object->primAlpha);
                 D_80183E80[1] = func_800418AC(object->pos[0], object->pos[2], camera->pos);
                 func_800431B0(object->pos, D_80183E80, object->sizeScaling, (Vtx*) D_0D005AE0);
@@ -1458,126 +1474,106 @@ void OThwomp::func_8007E63C(s32 objectIndex) {
 }
 
 void OThwomp::DrawEditorProperties() {
-    auto& params = _spawnParams;
+    ImGui::Text("Behaviour");
+    ImGui::SameLine();
 
-    if (params.Behaviour.has_value()) {
-        ImGui::Text("Behaviour");
-        ImGui::SameLine();
+    int32_t behaviour = static_cast<int32_t>(Behaviour);
+    const char* items[] = { "Disabled", "Stationary", "Move and Rotate", "Move Far", "Stationary Fast", "Slide", "Jailed" };
 
-        int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
-        const char* items[] = { "Disabled", "Stationary", "Move and Rotate", "Move Far", "Stationary Fast", "Slide", "Jailed" };
-
-        if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
-            *params.Behaviour = static_cast<int16_t>(behaviour);
-            gObjectList[_objectIndex].unk_0D5 = static_cast<uint8_t>(behaviour);
-            gObjectList[_objectIndex].state = behaviour;
-        }
+    if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
+        Behaviour = static_cast<OThwomp::States>(behaviour);
+        gObjectList[_objectIndex].unk_0D5 = static_cast<uint8_t>(behaviour);
+        gObjectList[_objectIndex].state = behaviour;
     }
 
-    if (params.Location.has_value()) {
-        ImGui::Text("Location");
-        ImGui::SameLine();
-        FVector location = GetLocation();
-        if (ImGui::DragFloat3("##Location", (float*)&location)) {
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
-
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-            FVector location = FVector(0, 0, 0);
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
+    ImGui::Text("Location");
+    ImGui::SameLine();
+    FVector location = GetLocation();
+    if (ImGui::DragFloat3("##Location", (float*)&location)) {
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
     }
 
-    if (params.Rotation.has_value()) {
-        ImGui::Text("Rotation");
-        ImGui::SameLine();
-
-        IRotator objRot = GetRotation();
-
-        // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
-        int rot[3] = {
-            objRot.pitch,
-            objRot.yaw,
-            objRot.roll
-        };
-
-        if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
-            for (size_t i = 0; i < 3; i++) {
-                // Wrap around 0–65535
-                rot[i] = (rot[i] % 65536 + 65536) % 65536;
-            }
-            IRotator newRot;
-            newRot.Set(
-                static_cast<uint16_t>(rot[0]),
-                static_cast<uint16_t>(rot[1]),
-                static_cast<uint16_t>(rot[2])
-            );
-            Rotate(newRot);
-            params.Rotation = newRot;
-        }
-
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
-            IRotator rot = IRotator(0, 0, 0);
-            Rotate(rot);
-            params.Rotation = rot;
-        }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+        FVector location = FVector(0, 0, 0);
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
     }
 
-    if (params.Scale.has_value()) {
-        FVector scale = GetScale();
-        ImGui::Text("Scale   ");
-        ImGui::SameLine();
+    ImGui::Text("Rotation");
+    ImGui::SameLine();
 
-        if (ImGui::DragFloat3("##Scale", (float*)&scale, 0.1f)) {
-            SetScale(scale);
-            *params.Scale = scale;
-            gObjectList[_objectIndex].sizeScaling = scale.y;
+    IRotator objRot = GetRotation();
+
+    // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
+    int rot[3] = {
+        objRot.pitch,
+        objRot.yaw,
+        objRot.roll
+    };
+
+    if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
+        for (size_t i = 0; i < 3; i++) {
+            // Wrap around 0–65535
+            rot[i] = (rot[i] % 65536 + 65536) % 65536;
         }
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetScale")) {
-            FVector scale = FVector(1.0f, 1.0f, 1.0f);
-            SetScale(scale);
-            params.Scale = scale;
-            gObjectList[_objectIndex].sizeScaling = 1.0f;
-        }
+        IRotator newRot;
+        newRot.Set(
+            static_cast<uint16_t>(rot[0]),
+            static_cast<uint16_t>(rot[1]),
+            static_cast<uint16_t>(rot[2])
+        );
+        Rotate(newRot);
     }
 
-    if (params.PrimAlpha.has_value()) {
-        int32_t primAlpha = params.PrimAlpha.value();
-        ImGui::Text("Prim Alpha");
-        ImGui::SameLine();
-
-        if (ImGui::InputInt("##PrimAlpha", (int*)&primAlpha)) {
-            params.PrimAlpha = static_cast<int16_t>(primAlpha);
-            gObjectList[_objectIndex].primAlpha = static_cast<int16_t>(primAlpha);
-        }
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetPrimAlpha")) {
-            params.PrimAlpha = 0;
-            gObjectList[_objectIndex].primAlpha = 0;
-        }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
+        IRotator rot = IRotator(0, 0, 0);
+        Rotate(rot);
     }
 
-    if (params.BoundingBoxSize.has_value()) {
-        int32_t boundingBoxSize = static_cast<int32_t>(params.BoundingBoxSize.value());
-        ImGui::Text("Bounding Box Size");
-        ImGui::SameLine();
+    FVector scale = GetScale();
+    ImGui::Text("Scale   ");
+    ImGui::SameLine();
 
-        if (ImGui::InputInt("##BoundingBoxSize", (int*)&boundingBoxSize)) {
-            if (boundingBoxSize < 0) boundingBoxSize = 0;
-            params.BoundingBoxSize = static_cast<uint16_t>(boundingBoxSize);
-            gObjectList[_objectIndex].boundingBoxSize = static_cast<uint16_t>(boundingBoxSize);
-        }
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetBoundingBoxSize")) {
-            params.BoundingBoxSize = 0;
-            gObjectList[_objectIndex].boundingBoxSize = 0;
-        }
+    if (ImGui::DragFloat3("##Scale", (float*)&scale, 0.1f)) {
+        SetScale(scale);
+        gObjectList[_objectIndex].sizeScaling = scale.y;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetScale")) {
+        FVector scale = FVector(1.0f, 1.0f, 1.0f);
+        SetScale(scale);
+        gObjectList[_objectIndex].sizeScaling = 1.0f;
+    }
+
+    int32_t primAlpha = PrimAlpha;
+    ImGui::Text("Prim Alpha");
+    ImGui::SameLine();
+
+    if (ImGui::InputInt("##PrimAlpha", (int*)&primAlpha)) {
+        PrimAlpha = static_cast<int16_t>(primAlpha);
+        gObjectList[_objectIndex].primAlpha = static_cast<int16_t>(primAlpha);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPrimAlpha")) {
+        PrimAlpha = 0;
+        gObjectList[_objectIndex].primAlpha = 0;
+    }
+
+    int32_t boundingBoxSize = static_cast<int32_t>(BoundingBoxSize);
+    ImGui::Text("Bounding Box Size");
+    ImGui::SameLine();
+
+    if (ImGui::InputInt("##BoundingBoxSize", (int*)&boundingBoxSize)) {
+        if (boundingBoxSize < 0) boundingBoxSize = 0;
+        BoundingBoxSize = static_cast<OThwomp::States>(boundingBoxSize);
+        gObjectList[_objectIndex].boundingBoxSize = static_cast<uint16_t>(boundingBoxSize);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetBoundingBoxSize")) {
+        BoundingBoxSize = 0;
+        gObjectList[_objectIndex].boundingBoxSize = 0;
     }
 }

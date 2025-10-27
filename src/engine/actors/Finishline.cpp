@@ -25,8 +25,8 @@ AFinishline::AFinishline(const SpawnParams& params) : AActor(params) {
     Name = "Finishline";
     ResourceName = "mk:finishline";
 
-    if (_spawnParams.Location.has_value()) {
-        FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    if (params.Location.has_value()) {
+        FVector pos = params.Location.value_or(FVector(0, 0, 0));
         // Set spawn point to the provided position
         Pos[0] = D_8015F8D0[0] = pos.x;
         Pos[1] = D_8015F8D0[1] = pos.y - 15;
@@ -38,7 +38,7 @@ AFinishline::AFinishline(const SpawnParams& params) : AActor(params) {
         Pos[2] = D_8015F8D0[2] = gCurrentTrackPath->z;
     }
 
-    IRotator rot = _spawnParams.Rotation.value_or(IRotator(0, 0, 0));
+    IRotator rot = params.Rotation.value_or(IRotator(0, 0, 0));
 
     Rot[0] = rot.pitch;
     Rot[1] = rot.yaw;

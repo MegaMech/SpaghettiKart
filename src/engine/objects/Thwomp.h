@@ -74,6 +74,7 @@ public:
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick60fps() override;
     virtual void Draw(s32 cameraId) override;
     virtual void DrawEditorProperties() override;
@@ -130,6 +131,10 @@ public:
     void func_8008078C(s32 objectIndex);
 
     void func_8007E63C(s32 objectIndex);
+
+    u16 BoundingBoxSize;
+    OThwomp::States Behaviour;
+    int16_t PrimAlpha;
 private:
     static size_t _count;
     static size_t _rand;
@@ -137,5 +142,4 @@ private:
     s16 _faceDirection;
     //! @todo Write this better. This effects the squish size and the bounding box size.
     // We should probably return to the programmer the pointer to the actor so they can do thwomp->squishSize = value.
-    u16 _boundingBoxSize;
 };

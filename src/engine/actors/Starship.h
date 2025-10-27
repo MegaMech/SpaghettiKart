@@ -29,6 +29,9 @@ public:
         return static_cast<AStarship*>(gWorldInstance.AddActor(new AStarship(params)));
     }
 
+    float SpeedB;
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual bool IsMod() override;
     virtual void BeginPlay() override;

@@ -35,6 +35,9 @@ public:
         return static_cast<AFallingRock*>(gWorldInstance.AddActor(new AFallingRock(params)));
     }
 
+    int16_t TimerLength = 80;
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual bool IsMod() override;
     virtual void Tick() override;
     virtual void Draw(Camera*) override;

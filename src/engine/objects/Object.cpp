@@ -13,7 +13,19 @@ extern "C" {
 OObject::OObject() {
 }
 OObject::OObject(SpawnParams params) {
-    _spawnParams = std::move(params);
+    ResourceName = "mk:object"; // This needs to be overridden in derived classes
+    SpawnPos = params.Location.value_or(FVector{0.0f, 0.0f, 0.0f});
+    SpawnRot = params.Rotation.value_or(IRotator{0, 0, 0});
+    SpawnScale = params.Scale.value_or(FVector(0, 0, 0));
+    Speed = params.Speed.value_or(0.0f);
+}
+
+void OObject::SetSpawnParams(SpawnParams& params) {
+    params.Name = ResourceName;
+    params.Location = SpawnPos;
+    params.Rotation = SpawnRot;
+    params.Scale = SpawnScale;
+    params.Speed = Speed;
 }
 
 // Virtual functions to be overridden by derived classes
@@ -25,10 +37,6 @@ void OObject::Destroy() {
     bPendingDestroy = true;
 }
 void OObject::Reset() { }
-
-SpawnParams& OObject::GetSpawnParams() {
-    return _spawnParams;
-}
 
 FVector OObject::GetLocation() const {
     if (_objectIndex != -1) {
@@ -59,7 +67,7 @@ FVector OObject::GetScale() const {
 
 void OObject::Translate(FVector pos) {
     if (_objectIndex != -1) {
-        _spawnParams.Location = pos;
+        SpawnPos = pos;
 
         Object* object = &gObjectList[_objectIndex];
 
@@ -75,6 +83,7 @@ void OObject::Translate(FVector pos) {
 }
 void OObject::Rotate(IRotator rot) {
     if (_objectIndex != -1) {
+        SpawnRot = rot;
         Object* object = &gObjectList[_objectIndex];
         object->orientation[0] = rot.pitch;
         object->orientation[1] = rot.yaw;
@@ -85,4 +94,5 @@ void OObject::Rotate(IRotator rot) {
 }
 
 void OObject::SetScale(FVector scale) {
+    SpawnScale = scale;
 }

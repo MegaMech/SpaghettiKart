@@ -351,7 +351,7 @@ void OSnowman::func_80083B0C(s32 objectIndex) {
 
 void OSnowman::Translate(FVector pos) {
     if ((_objectIndex != -1) && (_bodyIndex != -1)) {
-        _spawnParams.Location = pos;
+        SpawnPos = pos;
 
         Object* object = &gObjectList[_objectIndex];
 

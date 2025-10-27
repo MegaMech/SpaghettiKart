@@ -95,6 +95,8 @@ class OBombKart : public OObject {
     void LoadMtx();
     void Waypoint(s32 screenId);
 
+    OBombKart::States Behaviour = OBombKart::States::COUNTERCLOCKWISE;
+    float SpeedB = 2.7f;
   private:
     static size_t _count;
     s32 _idx;

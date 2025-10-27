@@ -61,6 +61,12 @@ class ACar : public AActor {
     f32 SomeArg4 = 8.5f;
     u32 SoundBits = SOUND_ARG_LOAD(0x51, 0x01, 0x80, 0x05);
 
+    ACar::SpawnMode SpawnType = ACar::SpawnMode::AUTO;
+    float SpeedB = 0.0f;
+    uint32_t PathIndex = 0;
+    uint32_t PathPoint = 0;
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera*) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;

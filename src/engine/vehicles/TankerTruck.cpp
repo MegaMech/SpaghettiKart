@@ -24,32 +24,31 @@ std::map<uint32_t, std::vector<uint32_t>> ATankerTruck::TruckCounts;
 ATankerTruck::ATankerTruck(const SpawnParams& params) : AActor(params) {
     Name = "Tanker Truck";
     ResourceName = "mk:tanker_truck";
-    _spawnParams.Name = "mk:tanker_truck";
     BoundingBoxSize = 2.0f;
     TrackPathPoint* temp_v0;
     u16 waypointOffset;
     s32 numWaypoints = gPathCountByPathIndex[0];
 
     Index = _count;
-    uint32_t pathIndex = params.PathIndex.value_or(0);
-    uint32_t pathPoint = 0;
+    PathIndex = params.PathIndex.value_or(0);
+    PathPoint = 0;
 
     ATankerTruck::SpawnMode spawnMode = static_cast<ATankerTruck::SpawnMode>(params.Type.value_or(0));
     switch(spawnMode) {
         case SpawnMode::POINT: // Spawn truck at a specific path point
-            pathPoint = params.PathPoint.value_or(0);
-            TruckCounts[pathIndex].push_back(pathPoint);
+            PathPoint = params.PathPoint.value_or(0);
+            TruckCounts[PathIndex].push_back(PathPoint);
             break;
         case SpawnMode::AUTO: // Automatically distribute trucks based on a specific path point
             printf("vehicle path size %d\n", gVehiclePathSize);
-            pathPoint = GetVehiclePathPointDistributed(TruckCounts[pathIndex], gVehiclePathSize);
-            TruckCounts[pathIndex].push_back(pathPoint);
-            printf("train spawn path point: %d\n", pathPoint);
+            PathPoint = GetVehiclePathPointDistributed(TruckCounts[PathIndex], gVehiclePathSize);
+            TruckCounts[PathIndex].push_back(PathPoint);
+            printf("train spawn path point: %d\n", PathPoint);
             break;
     }
 
-    waypointOffset = pathPoint;
-    temp_v0 = &gTrackPaths[pathIndex][pathPoint];
+    waypointOffset = PathPoint;
+    temp_v0 = &gTrackPaths[PathIndex][PathPoint];
     Position[0] = (f32) temp_v0->x;
     Position[1] = (f32) temp_v0->y;
     Position[2] = (f32) temp_v0->z;
@@ -82,6 +81,15 @@ ATankerTruck::ATankerTruck(const SpawnParams& params) : AActor(params) {
     ActorIndex = add_actor_to_empty_slot(Position, Rotation, Velocity, ACTOR_TANKER_TRUCK);
 
     _count++;
+}
+
+void ATankerTruck::SetSpawnParams(SpawnParams& params) {
+    params.Name = ResourceName;
+    params.Type = static_cast<uint16_t>(SpawnType);
+    params.PathIndex = PathIndex;
+    params.PathPoint = PathPoint;
+    params.Speed = Speed;
+    params.SpeedB = SpeedB;
 }
 
 bool ATankerTruck::IsMod() {
@@ -139,9 +147,9 @@ void ATankerTruck::Tick() {
         }
     }
     if (gIsInExtra == 0) {
-        var_a1 = func_8000D6D0(Position, (s16*) &WaypointIndex, _spawnParams.Speed.value_or(0), SomeMultiplierTheSequel, 0, 3);
+        var_a1 = func_8000D6D0(Position, (s16*) &WaypointIndex, Speed, SomeMultiplierTheSequel, 0, 3);
     } else {
-        var_a1 = func_8000D940(Position, (s16*) &WaypointIndex, _spawnParams.Speed.value_or(0), SomeMultiplierTheSequel, 0);
+        var_a1 = func_8000D940(Position, (s16*) &WaypointIndex, Speed, SomeMultiplierTheSequel, 0);
     }
     adjust_angle(&Rotation[1], var_a1, 100);
     temp_f0_3 = Position[0] - sp5C;
@@ -232,7 +240,7 @@ void ATankerTruck::VehicleCollision(s32 playerId, Player* player) {
                         case 0:
                             t1 = is_path_point_in_range(WaypointIndex, gNearestPathPointByPlayerId[playerId], 10, 0,
                                                         path);
-                            if ((gIsPlayerWrongDirection[playerId] == 0) && (t1 > 0) && (player->speed < _spawnParams.Speed.value_or(0))) {
+                            if ((gIsPlayerWrongDirection[playerId] == 0) && (t1 > 0) && (player->speed < Speed)) {
                                 var_s1 = 1;
                             }
                             if ((gIsPlayerWrongDirection[playerId] == 1) && (t1 > 0)) {
@@ -248,7 +256,7 @@ void ATankerTruck::VehicleCollision(s32 playerId, Player* player) {
                                     if (gIsPlayerWrongDirection[playerId] == 0) {
                                         var_s1 = 1;
                                     }
-                                    if ((gIsPlayerWrongDirection[playerId] == 1) && (player->speed < _spawnParams.Speed.value_or(0))) {
+                                    if ((gIsPlayerWrongDirection[playerId] == 1) && (player->speed < Speed)) {
                                         var_s1 = 1;
                                     }
                                 } else {
@@ -304,85 +312,65 @@ void ATankerTruck::VehicleCollision(s32 playerId, Player* player) {
 }
 
 void ATankerTruck::DrawEditorProperties() {
-    std::visit([](auto* obj) {
-        using T = std::decay_t<decltype(*obj)>;
-        if (nullptr == obj) {
-            return;
+    ImGui::Text("Spawn Mode");
+    ImGui::SameLine();
+
+    int32_t type = static_cast<int32_t>(SpawnType);
+    const char* items[] = { "POINT", "AUTO" };
+
+    if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+        SpawnType = static_cast<ATankerTruck::SpawnMode>(type);
+    }
+
+    if (SpawnType == ATankerTruck::SpawnMode::POINT) {
+        ImGui::Text("Path Index");
+        ImGui::SameLine();
+
+        int pathIndex = static_cast<int>(PathIndex);
+        if (ImGui::InputInt("##PathIndex", &pathIndex)) {
+            if (pathIndex < 0) pathIndex = 0;
+            PathIndex = static_cast<uint32_t>(pathIndex);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPathIndex")) {
+            PathIndex = 0;
         }
 
-        auto& params = obj->_spawnParams;
+        ImGui::Text("Path Point");
+        ImGui::SameLine();
 
-        if (params.Type.has_value()) {
-            ImGui::Text("Spawn Mode");
-            ImGui::SameLine();
-
-            int32_t type = static_cast<int32_t>(params.Type.value());
-            const char* items[] = { "POINT", "AUTO" };
-
-            if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
-                *params.Type = static_cast<int16_t>(type);
-            }
-
-            if (type == ATankerTruck::SpawnMode::POINT) {
-                if (params.PathIndex.has_value()) {
-                    ImGui::Text("Path Index");
-                    ImGui::SameLine();
-
-                    int pathIndex = static_cast<int>(params.PathIndex.value());
-                    if (ImGui::InputInt("##PathIndex", &pathIndex)) {
-                        if (pathIndex < 0) pathIndex = 0;
-                        params.PathIndex = static_cast<uint32_t>(pathIndex);
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button(ICON_FA_UNDO "##ResetPathIndex")) {
-                        params.PathIndex = 0;
-                    }
-                }
-
-                if (params.PathPoint.has_value()) {
-                    ImGui::Text("Path Point");
-                    ImGui::SameLine();
-
-                    int pathPoint = static_cast<int>(params.PathPoint.value());
-                    if (ImGui::InputInt("##PathPoint", &pathPoint)) {
-                        if (pathPoint < 0) pathPoint = 0;
-                        params.PathPoint = static_cast<uint32_t>(pathPoint);
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button(ICON_FA_UNDO "##ResetPathPoint")) {
-                        params.PathPoint = 0;
-                    }
-                }
-            }
-
+        int pathPoint = static_cast<int>(PathPoint);
+        if (ImGui::InputInt("##PathPoint", &pathPoint)) {
+            if (pathPoint < 0) pathPoint = 0;
+            PathPoint = static_cast<uint32_t>(pathPoint);
         }
-
-        if (params.Speed.has_value()) {
-            ImGui::Text("Speed");
-            ImGui::SameLine();
-
-            float speed = params.Speed.value();
-            if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
-                *params.Speed = speed;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
-                *params.Speed = 0.0f;
-            }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPathPoint")) {
+            PathPoint = 0;
         }
+    }
 
-        if (params.SpeedB.has_value()) {
-            ImGui::Text("SpeedB");
-            ImGui::SameLine();
+    ImGui::Text("Speed");
+    ImGui::SameLine();
 
-            float speed = params.SpeedB.value();
-            if (ImGui::DragFloat("##SpeedB", &speed, 0.1f)) {
-                *params.SpeedB = speed;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetSpeedB")) {
-                *params.SpeedB = 0.0f;
-            }
-        }
-    }, gEditor.eObjectPicker.eGizmo._selected);
+    float speed = Speed;
+    if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+        Speed = speed;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+        Speed = 0.0f;
+    }
+
+    ImGui::Text("SpeedB");
+    ImGui::SameLine();
+
+    float speed2 = SpeedB;
+    if (ImGui::DragFloat("##SpeedB", &speed2, 0.1f)) {
+        SpeedB = speed2;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetSpeedB")) {
+        SpeedB = 0.0f;
+    }
 }

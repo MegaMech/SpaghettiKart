@@ -52,6 +52,9 @@ public:
         return static_cast<OPenguin*>(gWorldInstance.AddObject(new OPenguin(params)));
     }
 
+    PenguinType Type = PenguinType::CHICK;
+    Behaviour SpawnBhv = Behaviour::STRUT;
+
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     virtual void Reset() override;

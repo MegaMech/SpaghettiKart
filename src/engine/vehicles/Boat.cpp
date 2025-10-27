@@ -22,22 +22,21 @@ std::map<uint32_t, std::vector<uint32_t>> ABoat::BoatCounts;
 ABoat::ABoat(const SpawnParams& params) : AActor(params) {
     Name = "Paddle Steam Boat";
     ResourceName = "mk:paddle_boat";
-    _spawnParams.Name = "mk:paddle_boat";
     BoundingBoxSize = 2.0f;
     TrackPathPoint* temp_a2;
     Index = _count;
-    Speed = _spawnParams.Speed.value_or(0);
+    Speed = params.Speed.value_or(0);
 
     // Set to the default value
     std::fill(SmokeParticles, SmokeParticles + 128, NULL_OBJECT_ID);
 
-    ABoat::SpawnMode spawnMode = static_cast<SpawnMode>(_spawnParams.Type.value_or(SpawnMode::POINT));
-    uint32_t pathIndex = _spawnParams.PathIndex.value_or(0);
+    ABoat::SpawnMode spawnMode = static_cast<SpawnMode>(params.Type.value_or(SpawnMode::POINT));
+    uint32_t pathIndex = params.PathIndex.value_or(0);
     uint32_t pathPoint = 0;
 
     switch(spawnMode) {
         case SpawnMode::POINT: // Spawn train at a specific path point
-            pathPoint = _spawnParams.PathPoint.value_or(0);
+            pathPoint = params.PathPoint.value_or(0);
             BoatCounts[pathIndex].push_back(pathPoint);
             break;
         case SpawnMode::AUTO: // Automatically distribute trains based on a specific path point
@@ -71,6 +70,14 @@ ABoat::ABoat(const SpawnParams& params) : AActor(params) {
     }
 
     _count++;
+}
+
+void ABoat::SetSpawnParams(SpawnParams& params) {
+    AActor::SetSpawnParams(params);
+    params.Type = static_cast<uint16_t>(SpawnType);
+    params.Speed = Speed;
+    params.PathIndex = PathIndex;
+    params.PathPoint = PathPoint;
 }
 
 void ABoat::Draw(Camera* camera) {
@@ -216,71 +223,53 @@ s32 ABoat::AddSmoke(size_t ferryIndex, Vec3f pos, f32 velocity) {
 }
 
 void ABoat::DrawEditorProperties() {
-    std::visit([](auto* obj) {
-        using T = std::decay_t<decltype(*obj)>;
-        if (nullptr == obj) {
-            return;
+    ImGui::Text("Spawn Mode");
+    ImGui::SameLine();
+
+    int32_t type = static_cast<int32_t>(SpawnType);
+    const char* items[] = { "POINT", "AUTO" };
+
+    if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+        SpawnType = static_cast<ABoat::SpawnMode>(type);
+    }
+
+    if (SpawnType == ABoat::SpawnMode::POINT) {
+        ImGui::Text("Path Index");
+        ImGui::SameLine();
+
+        int pathIndex = static_cast<int>(PathIndex);
+        if (ImGui::InputInt("##PathIndex", &pathIndex)) {
+            if (pathIndex < 0) pathIndex = 0;
+            PathIndex = static_cast<uint32_t>(pathIndex);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPathIndex")) {
+            PathIndex = 0;
         }
 
-        auto& params = obj->_spawnParams;
+        ImGui::Text("Path Point");
+        ImGui::SameLine();
 
-        if (params.Type.has_value()) {
-            ImGui::Text("Spawn Mode");
-            ImGui::SameLine();
-
-            int32_t type = static_cast<int32_t>(params.Type.value());
-            const char* items[] = { "POINT", "AUTO" };
-
-            if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
-                *params.Type = static_cast<int16_t>(type);
-            }
-
-            if (type == ABoat::SpawnMode::POINT) {
-                if (params.PathIndex.has_value()) {
-                    ImGui::Text("Path Index");
-                    ImGui::SameLine();
-
-                    int pathIndex = static_cast<int>(params.PathIndex.value());
-                    if (ImGui::InputInt("##PathIndex", &pathIndex)) {
-                        if (pathIndex < 0) pathIndex = 0;
-                        params.PathIndex = static_cast<uint32_t>(pathIndex);
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button(ICON_FA_UNDO "##ResetPathIndex")) {
-                        params.PathIndex = 0;
-                    }
-                }
-
-                if (params.PathPoint.has_value()) {
-                    ImGui::Text("Path Point");
-                    ImGui::SameLine();
-
-                    int pathPoint = static_cast<int>(params.PathPoint.value());
-                    if (ImGui::InputInt("##PathPoint", &pathPoint)) {
-                        if (pathPoint < 0) pathPoint = 0;
-                        params.PathPoint = static_cast<uint32_t>(pathPoint);
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button(ICON_FA_UNDO "##ResetPathPoint")) {
-                        params.PathPoint = 0;
-                    }
-                }
-            }
-
+        int pathPoint = static_cast<int>(PathPoint);
+        if (ImGui::InputInt("##PathPoint", &pathPoint)) {
+            if (pathPoint < 0) pathPoint = 0;
+            PathPoint = static_cast<uint32_t>(pathPoint);
         }
-
-        if (params.Speed.has_value()) {
-            ImGui::Text("Speed");
-            ImGui::SameLine();
-
-            float speed = params.Speed.value();
-            if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
-                *params.Speed = speed;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
-                *params.Speed = 0.0f;
-            }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_UNDO "##ResetPathPoint")) {
+            PathPoint = 0;
         }
-    }, gEditor.eObjectPicker.eGizmo._selected);
+    }
+
+    ImGui::Text("Speed");
+    ImGui::SameLine();
+
+    float speed = Speed;
+    if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+        Speed = speed;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+        Speed = 0.0f;
+    }
 }

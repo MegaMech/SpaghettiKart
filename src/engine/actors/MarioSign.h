@@ -32,6 +32,7 @@ public:
     }
 
     virtual bool IsMod() override;
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera*) override;
 };

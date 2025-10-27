@@ -20,20 +20,25 @@ public:
     bool bPendingDestroy = false;
     s32 _objectIndex = -1;
     const char* Model = "";
+
+    FVector SpawnPos = {0.0f, 0.0f, 0.0f};
+    IRotator SpawnRot = {0, 0, 0};
+    FVector SpawnScale = {1.0f, 1.0f, 1.0f};
+    float Speed = 0.0f;
+
     std::vector<Triangle> Triangles;
-    SpawnParams _spawnParams;
     virtual ~OObject() = default;
 
     explicit OObject();
     explicit OObject(SpawnParams params);
 
+    virtual void SetSpawnParams(SpawnParams& params);
     virtual void Tick();
     virtual void Tick60fps();
     virtual void Draw(s32 cameraId);
     virtual void Expire();
     virtual void Destroy(); // Mark object for deletion at the start of the next frame
     virtual void Reset();
-    virtual SpawnParams& GetSpawnParams();
     FVector GetLocation() const;
     IRotator GetRotation() const;
     FVector GetScale() const;

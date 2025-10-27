@@ -61,6 +61,12 @@ class ATankerTruck : public AActor {
         return _count;
     }
 
+    ATankerTruck::SpawnMode SpawnType = ATankerTruck::SpawnMode::AUTO;
+    float SpeedB = 0.0f;
+    uint32_t PathIndex = 0;
+    uint32_t PathPoint = 0;
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;

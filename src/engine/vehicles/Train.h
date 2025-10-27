@@ -36,10 +36,14 @@ class ATrain : public AActor {
     TrainCarStuff Locomotive;
     TrainCarStuff Tender;
     std::vector<TrainCarStuff> PassengerCars;
+    size_t PassengerCarsCount = 0;
+    ATrain::SpawnMode SpawnType = ATrain::SpawnMode::AUTO;
+    uint32_t PathIndex = 0;
+    uint32_t PathPoint = 0;
+    TenderStatus HasTender = TenderStatus::NO_TENDER;
     s32 SomeFlags;
     f32 SomeMultiplier;
 
-    const char* Type = "mk:train";
     size_t Index; // Spawns the train in halves of the train path
 
     int32_t SmokeParticles[128];
@@ -71,6 +75,7 @@ class ATrain : public AActor {
         return static_cast<ATrain*>(gWorldInstance.AddActor(new ATrain(params)));
     }
 
+    virtual void SetSpawnParams(SpawnParams& params);
     virtual void Tick() override;
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;

@@ -39,9 +39,8 @@ size_t LightObject::NumLights = 0;
         Rot = IRotator(0, 0, 0);
         Scale = FVector(0.1, 0.1, 0.1);
 
-        _spawnParams.Name = "editor:light";
-        _spawnParams.Location = Pos;
-        _spawnParams.Rotation = Rot;
+        SpawnPos = Pos;
+        SpawnRot = Rot;
 
         Direction = direction;
 

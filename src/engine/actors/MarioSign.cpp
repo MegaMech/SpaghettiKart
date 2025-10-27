@@ -17,8 +17,9 @@ AMarioSign::AMarioSign(const SpawnParams& params) : AActor(params) {
     Type = ACTOR_MARIO_SIGN;
     Name = "Mario Sign";
     ResourceName = "mk:mario_sign";
-    _spawnParams.Name = "mk:mario_sign";
     Model = d_course_mario_raceway_dl_sign;
+
+    Speed = params.Speed.value_or(182);
 
     FVector pos = params.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x * gCourseDirection;
@@ -41,16 +42,20 @@ bool AMarioSign::IsMod() {
     return true;
 }
 
+void AMarioSign::SetSpawnParams(SpawnParams& params) {
+    AActor::SetSpawnParams(params);
+}
+
 void AMarioSign::Tick() {
     if ((Flags & 0x800) == 0) {
         if ((Flags & 0x400) != 0) {
             Pos[1] += 4.0f;
             if (Pos[1] > 800.0f) {
                 Flags |= 0x800;
-                Rot[1] += _spawnParams.Speed.value_or(182) * 10; // Originally 1820
+                Rot[1] += Speed * 10; // Originally 1820
             }
         } else {
-            Rot[1] += _spawnParams.Speed.value_or(182);
+            Rot[1] += Speed; // Originally 182
         }
     }
 }

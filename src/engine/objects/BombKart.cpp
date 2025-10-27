@@ -52,6 +52,9 @@ OBombKart::OBombKart(const SpawnParams& params) : OObject(params) {
         constPos.z = gTrackPaths[pathIndex][pathPoint].z;
     }
 
+    Behaviour = static_cast<OBombKart::States>(params.Behaviour.value_or(OBombKart::States::COUNTERCLOCKWISE));
+    SpeedB = params.SpeedB.value_or(2.7f); // Chase speed
+
     WaypointIndex = params.PathPoint.value_or(0);
     Unk_3C = params.Speed.value_or(0);
 
@@ -109,7 +112,7 @@ void OBombKart::Tick() {
     f32 sp94;
     f32 sp88;
     Vec3f newPos;
-    States state;
+    OBombKart::States state;
     u16 bounceTimer;
     UNUSED u16 sp4C;
     u16 temp_t6;
@@ -118,7 +121,7 @@ void OBombKart::Tick() {
     TrackPathPoint* temp_v0_4;
     Player* player;
 
-    state = static_cast<OBombKart::States>(_spawnParams.Behaviour.value_or(0));
+    state = Behaviour;
 
     if (state == States::DISABLED) {
         return;
@@ -143,7 +146,7 @@ void OBombKart::Tick() {
                     if ((((temp_f0 * temp_f0) + (temp_f2 * temp_f2)) + (temp_f12 * temp_f12)) < 25.0f) {
                         circleTimer = 0;
                         state = States::EXPLODE;
-                        _spawnParams.Behaviour = static_cast<int16_t>(States::EXPLODE);
+                        Behaviour = States::EXPLODE;
                         player->soundEffects |= 0x400000;
                         player->type &= ~0x2000;
                     }
@@ -158,7 +161,7 @@ void OBombKart::Tick() {
                         temp_f12 = newPos[2] - player->pos[2];
                         if ((((temp_f0 * temp_f0) + (temp_f2 * temp_f2)) + (temp_f12 * temp_f12)) < 25.0f) {
                             state = States::EXPLODE;
-                            _spawnParams.Behaviour = static_cast<int16_t>(States::EXPLODE);
+                            Behaviour = States::EXPLODE;
                             circleTimer = 0;
                             if (IsFrappeSnowland()) {
                                 player->soundEffects |= 0x01000000;
@@ -300,7 +303,7 @@ void OBombKart::Tick() {
             sp88 = temp_f2_4;
             if (circleTimer > 30) {
                 state = States::DISABLED;
-                _spawnParams.Behaviour = static_cast<int16_t>(States::DISABLED);
+                Behaviour = States::DISABLED;
             }
         } else {
             sp118 = coss(0xFFFF - someRot) * 1.5f;
@@ -382,7 +385,7 @@ void OBombKart::Draw(s32 cameraId) {
     }
 
     // huh???
-    OBombKart::States state = static_cast<States>(_spawnParams.Behaviour.value_or(0));
+    OBombKart::States state = Behaviour;
     if (state != States::DISABLED) {
         gObjectList[_objectIndex].pos[0] = Pos[0];
         gObjectList[_objectIndex].pos[1] = Pos[1];
@@ -446,7 +449,7 @@ void OBombKart::Waypoint(s32 screenId) {
     playerWaypoint = gNearestPathPointByPlayerId[screenId];
     playerHUD[screenId].unk_74 = 0;
 
-    OBombKart::States state = static_cast<States>(_spawnParams.Behaviour.value_or(0));
+    OBombKart::States state = Behaviour;
     if ((state == States::EXPLODE) || (state == States::DISABLED)) { return; };
     bombWaypoint = WaypointIndex;
     waypointDiff = bombWaypoint - playerWaypoint;
@@ -466,7 +469,7 @@ Player* OBombKart::FindTarget() {
 }
 
 void OBombKart::Chase(Player* player, Vec3f pos) {
-    const f32 speed = _spawnParams.SpeedB.value_or(2.7f); // Speed the kart uses in a chase
+    const f32 speed = SpeedB; // Speed the kart uses in a chase
 
     if (!player) return; // Ensure player is valid
 
@@ -540,52 +543,42 @@ void OBombKart::Translate(FVector pos) {
 }
 
 void OBombKart::DrawEditorProperties() {
-    auto& params = _spawnParams;
-
     Object* obj = &gObjectList[_objectIndex];
 
-    if (params.Behaviour.has_value()) {
-        ImGui::Text("Behaviour");
-        ImGui::SameLine();
+    ImGui::Text("Behaviour");
+    ImGui::SameLine();
 
-        int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
-        const char* items[] = { "Disabled", "Counterclockwise", "Clockwise", "Stationary", "Chase", "Explode", "Podium" };
+    int32_t behaviour = static_cast<int32_t>(Behaviour);
+    const char* items[] = { "Disabled", "Counterclockwise", "Clockwise", "Stationary", "Chase", "Explode", "Podium" };
 
-        if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
-            *params.Behaviour = static_cast<int16_t>(behaviour);
-        }
+    if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
+        Behaviour = static_cast<OBombKart::States>(behaviour);
     }
 
-    if (params.Location.has_value()) {
-        ImGui::Text("Location");
-        ImGui::SameLine();
-        FVector location = FVector(obj->pos[0], obj->pos[1], obj->pos[2]);
-        if (ImGui::DragFloat3("##Location", (float*)&location)) {
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
-
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-            FVector location = FVector(0, 0, 0);
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
+    ImGui::Text("Location");
+    ImGui::SameLine();
+    FVector location = FVector(obj->pos[0], obj->pos[1], obj->pos[2]);
+    if (ImGui::DragFloat3("##Location", (float*)&location)) {
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
     }
 
-    if (params.SpeedB.has_value()) {
-        ImGui::Text("Chase Speed");
-        ImGui::SameLine();
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+        FVector location = FVector(0, 0, 0);
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
+    }
 
-        float speed = params.SpeedB.value();
-        if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
-            *params.SpeedB = speed;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
-            *params.SpeedB = 2.7f;
-        }
+    ImGui::Text("Chase Speed");
+    ImGui::SameLine();
+
+    float speed = SpeedB;
+    if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+        SpeedB = speed;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+        SpeedB = 2.7f;
     }
 }

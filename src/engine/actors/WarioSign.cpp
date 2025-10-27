@@ -16,8 +16,9 @@ AWarioSign::AWarioSign(const SpawnParams& params) : AActor(params) {
     Type = ACTOR_WARIO_SIGN;
     Name = "Wario Sign";
     ResourceName = "mk:wario_sign";
-    _spawnParams.Name = "mk:wario_sign";
     Model = d_course_wario_stadium_dl_sign;
+
+    Speed = params.Speed.value_or(182);
 
     FVector pos = params.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x * gCourseDirection;
@@ -40,7 +41,7 @@ bool AWarioSign::IsMod() {
 }
 
 void AWarioSign::Tick() {
-    Rot[1] += _spawnParams.Speed.value_or(182);
+    Rot[1] += Speed;
 }
 
 void AWarioSign::Draw(Camera *camera) {

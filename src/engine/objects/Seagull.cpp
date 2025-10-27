@@ -35,7 +35,7 @@ OSeagull::OSeagull(const SpawnParams& params) : OObject(params) {
     Name = "Seagull";
     ResourceName = "mk:seagull";
     _idx = _count;
-    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    FVector pos = params.Location.value_or(FVector(0, 0, 0));
 
     s16 randZ;
     s16 randX;
@@ -175,7 +175,7 @@ void OSeagull::func_8008241C(s32 objectIndex, s32 arg1) {
     randY = random_int(0x0014);
     randZ = random_int(0x00C8) + -100.0;
 
-    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    FVector pos = SpawnPos;
     set_obj_origin_pos(objectIndex, (randX + pos.x) * xOrientation, randY + pos.y, randZ + pos.z);
     set_obj_direction_angle(objectIndex, 0U, 0U, 0U);
     gObjectList[objectIndex].unk_034 = 1.0f;

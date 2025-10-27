@@ -63,11 +63,9 @@ namespace Editor {
             // Display actor title
             ImGui::Text(title);
 
-            auto& params = obj->_spawnParams;
-
             // Display actor resource name. ex. mk:cloud
-            if (!params.Name.empty()) { // Params is unset for some train components
-                ImGui::Text("Resource Name %s", params.Name.c_str());
+            if (obj->ResourceName[0] != '\0') { // Params is unset for some train components
+                ImGui::Text("Resource Name %s", obj->ResourceName);
             }
 
             obj->DrawEditorProperties();

@@ -36,8 +36,8 @@ extern s8 gPlayerCount;
 OPenguin::OPenguin(const SpawnParams& params) : OObject(params) {
     Name = "Penguin";
     ResourceName = "mk:penguin";
-    _spawnParams.Name = "mk:penguin";
     FVector pos = params.Location.value_or(FVector(0, 0, 0));
+    Speed = params.Speed.value_or(0);
     find_unused_obj_index(&_objectIndex);
 
     init_object(_objectIndex, 0);
@@ -48,7 +48,7 @@ OPenguin::OPenguin(const SpawnParams& params) : OObject(params) {
     object->origin_pos[2] = pos.z;
     object->unk_0C6 = params.Rotation.value_or(IRotator(0, 0, 0)).yaw;
 
-    switch(static_cast<PenguinType>(_spawnParams.Type.value_or(0))) {
+    switch(static_cast<PenguinType>(Type)) {
         case PenguinType::CHICK:
             object->surfaceHeight = 5.0f;
             object->sizeScaling = 0.04f;
@@ -75,7 +75,7 @@ void OPenguin::Tick(void) {
     s32 objectIndex = _objectIndex;
 
     if (gObjectList[objectIndex].state != 0) {
-        if (static_cast<PenguinType>(_spawnParams.Type.value_or(0)) == PenguinType::EMPEROR) {
+        if (Type == PenguinType::EMPEROR) {
             OPenguin::EmperorPenguin(objectIndex);
         } else {
             OPenguin::OtherPenguin(objectIndex);
@@ -143,7 +143,7 @@ void OPenguin::Behaviours(s32 objectIndex) { // func_800850B0
     Object* object;
 
     object = &gObjectList[objectIndex];
-    switch (static_cast<Behaviour>(_spawnParams.Behaviour.value_or(0))) {
+    switch (SpawnBhv) {
         case 1: // emperor
             OPenguin::func_80085080(objectIndex);
             break;
@@ -378,9 +378,9 @@ void OPenguin::InitOtherPenguin(s32 objectIndex) {
 
     // This code has been significantly refactored from the original func_800845C8
     // Into a switch statement instead of checking for the index of the penguin
-    switch(static_cast<Behaviour>(_spawnParams.Behaviour.value_or(0))) {
+    switch(SpawnBhv) {
         case Behaviour::CIRCLE:
-            object->unk_01C[1] = _spawnParams.Speed.value_or(0.0f);
+            object->unk_01C[1] = Speed;
 
             if (_toggle) {
                 object->unk_0C4 = 0x8000;
@@ -399,7 +399,7 @@ void OPenguin::InitOtherPenguin(s32 objectIndex) {
         case Behaviour::STRUT:
 
             if (gIsMirrorMode) {
-                object->unk_0C6 = _spawnParams.Rotation.value_or(IRotator(0, 0, 0)).roll; // Roll is used to save mirror mode angle offset;
+                object->unk_0C6 = SpawnRot.roll; // Roll is used to save mirror mode angle offset;
             }
 
             set_obj_direction_angle(objectIndex, 0U, object->unk_0C6 + 0x8000, 0U);
@@ -418,129 +418,106 @@ void OPenguin::Reset() {
 }
 
 void OPenguin::DrawEditorProperties() {
-    std::visit([this](auto* obj) {
-        using T = std::decay_t<decltype(*obj)>;
-        if (nullptr == obj) {
-            return;
+    ImGui::Text("Location");
+    ImGui::SameLine();
+    FVector location = GetLocation();
+    if (ImGui::DragFloat3("##Location", (float*)&location)) {
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+        FVector location = FVector(0, 0, 0);
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
+    }
+
+    ImGui::Text("Rotation");
+    ImGui::SameLine();
+
+    IRotator objRot = GetRotation();
+
+    // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
+    int rot[3] = {
+        objRot.pitch,
+        objRot.yaw,
+        objRot.roll
+    };
+
+    if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
+        for (size_t i = 0; i < 3; i++) {
+            // Wrap around 0–65535
+            rot[i] = (rot[i] % 65536 + 65536) % 65536;
         }
+        IRotator newRot;
+        newRot.Set(
+            static_cast<uint16_t>(rot[0]),
+            static_cast<uint16_t>(rot[1]),
+            static_cast<uint16_t>(rot[2])
+        );
+        Rotate(newRot);
+    }
 
-        auto& params = obj->_spawnParams;
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
+        IRotator rot = IRotator(0, 0, 0);
+        Rotate(rot);
+    }
 
-        if (params.Location.has_value()) {
-                ImGui::Text("Location");
-                ImGui::SameLine();
-                FVector location = obj->GetLocation();
-                if (ImGui::DragFloat3("##Location", (float*)&location)) {
-                    obj->Translate(location);
-                    *params.Location = location;
-                    gEditor.eObjectPicker.eGizmo.Pos = location;
-                }
+    ImGui::Text("Spawn Mode");
+    ImGui::SameLine();
 
-                ImGui::SameLine();
-                if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-                    FVector location = FVector(0, 0, 0);
-                    obj->Translate(location);
-                    *params.Location = location;
-                    gEditor.eObjectPicker.eGizmo.Pos = location;
-                }
-            }
+    int32_t type = static_cast<int32_t>(Type);
+    const char* items[] = { "CHICK", "ADULT", "CREDITS", "EMPEROR" };
 
-            if (params.Rotation.has_value()) {
-                ImGui::Text("Rotation");
-                ImGui::SameLine();
+    if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+        Type = static_cast<PenguinType>(type);
 
-                IRotator objRot = obj->GetRotation();
-
-                // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
-                int rot[3] = {
-                    objRot.pitch,
-                    objRot.yaw,
-                    objRot.roll
-                };
-
-                if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
-                    for (size_t i = 0; i < 3; i++) {
-                        // Wrap around 0–65535
-                        rot[i] = (rot[i] % 65536 + 65536) % 65536;
-                    }
-                    IRotator newRot;
-                    newRot.Set(
-                        static_cast<uint16_t>(rot[0]),
-                        static_cast<uint16_t>(rot[1]),
-                        static_cast<uint16_t>(rot[2])
-                    );
-                    obj->Rotate(newRot);
-                    params.Rotation = newRot;
-                }
-
-                ImGui::SameLine();
-                if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
-                    IRotator rot = IRotator(0, 0, 0);
-                    obj->Rotate(rot);
-                    params.Rotation = rot;
-                }
-            }
-
-        if (params.Type.has_value()) {
-            ImGui::Text("Spawn Mode");
-            ImGui::SameLine();
-
-            int32_t type = static_cast<int32_t>(params.Type.value());
-            const char* items[] = { "CHICK", "ADULT", "CREDITS", "EMPEROR" };
-
-            if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
-                *params.Type = static_cast<int16_t>(type);
-
-                // Update type values
-                Object* object = &gObjectList[this->_objectIndex];
-                switch(static_cast<PenguinType>(type)) {
-                    case PenguinType::CHICK:
-                        object->surfaceHeight = 5.0f;
-                        object->sizeScaling = 0.04f;
-                        object->boundingBoxSize = 4;
-                        break;
-                    case PenguinType::ADULT:
-                        object->surfaceHeight = -80.0f;
-                        object->sizeScaling = 0.08f;
-                        object->boundingBoxSize = 4;
-                        break;
-                    case PenguinType::CREDITS:
-                        object->surfaceHeight = -80.0f;
-                        object->sizeScaling = 0.08f;
-                        object->sizeScaling = 0.15f;
-                        break;
-                    case PenguinType::EMPEROR:
-                        object->sizeScaling = 0.2f;
-                        object->boundingBoxSize = 0x000C;
-                        break;
-                }
-            }
+        // Update type values
+        Object* object = &gObjectList[this->_objectIndex];
+        switch(static_cast<PenguinType>(type)) {
+            case PenguinType::CHICK:
+                object->surfaceHeight = 5.0f;
+                object->sizeScaling = 0.04f;
+                object->boundingBoxSize = 4;
+                break;
+            case PenguinType::ADULT:
+                object->surfaceHeight = -80.0f;
+                object->sizeScaling = 0.08f;
+                object->boundingBoxSize = 4;
+                break;
+            case PenguinType::CREDITS:
+                object->surfaceHeight = -80.0f;
+                object->sizeScaling = 0.08f;
+                object->sizeScaling = 0.15f;
+                break;
+            case PenguinType::EMPEROR:
+                object->sizeScaling = 0.2f;
+                object->boundingBoxSize = 0x000C;
+                break;
         }
+    }
 
-        if (params.Behaviour.has_value()) {
-            ImGui::Text("Spawn Mode");
-            ImGui::SameLine();
+    ImGui::Text("Spawn Mode");
+    ImGui::SameLine();
 
-            int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
-            const char* items[] = { "DISABLED", "STRUT", "CIRCLE", "SLIDE3", "SLIDE4", "UNK", "SLIDE6" };
+    int32_t behaviour = static_cast<int32_t>(SpawnBhv);
+    const char* items2[] = { "DISABLED", "STRUT", "CIRCLE", "SLIDE3", "SLIDE4", "UNK", "SLIDE6" };
 
-            if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
-                *params.Behaviour = static_cast<int16_t>(behaviour);
-            }
-        }
+    if (ImGui::Combo("##Behaviour", &behaviour, items2, IM_ARRAYSIZE(items2))) {
+        SpawnBhv = static_cast<Behaviour>(behaviour);
+    }
 
-        if (params.Speed.has_value()) {
-            ImGui::Text("Diameter");
-            ImGui::SameLine();
+    ImGui::Text("Diameter");
+    ImGui::SameLine();
 
-            float speed = params.Speed.value();
-            if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
-                *params.Speed = speed;
-            }
-            ImGui::SameLine();
-            if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
-                *params.Speed = 0.0f;
-            }
-        }
-    }, gEditor.eObjectPicker.eGizmo._selected);
+    float speed = Speed;
+    if (ImGui::DragFloat("##Speed", &speed, 0.1f)) {
+        Speed = speed;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+        Speed = 0.0f;
+    }
 }

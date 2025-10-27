@@ -17,16 +17,20 @@ extern f32 gKartGravityTable[];
 }
 
 ACloud::ACloud(const SpawnParams& params) : AActor(params) {
-	Name = "Cloud";
+    Name = "Cloud";
     ResourceName = "hm:cloud";
-    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
-	Pos[0] = pos.x;
-	Pos[1] = pos.y;
-	Pos[2] = pos.z;
+    FVector pos = params.Location.value_or(FVector(0, 0, 0));
+    Pos[0] = pos.x;
+    Pos[1] = pos.y;
+    Pos[2] = pos.z;
 
-	Rot[0] = 0;
-	Rot[1] = 0;
-	Rot[2] = 0;
+    Rot[0] = 0;
+    Rot[1] = 0;
+    Rot[2] = 0;
+
+    TimerLength = params.Type.value_or(500); // How long the effect lasts
+    Hop = params.Speed.value_or(3.0f); // How long the effect lasts
+    Gravity = params.SpeedB.value_or(200.0f); // How long the effect lasts
 
     // Flags = -0x8000 | 0x4000;
 
@@ -48,7 +52,7 @@ void ACloud::Tick() {
         Timer++; // Increment timer
     }
 
-    if (Timer > _spawnParams.Type.value_or(500)) { // Time has expired, reset the actor and player
+    if (Timer > TimerLength) { // Time has expired, reset the actor and player
         PickedUp = false;
         if (_player) {
             gKartHopInitialVelocityTable[_player->characterId] = OldHop; // reset back to normal
@@ -83,9 +87,9 @@ void ACloud::Collision(Player* player, AActor* actor) {
             OldHop = gKartHopInitialVelocityTable[player->characterId];
             OldGravity = gKartGravityTable[player->characterId];
             // Hop height
-            gKartHopInitialVelocityTable[player->characterId] = _spawnParams.Speed.value_or(3.0f);
+            gKartHopInitialVelocityTable[player->characterId] = Hop;
             // How strong gravity is
-            gKartGravityTable[player->characterId] = _spawnParams.SpeedB.value_or(200.0f);
+            gKartGravityTable[player->characterId] = Gravity;
         }
     }
 }
@@ -154,61 +158,45 @@ Gfx cloud_mesh[] = {
 };
 
 void ACloud::DrawEditorProperties() {
-    auto& params = _spawnParams;
-
-    if (params.Location.has_value()) {
-        ImGui::Text("Location");
-        ImGui::SameLine();
-        FVector location = FVector(Pos[0], Pos[1], Pos[2]);
-        if (ImGui::DragFloat3("##Location", (float*)&location)) {
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
-
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-            FVector location = FVector(0, 0, 0);
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
+    ImGui::Text("Location");
+    ImGui::SameLine();
+    FVector location = FVector(Pos[0], Pos[1], Pos[2]);
+    if (ImGui::DragFloat3("##Location", (float*)&location)) {
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
     }
 
-    if (params.Type.has_value()) {
-        ImGui::Text("Effect Timer");
-        ImGui::SameLine();
-        int32_t type = static_cast<int16_t>(params.Type.value());
-        if (ImGui::InputInt("##Type", &type)) {
-            *params.Type = static_cast<int16_t>(type);
-        }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+        FVector location = FVector(0, 0, 0);
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
     }
 
-    if (params.Speed.has_value()) {
-        ImGui::Text("Hop");
-        ImGui::SameLine();
-
-        float speed = params.Speed.value();
-        if (ImGui::DragFloat("##Speed", &speed, 0.01f)) {
-            *params.Speed = speed;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
-            *params.Speed = 0.0f;
-        }
+    ImGui::Text("Effect Timer");
+    ImGui::SameLine();
+    int32_t type = static_cast<int32_t>(TimerLength);
+    if (ImGui::InputInt("##Type", &type)) {
+        TimerLength = static_cast<uint32_t>(type);
     }
 
-    if (params.SpeedB.has_value()) {
-        ImGui::Text("Gravity");
-        ImGui::Text("Higher value = stronger gravity");
+    ImGui::Text("Hop");
+    ImGui::SameLine();
 
-        float speed = params.SpeedB.value();
-        if (ImGui::DragFloat("##SpeedB", &speed, 1.0f)) {
-            *params.SpeedB = speed;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetSpeedB")) {
-            *params.SpeedB = 0.0f;
-        }
+    if (ImGui::DragFloat("##Speed", &Hop, 0.01f)) {
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetSpeed")) {
+        Hop = 0.0f;
+    }
+
+    ImGui::Text("Gravity");
+    ImGui::Text("Higher value = stronger gravity");
+
+    if (ImGui::DragFloat("##SpeedB", &Gravity, 1.0f)) {
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetSpeedB")) {
+        Gravity = 0.0f;
     }
 }

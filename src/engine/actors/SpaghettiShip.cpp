@@ -15,14 +15,14 @@ ASpaghettiShip::ASpaghettiShip(const SpawnParams& params) : AActor(params) {
     ResourceName = "hm:spaghetti_ship";
     BoundingBoxSize = 3.0f;
 
-    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    FVector pos = params.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x;
     Pos[1] = pos.y;
     Pos[2] = pos.z;
 
-    Scale = _spawnParams.Scale.value_or(FVector(0.4f, 0.4f, 0.4f));
+    Scale = params.Scale.value_or(FVector(0.4f, 0.4f, 0.4f));
 
-    IRotator rot = _spawnParams.Rotation.value_or(IRotator(0, 0, 0));
+    IRotator rot = params.Rotation.value_or(IRotator(0, 0, 0));
     Rot[0] = rot.pitch;
     Rot[1] = rot.yaw;
     Rot[2] = rot.roll;
@@ -36,7 +36,7 @@ void ASpaghettiShip::Tick() {
     angle += speed; // Increment the angle to move in a circle
 
     // Update the position based on a circular path
-    FVector spawn = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    FVector spawn = SpawnPos;
     Pos[0] = spawn.x + radius * cosf(angle);
     Pos[2] = spawn.z + radius * sinf(angle);
 

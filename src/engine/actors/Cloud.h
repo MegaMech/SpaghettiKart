@@ -14,9 +14,6 @@ extern "C" {
 
 class ACloud : public AActor {
 public:
-
-
-    // Constructor
     ACloud(const SpawnParams& params);
 
     virtual ~ACloud() override = default;
@@ -33,7 +30,6 @@ public:
         return static_cast<ACloud*>(gWorldInstance.AddActor(new ACloud(params)));
     }
 
-    // Virtual functions to be overridden by derived classes
     virtual void Tick() override;
     virtual void Draw(Camera*) override;
     virtual void BeginPlay() override;
@@ -42,10 +38,13 @@ public:
     virtual bool IsMod() override;
 
     bool PickedUp = false;
+    uint32_t TimerLength = 500;
     uint32_t Timer = 0;
-    
+
     Player* _player = NULL;
 
+    f32 Hop = 3.0f;
+    f32 Gravity = 200.0f;
     f32 OldHop = 0;
     f32 OldGravity = 0;
 

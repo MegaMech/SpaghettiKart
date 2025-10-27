@@ -40,7 +40,10 @@ public:
 
         const char* Name;
         const char* ResourceName;
-        SpawnParams _spawnParams;
+        FVector SpawnPos = {0.0f, 0.0f, 0.0f};
+        IRotator SpawnRot = {0, 0, 0};
+        FVector SpawnScale = {1.0f, 1.0f, 1.0f};
+        float Speed;
         FVector Pos;
         IRotator Rot;
         FVector Scale;

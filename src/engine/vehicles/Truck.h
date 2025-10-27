@@ -38,6 +38,11 @@ class ATruck : public AActor {
     f32 SomeArg4 = 12.5f;
     u32 SoundBits = SOUND_ARG_LOAD(0x51, 0x01, 0x80, 0x03);
 
+    float SpeedB = 0.0f;
+    ATruck::SpawnMode SpawnType = ATruck::SpawnMode::AUTO;
+    uint32_t PathIndex = 0;
+    uint32_t PathPoint = 0;
+
     // This is simply a helper function to keep Spawning code clean
     static inline ATruck* Spawn(f32 speedA, f32 speedB, uint32_t pathIndex, uint32_t pathPoint, ATruck::SpawnMode spawnMode) {
         SpawnParams params = {
@@ -61,6 +66,7 @@ class ATruck : public AActor {
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(Camera* camera) override;
     virtual void VehicleCollision(s32 playerId, Player* player) override;

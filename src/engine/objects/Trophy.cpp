@@ -23,10 +23,11 @@ extern "C" {
 OTrophy::OTrophy(const SpawnParams& params) : OObject(params) {
     Name = "Trophy";
     ResourceName = "mk:trophy";
-    _type = static_cast<TrophyType>(_spawnParams.Type.value_or(0));
-    FVector spawnPos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    _type = static_cast<TrophyType>(params.Type.value_or(0));
+    FVector spawnPos = params.Location.value_or(FVector(0, 0, 0));
     spawnPos.y += 16.0f; // Adjust the height so the trophy sits on the surface when positioned to 0,0,0
-    _bhv = static_cast<Behaviour>(_spawnParams.Behaviour.value_or(0));
+    SpawnPos = spawnPos; // Don't save the + 16.0f adjustment
+    _bhv = static_cast<Behaviour>(params.Behaviour.value_or(0));
 
     find_unused_obj_index(&_objectIndex);
 
@@ -94,6 +95,13 @@ OTrophy::OTrophy(const SpawnParams& params) : OObject(params) {
     _emitter = reinterpret_cast<StarEmitter*>(gWorldInstance.AddEmitter(new StarEmitter()));
 }
 
+void OTrophy::SetSpawnParams(SpawnParams& params) {
+    OObject::SetSpawnParams(params);
+    Object *object = &gObjectList[_objectIndex];
+    params.Type = _type;
+    params.Behaviour = _bhv;
+}
+
 void OTrophy::Tick() { // func_80086D80
     s32 objectIndex = _objectIndex;
     s32 var_s0;
@@ -125,9 +133,8 @@ void OTrophy::Tick() { // func_80086D80
             if (gObjectList[objectIndex].state != 0) {
                     gObjectList[objectIndex].sizeScaling = 0.025f;
 
-                    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
-                    set_obj_origin_pos(objectIndex, pos.x,
-                                    pos.y + 16.0, pos.z);
+                    set_obj_origin_pos(objectIndex, SpawnPos.x,
+                                    SpawnPos.y + 16.0, SpawnPos.z);
                     set_obj_origin_offset(objectIndex, 0.0f, 0.0f, 0.0f);
                     set_obj_direction_angle(objectIndex, 0U, 0U, 0U);
                     gObjectList[objectIndex].unk_084[1] = 0x0200;
@@ -365,70 +372,59 @@ void OTrophy::func_80086C6C(s32 objectIndex) {
 }
 
 void OTrophy::DrawEditorProperties() {
-    auto& params = _spawnParams;
+    ImGui::Text("Location");
+    ImGui::SameLine();
+    FVector location = GetLocation();
+    if (ImGui::DragFloat3("##Location", (float*)&location)) {
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
+    }
 
-    if (params.Location.has_value()) {
-        ImGui::Text("Location");
-        ImGui::SameLine();
-        FVector location = GetLocation();
-        if (ImGui::DragFloat3("##Location", (float*)&location)) {
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+        FVector location = FVector(0, 0, 0);
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
+    }
 
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-            FVector location = FVector(0, 0, 0);
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
+    ImGui::Text("Cup");
+    ImGui::SameLine();
+
+    int32_t type = static_cast<int32_t>(_type);
+    const char* items[] = { "Bronze", "Silver", "Gold", "Bronze 150", "Silver 150", "Gold 150" };
+
+    if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+        _type = static_cast<TrophyType>(type);
+
+        switch (_type) {
+            case TrophyType::GOLD:
+                gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl10;
+                break;
+            case TrophyType::SILVER:
+                gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl12;
+                break;
+            case TrophyType::BRONZE:
+                gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl14;
+                break;
+            case TrophyType::GOLD_150:
+                gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl11;
+                break;
+            case TrophyType::SILVER_150:
+                gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl13;
+                break;
+            case TrophyType::BRONZE_150:
+                gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl15;
+                break;
         }
     }
 
-    if (params.Type.has_value()) {
-        ImGui::Text("Cup");
-        ImGui::SameLine();
+    ImGui::Text("Behaviour");
+    ImGui::SameLine();
 
-        int32_t type = static_cast<int32_t>(params.Type.value());
-        const char* items[] = { "Bronze", "Silver", "Gold", "Bronze 150", "Silver 150", "Gold 150" };
+    int32_t behaviour = static_cast<int32_t>(_bhv);
+    const char* items2[] = { "Podium Ceremony", "Stationary", "Opposing Dual-axis Rotation", "Single-axis Rotation", "Go Fish" };
 
-        if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
-            *params.Type = static_cast<int16_t>(type);
-
-            switch (type) {
-                case TrophyType::GOLD:
-                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl10;
-                    break;
-                case TrophyType::SILVER:
-                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl12;
-                    break;
-                case TrophyType::BRONZE:
-                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl14;
-                    break;
-                case TrophyType::GOLD_150:
-                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl11;
-                    break;
-                case TrophyType::SILVER_150:
-                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl13;
-                    break;
-                case TrophyType::BRONZE_150:
-                    gObjectList[_objectIndex].model = (Gfx*)gold_trophy_dl15;
-                    break;
-            }
-        }
-    }
-
-    if (params.Behaviour.has_value()) {
-        ImGui::Text("Behaviour");
-        ImGui::SameLine();
-
-        int32_t behaviour = static_cast<int32_t>(params.Behaviour.value());
-        const char* items[] = { "Podium Ceremony", "Stationary", "Opposing Dual-axis Rotation", "Single-axis Rotation", "Go Fish" };
-
-        if (ImGui::Combo("##Behaviour", &behaviour, items, IM_ARRAYSIZE(items))) {
-            *params.Behaviour = static_cast<int16_t>(behaviour);
-            _bhv = static_cast<Behaviour>(behaviour);
-        }
+    if (ImGui::Combo("##Behaviour", &behaviour, items2, IM_ARRAYSIZE(items2))) {
+        _bhv = static_cast<Behaviour>(behaviour);
     }
 }

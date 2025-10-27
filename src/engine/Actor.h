@@ -27,10 +27,13 @@ public:
     uint8_t uuid[16];
     const char* Name = "";
     const char* ResourceName = "";
-    FVector Scale = {1, 1, 1};
+    FVector SpawnPos = {0.0f, 0.0f, 0.0f};
+    IRotator SpawnRot = {0, 0, 0};
+    FVector SpawnScale = {1.0f, 1.0f, 1.0f};
 
+    FVector Scale = {1, 1, 1};
+    float Speed = 0.0f;
     std::vector<Triangle> Triangles;
-    SpawnParams _spawnParams;
 
     bool bPendingDestroy = false;
 
@@ -39,7 +42,14 @@ public:
     explicit AActor();
     explicit AActor(SpawnParams params);
 
-    virtual SpawnParams& GetSpawnParams();
+    /**
+     * Make sure you call this in derived classes!
+     * Usage:
+     * MyActor::SetSpawnParams(SetSpawnParams& params) {
+     *     AActor::SetSpawnParams(params); // Calls default implementation
+     * }
+     */
+    virtual void SetSpawnParams(SpawnParams& params);
     virtual void BeginPlay();
     virtual void Tick();
     virtual void Draw(Camera*);

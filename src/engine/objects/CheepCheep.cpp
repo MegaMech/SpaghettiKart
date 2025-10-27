@@ -25,6 +25,12 @@ OCheepCheep::OCheepCheep(const SpawnParams& params) : OObject(params) {
     _behaviour = static_cast<Behaviour>(params.Behaviour.value_or(0));
 }
 
+void OCheepCheep::SetSpawnParams(SpawnParams& params) {
+    OObject::SetSpawnParams(params);
+    params.Behaviour = static_cast<int16_t>(_behaviour);
+    params.PathSpan = ActivationPoints;
+}
+
 void OCheepCheep::Tick() { // update_cheep_cheep
     s32 objectIndex;
     switch (_behaviour) {
@@ -116,10 +122,10 @@ void OCheepCheep::func_8007BD04(s32 playerId) {
 
     objectIndex = indexObjectList2[0];
     if (gObjectList[objectIndex].state == 0) {
-        IPathSpan span = _spawnParams.PathSpan.value_or(IPathSpan(0, 0));
+        IPathSpan span = ActivationPoints;
         if (((s32) gNearestPathPointByPlayerId[playerId] >= span.Start) &&
             ((s32) gNearestPathPointByPlayerId[playerId] <= span.End)) {
-            FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+            FVector pos = SpawnPos;
             set_obj_origin_pos(objectIndex, xOrientation * pos.x, pos.y, pos.z);
             init_object(objectIndex, 1);
         }
@@ -247,41 +253,33 @@ void OCheepCheep::func_8007BFB0(s32 objectIndex) {
 }
 
 void OCheepCheep::DrawEditorProperties() {
-    auto& params = _spawnParams;
-
     Object* obj = &gObjectList[_objectIndex];
 
-    if (params.Location.has_value()) {
-        ImGui::Text("Location");
-        ImGui::SameLine();
-        FVector location = FVector(obj->pos[0], obj->pos[1], obj->pos[2]);
-        if (ImGui::DragFloat3("##Location", (float*)&location)) {
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
-
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-            FVector location = FVector(0, 0, 0);
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
+    ImGui::Text("Location");
+    ImGui::SameLine();
+    FVector location = FVector(obj->pos[0], obj->pos[1], obj->pos[2]);
+    if (ImGui::DragFloat3("##Location", (float*)&location)) {
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
     }
 
-    if (params.PathSpan.has_value()) {
-        IPathSpan span = params.PathSpan.value();
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+        FVector location = FVector(0, 0, 0);
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
+    }
 
-        ImGui::Text("Path Span");
-        ImGui::SameLine();
+    IPathSpan span = ActivationPoints;
 
-        if (ImGui::DragInt2("##PathSpan", (int*)&span)) {
-            params.PathSpan = span;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetPathSpan")) {
-            params.PathSpan = IPathSpan(0.0f, 0.0f);
-        }
+    ImGui::Text("Path Span");
+    ImGui::SameLine();
+
+    if (ImGui::DragInt2("##PathSpan", (int*)&span)) {
+        ActivationPoints = span;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPathSpan")) {
+        ActivationPoints = IPathSpan(0.0f, 0.0f);
     }
 }

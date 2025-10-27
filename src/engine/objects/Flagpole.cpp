@@ -66,10 +66,10 @@ void OFlagpole::func_80082F1C(s32 objectIndex) {
     gObjectList[objectIndex].vertex = (Vtx*) d_course_yoshi_valley_unk4;
     gObjectList[objectIndex].sizeScaling = 0.027f;
     object_next_state(objectIndex);
-    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    FVector pos = SpawnPos;
     set_obj_origin_pos(objectIndex, pos.x * xOrientation, pos.y, pos.z);
     set_obj_origin_offset(objectIndex, 0.0f, 0.0f, 0.0f);
-    IRotator rot = _spawnParams.Rotation.value_or(IRotator(0, 0, 0));
+    IRotator rot = SpawnRot;
     set_obj_orientation(objectIndex, rot.pitch, rot.yaw, rot.roll); // changed from directional_angle to orientation for editor support
 }
 

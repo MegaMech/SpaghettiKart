@@ -14,10 +14,10 @@ ABanana::ABanana(const SpawnParams& params) : AActor(params) {
     Name = "Banana";
     ResourceName = "mk:banana";
 
-    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    FVector pos = params.Location.value_or(FVector(0, 0, 0));
     Pos[0] = pos.x; Pos[1] = pos.y; Pos[2] = pos.z;
 
-    FVector vel = _spawnParams.Velocity.value_or(FVector(0, 0, 0));
+    FVector vel = params.Velocity.value_or(FVector(0, 0, 0));
     Velocity[0] = vel.x; Velocity[1] = vel.y; Velocity[2] = vel.z;
 
     Type = 6; // ACTOR_BANANA

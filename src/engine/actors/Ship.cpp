@@ -16,28 +16,39 @@ extern "C" {
 
 AShip::AShip(const SpawnParams& params) : AActor(params) {
     ResourceName = "hm:ship";
-    FVector pos = _spawnParams.Location.value_or(FVector(0, 0, 0));
+    FVector pos = params.Location.value_or(FVector(0, 0, 0));
     //Spawn.y += 10;
     Pos[0] = pos.x;
     Pos[1] = pos.y;
     Pos[2] = pos.z;
     Scale = FVector(0.4, 0.4, 0.4);
-    
-    switch(_spawnParams.Type.value_or(0)) {
-        case GHOSTSHIP:
+
+    SpawnSkin = static_cast<AShip::Skin>(params.Type.value_or(0));
+    switch(SpawnSkin) {
+        case Skin::GHOSTSHIP:
             Name = "Ghostship";
             _skin = ghostship_Plane_mesh;
             break;
-        case SHIP2:
+        case Skin::SHIP2:
             Name = "Ship_1";
             _skin = ship2_SoH_mesh;
             break;
-        case SHIP3:
+        case Skin::SHIP3:
             Name = "Ship_2";
             _skin = ship3_2Ship_mesh;
             break;
     }
     Model = (const char*)_skin;
+}
+
+void AShip::SetSpawnParams(SpawnParams& params) {
+    AActor::SetSpawnParams(params);
+    params.Name = ResourceName;
+    params.Type = static_cast<int16_t>(SpawnSkin);
+    params.Location = SpawnPos;
+    params.Rotation = SpawnRot;
+    params.Scale = SpawnScale;
+    params.Speed = Speed;
 }
 
 void AShip::BeginPlay() {
@@ -65,104 +76,88 @@ void AShip::Tick() {
 bool AShip::IsMod() { return true; }
 
 void AShip::DrawEditorProperties() {
-    auto& params = _spawnParams;
+    ImGui::Text("Ship Type");
+    ImGui::SameLine();
 
-    if (params.Type.has_value()) {
-        ImGui::Text("Ship Type");
-        ImGui::SameLine();
+    int32_t type = static_cast<int32_t>(SpawnSkin);
+    const char* items[] = { "Ghostship", "Ship 2", "Ship 3" };
 
-        int32_t type = static_cast<int32_t>(params.Type.value());
-        const char* items[] = { "Ghostship", "Ship 2", "Ship 3" };
+    if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
+        SpawnSkin = static_cast<AShip::Skin>(type);
 
-        if (ImGui::Combo("##Type", &type, items, IM_ARRAYSIZE(items))) {
-            *params.Type = static_cast<int16_t>(type);
-
-            switch(static_cast<AShip::Skin>(type)) {
-                case Skin::GHOSTSHIP:
-                    Name = "Ghostship";
-                    _skin = ghostship_Plane_mesh;
-                    break;
-                case Skin::SHIP2:
-                    Name = "Ship_1";
-                    _skin = ship2_SoH_mesh;
-                    break;
-                case Skin::SHIP3:
-                    Name = "Ship_2";
-                    _skin = ship3_2Ship_mesh;
-                    break;
-            }
-            Model = (const char*)_skin;
+        switch(SpawnSkin) {
+            case Skin::GHOSTSHIP:
+                Name = "Ghostship";
+                _skin = ghostship_Plane_mesh;
+                break;
+            case Skin::SHIP2:
+                Name = "Ship_1";
+                _skin = ship2_SoH_mesh;
+                break;
+            case Skin::SHIP3:
+                Name = "Ship_2";
+                _skin = ship3_2Ship_mesh;
+                break;
         }
+        Model = (const char*)_skin;
     }
 
-    if (params.Location.has_value()) {
-        ImGui::Text("Location");
-        ImGui::SameLine();
-        FVector location = FVector(Pos[0], Pos[1], Pos[2]);
-        if (ImGui::DragFloat3("##Location", (float*)&location)) {
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
-
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
-            FVector location = FVector(0, 0, 0);
-            Translate(location);
-            *params.Location = location;
-            gEditor.eObjectPicker.eGizmo.Pos = location;
-        }
+    ImGui::Text("Location");
+    ImGui::SameLine();
+    FVector location = FVector(Pos[0], Pos[1], Pos[2]);
+    if (ImGui::DragFloat3("##Location", (float*)&location)) {
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
     }
 
-    if (params.Rotation.has_value()) {
-        ImGui::Text("Rotation");
-        ImGui::SameLine();
-
-        IRotator objRot = GetRotation();
-
-        // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
-        int rot[3] = {
-            objRot.pitch,
-            objRot.yaw,
-            objRot.roll
-        };
-
-        if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
-            for (size_t i = 0; i < 3; i++) {
-                // Wrap around 0–65535
-                rot[i] = (rot[i] % 65536 + 65536) % 65536;
-            }
-            IRotator newRot;
-            newRot.Set(
-                static_cast<uint16_t>(rot[0]),
-                static_cast<uint16_t>(rot[1]),
-                static_cast<uint16_t>(rot[2])
-            );
-            Rotate(newRot);
-            params.Rotation = newRot;
-        }
-
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
-            IRotator rot = IRotator(0, 0, 0);
-            Rotate(rot);
-            params.Rotation = rot;
-        }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+        FVector location = FVector(0, 0, 0);
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
     }
 
-    if (params.Scale.has_value()) {
-        FVector scale = GetScale();
-        ImGui::Text("Scale   ");
-        ImGui::SameLine();
+    ImGui::Text("Rotation");
+    ImGui::SameLine();
 
-        ImGui::DragFloat3("##Scale", (float*)&scale, 0.1f);
+    IRotator objRot = GetRotation();
+
+    // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
+    int rot[3] = {
+        objRot.pitch,
+        objRot.yaw,
+        objRot.roll
+    };
+
+    if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
+        for (size_t i = 0; i < 3; i++) {
+            // Wrap around 0–65535
+            rot[i] = (rot[i] % 65536 + 65536) % 65536;
+        }
+        IRotator newRot;
+        newRot.Set(
+            static_cast<uint16_t>(rot[0]),
+            static_cast<uint16_t>(rot[1]),
+            static_cast<uint16_t>(rot[2])
+        );
+        Rotate(newRot);
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetRot")) {
+        IRotator rot = IRotator(0, 0, 0);
+        Rotate(rot);
+    }
+
+    FVector scale = GetScale();
+    ImGui::Text("Scale   ");
+    ImGui::SameLine();
+
+    ImGui::DragFloat3("##Scale", (float*)&scale, 0.1f);
+    SetScale(scale);
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetScale")) {
+        FVector scale = FVector(0.4f, 0.4f, 0.4f);
         SetScale(scale);
-        params.Scale = scale;
-        ImGui::SameLine();
-        if (ImGui::Button(ICON_FA_UNDO "##ResetScale")) {
-            FVector scale = FVector(0.4f, 0.4f, 0.4f);
-            SetScale(scale);
-            params.Scale = scale;
-        }
     }
 }

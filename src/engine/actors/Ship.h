@@ -35,6 +35,9 @@ public:
         return static_cast<AShip*>(gWorldInstance.AddActor(new AShip(params)));
     }
 
+    AShip::Skin SpawnSkin = Skin::GHOSTSHIP;
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void BeginPlay() override;
     virtual bool IsMod() override;

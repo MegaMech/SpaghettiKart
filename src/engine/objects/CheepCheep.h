@@ -3,6 +3,7 @@
 #include <libultraship.h>
 #include <vector>
 #include "Object.h"
+#include "engine/CoreMath.h"
 
 #include "World.h"
 
@@ -36,6 +37,9 @@ public:
 
     explicit OCheepCheep(const SpawnParams& params);
 
+    IPathSpan ActivationPoints; // Path points activation points
+
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     virtual void DrawEditorProperties() override;

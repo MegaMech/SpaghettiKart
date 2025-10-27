@@ -58,6 +58,7 @@ public:
         return _count;
     }
 
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     virtual void DrawEditorProperties() override;
@@ -72,6 +73,9 @@ public:
     void BooExit(s32 someIndex);
     void func_8007C550(s32 objectIndex);
 
+    IPathSpan LeftTrigger;
+    IPathSpan ActiveZone;
+    IPathSpan RightTrigger;
 private:
     FVector _pos;
     static size_t _count;
