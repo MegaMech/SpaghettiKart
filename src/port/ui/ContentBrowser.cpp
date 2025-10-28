@@ -178,7 +178,7 @@ namespace Editor {
             s32 id = add_actor_to_empty_slot(position, rot, vel, ACTOR_UNKNOWN_0x1B);
             s32 height = spawn_actor_on_surface(position[0], position[1], position[2]);
         }},
-        { "Tree (Bowser's Castle)", [](const FVector& pos) {
+        { "Tree (Peach's Castle)", [](const FVector& pos) {
             Vec3f position = {pos.x, pos.y, pos.z};
             Vec3s rot = {0, 0, 0};
             Vec3f vel = {0, 0, 0};
