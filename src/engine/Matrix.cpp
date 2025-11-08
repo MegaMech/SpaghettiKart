@@ -119,32 +119,12 @@ void ApplyMatrixTransformations(Mat4 mtx, FVector pos, IRotator rot, FVector sca
     mtx[3][3] = 1.0f;
 }
 
-void AddLocalRotation(Mat4 mat, IRotator rot) {
-    f32 sin_pitch = sins(rot.pitch);
-    f32 cos_pitch = coss(rot.pitch);
-    f32 sin_yaw = sins(rot.yaw);
-    f32 cos_yaw = coss(rot.yaw);
-    f32 sin_roll = sins(rot.roll);
-    f32 cos_roll = coss(rot.roll);
-
-    // Modify only the rotation part (keep translation intact)
-    mat[0][0] = (cos_yaw * cos_roll) + (sin_pitch * sin_yaw * sin_roll);
-    mat[0][1] = (cos_pitch * sin_roll);
-    mat[0][2] = (-sin_yaw * cos_roll) + (sin_pitch * cos_yaw * sin_roll);
-    
-    mat[1][0] = (-cos_yaw * sin_roll) + (sin_pitch * sin_yaw * cos_roll);
-    mat[1][1] = (cos_pitch * cos_roll);
-    mat[1][2] = (sin_yaw * sin_roll) + (sin_pitch * cos_yaw * cos_roll);
-    
-    mat[2][0] = (cos_pitch * sin_yaw);
-    mat[2][1] = -sin_pitch;
-    mat[2][2] = (cos_pitch * cos_yaw);
-}
-
-/* Rotates the object to be facing the camera
+/* 
+ * Spherical billboarding
+ * Rotates the object to face the camera
  * Rotates on all three axis
  */
-void ApplySphericalBIllBoard(Mat4 mat, s32 cameraIndex) {
+void ApplySphericalBillBoard(Mat4 mat, FVector pos, FVector scale, s32 cameraIndex) {
     Mtx* lookAt = GetLookAtMatrix(cameraIndex);
     Mat4 lookAtF;
     guMtxL2F((float(*)[4])&lookAtF, lookAt);
@@ -171,6 +151,44 @@ void ApplySphericalBIllBoard(Mat4 mat, s32 cameraIndex) {
     mat[1][3] = 0;
     mat[2][3] = 0;
     mat[3][3] = 1;
+
+    // Set position
+    mat[3][0] = pos.x;
+    mat[3][1] = pos.y;
+    mat[3][2] = pos.z;
+
+    // Apply scaling
+    mat[0][0] *= scale.x;
+    mat[1][0] *= scale.x;
+    mat[2][0] *= scale.x;
+    mat[0][1] *= scale.y;
+    mat[1][1] *= scale.y;
+    mat[2][1] *= scale.y;
+    mat[0][2] *= scale.z;
+    mat[1][2] *= scale.z;
+    mat[2][2] *= scale.z;
+}
+
+void AddLocalRotation(Mat4 mat, IRotator rot) {
+    f32 sin_pitch = sins(rot.pitch);
+    f32 cos_pitch = coss(rot.pitch);
+    f32 sin_yaw = sins(rot.yaw);
+    f32 cos_yaw = coss(rot.yaw);
+    f32 sin_roll = sins(rot.roll);
+    f32 cos_roll = coss(rot.roll);
+
+    // Modify only the rotation part (keep translation intact)
+    mat[0][0] = (cos_yaw * cos_roll) + (sin_pitch * sin_yaw * sin_roll);
+    mat[0][1] = (cos_pitch * sin_roll);
+    mat[0][2] = (-sin_yaw * cos_roll) + (sin_pitch * cos_yaw * sin_roll);
+    
+    mat[1][0] = (-cos_yaw * sin_roll) + (sin_pitch * sin_yaw * cos_roll);
+    mat[1][1] = (cos_pitch * cos_roll);
+    mat[1][2] = (sin_yaw * sin_roll) + (sin_pitch * cos_yaw * cos_roll);
+    
+    mat[2][0] = (cos_pitch * sin_yaw);
+    mat[2][1] = -sin_pitch;
+    mat[2][2] = (cos_pitch * cos_yaw);
 }
 
 // API

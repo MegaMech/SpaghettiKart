@@ -2,6 +2,7 @@
 #include "objects/Thwomp.h"
 #include "objects/Trophy.h"
 #include "objects/BombKart.h"
+#include "actors/Text.h"
 
 extern "C" {
 #include "code_800029B0.h"
@@ -45,5 +46,30 @@ void Rulesets::PostInit() {
 
     if (CVarGetInteger("gGoFish", false) == true) {
         OTrophy::Spawn(FVector(0,0,0), OTrophy::TrophyType::GOLD, OTrophy::Behaviour::GO_FISH);
+    }
+
+    if (CVarGetInteger("gPlayerNames", false) == true) {
+
+        std::string playerNames[NUM_PLAYERS] = {
+            "Player 1", "Player 2", "Player 3",
+            "Player 4", "Player 5", "Player 6",
+            "Player 7", "Player 8"
+        };
+
+        for (size_t i = 0; i < NUM_PLAYERS; i++) {
+            //                         text,               pos,                 scale,                           mode,            playerIndex
+            AText* text = AText::Spawn(playerNames[i], FVector(0, 0, 0), FVector(0.15f, 0.15f, 0.15f), AText::TextMode::FOLLOW_PLAYER, i);
+            text->ScaleX = 1.0f;
+            text->Scale.x = 0.15f;
+            text->Scale.y = 0.15f;
+            text->Scale.z = 0.15f;
+            text->Animate = false; // Cycle between colours similar to grand prix title text
+
+            // White
+            for (size_t j = 0; j < 4; j++) {
+                text->TextColour[j] = {255, 255, 255, 255};
+            }
+
+        }
     }
 }

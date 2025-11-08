@@ -6,6 +6,10 @@
 #include <nlohmann/json.hpp>
 #include "CoreMath.h"
 
+extern "C" {
+#include "common_structs.h"
+}
+
 // Used to save and load all game actors to the scene file
 struct SpawnParams {
     std::string Name; // Must use format mk:actor_name for stock game, mymodname:myactorname for mods
@@ -39,6 +43,11 @@ struct SpawnParams {
     std::optional<float> Speed; // Train
     std::optional<float> SpeedB; // cars, trucks, buses, etc.
 
+    std::optional<RGBA8> Colour;
+    std::optional<RGBA8> Colour2;
+    std::optional<RGBA8> Colour3;
+    std::optional<RGBA8> Colour4;
+
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(
         SpawnParams,
         Name,
@@ -62,6 +71,10 @@ struct SpawnParams {
         PathPoint,
         Bool,
         Speed,
-        SpeedB
+        SpeedB,
+        Colour,
+        Colour2,
+        Colour3,
+        Colour4
     )
 };

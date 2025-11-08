@@ -25,15 +25,30 @@ AText::AText(const SpawnParams& params) : AActor(params) {
     Name = "Text";
     ResourceName = "hm:text";
     
-    FVector pos = params.Location.value_or(FVector(0.0f, 100.0f, 0.0f));
-    SpawnPos = pos;
-    Pos[0] = pos.x; Pos[1] = pos.y; Pos[2] = pos.z;
+    SpawnPos = params.Location.value_or(FVector(0.0f, 100.0f, 0.0f));
+    Pos[0] = SpawnPos.x;
+    Pos[1] = SpawnPos.y;
+    Pos[2] = SpawnPos.z;
 
-    FVector scale = params.Scale.value_or(FVector(1.0f, 1.0f, 1.0f));
-    SpawnScale = Scale = scale;
+    SpawnScale = params.Scale.value_or(FVector(1.0f, 1.0f, 1.0f));
+    Scale = SpawnScale;
 
     Mode = static_cast<TextMode>(params.Type.value_or(0)); // STATIONARY
-    //TextColour = static_cast<COLOR_ID>(params.PrimAlpha.value_or(TEXT_BLUE));
+
+    Animate = params.Bool.value_or(false);
+
+    WidthOffset = params.Speed.value_or(0.0f);
+    HeightOffset = params.SpeedB.value_or(8.0f);
+
+    FVector options = params.Velocity.value_or(FVector{1.0f, 14000.0f, 0.0f});
+    LetterSpacing = options.x;
+    Far = options.y;
+    Close = options.z;
+
+    TextColour[0] = params.Colour.value_or(RGBA8{255, 255, 255, 255});
+    TextColour[1] = params.Colour2.value_or(RGBA8{255, 255, 255, 255});
+    TextColour[2] = params.Colour3.value_or(RGBA8{255, 255, 255, 255});
+    TextColour[3] = params.Colour4.value_or(RGBA8{255, 255, 255, 255});
 
     switch(Mode) {
         case FOLLOW_PLAYER:
@@ -44,16 +59,6 @@ AText::AText(const SpawnParams& params) : AActor(params) {
             break;
     }
 
-    VertColour[0] = {255, 255, 255, 0xFF};
-    VertColour[1] = {255, 255, 255, 0xFF};
-    VertColour[2] = {255, 255, 255, 0xFF};
-    VertColour[3] = {255, 255, 255, 0xFF};
-
-    Scale.x = 0.15f;
-    Scale.y = 0.15f;
-    Scale.z = 0.15f;
-
-
     Text = ValidateString(params.Skin.value_or("My Text"));
     AText::Print3D((char*)Text.c_str(), 0, 1);
 }
@@ -63,6 +68,9 @@ AText::AText(const SpawnParams& params) : AActor(params) {
  * Returns "Blank Text" for blank input
  * Returns "Invalid" if no valid input found
  * Limits str to 20 characters
+ * 
+ * The font does support some symbols and other language characters
+ * But these need to be checked thoroughly before white-listing.
  */
 std::string AText::ValidateString(const std::string_view& s) {
     if (s.empty()) { return "Blank Text"; }
@@ -88,6 +96,10 @@ std::string AText::ValidateString(const std::string_view& s) {
     return Text;
 }
 
+/*
+ * Most changes during runtime require a refresh because the text is generated statically
+ * with the intention of this code being somewhat performant
+ */
 void AText::Refresh() {
     AText::TextureList.clear();
     AText::Print3D((char*)Text.c_str(), 0, 1);
@@ -102,7 +114,19 @@ void AText::SetSpawnParams(SpawnParams& params) {
     params.Scale = SpawnScale;
     params.Type = static_cast<int16_t>(Mode);
     params.Behaviour = PlayerIndex;
-    //params.PrimAlpha = static_cast<int16_t>(TextColour);
+    params.Skin = Text;
+
+    *params.Colour = TextColour[0];
+    *params.Colour2 = TextColour[1];
+    *params.Colour3 = TextColour[2];
+    *params.Colour4 = TextColour[3];
+
+    params.Speed = WidthOffset;
+    params.SpeedB = HeightOffset;
+
+    params.Velocity = {LetterSpacing, Far, Close};
+
+    params.Bool = Animate;
 }
 
 void AText::Tick() {
@@ -116,24 +140,31 @@ void AText::Tick() {
 }
 
 void AText::FollowPlayer() {
-    Pos[0] = gPlayers[PlayerIndex].pos[0];
+    Pos[0] = gPlayers[PlayerIndex].pos[0] + WidthOffset;
     Pos[1] = gPlayers[PlayerIndex].pos[1] + HeightOffset;
     Pos[2] = gPlayers[PlayerIndex].pos[2];
 
-    if (gGPCurrentRaceRankByPlayerId[PlayerIndex] == 0) {
-        Animate = true;
-    } else {
-        Animate = false;
-    }
+    // Animate text if player is in first place
+    // if (gGPCurrentRaceRankByPlayerId[PlayerIndex] == 0) {
+    //     Animate = true;
+    // } else {
+    //     Animate = false;
+    // }
 }
 
 void AText::Draw(Camera* camera) {
-    f32 distance = is_within_render_distance(camera->pos, (float*)&Pos[0], camera->rot[1], Close,
-                                             gCameraZoom[camera - camera1], Far);
-
     if (PlayerIndex == camera->playerId) {
         return; // Do not draw the local players own name
     }
+
+    if ((gPlayers[PlayerIndex].effects & BOO_EFFECT) == BOO_EFFECT) {
+        FadeState = FADE_OUT;
+        AText::DrawText(camera);
+        return; // Skip expensive calculations below
+    }
+
+    f32 distance = is_within_render_distance(camera->pos, (float*)&Pos[0], camera->rot[1], Close,
+                                             gCameraZoom[camera - camera1], Far);
 
     if (distance == -1.0f) {
         Dist = DistanceProps::TOO_FAR;
@@ -152,11 +183,7 @@ void AText::Draw(Camera* camera) {
         }
     }
 
-    if ((gPlayers[PlayerIndex].effects & BOO_EFFECT) == BOO_EFFECT) {
-        FadeState = FADE_OUT;
-    }
-
-    AText::SetupMatrix(camera);
+    AText::DrawText(camera);
 }
 
 /**
@@ -165,6 +192,10 @@ void AText::Draw(Camera* camera) {
  * And then setting vertex data is done during the setup/constructor phase,
  * instead of during rendering
  * This requires a refresh if the data ever changes
+ * 
+ * This method is more efficient because the original version does all this work
+ * during the render phase. Now it's done during the actor spawn phase with the exception
+ * if any changes are made at runtime.
  */
 void AText::Print3D(char* text, s32 tracking, s32 mode) {
     char* temp_string = text;
@@ -256,7 +287,6 @@ void AText::PrintLetter3D(MenuTexture* glyphTexture, f32 column, f32 row, s32 mo
                 texture->width,
                 texture->height,
                 mode,
-                false
             });
         }
         texture++;
@@ -265,78 +295,48 @@ void AText::PrintLetter3D(MenuTexture* glyphTexture, f32 column, f32 row, s32 mo
 }
 
 void AText::SetupVtx() {
-    size_t totalWidth = 0;
-    for (CharacterList& character : TextureList) {
-        totalWidth += character.width;
-    }
-
     for (CharacterList& character : TextureList) {
 
         Vtx* vtxPtr;
         switch (character.width) {
             default:
-                vtxPtr = (Vtx*)&AText::myVtx[18];
+                vtxPtr = (Vtx*)&AText::myVtx[4];
                 break;
             case 16:
-                vtxPtr = (Vtx*)&AText::myVtx[18];
+                vtxPtr = (Vtx*)&AText::myVtx[4];
                 break;
             case 26:
                 vtxPtr = (Vtx*)&AText::myVtx[0];
                 break;
             case 30:
-                vtxPtr = (Vtx*)&AText::myVtx[36];
+                vtxPtr = (Vtx*)&AText::myVtx[8];
                 break;
         }
 
-        // memcpy the vtx data into the unique vtx data for this name
+        // memcpy the vtx data into the unique vtx data for this letter
         Vtx* vtxSrc = (Vtx*)vtxPtr;
         memcpy(&character.vtx, vtxSrc, sizeof(Vtx) * 4);
 
-        // Set the location for this letter (beside the previous letter)
-
-        // Update the positions for each vtx
         for (size_t i = 0; i < 4; i++) {
+            // Set the location for this letter (beside the previous letter)     center the text over the anchor point
             character.vtx[i].v.ob[0] += (s16)(character.column * LetterSpacing) + (character.width / 2);
 
             // Set the colour for this letter
-            character.vtx[i].v.cn[0] = VertColour[i].r;
-            character.vtx[i].v.cn[1] = VertColour[i].g;
-            character.vtx[i].v.cn[2] = VertColour[i].b;
-            character.vtx[i].v.cn[3] = VertColour[i].a;
+            character.vtx[i].v.cn[0] = TextColour[i].r;
+            character.vtx[i].v.cn[1] = TextColour[i].g;
+            character.vtx[i].v.cn[2] = TextColour[i].b;
+            character.vtx[i].v.cn[3] = TextColour[i].a;
         }
-
-        // for (size_t i = 0; i < 4; i++) {
-        //     character.vtx[i].v.ob[0] += (s16)(totalWidth/2);
-        // }
-
-        // This is for centering the text over the players head
-        WidthOffset += character.column * LetterSpacing;
     }
 }
 
-void AText::SetupMatrix(Camera* camera) { // Based on func_80095BD0
+void AText::DrawText(Camera* camera) { // Based on func_80095BD0
     Mat4 mtx;
 
-    ApplySphericalBIllBoard(mtx, camera->cameraId);
-
-    // Set position
-    mtx[3][0] = Pos[0];
-    mtx[3][1] = Pos[1];
-    mtx[3][2] = Pos[2];
-
-    mtx[0][0] *= Scale.x;
-    mtx[1][0] *= Scale.x;
-    mtx[2][0] *= Scale.x;
-    mtx[0][1] *= Scale.y;
-    mtx[1][1] *= Scale.y;
-    mtx[2][1] *= Scale.y;
-    mtx[0][2] *= Scale.z;
-    mtx[1][2] *= Scale.z;
-    mtx[2][2] *= Scale.z;
-
+    ApplySphericalBillBoard(mtx, FVector(Pos[0], Pos[1], Pos[2]), Scale, camera->cameraId);
     AddObjectMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-//    FrameInterpolation_RecordOpenChild("actor_text", TAG_LETTER((uintptr_t) this << 8));
+    FrameInterpolation_RecordOpenChild("actor_text", TAG_LETTER(this));
     gSPDisplayList(gDisplayListHead++, (Gfx*)D_020077A8);
         switch (1) {
             case 1:
@@ -370,13 +370,12 @@ void AText::SetupMatrix(Camera* camera) { // Based on func_80095BD0
 
         gSPVertex(gDisplayListHead++, (uintptr_t)tex.vtx, 4, 0);
         gSP2Triangles(gDisplayListHead++, 0, 2, 1, 0, 0, 3, 2, 0);
-//        gSPDisplayList(gDisplayListHead++, (Gfx*)common_rectangle_display);
 
         gSPSetGeometryMode(gDisplayListHead++, G_ZBUFFER);
     }
 
     gSPDisplayList(gDisplayListHead++, (Gfx*)D_020077D8);
-  //  FrameInterpolation_RecordCloseChild();
+    FrameInterpolation_RecordCloseChild();
 }
 
 void AText::AnimateColour(Vtx* vtx) {
@@ -445,6 +444,9 @@ void AText::DrawEditorProperties() {
         updated = true;
     }
 
+    ImGui::DragFloat("Far Render Dist", &Far);
+    ImGui::DragFloat("Close Render Dist", &Close);
+
     switch(mode) {
         case STATIONARY: {
             ImGui::Text("Location");
@@ -471,10 +473,8 @@ void AText::DrawEditorProperties() {
                 PlayerIndex = playerIdx - 1;
             }
 
-            int32_t height = HeightOffset;
-            if (ImGui::InputInt("Height Offset", &height)) {
-                HeightOffset = static_cast<uint32_t>(height);
-            }
+            ImGui::DragFloat("Width Offset", &WidthOffset);
+            ImGui::DragFloat("Height Offset", &HeightOffset);
             break;
     }
 
@@ -485,9 +485,6 @@ void AText::DrawEditorProperties() {
 
     ImGui::SetNextItemWidth(100);
     ImGui::DragFloat("Scale X", &ScaleX, 0.1f, -5.0f, 5.0f, "%.2f");
-
-    ImGui::SetNextItemWidth(100);
-    ImGui::DragFloat("Scale Y", &ScaleY, 0.1f, -5.0f, 5.0f, "%.2f");
 
     ImGui::SetNextItemWidth(100);
     if (ImGui::DragFloat("Letter Spacing", &LetterSpacing, 0.1f, 0.0f, 5.0f, "%.2f")) {
@@ -506,20 +503,20 @@ void AText::DrawColourEditor(bool* updated) {
     {
         // Convert 8bit colours to float
         ImVec4 colour(
-            VertColour[0].r / 255.0f,
-            VertColour[0].g / 255.0f,
-            VertColour[0].b / 255.0f,
-            VertColour[0].a / 255.0f
+            TextColour[0].r / 255.0f,
+            TextColour[0].g / 255.0f,
+            TextColour[0].b / 255.0f,
+            TextColour[0].a / 255.0f
         );
 
         // Single color input
         ImGui::ColorEdit4("Colour", (float*)&colour);
             // Apply same color to all vertices
             for (int i = 0; i < 4; i++) {
-                VertColour[i].r = FloatToU8(colour.x);
-                VertColour[i].g = FloatToU8(colour.y);
-                VertColour[i].b = FloatToU8(colour.z);
-                VertColour[i].a = FloatToU8(colour.w);
+                TextColour[i].r = FloatToU8(colour.x);
+                TextColour[i].g = FloatToU8(colour.y);
+                TextColour[i].b = FloatToU8(colour.z);
+                TextColour[i].a = FloatToU8(colour.w);
             }
             *updated = true;
         
@@ -528,18 +525,18 @@ void AText::DrawColourEditor(bool* updated) {
         for (int i = 0; i < 4; i++)
         {
             ImVec4 colour2(
-                VertColour[i].r / 255.0f,
-                VertColour[i].g / 255.0f,
-                VertColour[i].b / 255.0f,
-                VertColour[i].a / 255.0f
+                TextColour[i].r / 255.0f,
+                TextColour[i].g / 255.0f,
+                TextColour[i].b / 255.0f,
+                TextColour[i].a / 255.0f
             );
             char label[32];
             snprintf(label, sizeof(label), "Vtx %d Colour", i);
             if (ImGui::ColorEdit4(label, (float*)&colour2)) {
-                VertColour[i].r = FloatToU8(colour2.x);
-                VertColour[i].g = FloatToU8(colour2.y);
-                VertColour[i].b = FloatToU8(colour2.z);
-                VertColour[i].a = FloatToU8(colour2.w);
+                TextColour[i].r = FloatToU8(colour2.x);
+                TextColour[i].g = FloatToU8(colour2.y);
+                TextColour[i].b = FloatToU8(colour2.z);
+                TextColour[i].a = FloatToU8(colour2.w);
                 *updated = true;
             }
         }

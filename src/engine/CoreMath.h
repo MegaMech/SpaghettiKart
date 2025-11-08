@@ -2,10 +2,9 @@
 #define CORE_MATH_H
 
 #ifdef __cplusplus
-#define JSON_HAS_CPP_20 1
 #include <nlohmann/json.hpp>
-using json = nlohmann::json;
-#endif // __cplusplus
+#endif
+
 #include <libultraship.h>
 
 /**
@@ -14,6 +13,14 @@ using json = nlohmann::json;
  * Basic vector structs for manipulating 2D and 3D coordinates
  * 
  */
+
+struct RGBA8 {
+    uint8_t r, g, b, a;
+#ifdef __cplusplus
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(RGBA8, r, g, b, a)
+#endif
+};
+
 
 /**
  * 
