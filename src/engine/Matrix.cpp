@@ -141,6 +141,37 @@ void AddLocalRotation(Mat4 mat, IRotator rot) {
     mat[2][2] = (cos_pitch * cos_yaw);
 }
 
+/* Rotates the object to be facing the camera
+ * Rotates on all three axis
+ */
+void ApplySphericalBIllBoard(Mat4 mat, s32 cameraIndex) {
+    Mtx* lookAt = GetLookAtMatrix(cameraIndex);
+    Mat4 lookAtF;
+    guMtxL2F((float(*)[4])&lookAtF, lookAt);
+
+    // Camera Right
+    mat[0][0] = lookAtF[0][0];
+    mat[1][0] = lookAtF[0][1];
+    mat[2][0] = lookAtF[0][2];
+    mat[3][0] = 0;
+
+    // Camera Up
+    mat[0][1] = lookAtF[1][0];
+    mat[1][1] = lookAtF[1][1];
+    mat[2][1] = lookAtF[1][2];
+    mat[3][1] = 0;
+
+    // Camera Forward
+    mat[0][2] = lookAtF[2][0];
+    mat[1][2] = lookAtF[2][1];
+    mat[2][2] = lookAtF[2][2];
+    mat[3][2] = 0;
+
+    mat[0][3] = 0;
+    mat[1][3] = 0;
+    mat[2][3] = 0;
+    mat[3][3] = 1;
+}
 
 // API
 extern "C" {
