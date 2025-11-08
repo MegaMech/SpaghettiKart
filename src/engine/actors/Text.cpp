@@ -152,6 +152,10 @@ void AText::Draw(Camera* camera) {
         }
     }
 
+    if ((gPlayers[PlayerIndex].effects & BOO_EFFECT) == BOO_EFFECT) {
+        FadeState = FADE_OUT;
+    }
+
     AText::SetupMatrix(camera);
 }
 
