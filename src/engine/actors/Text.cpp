@@ -367,7 +367,7 @@ void AText::DrawText3D(Camera* camera) { // Based on func_80095BD0
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
 
-        gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER);
+       // gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER);
 
         if (Animate) {
             AnimateColour(tex.vtx);
@@ -385,7 +385,7 @@ void AText::DrawText3D(Camera* camera) { // Based on func_80095BD0
         gSPVertex(gDisplayListHead++, (uintptr_t)tex.vtx, 4, 0);
         gSP2Triangles(gDisplayListHead++, 0, 2, 1, 0, 0, 3, 2, 0);
 
-        gSPSetGeometryMode(gDisplayListHead++, G_ZBUFFER);
+        // gSPSetGeometryMode(gDisplayListHead++, G_ZBUFFER);
     }
 
     gSPDisplayList(gDisplayListHead++, (Gfx*)D_020077D8);
