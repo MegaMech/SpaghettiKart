@@ -17,7 +17,8 @@ extern "C" {
 OHotAirBalloon::OHotAirBalloon(const SpawnParams& params) : OObject(params) {
     Name = "Hot Air Balloon";
     ResourceName = "mk:hot_air_balloon";
-    Pos = params.Location.value_or(FVector(0, 0, 0));
+
+    SpawnPos = params.Location.value_or(FVector{0.0f, 0.0f, 0.0f});
 
     D_80165898 = 0;
 
@@ -31,7 +32,12 @@ OHotAirBalloon::OHotAirBalloon(const SpawnParams& params) : OObject(params) {
 
     find_unused_obj_index(&_objectIndex);
 
+
     init_object(_objectIndex, 0);
+}
+
+void OHotAirBalloon::SetSpawnParams(SpawnParams& params) {
+    OObject::SetSpawnParams(params);
 }
 
 void OHotAirBalloon::Tick() {
@@ -101,10 +107,10 @@ void OHotAirBalloon::init_hot_air_balloon(s32 objectIndex) {
     gObjectList[objectIndex].sizeScaling = 1.0f;
     gObjectList[objectIndex].model = (Gfx*)d_course_luigi_raceway_dl_F960;
     if (gGamestate != CREDITS_SEQUENCE) {
-        set_obj_origin_pos(objectIndex, xOrientation * Pos.x, Pos.y, Pos.z);
+        set_obj_origin_pos(objectIndex, xOrientation * SpawnPos.x, SpawnPos.y, SpawnPos.z);
         set_obj_origin_offset(objectIndex, 0.0f, 300.0f, 0.0f);
     } else {
-        set_obj_origin_pos(objectIndex, xOrientation * Pos.x, Pos.y, Pos.z);
+        set_obj_origin_pos(objectIndex, xOrientation * SpawnPos.x, SpawnPos.y, SpawnPos.z);
         set_obj_origin_offset(objectIndex, 0.0f, 300.0f, 0.0f);
     }
     func_8008B844(objectIndex);
