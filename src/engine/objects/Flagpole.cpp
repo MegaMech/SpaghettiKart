@@ -21,8 +21,17 @@ OFlagpole::OFlagpole(const SpawnParams& params) : OObject(params) {
     _idx = _count;
 
     find_unused_obj_index(&_objectIndex);
-
     init_object(_objectIndex, 0);
+
+    SpawnPos = params.Location.value_or(FVector(0, 0, 0));
+    gObjectList[_objectIndex].pos[0] = SpawnPos.x;
+    gObjectList[_objectIndex].pos[1] = SpawnPos.y;
+    gObjectList[_objectIndex].pos[2] = SpawnPos.z;
+
+    SpawnRot = params.Rotation.value_or(IRotator(0, 0, 0));
+    gObjectList[_objectIndex].orientation[0] = SpawnRot.pitch;
+    gObjectList[_objectIndex].orientation[1] = SpawnRot.yaw;
+    gObjectList[_objectIndex].orientation[2] = SpawnRot.roll;
 
     _count++;
 }
