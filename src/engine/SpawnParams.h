@@ -56,8 +56,10 @@ struct SpawnParams {
     std::optional<uint32_t> PathIndex; // 0-3 Place vehicle this path
     std::optional<uint32_t> PathPoint; // Path point index
     std::optional<bool> Bool; // train tender
+    std::optional<bool> Bool2;
     std::optional<float> Speed; // Train
     std::optional<float> SpeedB; // cars, trucks, buses, etc.
+    std::optional<FVector> FVec2;
 
     std::optional<RGBA8> Colour;
     std::optional<RGBA8> Colour2;
@@ -85,8 +87,10 @@ struct SpawnParams {
         get_optional_to(j, "PathIndex", PathIndex);
         get_optional_to(j, "PathPoint", PathPoint);
         get_optional_to(j, "Bool", Bool);
+        get_optional_to(j, "Bool2", Bool2);
         get_optional_to(j, "Speed", Speed);
         get_optional_to(j, "SpeedB", SpeedB);
+        get_optional_to(j, "FVec2", FVec2);
         get_optional_to(j, "Colour", Colour);
         get_optional_to(j, "Colour2", Colour2);
         get_optional_to(j, "Colour3", Colour3);
@@ -115,8 +119,10 @@ struct SpawnParams {
         set_optional_from(j, "PathIndex", PathIndex);
         set_optional_from(j, "PathPoint", PathPoint);
         set_optional_from(j, "Bool", Bool);
+        set_optional_from(j, "Bool2", Bool2);
         set_optional_from(j, "Speed", Speed);
         set_optional_from(j, "SpeedB", SpeedB);
+        set_optional_from(j, "FVec2", FVec2);
         set_optional_from(j, "Colour", Colour);
         set_optional_from(j, "Colour2", Colour2);
         set_optional_from(j, "Colour3", Colour3);

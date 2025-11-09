@@ -46,11 +46,12 @@ public:
     uint32_t PlayerIndex;
     float WidthOffset = 0.0f;
     float HeightOffset = 8.0f; // Place text above player
-    f32 ScaleX = 1.0f; //! @warning Not saved to scene file
+    f32 ScaleX = 1.0f;
     f32 LetterSpacing = 1.0f;
     f32 Far = 14000.0f;
     f32 Close = 350.0f;
 
+    bool FaceCamera = true;
     bool Animate = false;
     bool SingleColour = true; // Only used for imGUI to show more colour options
     // 1 colour for each of the 4 vtx
@@ -122,7 +123,7 @@ public:
     void Print3D(char* text, s32 tracking, s32 mode);
     void PrintLetter3D(MenuTexture* glyphTexture, f32 column, f32 row, s32 mode);
     void SetupVtx();
-    void DrawText(Camera* camera); // Based on func_80095BD0
+    void DrawText3D(Camera* camera); // Based on func_80095BD0
     void AnimateColour(Vtx* vtx); // Animate the vtx colours
     void FadeIn(Vtx* vtx);
     void FadeOut(Vtx* vtx);

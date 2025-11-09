@@ -30,12 +30,20 @@ AText::AText(const SpawnParams& params) : AActor(params) {
     Pos[1] = SpawnPos.y;
     Pos[2] = SpawnPos.z;
 
+    SpawnRot = params.Rotation.value_or(IRotator(0, 0, 0));
+    Rot[0] = SpawnRot.pitch;
+    Rot[1] = SpawnRot.yaw;
+    Rot[2] = SpawnRot.roll;
+
     SpawnScale = params.Scale.value_or(FVector(1.0f, 1.0f, 1.0f));
     Scale = SpawnScale;
+
+    ScaleX = params.FVec2.value_or(FVector{1.0f, 0.0f, 0.0f}).x;
 
     Mode = static_cast<TextMode>(params.Type.value_or(0)); // STATIONARY
 
     Animate = params.Bool.value_or(false);
+    FaceCamera = params.Bool2.value_or(true);
 
     WidthOffset = params.Speed.value_or(0.0f);
     HeightOffset = params.SpeedB.value_or(8.0f);
@@ -106,8 +114,6 @@ bool AText::IsMod() { return true; }
 void AText::SetSpawnParams(SpawnParams& params) {
     AActor::SetSpawnParams(params);
     params.Name = ResourceName;
-    params.Location = SpawnPos;
-    params.Scale = SpawnScale;
     params.Type = static_cast<int16_t>(Mode);
     params.Behaviour = PlayerIndex;
     params.Skin = Text;
@@ -121,8 +127,10 @@ void AText::SetSpawnParams(SpawnParams& params) {
     params.SpeedB = HeightOffset;
 
     params.Velocity = {LetterSpacing, Far, Close};
+    params.FVec2 = {ScaleX, 0.0f, 0.0f};
 
     params.Bool = Animate;
+    params.Bool2 = FaceCamera;
 }
 
 void AText::Tick() {
@@ -158,7 +166,7 @@ void AText::Draw(Camera* camera) {
             }
             if ((gPlayers[PlayerIndex].effects & BOO_EFFECT) == BOO_EFFECT) {
                 FadeState = FADE_OUT;
-                AText::DrawText(camera);
+                AText::DrawText3D(camera);
                 return; // Skip expensive calculations below
             }
             break;
@@ -184,7 +192,7 @@ void AText::Draw(Camera* camera) {
         }
     }
 
-    AText::DrawText(camera);
+    AText::DrawText3D(camera);
 }
 
 /**
@@ -331,10 +339,15 @@ void AText::SetupVtx() {
     }
 }
 
-void AText::DrawText(Camera* camera) { // Based on func_80095BD0
+void AText::DrawText3D(Camera* camera) { // Based on func_80095BD0
     Mat4 mtx;
 
-    ApplySphericalBillBoard(mtx, FVector(Pos[0], Pos[1], Pos[2]), Scale, camera->cameraId);
+    if (FaceCamera) {
+        ApplySphericalBillBoard(mtx, *(FVector*)Pos, Scale, camera->cameraId);
+    } else {
+        ApplyMatrixTransformations(mtx, *(FVector*)Pos, *(IRotator*)Rot, Scale);
+    }
+
     AddObjectMatrix(mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     FrameInterpolation_RecordOpenChild("actor_text", TAG_LETTER(this));
@@ -447,6 +460,35 @@ void AText::DrawEditorProperties() {
 
     ImGui::DragFloat("Far Render Dist", &Far);
     ImGui::DragFloat("Close Render Dist", &Close);
+
+    ImGui::Checkbox("Face Camera", &FaceCamera);
+    if (!FaceCamera) {
+        ImGui::Text("Rotation");
+        ImGui::SameLine();
+
+        IRotator objRot = GetRotation();
+
+        // Convert to temporary int values (to prevent writing 32bit values to 16bit variables)
+        int rot[3] = {
+            objRot.pitch,
+            objRot.yaw,
+            objRot.roll
+        };
+
+        if (ImGui::DragInt3("##Rotation", rot, 5.0f)) {
+            for (size_t i = 0; i < 3; i++) {
+                // Wrap around 0–65535
+                rot[i] = (rot[i] % 65536 + 65536) % 65536;
+            }
+            IRotator newRot;
+            newRot.Set(
+                static_cast<uint16_t>(rot[0]),
+                static_cast<uint16_t>(rot[1]),
+                static_cast<uint16_t>(rot[2])
+            );
+            Rotate(newRot);
+        }
+    }
 
     switch(mode) {
         case STATIONARY: {
