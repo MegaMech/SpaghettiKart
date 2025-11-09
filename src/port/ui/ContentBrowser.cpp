@@ -241,6 +241,7 @@ namespace Editor {
         { "Car", [](const FVector& pos) { return ACar::Spawn(2.0f, 2.5f, 0, 0, ACar::SpawnMode::AUTO); } },
         { "Truck", [](const FVector& pos) { return ATruck::Spawn(2.0f, 2.5f, 0, 0, ATruck::SpawnMode::AUTO); } },
         { "Tanker Truck", [](const FVector& pos) { return ATankerTruck::Spawn(2.0f, 2.5f, 0, 0, ATankerTruck::SpawnMode::AUTO); } },
+        { "Text", [](const FVector& pos) { return AText::Spawn("Harbour Masters", FVector(0, 0, 0), FVector(1.0f, 1.0f, 1.0f), AText::TextMode::STATIONARY, 0); } },
     };
 
     std::unordered_map<std::string, std::function<OObject*(const FVector&)>> ObjectList = {

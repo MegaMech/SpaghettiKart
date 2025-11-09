@@ -50,16 +50,12 @@ AText::AText(const SpawnParams& params) : AActor(params) {
     TextColour[2] = params.Colour3.value_or(RGBA8{255, 255, 255, 255});
     TextColour[3] = params.Colour4.value_or(RGBA8{255, 255, 255, 255});
 
-    switch(Mode) {
-        case FOLLOW_PLAYER:
-            PlayerIndex = static_cast<uint32_t>(params.Behaviour.value_or(0));
-            if (PlayerIndex < 0 || PlayerIndex >= NUM_PLAYERS) {
-                PlayerIndex = 0;
-            }
-            break;
+    PlayerIndex = static_cast<uint32_t>(params.Behaviour.value_or(0));
+    if (PlayerIndex < 0 || PlayerIndex >= NUM_PLAYERS) {
+        PlayerIndex = 0;
     }
 
-    Text = ValidateString(params.Skin.value_or("My Text"));
+    Text = ValidateString(params.Skin.value_or("Harbour Masters"));
     AText::Print3D((char*)Text.c_str(), 0, 1);
 }
 
@@ -116,10 +112,10 @@ void AText::SetSpawnParams(SpawnParams& params) {
     params.Behaviour = PlayerIndex;
     params.Skin = Text;
 
-    *params.Colour = TextColour[0];
-    *params.Colour2 = TextColour[1];
-    *params.Colour3 = TextColour[2];
-    *params.Colour4 = TextColour[3];
+    params.Colour = TextColour[0];
+    params.Colour2 = TextColour[1];
+    params.Colour3 = TextColour[2];
+    params.Colour4 = TextColour[3];
 
     params.Speed = WidthOffset;
     params.SpeedB = HeightOffset;
@@ -153,14 +149,19 @@ void AText::FollowPlayer() {
 }
 
 void AText::Draw(Camera* camera) {
-    if (PlayerIndex == camera->playerId) {
-        return; // Do not draw the local players own name
-    }
-
-    if ((gPlayers[PlayerIndex].effects & BOO_EFFECT) == BOO_EFFECT) {
-        FadeState = FADE_OUT;
-        AText::DrawText(camera);
-        return; // Skip expensive calculations below
+    switch(Mode) {
+        case STATIONARY:
+            break; // Do nothing
+        case FOLLOW_PLAYER:
+            if (PlayerIndex == camera->playerId) {
+                return; // Do not draw the local players own name
+            }
+            if ((gPlayers[PlayerIndex].effects & BOO_EFFECT) == BOO_EFFECT) {
+                FadeState = FADE_OUT;
+                AText::DrawText(camera);
+                return; // Skip expensive calculations below
+            }
+            break;
     }
 
     f32 distance = is_within_render_distance(camera->pos, (float*)&Pos[0], camera->rot[1], Close,

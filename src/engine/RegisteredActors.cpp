@@ -363,4 +363,10 @@ void RegisterGameActors() {
             gWorldInstance.AddActor(new ACloud(params));
         }
     );
+
+    RegisterActor("hm:text",
+        [](const SpawnParams& params) {
+            gWorldInstance.AddActor(new AText(params));
+        }
+    );
 }

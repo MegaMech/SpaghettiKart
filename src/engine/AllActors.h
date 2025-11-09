@@ -10,6 +10,7 @@
 #include "actors/Starship.h"
 #include "actors/Ship.h"
 #include "actors/Tree.h"
+#include "actors/Text.h"
 #include "vehicles/Train.h"
 #include "vehicles/Boat.h"
 #include "vehicles/Bus.h"
