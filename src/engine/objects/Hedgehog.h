@@ -47,6 +47,8 @@ public:
 
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
+    virtual void SetSpawnParams(SpawnParams& params) override;
+    virtual void DrawEditorProperties() override;
 
     void func_800555BC(s32 objectIndex, s32 cameraId);
     void func_8004A870(s32 objectIndex, f32 arg1);
@@ -58,7 +60,7 @@ public:
 
 
 private:
-    FVector Pos;
+    FVector2D PatrolEnd;
     static size_t _count;
     size_t _idx;
 };

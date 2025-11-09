@@ -1,5 +1,7 @@
 #include "Hedgehog.h"
-#include "World.h"
+#include "engine/World.h"
+#include "port/Game.h"
+#include "port/interpolation/FrameInterpolation.h"
 
 extern "C" {
 #include "render_objects.h"
@@ -11,7 +13,6 @@ extern "C" {
 #include "code_80086E70.h"
 #include "code_80057C60.h"
 }
-#include "port/interpolation/FrameInterpolation.h"
 
 size_t OHedgehog::_count = 0;
 
@@ -19,20 +20,26 @@ OHedgehog::OHedgehog(const SpawnParams& params) : OObject(params) {
     Name = "Hedgehog";
     ResourceName = "mk:hedgehog";
     _idx = _count;
-    Pos = params.Location.value_or(FVector(0, 0, 0));
-    FVector2D patrolPoint = params.PatrolEnd.value_or(FVector2D(0, 0));
+    SpawnPos = params.Location.value_or(FVector(0, 0, 0));
+    PatrolEnd = params.PatrolEnd.value_or(FVector2D(0, 0));
 
     find_unused_obj_index(&_objectIndex);
 
     init_object(_objectIndex, 0);
-    gObjectList[_objectIndex].pos[0] = gObjectList[_objectIndex].origin_pos[0] = Pos.x * xOrientation;
-    gObjectList[_objectIndex].pos[1] = gObjectList[_objectIndex].surfaceHeight = Pos.y + 6.0;
-    gObjectList[_objectIndex].pos[2] = gObjectList[_objectIndex].origin_pos[2] = Pos.z;
+    gObjectList[_objectIndex].pos[0] = gObjectList[_objectIndex].origin_pos[0] = SpawnPos.x * xOrientation;
+    gObjectList[_objectIndex].pos[1] = gObjectList[_objectIndex].surfaceHeight = SpawnPos.y + 6.0;
+    gObjectList[_objectIndex].pos[2] = gObjectList[_objectIndex].origin_pos[2] = SpawnPos.z;
     gObjectList[_objectIndex].unk_0D5 = (u8) params.Behaviour.value_or(9);
-    gObjectList[_objectIndex].unk_09C = patrolPoint.x * xOrientation;
-    gObjectList[_objectIndex].unk_09E = patrolPoint.z;
+    gObjectList[_objectIndex].unk_09C = PatrolEnd.x * xOrientation;
+    gObjectList[_objectIndex].unk_09E = PatrolEnd.z;
 
     _count++;
+}
+
+void OHedgehog::SetSpawnParams(SpawnParams& params) {
+    params.Name = std::string(ResourceName);
+    params.Location = SpawnPos;
+    params.PatrolEnd = PatrolEnd;
 }
 
 void OHedgehog::Tick() {
@@ -190,5 +197,34 @@ void OHedgehog::func_800833D0(s32 objectIndex, s32 id) {
 void OHedgehog::func_80083474(s32 objectIndex) {
     if (gObjectList[objectIndex].state >= 2) {
         func_80089F24(objectIndex);
+    }
+}
+
+void OHedgehog::DrawEditorProperties() {
+    Object* obj = &gObjectList[_objectIndex];
+
+    ImGui::Text("Location");
+    ImGui::SameLine();
+    FVector location = FVector(obj->pos[0], obj->pos[1], obj->pos[2]);
+    if (ImGui::DragFloat3("##Location", (float*)&location)) {
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPos")) {
+        FVector location = FVector(0, 0, 0);
+        Translate(location);
+        gEditor.eObjectPicker.eGizmo.Pos = location;
+    }
+
+    ImGui::Text("Patrol Location");
+    ImGui::SameLine();
+
+    if (ImGui::DragFloat2("##PatrolLoc", (float*)&PatrolEnd)) {
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPatrolLoc")) {
+        PatrolEnd = FVector2D(0.0f, 0.0f);
     }
 }

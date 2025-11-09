@@ -45,6 +45,12 @@ OCrab::OCrab(const SpawnParams& params) : OObject(params) {
     _count++;
 }
 
+void OCrab::SetSpawnParams(SpawnParams& params) {
+    params.Name = std::string(ResourceName);
+    params.PatrolStart = _start;
+    params.PatrolEnd = _end;
+}
+
 void OCrab::Tick(void) {
     s32 objectIndex = _objectIndex;
     if (gObjectList[objectIndex].state != 0) {
@@ -188,5 +194,31 @@ void OCrab::func_80082C30(s32 objectIndex) {
 void OCrab::func_80082E18(s32 objectIndex) {
     if (gObjectList[objectIndex].state >= 2) {
         func_80089F24(objectIndex);
+    }
+}
+
+void OCrab::DrawEditorProperties() {
+    ImGui::Text("Start Location");
+    ImGui::SameLine();
+
+    if (ImGui::DragFloat2("##PathSpan", (float*)&_start)) {
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPathSpan")) {
+        _start = FVector2D(0.0f, 0.0f);
+        gObjectList[_objectIndex].pos[0] = gObjectList[_objectIndex].origin_pos[0] = _start.x * xOrientation;
+        gObjectList[_objectIndex].pos[2] = gObjectList[_objectIndex].origin_pos[2] = _start.z;
+    }
+
+    ImGui::Text("Patrol Location");
+    ImGui::SameLine();
+
+    if (ImGui::DragFloat2("##PatrolLoc", (float*)&_end)) {
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(ICON_FA_UNDO "##ResetPatrolLoc")) {
+        _end = FVector2D(0.0f, 0.0f);
+        gObjectList[_objectIndex].unk_01C[0] = _end.x * xOrientation;
+        gObjectList[_objectIndex].unk_01C[2] = _end.z;
     }
 }
