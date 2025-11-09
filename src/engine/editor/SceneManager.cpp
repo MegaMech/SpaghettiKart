@@ -113,7 +113,8 @@ namespace Editor {
                 auto & actorsJson = data["Actors"];
                 course->SpawnList.clear();
                 for (const auto& actor : actorsJson) {
-                    SpawnParams params = actor.get<SpawnParams>();
+                    SpawnParams params;
+                    params.from_json(actor); //<SpawnParams>();
                     if (!params.Name.empty()) {
                         course->SpawnList.push_back(params);
                     }
@@ -199,26 +200,25 @@ namespace Editor {
                 case ACTOR_CACTUS2_KALAMARI_DESERT:
                 case ACTOR_CACTUS3_KALAMARI_DESERT:
                 case ACTOR_BUSH_BOWSERS_CASTLE:
-                
-                params.Name = get_actor_resource_location_name(actor->Type);
-                params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
-                if (!params.Name.empty()) {
-                    actorList.push_back(params);
-                }
-                alreadyProcessed = true;
-                break;
+                    params.Name = get_actor_resource_location_name(actor->Type);
+                    params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
+                    if (!params.Name.empty()) {
+                        actorList.push_back(params.to_json());
+                    }
+                    alreadyProcessed = true;
+                    break;
                 case ACTOR_PIRANHA_PLANT:
-                params.Name = get_actor_resource_location_name(actor->Type);
-                params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
-                // params.Type = // Need this to use royal raceway version
-                actorList.push_back(params);
-                alreadyProcessed = true;
-                break;
+                    params.Name = get_actor_resource_location_name(actor->Type);
+                    params.Location = FVector(actor->Pos[0], actor->Pos[1], actor->Pos[2]);
+                    // params.Type = // Need this to use royal raceway version
+                    actorList.push_back(params.to_json());
+                    alreadyProcessed = true;
+                    break;
                 case ACTOR_YOSHI_EGG:
                     params.Name = get_actor_resource_location_name(actor->Type);
                     params.Location = FVector(actor->Velocity[0], actor->Pos[1], actor->Velocity[2]); // Velocity is pathCenter
                     if (!params.Name.empty()) {
-                        actorList.push_back(params);
+                        actorList.push_back(params.to_json());
                     }
                     alreadyProcessed = true;
                     break;
@@ -227,7 +227,7 @@ namespace Editor {
             if (!alreadyProcessed) {
                 actor->SetSpawnParams(params);
                 if (!params.Name.empty()) {
-                    actorList.push_back(params);
+                    actorList.push_back(params.to_json());
                 }
             }
         }
@@ -239,7 +239,7 @@ namespace Editor {
             // Unimplemented objects should not be added to the SpawnList
             // The name field is required. If not set, then its not implemented yet.
             if (!params.Name.empty()) {
-                actorList.push_back(params);
+                actorList.push_back(params.to_json());
             }
         }
     }
