@@ -37,6 +37,14 @@ ACloud::ACloud(const SpawnParams& params) : AActor(params) {
     BoundingBoxSize = 2.0f;
 }
 
+void ACloud::SetSpawnParams(SpawnParams& params) {
+    AActor::SetSpawnParams(params);
+    params.Name = ResourceName;
+    params.Type = TimerLength;
+    params.Speed = Hop;
+    params.SpeedB = Gravity;
+}
+
 extern Gfx cloud_mesh[];
 void ACloud::BeginPlay() {
     // Prevent collision mesh from being generated extra times.

@@ -20,10 +20,13 @@ AActor::AActor(SpawnParams params) {
 }
 
 void AActor::BeginPlay() {
-    if ((nullptr != Model) && (Model[0] != '\0')) {
-        // Prevent collision mesh from being generated extra times.
-        if (Triangles.size() == 0) {
-            Editor::GenerateCollisionMesh(this, (Gfx*)LOAD_ASSET_RAW(Model), 1.0f);
+    // This makes actors clickable in the editor
+    if (CVarGetInteger("gEditorEnabled", false) == true) {
+        if ((nullptr != Model) && (Model[0] != '\0')) {
+            // Prevent collision mesh from being generated extra times.
+            if (Triangles.size() == 0) {
+                Editor::GenerateCollisionMesh(this, (Gfx*)LOAD_ASSET_RAW(Model), 1.0f);
+            }
         }
     }
 }

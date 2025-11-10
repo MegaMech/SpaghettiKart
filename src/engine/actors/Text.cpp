@@ -64,7 +64,7 @@ AText::AText(const SpawnParams& params) : AActor(params) {
     }
 
     Text = ValidateString(params.Skin.value_or("Harbour Masters"));
-    AText::Print3D((char*)Text.c_str(), 0, 1);
+    AText::Print3D((char*)Text.c_str(), 0, CENTER_TEXT_MODE_2);
 }
 
 /**
@@ -106,7 +106,7 @@ std::string AText::ValidateString(const std::string_view& s) {
  */
 void AText::Refresh() {
     AText::TextureList.clear();
-    AText::Print3D((char*)Text.c_str(), 0, 1);
+    AText::Print3D((char*)Text.c_str(), 0, CENTER_TEXT_MODE_2);
 }
 
 bool AText::IsMod() { return true; }
@@ -275,6 +275,7 @@ void AText::Print3D(char* text, s32 tracking, s32 mode) {
             text += 1;
         }
     }
+    SetupVtx(); // position each letter
 }
 
 void AText::PrintLetter3D(MenuTexture* glyphTexture, f32 column, f32 row, s32 mode) {
@@ -300,7 +301,6 @@ void AText::PrintLetter3D(MenuTexture* glyphTexture, f32 column, f32 row, s32 mo
         }
         texture++;
     }
-    SetupVtx(); // position each letter
 }
 
 void AText::SetupVtx() {
@@ -321,14 +321,15 @@ void AText::SetupVtx() {
                 vtxPtr = (Vtx*)&AText::myVtx[8];
                 break;
         }
-
+        // printf("col %f width %d span %d\n", character.column, character.width, character.span);
         // memcpy the vtx data into the unique vtx data for this letter
         Vtx* vtxSrc = (Vtx*)vtxPtr;
         memcpy(&character.vtx, vtxSrc, sizeof(Vtx) * 4);
 
         for (size_t i = 0; i < 4; i++) {
             // Set the location for this letter (beside the previous letter)     center the text over the anchor point
-            character.vtx[i].v.ob[0] += (s16)(character.column * LetterSpacing) + (character.width / 2);
+            float span = (character.column * LetterSpacing);
+            character.vtx[i].v.ob[0] += (s16)span;
 
             // Set the colour for this letter
             character.vtx[i].v.cn[0] = TextColour[i].r;

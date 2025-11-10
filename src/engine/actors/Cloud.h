@@ -33,6 +33,7 @@ public:
     virtual void Tick() override;
     virtual void Draw(Camera*) override;
     virtual void BeginPlay() override;
+    virtual void SetSpawnParams(SpawnParams& params) override;
     virtual void DrawEditorProperties() override;
     virtual void Collision(Player* player, AActor* actor) override;
     virtual bool IsMod() override;
