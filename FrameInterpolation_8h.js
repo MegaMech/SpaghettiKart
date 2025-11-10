@@ -5,6 +5,7 @@ var FrameInterpolation_8h =
     [ "TAG_LETTER", "FrameInterpolation_8h.html#a80d2f0dba8e548c9494637a1db1549cb", null ],
     [ "TAG_OBJECT", "FrameInterpolation_8h.html#a1082df252b2fcfa1cd89c1bec22204c3", null ],
     [ "TAG_SMOKE_DUST", "FrameInterpolation_8h.html#a16482d0120ab2561205fffd3bbccec69", null ],
+    [ "TAG_THWOMP", "FrameInterpolation_8h.html#ae99f17a9b514b8d8c6fbef52f9e29a7d", null ],
     [ "TAG_TRACK", "FrameInterpolation_8h.html#a49020a15d2dc66098e8ac3900157c377", null ],
     [ "check_if_recording", "FrameInterpolation_8h.html#a02c7ac5342a4d376edee38f312b480bf", null ],
     [ "FrameInterpolation_DontInterpolateCamera", "FrameInterpolation_8h.html#a4c86e5d5fc84cc004fe2059cea4b3068", null ],

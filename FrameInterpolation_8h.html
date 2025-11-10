@@ -138,6 +138,8 @@ Macros</h2></td></tr>
 <tr class="separator:a1082df252b2fcfa1cd89c1bec22204c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6aeaaf9408cf9c743076cf8a94b22b67" id="r_a6aeaaf9408cf9c743076cf8a94b22b67"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6aeaaf9408cf9c743076cf8a94b22b67">TAG_CLOUDS</a>(x)</td></tr>
 <tr class="separator:a6aeaaf9408cf9c743076cf8a94b22b67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae99f17a9b514b8d8c6fbef52f9e29a7d" id="r_ae99f17a9b514b8d8c6fbef52f9e29a7d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae99f17a9b514b8d8c6fbef52f9e29a7d">TAG_THWOMP</a>(x)</td></tr>
+<tr class="separator:ae99f17a9b514b8d8c6fbef52f9e29a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49020a15d2dc66098e8ac3900157c377" id="r_a49020a15d2dc66098e8ac3900157c377"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49020a15d2dc66098e8ac3900157c377">TAG_TRACK</a>(x)</td></tr>
 <tr class="separator:a49020a15d2dc66098e8ac3900157c377"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -245,7 +247,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">((u32)0x30000000 | (u32) (uintptr_t) (x))</div>
+<b>Value:</b><div class="fragment"><div class="line">((u32)0x30000000 | ((u32)(x) &amp; 0x0FFFFFFF))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -282,6 +284,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((u32) 0x20000000 | (u32) (x))</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ae99f17a9b514b8d8c6fbef52f9e29a7d" name="ae99f17a9b514b8d8c6fbef52f9e29a7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99f17a9b514b8d8c6fbef52f9e29a7d">&#9670;&#160;</a></span>TAG_THWOMP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TAG_THWOMP</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">((u32)0x60000000 | ((u32)(x) &amp; 0x0FFFFFFF))</div>
 </div><!-- fragment -->
 </div>
 </div>

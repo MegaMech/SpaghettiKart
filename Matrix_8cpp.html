@@ -137,6 +137,8 @@ Functions</h2></td></tr>
 <tr class="separator:a6f64c44efb9bdfff802175a9739ce1f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63625de4c7f9e2e9cd5b04eed49acfcb" id="r_a63625de4c7f9e2e9cd5b04eed49acfcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a63625de4c7f9e2e9cd5b04eed49acfcb">ApplyMatrixTransformations</a> (<a class="el" href="common__structs_8h.html#ab7160f77e736961cfa2aff581aeee005">Mat4</a> <a class="el" href="render__objects_8c.html#aa6d460986556744dc5e412f987bbb803">mtx</a>, <a class="el" href="structFVector.html">FVector</a> pos, <a class="el" href="structIRotator.html">IRotator</a> rot, <a class="el" href="structFVector.html">FVector</a> scale)</td></tr>
 <tr class="separator:a63625de4c7f9e2e9cd5b04eed49acfcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2039e0b8df030349571010b46c2aa14b" id="r_a2039e0b8df030349571010b46c2aa14b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2039e0b8df030349571010b46c2aa14b">ApplySphericalBillBoard</a> (<a class="el" href="common__structs_8h.html#ab7160f77e736961cfa2aff581aeee005">Mat4</a> mat, <a class="el" href="structFVector.html">FVector</a> pos, <a class="el" href="structFVector.html">FVector</a> scale, s32 cameraIndex)</td></tr>
+<tr class="separator:a2039e0b8df030349571010b46c2aa14b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74669a77172ddc140c5407e1925c6135" id="r_a74669a77172ddc140c5407e1925c6135"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a74669a77172ddc140c5407e1925c6135">AddLocalRotation</a> (<a class="el" href="common__structs_8h.html#ab7160f77e736961cfa2aff581aeee005">Mat4</a> mat, <a class="el" href="structIRotator.html">IRotator</a> rot)</td></tr>
 <tr class="separator:a74669a77172ddc140c5407e1925c6135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a329d78c031733cf22ff7518f5d38fd74" id="r_a329d78c031733cf22ff7518f5d38fd74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a329d78c031733cf22ff7518f5d38fd74">AddHudMatrix</a> (<a class="el" href="common__structs_8h.html#ab7160f77e736961cfa2aff581aeee005">Mat4</a> <a class="el" href="render__objects_8c.html#aa6d460986556744dc5e412f987bbb803">mtx</a>, s32 flags)</td></tr>
@@ -444,6 +446,47 @@ Here is the call graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Matrix_8cpp_a63625de4c7f9e2e9cd5b04eed49acfcb_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a2039e0b8df030349571010b46c2aa14b" name="a2039e0b8df030349571010b46c2aa14b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2039e0b8df030349571010b46c2aa14b">&#9670;&#160;</a></span>ApplySphericalBillBoard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ApplySphericalBillBoard </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="common__structs_8h.html#ab7160f77e736961cfa2aff581aeee005">Mat4</a></td>          <td class="paramname"><span class="paramname"><em>mat</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFVector.html">FVector</a></td>          <td class="paramname"><span class="paramname"><em>pos</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFVector.html">FVector</a></td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">s32</td>          <td class="paramname"><span class="paramname"><em>cameraIndex</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="Matrix_8cpp_a2039e0b8df030349571010b46c2aa14b_cgraph.svg" width="370" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="Matrix_8cpp_a2039e0b8df030349571010b46c2aa14b_icgraph.svg" width="528" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
