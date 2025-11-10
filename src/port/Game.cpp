@@ -704,8 +704,10 @@ void CM_ActorBeginPlay(struct Actor* actor) {
 void CM_ActorGenerateCollision(struct Actor* actor) {
     AActor* act = gWorldInstance.ConvertActorToAActor(actor);
 
-    if (act->Triangles.size() == 0) {
-        Editor::GenerateCollisionMesh(act, (Gfx*)LOAD_ASSET_RAW(act->Model), 1.0f);
+    if ((nullptr != act->Model) && (act->Model[0] != '\0')) {
+        if (act->Triangles.size() == 0) {
+            Editor::GenerateCollisionMesh(act, (Gfx*)LOAD_ASSET_RAW(act->Model), 1.0f);
+        }
     }
 }
 
