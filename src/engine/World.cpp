@@ -21,9 +21,9 @@ extern "C" {
 #include "mario_raceway_data.h"
 }
 
-World::World() {}
+World::World() : RaceManagerInstance(*this) {}
 World::~World() {
-    CM_CleanWorld();
+    ClearWorld();
 }
 
 std::shared_ptr<Course> CurrentCourse;
@@ -252,13 +252,36 @@ Object* World::GetObjectByIndex(size_t index) {
     return nullptr; // Or handle the error as needed
 }
 
+// Deletes all objects from the world
 void World::ClearWorld(void) {
-    CM_CleanWorld();
+    printf("[Game.cpp] Clean World\n");
+    World* world = &gWorldInstance;
+    for (auto& actor : world->Actors) {
+        delete actor;
+    }
 
-    // for (size_t i = 0; i < ARRAY_COUNT(gCollisionMesh); i++) {
+    gWorldInstance.Reset(); // Reset OObjects
+    for (auto& object : world->Objects) {
+        delete object;
+    }
 
-    // }
+    for (auto& emitter : world->Emitters) {
+        delete emitter;
+    }
 
-    // gCollisionMesh
-    // Paths
+    for (auto& actor : world->StaticMeshActors) {
+        delete actor;
+    }
+
+    for (size_t i = 0; i < ARRAY_COUNT(gWorldInstance.playerBombKart); i++) {
+        gWorldInstance.playerBombKart[i].state = PlayerBombKart::PlayerBombKartState::DISABLED;
+        gWorldInstance.playerBombKart[i]._primAlpha = 0;
+    }
+
+    gEditor.ClearObjects();
+    gWorldInstance.Actors.clear();
+    gWorldInstance.StaticMeshActors.clear();
+    gWorldInstance.Objects.clear();
+    gWorldInstance.Emitters.clear();
+    gWorldInstance.Lakitus.clear();
 }
