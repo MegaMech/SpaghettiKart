@@ -25,6 +25,7 @@ public:
     virtual void PreInit();
     virtual void BeginPlay();
     virtual void PostInit();
+    virtual void Clean();
 protected:
     World& WorldContext;
 };
