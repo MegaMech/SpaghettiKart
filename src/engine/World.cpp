@@ -21,13 +21,16 @@ extern "C" {
 #include "mario_raceway_data.h"
 }
 
-World::World() : RaceManagerInstance(*this) {}
+std::shared_ptr<Course> CurrentCourse;
+Cup* CurrentCup;
+
+World::World() {
+    RaceManagerInstance = std::make_unique<RaceManager>(*this);
+}
+
 World::~World() {
     ClearWorld();
 }
-
-std::shared_ptr<Course> CurrentCourse;
-Cup* CurrentCup;
 
 std::shared_ptr<Course> World::AddCourse(std::shared_ptr<Course> course) {
     gWorldInstance.Courses.push_back(course);
