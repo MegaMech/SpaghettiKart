@@ -284,4 +284,7 @@ void World::ClearWorld(void) {
     gWorldInstance.Objects.clear();
     gWorldInstance.Emitters.clear();
     gWorldInstance.Lakitus.clear();
+
+    gWorldInstance.RaceManagerInstance.Clean();
+
 }
