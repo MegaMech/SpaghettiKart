@@ -362,7 +362,9 @@ void AText::DrawText3D(Camera* camera) { // Based on func_80095BD0
 
     FrameInterpolation_RecordOpenChild("actor_text", TAG_LETTER(this));
     gSPDisplayList(gDisplayListHead++, (Gfx*)D_020077A8);
-        switch (1) {
+
+    for (CharacterList& tex : TextureList) {
+        switch (tex.mode) {
             case 1:
                 gSPDisplayList(gDisplayListHead++, (Gfx*)D_020077F8);
                 break;
@@ -370,8 +372,6 @@ void AText::DrawText3D(Camera* camera) { // Based on func_80095BD0
                 gSPDisplayList(gDisplayListHead++, (Gfx*)D_02007818);
                 break;
         }
-
-    for (CharacterList& tex : TextureList) {
         //printf("tex texture %p width %d height %d mode %d col %f\n", tex.Texture, tex.width, tex.height, tex.mode, tex.column);
         gDPLoadTextureTile_4b(gDisplayListHead++, (Gfx*)tex.Texture, G_IM_FMT_I, tex.width, 0, 0, 0, tex.width, tex.height + 2, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
