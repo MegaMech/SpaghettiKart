@@ -77,7 +77,11 @@ AText::AText(const SpawnParams& params) : AActor(params) {
  * But these need to be checked thoroughly before white-listing.
  */
 std::string AText::ValidateString(const std::string_view& s) {
-    if (s.empty()) { return "Blank Text"; }
+    if (CVarGetInteger("gIsEditorEnabled", false) == true) {
+        if (s.empty()) { return "Blank Text"; }
+    } else {
+        if (s.empty()) { return ""; }
+    }
 
     Text.clear();
 
