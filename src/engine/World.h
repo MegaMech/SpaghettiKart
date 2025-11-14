@@ -9,6 +9,7 @@
 #include "TrainCrossing.h"
 #include <memory>
 #include <unordered_map>
+#include "RaceManager.h"
 #include "Actor.h"
 #include "StaticMeshActor.h"
 #include "particles/ParticleEmitter.h"
@@ -49,6 +50,8 @@ typedef struct Matrix {
 public:
     explicit World();
     ~World();
+
+    RaceManager& GetRaceManager() { return RaceManagerInstance; }
 
     std::shared_ptr<Course> AddCourse(std::shared_ptr<Course> course);
 
@@ -130,7 +133,7 @@ public:
     std::vector<std::shared_ptr<Course>> Courses;
     size_t CourseIndex = 0; // For browsing courses.
 private:
-
+    RaceManager RaceManagerInstance;
 };
 
 extern World gWorldInstance;
