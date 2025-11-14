@@ -104,6 +104,11 @@ std::string AText::ValidateString(const std::string_view& s) {
     return Text;
 }
 
+void AText::SetText(std::string text) {
+    AText::ValidateString(text);
+    Refresh();
+}
+
 /*
  * Most changes during runtime require a refresh because the text is generated statically
  * with the intention of this code being somewhat performant
