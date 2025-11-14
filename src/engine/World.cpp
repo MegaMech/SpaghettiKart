@@ -288,6 +288,6 @@ void World::ClearWorld(void) {
     gWorldInstance.Emitters.clear();
     gWorldInstance.Lakitus.clear();
 
-    gWorldInstance.RaceManagerInstance.Clean();
+    gWorldInstance.GetRaceManager().Clean();
 
 }
