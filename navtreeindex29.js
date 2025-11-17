@@ -1,5 +1,15 @@
 var NAVTREEINDEX29 =
 {
+"course__metadata_8c.html":[17,0,3,34],
+"course__metadata_8c.html#a14129bf2f7081861908b057a7fca8d44":[17,0,3,34,0],
+"course__metadata_8c.html#a4b78e82266b40f759c25ad80f933005f":[17,0,3,34,3],
+"course__metadata_8c.html#a7cacb1936da5ed4bd28416b1c7e2cfe1":[17,0,3,34,2],
+"course__metadata_8c.html#a7fdc73cec346b8e59454406c977fc02e":[17,0,3,34,1],
+"course__metadata_8h.html":[17,0,3,35],
+"course__metadata_8h.html#a14129bf2f7081861908b057a7fca8d44":[17,0,3,35,0],
+"course__metadata_8h.html#a4b78e82266b40f759c25ad80f933005f":[17,0,3,35,3],
+"course__metadata_8h.html#a7cacb1936da5ed4bd28416b1c7e2cfe1":[17,0,3,35,2],
+"course__metadata_8h.html#a7fdc73cec346b8e59454406c977fc02e":[17,0,3,35,1],
 "course__metadata_8h_source.html":[17,0,3,35],
 "course__offsets_8h.html":[17,0,2,9],
 "course__offsets_8h.html#a05b013591ad487a0e09312f72b6d7d54":[17,0,2,9,17],
@@ -239,15 +249,5 @@ var NAVTREEINDEX29 =
 "defines_8h.html#a681d23053fc323ed91ba4620c6d81ab9":[17,0,2,12,124],
 "defines_8h.html#a6831682cd4a2784c3b1c6e7ac5a31a8e":[17,0,2,12,55],
 "defines_8h.html#a69522ff76a05664bd061ea34b0022a49":[17,0,2,12,62],
-"defines_8h.html#a697a31ba36158a0ed8ed4facfb70a6c0":[17,0,2,12,98],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11":[17,0,2,12,186],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11a295ad9e0dad9ad437ac26d97236da4c1":[17,0,2,12,186,6],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11a29ef02733c8fd3b4de72279fda1a7e0e":[17,0,2,12,186,5],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11a2ad713c648befed31568918ed3886bc1":[17,0,2,12,186,7],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11a4836b69d029911617da8aed8985b5921":[17,0,2,12,186,4],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11a567c700ea3cce8bc48320163851567c2":[17,0,2,12,186,8],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11a78a76558246d12b89223be028248ad4d":[17,0,2,12,186,0],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11aa494501c3a6f919c22d62a1114dafa1c":[17,0,2,12,186,2],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11ad0d9b4e566d181f9e6233ccd339d1118":[17,0,2,12,186,1],
-"defines_8h.html#a698be281bf8b3216136b9440f534ca11ae5ebed8f202b292a95a6ae89e1adad49":[17,0,2,12,186,3]
+"defines_8h.html#a697a31ba36158a0ed8ed4facfb70a6c0":[17,0,2,12,98]
 };

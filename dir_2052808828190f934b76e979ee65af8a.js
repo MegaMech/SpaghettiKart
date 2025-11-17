@@ -24,6 +24,8 @@ var dir_2052808828190f934b76e979ee65af8a =
     [ "ModelLoader.h", "ModelLoader_8h.html", "ModelLoader_8h" ],
     [ "PlayerBombKart.cpp", "PlayerBombKart_8cpp.html", null ],
     [ "PlayerBombKart.h", "PlayerBombKart_8h.html", "PlayerBombKart_8h" ],
+    [ "RaceManager.cpp", "RaceManager_8cpp.html", null ],
+    [ "RaceManager.h", "RaceManager_8h.html", "RaceManager_8h" ],
     [ "RegisteredActors.cpp", "RegisteredActors_8cpp.html", "RegisteredActors_8cpp" ],
     [ "RegisteredActors.h", "RegisteredActors_8h.html", "RegisteredActors_8h" ],
     [ "Registry.cpp", "Registry_8cpp.html", "Registry_8cpp" ],

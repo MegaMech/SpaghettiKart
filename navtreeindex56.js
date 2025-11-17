@@ -1,5 +1,15 @@
 var NAVTREEINDEX56 =
 {
+"miniaudio_8h.html#affce927390c9f35e222dd3f0976e71f1":[17,0,2,1,0,507],
+"miniaudio_8h_source.html":[17,0,2,1,0],
+"mixer_8c.html":[17,0,3,1,13],
+"mixer_8c.html#a0426204e9c9e4d21336272b0fbc2fd96":[17,0,3,1,13,2],
+"mixer_8c.html#a048f77d1cbb8ead0476da7b6761a0763":[17,0,3,1,13,39],
+"mixer_8c.html#a05ec48171b802632d2172ccc1c39069e":[17,0,3,1,13,32],
+"mixer_8c.html#a085bc9a3483aa8e58ee35e81d332228b":[17,0,3,1,13,23],
+"mixer_8c.html#a0a613175360865a14ac624eb0853773b":[17,0,3,1,13,43],
+"mixer_8c.html#a0cb9b12955e7390cf630725e3c79e42b":[17,0,3,1,13,18],
+"mixer_8c.html#a12b66e6c33854313c545c4d8b604cac5":[17,0,3,1,13,37],
 "mixer_8c.html#a2aa08798809cc1f647f3fa20102f2725":[17,0,3,1,13,33],
 "mixer_8c.html#a2e8e0d0b538c6d5e9aa133a0b86d102e":[17,0,3,1,13,9],
 "mixer_8c.html#a38f5d90cf0e52d72f5f26f4675ba81d8":[17,0,3,1,13,36],
@@ -239,15 +249,5 @@ var NAVTREEINDEX56 =
 "namespaceEditor.html#afd3bba0627b3706407b893e59a6a2755":[15,0,1,20],
 "namespaceFast.html":[15,0,2],
 "namespaceFreecam.html":[15,0,3],
-"namespaceGameUI.html":[15,0,4],
-"namespaceGameUI.html#a0061808a152dc0fbf49a3bff5407d24a":[15,0,4,53],
-"namespaceGameUI.html#a00df93f4c55fb502534530322fea137a":[15,0,4,44],
-"namespaceGameUI.html#a035f5c73130973d69afe5c365d4ecf27":[15,0,4,39],
-"namespaceGameUI.html#a092243b34fab6654f4ff25a3250085c7":[15,0,4,50],
-"namespaceGameUI.html#a0a095cd5e52838f92ff9f8d1c0a71064":[15,0,4,36],
-"namespaceGameUI.html#a0ea5c530f82d3116055e023bf1987f53":[15,0,4,41],
-"namespaceGameUI.html#a0f2afd2b3403722100259cc23d38cb0c":[15,0,4,42],
-"namespaceGameUI.html#a118a4332e00c8145b21cd2be488414f8":[15,0,4,9],
-"namespaceGameUI.html#a16125af0f2e0e8d2237e7a1c4e470a99":[15,0,4,37],
-"namespaceGameUI.html#a174c95a18311fcdbd4b44135b900cc6e":[15,0,4,17]
+"namespaceGameUI.html":[15,0,4]
 };

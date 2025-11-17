@@ -1,5 +1,15 @@
 var NAVTREEINDEX88 =
 {
+"structma__paged__audio__buffer__data.html#aacfbee5696ac2bec6ef0a655c421b042":[16,0,264,3],
+"structma__paged__audio__buffer__data.html#adcd2d19569e611a3e624bba0884746eb":[16,0,264,1],
+"structma__paged__audio__buffer__page.html":[16,0,265],
+"structma__paged__audio__buffer__page.html#a358630929dd75084e3cff77c1527d2c4":[16,0,265,1],
+"structma__paged__audio__buffer__page.html#a828098ca696046bd57d72f6d1f9c57c3":[16,0,265,2],
+"structma__paged__audio__buffer__page.html#ad6e4a9015eec07a8c8a680ebeb0349d2":[16,0,265,0],
+"structma__panner.html":[16,0,266],
+"structma__panner.html#a5bc26a6f24b5cb776d55d41936a9de98":[16,0,266,2],
+"structma__panner.html#a76918dc438f95a7bdcc593e15a1dff25":[16,0,266,0],
+"structma__panner.html#a8c5fb559993b7e3bf1ff3a53c9e3621c":[16,0,266,3],
 "structma__panner.html#ab95c46fde4942392f4643f90dbe92f9a":[16,0,266,1],
 "structma__panner__config.html":[16,0,267],
 "structma__panner__config.html#a16fdf13f970b26d444d7023956d83384":[16,0,267,1],
@@ -239,15 +249,5 @@ var NAVTREEINDEX88 =
 "structma__spatializer.html#a0a32bf1426e17ff59265ca673271b453":[16,0,296,14],
 "structma__spatializer.html#a0be15c65941d4c9027da42d258149bdc":[16,0,296,20],
 "structma__spatializer.html#a116d615fa1b0fc32d2266b2162dd2f86":[16,0,296,3],
-"structma__spatializer.html#a13d69ba1e03d002daef34ce75349b083":[16,0,296,17],
-"structma__spatializer.html#a1fe304cd67056e70084cfb788957771e":[16,0,296,22],
-"structma__spatializer.html#a35df64a4988955578e4c824793458287":[16,0,296,16],
-"structma__spatializer.html#a3bd1848bcdbd467372ff29ac9b7764f4":[16,0,296,6],
-"structma__spatializer.html#a48e9b7462173463f863e6f6b1d8a144b":[16,0,296,15],
-"structma__spatializer.html#a4bb72b989c605998ddf974960619a037":[16,0,296,5],
-"structma__spatializer.html#a4c733d33c4f156c14aedf6995302db5a":[16,0,296,10],
-"structma__spatializer.html#a52916364d5aa9d3e631ab584ed49d619":[16,0,296,21],
-"structma__spatializer.html#a5a84bb68228868bfb6dc7a7bf3c6b9f0":[16,0,296,13],
-"structma__spatializer.html#a5fac7796061eb59624898d02caa8b747":[16,0,296,1],
-"structma__spatializer.html#a79a5cac4e391078d86495437647cc1ac":[16,0,296,25]
+"structma__spatializer.html#a13d69ba1e03d002daef34ce75349b083":[16,0,296,17]
 };

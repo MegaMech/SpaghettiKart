@@ -1,7 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"Utils_8h.html":[17,0,3,6,6,13],
-"Utils_8h.html#a56ad34b9182b49d3c7038d1f57899dec":[17,0,3,6,6,13,0],
 "Utils_8h.html#aeaf9fffe1458c3ce2a95a80906db76c3":[17,0,3,6,6,13,1],
 "Utils_8h_source.html":[17,0,3,6,6,13],
 "Variables_8cpp.html":[17,0,3,10,16],
@@ -28,12 +26,12 @@ var NAVTREEINDEX5 =
 "WarioStadium_8h.html":[17,0,3,6,1,45],
 "WarioStadium_8h.html#a377ad398269c408a9628e432c39dbe05":[17,0,3,6,1,45,1],
 "WarioStadium_8h_source.html":[17,0,3,6,1,45],
-"World_8cpp.html":[17,0,3,6,39],
-"World_8cpp.html#a79811acfd6178798165ac61d8efce2ee":[17,0,3,6,39,1],
-"World_8cpp.html#acc7c61455be87e7ece8b4c70896ef569":[17,0,3,6,39,0],
-"World_8h.html":[17,0,3,6,40],
-"World_8h.html#a2075aa052f40ef84e5435c3dc9c04801":[17,0,3,6,40,2],
-"World_8h_source.html":[17,0,3,6,40],
+"World_8cpp.html":[17,0,3,6,41],
+"World_8cpp.html#a79811acfd6178798165ac61d8efce2ee":[17,0,3,6,41,1],
+"World_8cpp.html#acc7c61455be87e7ece8b4c70896ef569":[17,0,3,6,41,0],
+"World_8h.html":[17,0,3,6,42],
+"World_8h.html#a2075aa052f40ef84e5435c3dc9c04801":[17,0,3,6,42,2],
+"World_8h_source.html":[17,0,3,6,42],
 "YoshiValley_8cpp.html":[17,0,3,6,1,46],
 "YoshiValley_8cpp.html#a274efac433b244bdfadbd0b2f434d488":[17,0,3,6,1,46,0],
 "YoshiValley_8cpp.html#a8bcea3fe61869cecd63b75355cd5d949":[17,0,3,6,1,46,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX5 =
 "actor__types_8h.html#ae07d85ac7035dc21319b791b430d4246":[17,0,2,4,22],
 "actor__types_8h.html#aed038e4e6a4801ef264d0f74731ebdf8":[17,0,2,4,21],
 "actor__types_8h.html#aefa0a7edebc205d91eda1539595d5f5f":[17,0,2,4,19],
-"actor__types_8h.html#affb5ffde510634c5c1e09a5b934d29c3":[17,0,2,4,20]
+"actor__types_8h.html#affb5ffde510634c5c1e09a5b934d29c3":[17,0,2,4,20],
+"actor__types_8h_source.html":[17,0,2,4],
+"actors.html":[0,0]
 };

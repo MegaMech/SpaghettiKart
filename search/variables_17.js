@@ -69,5 +69,6 @@ var searchData=
   ['winmm_66',['winmm',['../unionma__device__id.html#a956ad5dc9bb902a32e5b1183f3753c56',1,'ma_device_id']]],
   ['word_67',['word',['../unionGameModePack.html#a070413d3976e79c9be223f8ab02369b7',1,'GameModePack::word'],['../uniondu.html#a6338a43874e200ff49d7c83ae0430a43',1,'du::word'],['../uniondu.html#a7acdb4906c87ca5bbcd9c86f20080554',1,'du::word']]],
   ['workresult_68',['workResult',['../structma__device.html#a45e6dbb4cf34310aca34d12b58f1e94a',1,'ma_device']]],
-  ['worldup_69',['worldUp',['../structma__spatializer__listener__config.html#a645c60a5b487413db3a78acae605ae92',1,'ma_spatializer_listener_config']]]
+  ['worldcontext_69',['WorldContext',['../classRaceManager.html#af932776749ddd38792e8ab1bd1c90c1d',1,'RaceManager']]],
+  ['worldup_70',['worldUp',['../structma__spatializer__listener__config.html#a645c60a5b487413db3a78acae605ae92',1,'ma_spatializer_listener_config']]]
 ];

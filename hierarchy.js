@@ -428,6 +428,7 @@ var hierarchy =
     [ "printf_struct", "structprintf__struct.html", null ],
     [ "ProfilerFrameData", "structProfilerFrameData.html", null ],
     [ "Properties", "structProperties.html", null ],
+    [ "RaceManager", "classRaceManager.html", null ],
     [ "RailroadCrossing", "structRailroadCrossing.html", null ],
     [ "Ray", "structRay.html", null ],
     [ "RegisterMenuInitFunc", "structRegisterMenuInitFunc.html", null ],

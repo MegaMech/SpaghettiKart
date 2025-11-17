@@ -1,6 +1,5 @@
 var NAVTREEINDEX13 =
 {
-"classMK64_1_1ActorSpawn.html":[15,0,5,0],
 "classMK64_1_1ActorSpawn.html":[16,0,2,0],
 "classMK64_1_1ActorSpawn.html#a549eef5e304a1971e7935d0405c49cad":[15,0,5,0,0],
 "classMK64_1_1ActorSpawn.html#a549eef5e304a1971e7935d0405c49cad":[16,0,2,0,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX13 =
 "classOBombKart.html#ae34643caa3c5ed1311cc37351e78e008":[16,0,336,7],
 "classOBombKart.html#ae442e9d2d21d32f0ea719d779443e571":[16,0,336,25],
 "classOBombKart.html#ae45058df866237b65f841ece4c611bf6":[16,0,336,13],
-"classOBombKart.html#aea3d7d6c71cbc87e4301cc95aef686b7":[16,0,336,9]
+"classOBombKart.html#aea3d7d6c71cbc87e4301cc95aef686b7":[16,0,336,9],
+"classOBombKart.html#afdcd75e829449afdad0913d9e35dab2b":[16,0,336,21]
 };

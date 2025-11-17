@@ -1,5 +1,15 @@
 var NAVTREEINDEX84 =
 {
+"structcredits__data__1FA0.html#a87eeb15a308d47d851decba58cb357f2":[16,0,106,8],
+"structcredits__data__1FA0.html#a892c6898ac8801a41ee69c91a9256021":[16,0,106,7],
+"structcredits__data__1FA0.html#a960e4fdf9a02668fece6ba4431588041":[16,0,106,1],
+"structcredits__data__1FA0.html#a96c1ab64ca2de7eca828abf06b689feb":[16,0,106,13],
+"structcredits__data__1FA0.html#a9df1c6e4497e6d761373ddd40e93c931":[16,0,106,4],
+"structcredits__data__1FA0.html#aa702a62bcb95ee2d553d2a9fb4dd3c95":[16,0,106,0],
+"structcredits__data__1FA0.html#ab38b7aa03f1fb7fa7f652445b1c89ad9":[16,0,106,15],
+"structcredits__data__1FA0.html#af2cbf2d10951a249c473c7a0b9062264":[16,0,106,2],
+"structcredits__data__1FA0.html#afa65faaaadcae3add022517492f75075":[16,0,106,14],
+"structcredits__data__1FA0.html#afbf7d294952e405aa22e5cbe9384c495":[16,0,106,10],
 "structcredits__data__1FA0.html#aff5eb22f28d3472580a2bf7eaf2a586a":[16,0,106,17],
 "structdisabledInfo.html":[16,0,114],
 "structdisabledInfo.html#a1bdbab3677f1d256b1765431d2f45d71":[16,0,114,2],
@@ -239,15 +249,5 @@ var NAVTREEINDEX84 =
 "structma__context__command____wasapi.html#a5ca5d5a07e003025096c3e7c22687316":[16,0,179,5],
 "structma__context__command____wasapi.html#a69a1b91274505ef8511fdaeee5c39219":[16,0,179,0],
 "structma__context__command____wasapi.html#a6fa7b8ad17f221507dd1e7adfd63c57a":[16,0,179,11],
-"structma__context__command____wasapi.html#a73ed2568dad3951c3e6b22df93c6492a":[16,0,179,7],
-"structma__context__command____wasapi.html#a88a8b4fb29c3d5443db1b977b74221ff":[16,0,179,8],
-"structma__context__command____wasapi.html#a8e864174a26f54218cf2aed2ea6d0d7a":[16,0,179,2],
-"structma__context__command____wasapi.html#a945557c7be6b0cb8cb10e61f30dfe328":[16,0,179,1],
-"structma__context__command____wasapi.html#ad11d825d574692080505ba32d7a683ed":[16,0,179,4],
-"structma__context__config.html":[16,0,180],
-"structma__context__config.html#a076222936e89399cadece823707af381":[16,0,180,16],
-"structma__context__config.html#a0dba8cec90f058f226c5f06bdddb15e8":[16,0,180,7],
-"structma__context__config.html#a1b67f2fb03513395e3dc537e8781a7ae":[16,0,180,17],
-"structma__context__config.html#a1df698375bb0ed7bb6b610abcd24d25b":[16,0,180,8],
-"structma__context__config.html#a31419ce7648146342e9ec1d3c58dd6ad":[16,0,180,1]
+"structma__context__command____wasapi.html#a73ed2568dad3951c3e6b22df93c6492a":[16,0,179,7]
 };

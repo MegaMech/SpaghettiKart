@@ -480,6 +480,7 @@ var annotated_dup =
     [ "printf_struct", "structprintf__struct.html", "structprintf__struct" ],
     [ "ProfilerFrameData", "structProfilerFrameData.html", "structProfilerFrameData" ],
     [ "Properties", "structProperties.html", "structProperties" ],
+    [ "RaceManager", "classRaceManager.html", "classRaceManager" ],
     [ "RailroadCrossing", "structRailroadCrossing.html", "structRailroadCrossing" ],
     [ "RainbowRoad", "classRainbowRoad.html", "classRainbowRoad" ],
     [ "Ray", "structRay.html", "structRay" ],

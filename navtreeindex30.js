@@ -1,5 +1,15 @@
 var NAVTREEINDEX30 =
 {
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11":[17,0,2,12,186],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11a295ad9e0dad9ad437ac26d97236da4c1":[17,0,2,12,186,6],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11a29ef02733c8fd3b4de72279fda1a7e0e":[17,0,2,12,186,5],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11a2ad713c648befed31568918ed3886bc1":[17,0,2,12,186,7],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11a4836b69d029911617da8aed8985b5921":[17,0,2,12,186,4],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11a567c700ea3cce8bc48320163851567c2":[17,0,2,12,186,8],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11a78a76558246d12b89223be028248ad4d":[17,0,2,12,186,0],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11aa494501c3a6f919c22d62a1114dafa1c":[17,0,2,12,186,2],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11ad0d9b4e566d181f9e6233ccd339d1118":[17,0,2,12,186,1],
+"defines_8h.html#a698be281bf8b3216136b9440f534ca11ae5ebed8f202b292a95a6ae89e1adad49":[17,0,2,12,186,3],
 "defines_8h.html#a6a11bf2c764db6604b20be6e31e88b23":[17,0,2,12,167],
 "defines_8h.html#a6a20b2541362f25ac8099bf1e8fbfee6":[17,0,2,12,169],
 "defines_8h.html#a6a404189274b097f2b1d7d6bde0d490d":[17,0,2,12,177],
@@ -239,15 +249,5 @@ var NAVTREEINDEX30 =
 "dks__jungle__parkway__vertices_8h.html":[17,0,2,0,24],
 "dks__jungle__parkway__vertices_8h.html#ab9d4baaa0ee8cef66a61b47ce4766784":[17,0,2,0,24,0],
 "dks__jungle__parkway__vertices_8h_source.html":[17,0,2,0,24],
-"dl__unk__80284EE0_8c.html":[17,0,3,5,12],
-"dl__unk__80284EE0_8c.html#a445c8b014f8ab614d70630c4daeb5925":[17,0,3,5,12,0],
-"dl__unk__80284EE0_8c.html#a6c67c1063b223111f11721f6a00a2835":[17,0,3,5,12,1],
-"donkeykong__kart_8h.html":[17,0,2,0,25],
-"donkeykong__kart_8h.html#a0f0b9e82da70be276ff00dc553fcd405":[17,0,2,0,25,1],
-"donkeykong__kart_8h.html#a2059689327a85c4623700321fb18f4dc":[17,0,2,0,25,0],
-"donkeykong__kart_8h_source.html":[17,0,2,0,25],
-"double__deck_2course__offsets_8c.html":[17,0,0,6,0],
-"double__deck__data_8h.html":[17,0,2,0,26],
-"double__deck__data_8h.html#a75bb3f6bd1f2de3f58e9e422867643ba":[17,0,2,0,26,0],
-"double__deck__data_8h_source.html":[17,0,2,0,26]
+"dl__unk__80284EE0_8c.html":[17,0,3,5,12]
 };

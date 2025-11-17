@@ -1,5 +1,15 @@
 var NAVTREEINDEX73 =
 {
+"src_2data_2some__data_8h.html#a84c9b94d97195d5cb26a656e101afa36":[17,0,3,3,4,73],
+"src_2data_2some__data_8h.html#a8814866b5aed5f831317f0ab85d336b5":[17,0,3,3,4,15],
+"src_2data_2some__data_8h.html#a897c542abe0a128a1a3792859b03c7fa":[17,0,3,3,4,41],
+"src_2data_2some__data_8h.html#a91ca5a4978987c1fcc2f756ab6e11d26":[17,0,3,3,4,27],
+"src_2data_2some__data_8h.html#a93f1af7a7b23cc9d637414ffbe42b5ab":[17,0,3,3,4,44],
+"src_2data_2some__data_8h.html#a958826ee660f3bf98395f725d2be65a3":[17,0,3,3,4,47],
+"src_2data_2some__data_8h.html#a969a1b5ac166b5b96e477ba363eaa250":[17,0,3,3,4,0],
+"src_2data_2some__data_8h.html#a9be1cd377ea5e0b0e61ee265ea284f8e":[17,0,3,3,4,16],
+"src_2data_2some__data_8h.html#a9befcff08fd2aab050646484526397de":[17,0,3,3,4,72],
+"src_2data_2some__data_8h.html#a9e2b8510ef0f37833c2d1c4526f5eaac":[17,0,3,3,4,42],
 "src_2data_2some__data_8h.html#aa0ea50058677e0d4f70a4cf4157027bd":[17,0,3,3,4,56],
 "src_2data_2some__data_8h.html#aac6618362ef0445bc1ddf0a971732a67":[17,0,3,3,4,50],
 "src_2data_2some__data_8h.html#aad57548909a3a8c1322f019d8bc64e34":[17,0,3,3,4,14],
@@ -239,15 +249,5 @@ var NAVTREEINDEX73 =
 "structALWaveTable__s.html#acc769d06bf577d20eeb968567b0e905e":[16,0,56,2],
 "structALWaveTable__s.html#aebc02789aef2309a8a3d1dce0975b043":[16,0,56,5],
 "structAText_1_1CharacterList.html":[16,0,65,0],
-"structAText_1_1CharacterList.html#a413af916d9fd42f748d5acf87725718a":[16,0,65,0,4],
-"structAText_1_1CharacterList.html#a5aa3285d217183fe2b4062dc8f43d9c8":[16,0,65,0,6],
-"structAText_1_1CharacterList.html#a923349ad72cca0dcb9d507aaff55fc06":[16,0,65,0,2],
-"structAText_1_1CharacterList.html#a959e05637255eaf936d162762aecc5d4":[16,0,65,0,3],
-"structAText_1_1CharacterList.html#aaa9c6346bd3c8c200d1f78011316f9bb":[16,0,65,0,0],
-"structAText_1_1CharacterList.html#aad81ab9b9b65ecdfb9c6f52c084aac6d":[16,0,65,0,1],
-"structAText_1_1CharacterList.html#abb4efdcdf63481020338c1aff2fcfab0":[16,0,65,0,5],
-"structActor.html":[16,0,30],
-"structActor.html#a1a515077e28877484ea593456e07b0d6":[16,0,30,6],
-"structActor.html#a40d6b4340f478a137d04651cc68a7aac":[16,0,30,10],
-"structActor.html#a8fedca3871be05588e5263f4a184ad5d":[16,0,30,5]
+"structAText_1_1CharacterList.html#a413af916d9fd42f748d5acf87725718a":[16,0,65,0,4]
 };

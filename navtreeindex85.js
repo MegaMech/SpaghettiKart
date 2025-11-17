@@ -1,5 +1,15 @@
 var NAVTREEINDEX85 =
 {
+"structma__context__command____wasapi.html#a88a8b4fb29c3d5443db1b977b74221ff":[16,0,179,8],
+"structma__context__command____wasapi.html#a8e864174a26f54218cf2aed2ea6d0d7a":[16,0,179,2],
+"structma__context__command____wasapi.html#a945557c7be6b0cb8cb10e61f30dfe328":[16,0,179,1],
+"structma__context__command____wasapi.html#ad11d825d574692080505ba32d7a683ed":[16,0,179,4],
+"structma__context__config.html":[16,0,180],
+"structma__context__config.html#a076222936e89399cadece823707af381":[16,0,180,16],
+"structma__context__config.html#a0dba8cec90f058f226c5f06bdddb15e8":[16,0,180,7],
+"structma__context__config.html#a1b67f2fb03513395e3dc537e8781a7ae":[16,0,180,17],
+"structma__context__config.html#a1df698375bb0ed7bb6b610abcd24d25b":[16,0,180,8],
+"structma__context__config.html#a31419ce7648146342e9ec1d3c58dd6ad":[16,0,180,1],
 "structma__context__config.html#a358bfaea469bf50cf58bc2ff99094cd5":[16,0,180,10],
 "structma__context__config.html#a36aec5243ebb27c45aa25adc7552e3bb":[16,0,180,3],
 "structma__context__config.html#a3bac4950716c85e19c28516137eeaca0":[16,0,180,14],
@@ -239,15 +249,5 @@ var NAVTREEINDEX85 =
 "structma__device__config.html#a6f63fa32995bbf2329b934b1e9fe1ba0":[16,0,198,43],
 "structma__device__config.html#a708d8edb668591e5561b092249611b99":[16,0,198,2],
 "structma__device__config.html#a7493e3ab499f4960538e3facf982c558":[16,0,198,3],
-"structma__device__config.html#a766ee01b8ce89ce2877eedfb5da35957":[16,0,198,14],
-"structma__device__config.html#a88c621da9ab08dacaed9f792d108a546":[16,0,198,33],
-"structma__device__config.html#a8d8ebbf7a2fcfbea36b344e69b9c1b17":[16,0,198,40],
-"structma__device__config.html#a9a39d7bdd9b3db3dc3cfe9e7d6acea2a":[16,0,198,38],
-"structma__device__config.html#aa4e911fbd74ab8ca38f3ac60bcf5b48d":[16,0,198,39],
-"structma__device__config.html#aa63a1fad8d16b162a01c502d0e755488":[16,0,198,49],
-"structma__device__config.html#aa908098418c3a72e8c30b6dedf60c111":[16,0,198,5],
-"structma__device__config.html#aaa19745b24e17b072087f9026a7c6275":[16,0,198,26],
-"structma__device__config.html#aacd393c0a0197c4fd7b3384ba0a8c4a4":[16,0,198,30],
-"structma__device__config.html#aaf496c6b2dafb5c10047d95437321bef":[16,0,198,51],
-"structma__device__config.html#ab3dbc27bb856e3762ddc760009da8cc6":[16,0,198,29]
+"structma__device__config.html#a766ee01b8ce89ce2877eedfb5da35957":[16,0,198,14]
 };

@@ -22,6 +22,7 @@ var classWorld =
     [ "GetCupIndex", "classWorld.html#ab508b5afe4c28e1b222d3fa1bcebd63f", null ],
     [ "GetCupName", "classWorld.html#ac1b3b8109c526f4f76308efff8359820", null ],
     [ "GetObjectByIndex", "classWorld.html#aa3208927564d9be072263fc4fc6a5d3d", null ],
+    [ "GetRaceManager", "classWorld.html#afa31aec713e3a54e22e4406e4442107d", null ],
     [ "GetWorld", "classWorld.html#a425b754be9118b76205c27066b23c8d7", null ],
     [ "NextCourse", "classWorld.html#a989f32e1e25a1d68afabb303b28c8038", null ],
     [ "NextCup", "classWorld.html#abfe11f8fda296f0183c52efa300791b6", null ],
@@ -33,6 +34,7 @@ var classWorld =
     [ "SetCourseFromCup", "classWorld.html#ab721025b6bc57ab1d7c9c603cae3f001", null ],
     [ "SetCup", "classWorld.html#a79d19c3026b71f775446e2ea2dce580f", null ],
     [ "SetCupIndex", "classWorld.html#a9790ca2103c8082b91a735423921b487", null ],
+    [ "SetRaceManager", "classWorld.html#a68af48b64d5d719ff33afa8a0554ce28", null ],
     [ "TickActors", "classWorld.html#a86d6ef1e859b7ba76982ec9feb7ff26e", null ],
     [ "TickObjects", "classWorld.html#a0de989a6f75eb63748dfe33065ab7212", null ],
     [ "TickObjects60fps", "classWorld.html#ab0fe7e2a41fa1571819f7f4e4124628f", null ],
@@ -50,5 +52,6 @@ var classWorld =
     [ "Mtx", "classWorld.html#ae9ce07f0239d6ddc4485d1a285cb3a14", null ],
     [ "Objects", "classWorld.html#a6cbf7696cb1102cd7f07b937b8e42648", null ],
     [ "playerBombKart", "classWorld.html#a68c5fac3f48b4df5f1204a19c4f5a083", null ],
+    [ "RaceManagerInstance", "classWorld.html#acdeb8c0608b0f76c2b2f2595c509b8b7", null ],
     [ "StaticMeshActors", "classWorld.html#a5746fa7d0805b02b036c56a56a44b5b3", null ]
 ];
