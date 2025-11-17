@@ -6665,6 +6665,24 @@ void func_80019C50(s32 arg0) {
     }
 }
 
+void look_behind_toggle(s32 arg0) {
+    static bool lookBehindActive[NUM_PLAYERS] = {0};
+    bool pressed = gControllers[arg0].button & L_CBUTTONS; // button held
+    Camera* camera = &cameras[arg0];
+
+    // Flip the camera
+    if (pressed && !lookBehindActive[arg0]) {
+        camera->unk_30[2] = -camera->unk_30[2];
+        camera->unk_3C[2] = -camera->unk_3C[2];
+        lookBehindActive[arg0] = true;
+    // Unflip the camera
+    } else if (!pressed && lookBehindActive[arg0]) {
+        camera->unk_30[2] = -camera->unk_30[2];
+        camera->unk_3C[2] = -camera->unk_3C[2];
+        lookBehindActive[arg0] = false;
+    }
+}
+
 void func_80019D2C(Camera* camera, Player* player, s32 arg2) {
     s32 playerId;
     s32 nearestWaypoint;
@@ -6756,6 +6774,7 @@ void func_80019FB4(s32 cameraId) {
 void func_8001A0A4(UNUSED u16* arg0, UNUSED Camera* arg1, UNUSED Player* arg2, UNUSED s8 arg3, s32 arg4) {
     func_80019FB4(arg4);
     func_80019C50(arg4);
+    look_behind_toggle(arg4);
 }
 
 void func_8001A0DC(u16* arg0, Camera* arg1, Player* arg2, s8 arg3, s32 arg4) {
@@ -6960,6 +6979,7 @@ void func_8001A588(UNUSED u16* localD_80152300, Camera* camera, Player* player, 
             break;
     }
     func_80019C50(cameraIndex);
+    look_behind_toggle(cameraIndex);
     switch (D_80164680[cameraIndex]) {
         case 0:
             func_80015390(camera, player, index);
