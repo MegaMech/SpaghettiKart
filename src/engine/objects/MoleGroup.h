@@ -22,6 +22,9 @@ public:
      * The mole must also be ready to jump to be considered.
      */
     explicit OMoleGroup(std::vector<FVector>& moles, size_t tickRate);
+    ~OMoleGroup() {
+        _count--;
+    }
 
     virtual void Tick() override;
 
