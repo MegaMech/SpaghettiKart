@@ -16,7 +16,12 @@ public:
         bool Active;
     };
 
-    explicit OMoleGroup(std::vector<FVector>& moles);
+    /**
+     * TickRate:
+     * How many moles can pop out per frame.
+     * The mole must also be ready to jump to be considered.
+     */
+    explicit OMoleGroup(std::vector<FVector>& moles, size_t tickRate);
 
     virtual void Tick() override;
 
@@ -24,6 +29,7 @@ public:
 
 
     std::vector<MoleEntry> _moles;
+    size_t tickRate;
 private:
     static size_t _count;
     size_t _idx;

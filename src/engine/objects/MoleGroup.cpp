@@ -10,8 +10,9 @@ extern "C" {
 
 size_t OMoleGroup::_count = 0;
 
-OMoleGroup::OMoleGroup(std::vector<FVector>& spawns) {
+OMoleGroup::OMoleGroup(std::vector<FVector>& spawns, size_t tickRate) {
     _idx = _count;
+    _tickRate = tickRate;
     for (auto& pos : spawns) {
         pos.x * xOrientation;
         OMole* ptr = reinterpret_cast<OMole*>(gWorldInstance.AddObject(new OMole(pos, this)));
@@ -22,11 +23,11 @@ OMoleGroup::OMoleGroup(std::vector<FVector>& spawns) {
 }
 
 void OMoleGroup::Tick() {
-    for (auto &mole : _moles) {
-        if (gObjectList[mole.Mole->_objectIndex].state == 0) {
-            func_80081FF4(mole.Mole->_objectIndex);
+    for (size_t i = 0; i < std::min(tickRate, _moles.size()); i++) {
+        if (gObjectList[_moles[i].Mole->_objectIndex].state == 0) {
+            OMoleGroup::func_80081FF4(_moles[i].Mole->_objectIndex);
         } else {
-            mole.Mole->func_800821AC(mole.Mole->_objectIndex, 1);
+            _moles[i].Mole->func_800821AC(_moles[i].Mole->_objectIndex, 1);
         }
     }
 
