@@ -29,7 +29,7 @@ public:
 
 
     std::vector<MoleEntry> _moles;
-    size_t tickRate;
+    size_t _tickRate;
 private:
     static size_t _count;
     size_t _idx;
