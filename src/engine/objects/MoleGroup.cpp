@@ -23,7 +23,7 @@ OMoleGroup::OMoleGroup(std::vector<FVector>& spawns, size_t tickRate) {
 }
 
 void OMoleGroup::Tick() {
-    for (size_t i = 0; i < std::min(tickRate, _moles.size()); i++) {
+    for (size_t i = 0; i < std::min(_tickRate, _moles.size()); i++) {
         if (gObjectList[_moles[i].Mole->_objectIndex].state == 0) {
             OMoleGroup::func_80081FF4(_moles[i].Mole->_objectIndex);
         } else {
