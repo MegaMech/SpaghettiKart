@@ -136,7 +136,7 @@ void GameExtractor::GetRoms(std::vector<std::string>& roms) {
     //}
 #elif unix
     // Open the directory of the app.
-    DIR* d = opendir(mSearchPath.c_str());
+    DIR* d = opendir(".");
     struct dirent* dir;
 
     if (d != NULL) {
@@ -144,7 +144,7 @@ void GameExtractor::GetRoms(std::vector<std::string>& roms) {
         while ((dir = readdir(d)) != NULL) {
             struct stat path;
 
-            auto fullPath = std::filesystem::path(mSearchPath) / dir->d_name;
+            auto fullPath = std::filesystem::path(".") / dir->d_name;
             auto fullPathString = fullPath.string();
             const char* fullPathCStr = fullPathString.c_str();
 
@@ -162,7 +162,7 @@ void GameExtractor::GetRoms(std::vector<std::string>& roms) {
     }
     closedir(d);
 #else
-    for (const auto& file : std::filesystem::directory_iterator(mSearchPath)) {
+    for (const auto& file : std::filesystem::directory_iterator(".")) {
         if (file.is_directory())
             continue;
         if (file.path().extension() == ".z64") {
