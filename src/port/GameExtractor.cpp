@@ -1,3 +1,9 @@
+#ifdef _WIN32
+#include <Windows.h>
+#include <winuser.h>
+#include <shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
+#endif
 #include "GameExtractor.h"
 #include <unordered_map>
 #include <Companion.h>
@@ -7,6 +13,13 @@
 #include "Context.h"
 #include "spdlog/spdlog.h"
 #include <port/Engine.h>
+
+#ifdef unix
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
 
 #if !defined(__IOS__) && !defined(__ANDROID__) && !defined(__SWITCH__)
 #include "portable-file-dialogs.h"
