@@ -1,5 +1,6 @@
 #include "GameExtractor.h"
 #include <unordered_map>
+#include <Companion.h>
 
 #include <fstream>
 
