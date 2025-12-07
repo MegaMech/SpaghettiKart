@@ -1,7 +1,6 @@
 var skybox__and__splitscreen_8c =
 [
     [ "copy_framebuffer", "skybox__and__splitscreen_8c.html#a97049ca439feed0c004c1d41f302189e", null ],
-    [ "copy_jumbotron_fb_port", "skybox__and__splitscreen_8c.html#ac66ac27ecf98a32d0bcacbf7458963d8", null ],
     [ "func_802A3730", "skybox__and__splitscreen_8c.html#ae4ccafca07028b0c92356fdf52e84180", null ],
     [ "func_802A38AC", "skybox__and__splitscreen_8c.html#a52a89ac5b94f92acb106384aa5668246", null ],
     [ "func_802A38B4", "skybox__and__splitscreen_8c.html#a3e841fd472316b42bf7b4d8f077b2d1c", null ],
@@ -39,7 +38,6 @@ var skybox__and__splitscreen_8c =
     [ "set_screen", "skybox__and__splitscreen_8c.html#a58e23917e0a11f717598a99e1e7ebc97", null ],
     [ "set_viewport", "skybox__and__splitscreen_8c.html#aa627a5166fe0e9f01475246065b6923c", null ],
     [ "set_viewport2", "skybox__and__splitscreen_8c.html#ad533665bd8936a3498367d41cb3f05f5", null ],
-    [ "setup_camera", "skybox__and__splitscreen_8c.html#ad07d7b5039fe42b3bafe466419708243", null ],
     [ "D_802B8880", "skybox__and__splitscreen_8c.html#aa9561e7be092d9cd53decc5700218e26", null ],
     [ "D_802B8890", "skybox__and__splitscreen_8c.html#a700235c57a47903d8f5b421eb2b8c071", null ],
     [ "D_802B8910", "skybox__and__splitscreen_8c.html#aad2cc417d607992cfe201e81e1cf0921", null ],
