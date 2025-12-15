@@ -37,22 +37,30 @@ void TrackBrowser::FindCustomTracks() {
                 // then it must at least be a valid track.
                 // So lets add it as an uninitialized track.
                 if (manager->HasFile(file)) {
+                    printf("[TrackBrowser] [FindCustomTracks] Found a new custom track!\n");
+                    printf("  Creating scene.json so the track can be configured in the editor\n");
+
                     TrackInfo info;
 
                     std::string resName = std::string("mods:") + name;
                     info.ResourceName = resName;
                     info.Name = name;
                     info.DebugName = name;
+                    info.Path = dir;
 
                     auto archive = manager->GetArchiveFromFile(file);
                     //mNewTracks.push_back({info, "", dir, archive});
                     auto track = std::make_unique<Track>();
-                    Editor::SaveLevel(track.get()); // Write scene file so it will show up in the track browser
+                    track->Archive = archive;
+                    track->ResourceName = info.ResourceName;
+                    Editor::SaveLevel(track.get(), &info); // Write scene file so it will show up in the track browser
+                    printf("[TrackBrowser] [FindCustomTracks] Saved scene.json to new track!\n");
 
+                    // Passing these through seems kinda bad. But it works?
                     gTrackRegistry.Add(info, [info, archive]() {
                         auto track = std::make_unique<Track>();
-                        track->ResourceName = info.ResourceName;
                         track->Archive = archive;
+                        track->ResourceName = info.ResourceName;
                         GetWorld()->SetCurrentTrack(std::move(track));
                     });
 
