@@ -1252,6 +1252,7 @@ void spawn_players_and_cameras(void) {
 
 void spawn_single_player_camera(u32 mode) {
     Vec3f spawn = {gPlayerOne->pos[0], gPlayerOne->pos[1], gPlayerOne->pos[2]};
+    Vec3f spawn2 = {gPlayerTwo->pos[0], gPlayerTwo->pos[1], gPlayerTwo->pos[2]};
 
     // Technically there should be a default case of mode 10 here. Except it never gets used.
     if (gModeSelection == GRAND_PRIX && !gDemoMode) {
@@ -1270,6 +1271,14 @@ void spawn_single_player_camera(u32 mode) {
         CM_AttachCamera(camera, PLAYER_ONE);
         gScreenContexts[PLAYER_ONE].camera = camera;
         gScreenContexts[PLAYER_ONE].raceCamera = camera;
+    }
+
+    // For end of race scene
+    camera = CM_AddCamera(spawn2, gPlayerTwo->rotation[1], mode);
+    if (camera) {
+        CM_AttachCamera(camera, PLAYER_TWO);
+        gScreenContexts[PLAYER_TWO].camera = camera;
+        gScreenContexts[PLAYER_TWO].raceCamera = camera;
     }
 
     camera = CM_AddLookBehindCamera(spawn, gPlayerOne->rotation[1], mode);
