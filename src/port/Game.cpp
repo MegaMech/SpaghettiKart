@@ -896,10 +896,7 @@ void push_frame() {
     // Graphics_ThreadUpdate();w
 }
 
-#if defined(__GNUC__) || defined(__clang__)
-__attribute__((format(printf, 1, 2)))
-#endif
-[[noreturn]] void CM_ThrowRuntimeError(const char* fmt, ...) {
+void CM_ThrowRuntimeError(const char* fmt, ...) {
     char error_mesg[2048];
 
     va_list args;
