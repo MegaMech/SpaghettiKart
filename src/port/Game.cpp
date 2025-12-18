@@ -896,6 +896,29 @@ void push_frame() {
     // Graphics_ThreadUpdate();w
 }
 
+#if defined(__GNUC__) || defined(__clang__)
+__attribute__((format(printf, 1, 2)))
+#endif
+void CM_ThrowRuntimeError(const char* fmt, ...) {
+    char error_mesg[1024];
+
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(error_mesg, sizeof(error_mesg), fmt, args);
+    va_end(args);
+
+    fprintf(stderr, "%s\n", error_mesg);
+
+    SDL_ShowSimpleMessageBox(
+        SDL_MESSAGEBOX_ERROR,
+        "Your plate of Spaghetti has crashed!",
+        error_mesg,
+        NULL
+    );
+
+    exit(EXIT_FAILURE);
+}
+
 #ifdef _WIN32
 int SDL_main(int argc, char** argv) {
 #else
