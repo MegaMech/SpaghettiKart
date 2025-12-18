@@ -225,6 +225,8 @@ void* GetCup();
 void CM_RunGarbageCollector(void);
 void CM_ResetAudio(void);
 
+void CM_ThrowRuntimeError(const char* fmt, ...);
+
 // NOLINTEND(readability-identifier-naming)
 
 #ifdef __cplusplus
