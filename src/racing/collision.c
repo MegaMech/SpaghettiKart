@@ -1431,27 +1431,34 @@ f32 spawn_actor_on_surface(f32 posX, f32 posY, f32 posZ) {
 
     sectionIndexX = (s16) ((posX - gTrackMinX) / sectionX);
     sectionIndexZ = (s16) ((posZ - gTrackMinZ) / sectionZ);
+
+    // Added to prevent out of bounds access
+    if (sectionIndexX < 0) sectionIndexX = 0;
+    if (sectionIndexZ < 0) sectionIndexZ = 0;
+    if (sectionIndexX >= GRID_SIZE) sectionIndexX = GRID_SIZE - 1;
+    if (sectionIndexZ >= GRID_SIZE) sectionIndexZ = GRID_SIZE - 1;
+
     gridSection = sectionIndexX + (sectionIndexZ * GRID_SIZE);
     numTriangles = gCollisionGrid[gridSection].numTriangles;
 
     if (sectionIndexX < 0) {
-        printf("collision.c: actor outside of -sectionX %d\n", sectionIndexX);
+        printf("[spawn_actor_on_surface] actor outside of -sectionX %d\n", sectionIndexX);
         return 3000.0f;
     }
     if (sectionIndexZ < 0) {
-        printf("collision.c: actor outside of -sectionZ %d\n", sectionIndexZ);
+        printf("[spawn_actor_on_surface] actor outside of -sectionZ %d\n", sectionIndexZ);
         return 3000.0f;
     }
     if (sectionIndexX >= GRID_SIZE) {
-        printf("collision.c: actor outside of sectionX %d\n", sectionIndexX);
+        printf("[spawn_actor_on_surface] actor outside of sectionX %d\n", sectionIndexX);
         return 3000.0f;
     }
     if (sectionIndexZ >= GRID_SIZE) {
-        printf("collision.c: actor outside of sectionZ %d\n", sectionIndexZ);
+        printf("[spawn_actor_on_surface] actor outside of sectionZ %d\n", sectionIndexZ);
         return 3000.0f;
     }
     if (numTriangles == 0) {
-        printf("collision.c: No collision triangles in track!\n  Something is wrong with the tracks geometry\n");
+        printf("[spawn_actor_on_surface] No collision triangles in track!\n  Something is wrong with the tracks geometry\n");
         return 3000.0f;
     }
 
@@ -1512,10 +1519,6 @@ void add_collision_triangle(Vtx* vtx1, Vtx* vtx2, Vtx* vtx3, s8 surfaceType, u16
     u16 flags;
     s16 y3;
     s16 z3;
-
-    // printf("triangle index: %d ", gCollisionMeshCount);
-    // printf("sectionId: 0x%X ", sectionId);
-    // printf("surfaceType: 0x%X ", surfaceType);
 
     /* Unused variables placed around doubles for dramatic effect */
     UNUSED s32 pad2[7];
@@ -1772,6 +1775,17 @@ void set_vtx_buffer(uintptr_t addr, u32 numVertices, u32 bufferIndex) {
     }
 }
 /**
+ * Source: https://web.archive.org/web/20220920081010/https://www.gamedev.net/forums/topic.asp?topic_id=295943
+ */
+s32 is_point_inside_triangle(s16 px, s16 pz, s16 x1, s16 z1, s16 x2, s16 z2, s16 x3, s16 z3) {
+    bool b0 = (((px - x1) * (z1 - z2) + (pz - z1) * (x2 - x1)) > 0);
+    bool b1 = (((px - x2) * (z2 - z3) + (pz - z2) * (x3 - x2)) > 0);
+    bool b2 = (((px - x3) * (z3 - z1) + (pz - z3) * (x1 - x3)) > 0);
+
+    return (b0 == b1 && b1 == b2) ? 1 : 0;
+}
+
+/**
  * @return 1 intersecting triangle, 0 not intersecting.
  */
 s32 is_line_intersecting_rectangle(s16 minX, s16 maxX, s16 minZ, s16 maxZ, s16 x1, s16 z1, s16 x2, s16 z2) {
@@ -1849,6 +1863,8 @@ s32 is_triangle_intersecting_bounding_box(s16 minX, s16 maxX, s16 minZ, s16 maxZ
     z2 = triangle->vtx2->v.ob[2];
     x3 = triangle->vtx3->v.ob[0];
     z3 = triangle->vtx3->v.ob[2];
+    
+    // Check if vertices are inside the bounding box
     if ((x1 >= minX) && (maxX >= x1) && (z1 >= minZ) && (maxZ >= z1)) {
         return 1;
     }
@@ -1858,6 +1874,8 @@ s32 is_triangle_intersecting_bounding_box(s16 minX, s16 maxX, s16 minZ, s16 maxZ
     if ((x3 >= minX) && (maxX >= x3) && (z3 >= minZ) && (maxZ >= z3)) {
         return 1;
     }
+    
+    // Check if a line of the triangle intersects with the bounding box
     if (is_line_intersecting_rectangle(minX, maxX, minZ, maxZ, x1, z1, x2, z2) == 1) {
         return 1;
     }
@@ -1867,11 +1885,31 @@ s32 is_triangle_intersecting_bounding_box(s16 minX, s16 maxX, s16 minZ, s16 maxZ
     if (is_line_intersecting_rectangle(minX, maxX, minZ, maxZ, x3, z3, x1, z1) == 1) {
         return 1;
     }
+    
+    /**
+     * Check if any point of the bounding box is inside the triangle
+     * Bug fix that was not in the original game.
+     * Without this, triangles that are bigger than a collision grid cell, will not be included in that cell
+     * Thus, players would spawn in the air at 3000.0f as a fallback, or could fall through that portion of the track.
+     */
+    if (is_point_inside_triangle(minX, minZ, x1, z1, x2, z2, x3, z3) == 1) {
+        return 1;
+    }
+    if (is_point_inside_triangle(maxX, minZ, x1, z1, x2, z2, x3, z3) == 1) {
+        return 1;
+    }
+    if (is_point_inside_triangle(minX, maxZ, x1, z1, x2, z2, x3, z3) == 1) {
+        return 1;
+    }
+    if (is_point_inside_triangle(maxX, maxZ, x1, z1, x2, z2, x3, z3) == 1) {
+        return 1;
+    }
+    
     return 0;
 }
 
 /**
- * Splits the collision mesh into 32x32 sections. This allows the game to check only
+ * Splits the collision mesh into a 32x32 grid of cells. This allows the game to check only
  * nearby geography for a collision rather than checking against the whole collision mesh.
  * (checking against the whole mesh for every actor would be expensive)
  */
