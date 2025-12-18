@@ -225,6 +225,19 @@ void* GetCup();
 void CM_RunGarbageCollector(void);
 void CM_ResetAudio(void);
 
+// Add print formatting check attribute
+#if defined(__GNUC__) || defined(__clang__)
+__attribute__((format(printf, 1, 2)))
+#endif
+
+// Add noreturn attribute
+#if defined(_MSC_VER)
+    __declspec(noreturn) 
+#elif defined(__cplusplus) || (__STDC_VERSION__ >= 202311)
+    [[noreturn]] 
+#elif defined(__GNUC__)
+    __attribute__((noreturn)) 
+#endif
 void CM_ThrowRuntimeError(const char* fmt, ...);
 
 // NOLINTEND(readability-identifier-naming)
