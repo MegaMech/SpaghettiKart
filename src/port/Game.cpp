@@ -899,7 +899,7 @@ void push_frame() {
 #if defined(__GNUC__) || defined(__clang__)
 __attribute__((format(printf, 1, 2)))
 #endif
-_Noreturn void CM_ThrowRuntimeError(const char* fmt, ...) {
+[[noreturn]] void CM_ThrowRuntimeError(const char* fmt, ...) {
     char error_mesg[2048];
 
     va_list args;
@@ -910,7 +910,7 @@ _Noreturn void CM_ThrowRuntimeError(const char* fmt, ...) {
     const char* crash_desc = "\nSpaghettiKart has crashed! Please upload the logs to the support channel in Discord.";
     strncat(error_mesg, crash_desc, sizeof(error_mesg) - strlen(error_mesg) - 1);
 
-    fprintf(stderr, "%s\n", error_mesg);
+    SPDLOG_ERROR(error_mesg);
 
     SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_ERROR,
