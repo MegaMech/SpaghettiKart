@@ -137,8 +137,8 @@ void load_credits(void) {
     CM_CleanCameras();
     Vec3f spawn = {0.0f, 0.0f, 0.0f};
     Camera* camera = CM_AddCamera(spawn, 0, 0);
-    if (NULL == camera) {
-        return;
+    if (!camera) {
+        CM_ThrowRuntimeError("[code_80280000] [load_credits] NULL camera while attempting to create camera for player one");
     }
 
     CM_AttachCamera(camera, PLAYER_ONE);
