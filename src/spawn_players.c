@@ -1,6 +1,7 @@
 #include <defines.h>
 #include <mk64.h>
 #include <stubs.h>
+#include <stdlib.h>
 
 #include "spawn_players.h"
 #include "code_800029B0.h"
@@ -1229,8 +1230,10 @@ void spawn_players_and_cameras(void) {
     // Add freecam, tourcam, and lookbehind cameras
     Vec3f spawn = {player->pos[0], player->pos[1], player->pos[2]};
 
-
     camera = CM_AddFreeCamera(spawn, player->rotation[1], 1);
+    if (!camera) {
+        CM_ThrowRuntimeError("[spawn_players] [spawn_players_and_cameras] NULL camera while attempting to create FreeCamera for player one");
+    }
     gScreenContexts[PLAYER_ONE].freeCamera = camera;
 
     if (CVarGetInteger("gFreecam", false) == true) {
@@ -1240,13 +1243,14 @@ void spawn_players_and_cameras(void) {
 
     if ((CM_IsTourEnabled() == true) && (gModeSelection == GRAND_PRIX) && (Editor_IsPaused() == false)) {
         camera = CM_AddTourCamera(spawn, player->rotation[1], 1);
-        if (NULL != camera) {
-            CM_AttachCamera(camera, PLAYER_ONE);
-            gScreenContexts[PLAYER_ONE].camera = camera;
-            gScreenContexts[PLAYER_ONE].pendingCamera = NULL;
-            CM_CameraSetActive(0, false);
-            CM_ActivateTourCamera(camera);
+        if (!camera) {
+            CM_ThrowRuntimeError("[spawn_players] [spawn_players_and_cameras] NULL camera while attempting to create TourCamera for player one");
         }
+        CM_AttachCamera(camera, PLAYER_ONE);
+        gScreenContexts[PLAYER_ONE].camera = camera;
+        gScreenContexts[PLAYER_ONE].pendingCamera = NULL;
+        CM_CameraSetActive(0, false);
+        CM_ActivateTourCamera(camera);
     }
 }
 
@@ -1267,25 +1271,28 @@ void spawn_single_player_camera(u32 mode) {
     }
 
     Camera* camera = CM_AddCamera(spawn, gPlayerOne->rotation[1], mode);
-    if (camera) {
-        CM_AttachCamera(camera, PLAYER_ONE);
-        gScreenContexts[PLAYER_ONE].camera = camera;
-        gScreenContexts[PLAYER_ONE].raceCamera = camera;
+    if (!camera) {
+        CM_ThrowRuntimeError("[spawn_players] [spawn_single_player_camera] NULL camera while attempting to create camera for player one");
     }
+    CM_AttachCamera(camera, PLAYER_ONE);
+    gScreenContexts[PLAYER_ONE].camera = camera;
+    gScreenContexts[PLAYER_ONE].raceCamera = camera;
 
     // For end of race scene
     camera = CM_AddCamera(spawn2, gPlayerTwo->rotation[1], mode);
-    if (camera) {
-        CM_AttachCamera(camera, PLAYER_TWO);
-        gScreenContexts[PLAYER_TWO].camera = camera;
-        gScreenContexts[PLAYER_TWO].raceCamera = camera;
+    if (!camera) {
+        CM_ThrowRuntimeError("[spawn_players] [spawn_single_player_camera] NULL camera while attempting to create camera for player two");
     }
+    CM_AttachCamera(camera, PLAYER_TWO);
+    gScreenContexts[PLAYER_TWO].camera = camera;
+    gScreenContexts[PLAYER_TWO].raceCamera = camera;
 
     camera = CM_AddLookBehindCamera(spawn, gPlayerOne->rotation[1], mode);
-    if (camera) {
-        CM_AttachCamera(camera, PLAYER_ONE);
-        gScreenContexts[PLAYER_ONE].lookBehindCamera = camera;
+    if (!camera) {
+        CM_ThrowRuntimeError("[spawn_players] [spawn_single_player_camera] NULL camera while attempting to create LookBehind camera for player one");
     }
+    CM_AttachCamera(camera, PLAYER_ONE);
+    gScreenContexts[PLAYER_ONE].lookBehindCamera = camera;
 }
 
 void spawn_multiplayer_cameras(u32 mode) {
@@ -1306,21 +1313,22 @@ void spawn_multiplayer_cameras(u32 mode) {
     for (size_t i = 0; i < screens; i++) {
         Vec3f spawn = {gPlayers[i].pos[0], gPlayers[i].pos[1], gPlayers[i].pos[2]};
         camera = CM_AddCamera(spawn, gPlayers[i].rotation[1], mode);
-        if (camera) {
-            CM_AttachCamera(camera, i);
-            gScreenContexts[i].camera = camera;
-            gScreenContexts[i].raceCamera = camera;
+        if (!camera) {
+            CM_ThrowRuntimeError("[spawn_players] [spawn_multiplayer_cameras] NULL camera while attempting to create camera for player %d", i);
         }
-
+        CM_AttachCamera(camera, i);
+        gScreenContexts[i].camera = camera;
+        gScreenContexts[i].raceCamera = camera;
     }
 
     for (size_t i = 0; i < screens; i++) {
         Vec3f spawn = {gPlayers[i].pos[0], gPlayers[i].pos[1], gPlayers[i].pos[2]};
         camera = CM_AddLookBehindCamera(spawn, gPlayers[i].rotation[1], mode);
-        if (camera) {
-            CM_AttachCamera(camera, i);
-            gScreenContexts[i].lookBehindCamera = camera;
+        if (!camera) {
+            CM_ThrowRuntimeError("[spawn_players] [spawn_multiplayer_cameras] NULL camera while attempting to create LookBehind camera for player %d", i);
         }
+        CM_AttachCamera(camera, i);
+        gScreenContexts[i].lookBehindCamera = camera;
     }
 
 }
@@ -1359,13 +1367,15 @@ void func_8003DB5C(void) {
 
     Vec3f spawn = {player->pos[0], player->pos[1], player->pos[2]};
     camera = CM_AddCamera(spawn, player->rotation[1], 3);
-    if (camera) {
-        CM_AttachCamera(camera, PLAYER_ONE);
+    if (!camera) {
+        CM_ThrowRuntimeError("[spawn_players] [func_8003DB5C] NULL camera while attempting to create camera for player one");
     }
+    CM_AttachCamera(camera, PLAYER_ONE);
     camera = CM_AddCamera(spawn, player->rotation[1], 3);
-    if (camera) {
-        CM_AttachCamera(camera, PLAYER_ONE);
+    if (!camera) {
+        CM_ThrowRuntimeError("[spawn_players] [func_8003DB5C] NULL camera while attempting to create camera for player two");
     }
+    CM_AttachCamera(camera, PLAYER_TWO);
 
     for (playerId = 0; playerId < NUM_PLAYERS; playerId++, player++) {
         load_kart_palette(player, playerId, 1, 0);
