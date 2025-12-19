@@ -236,6 +236,8 @@ __attribute__((format(printf, 1, 2)))
 // Add noreturn attribute
 #if defined(_MSC_VER)
     __declspec(noreturn) 
+#elif defined(__clang__)
+    _Noreturn
 #elif defined(__cplusplus) || (__STDC_VERSION__ >= 202311)
     [[noreturn]] 
 #elif defined(__GNUC__)
