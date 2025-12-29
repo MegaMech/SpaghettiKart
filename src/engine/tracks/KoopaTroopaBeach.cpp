@@ -140,7 +140,7 @@ void KoopaTroopaBeach::Load() {
     // waterfall animation
     scroll_texture_interpolated(scroll, d_course_koopa_troopa_beach_packed_dl_9D58, 0, 18);
     scroll_texture_interpolated(scroll2, d_course_koopa_troopa_beach_packed_dl_9CD0, 0, 6);
-    // Waterfall bubbling effect? (unused)
+    // Waterfall bubbling effect?
     scroll_texture_interpolated(scroll3, d_course_koopa_troopa_beach_packed_dl_2E8, 0, 0);
 }
 
