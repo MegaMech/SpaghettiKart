@@ -1,5 +1,7 @@
 var NAVTREEINDEX42 =
 {
+"md_docs_2BUILDING.html#clean-2":[2,2,1,0],
+"md_docs_2BUILDING.html#clone-the-repo-and-enter-the-directory":[2,1,0],
 "md_docs_2BUILDING.html#compile-the-project":[2,1,2,2],
 "md_docs_2BUILDING.html#configure-the-project":[2,1,2,1],
 "md_docs_2BUILDING.html#create-the-docker-container":[2,1,2,0],
@@ -28,9 +30,9 @@ var NAVTREEINDEX42 =
 "md_docs_2custom-characters.html#additional-files":[5,1],
 "md_docs_2custom-characters.html#change-viewport-render-settings":[5,1,0,0],
 "md_docs_2custom-characters.html#examples-for-all-characters":[5,0],
-"md_docs_2custom-characters.html#future-plans-1":[5,1,2],
-"md_docs_2custom-characters.html#tips":[5,1,0],
-"md_docs_2custom-characters.html#tools-to-help":[5,1,1],
+"md_docs_2custom-characters.html#future-plans-2":[5,1,2],
+"md_docs_2custom-characters.html#tips-1":[5,1,0],
+"md_docs_2custom-characters.html#tools-to-help-1":[5,1,1],
 "md_docs_2custom-track.html":[6],
 "md_docs_2custom-track.html#dependencies":[6,0],
 "md_docs_2custom-track.html#export":[6,3],
@@ -40,7 +42,7 @@ var NAVTREEINDEX42 =
 "md_docs_2custom-track.html#materials":[6,2],
 "md_docs_2custom-track.html#playing-your-custom-track":[6,7],
 "md_docs_2custom-track.html#preparation":[6,4],
-"md_docs_2custom-track.html#tips-1":[6,8],
+"md_docs_2custom-track.html#tips":[6,8],
 "md_docs_2custom-track.html#track-initialization":[6,6],
 "md_docs_2faq.html":[7],
 "md_docs_2migrations.html":[8],
@@ -86,8 +88,8 @@ var NAVTREEINDEX42 =
 "md_docs_2sequences-information.html#race-tracks":[11,0],
 "md_docs_2textures-pack.html":[12],
 "md_docs_2textures-pack.html#example-1":[12,0],
-"md_docs_2textures-pack.html#future-plans-2":[12,2],
-"md_docs_2textures-pack.html#tools-to-help-1":[12,1],
+"md_docs_2textures-pack.html#future-plans-1":[12,2],
+"md_docs_2textures-pack.html#tools-to-help":[12,1],
 "md_docs_2track__returns.html":[13],
 "md_docs_2track__returns.html#battle-courses-1":[13,1],
 "md_docs_2track__returns.html#mario-kart-world-remixes":[13,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX42 =
 "menu__items_8c.html#a3233771df4bebcae203ffc21e50bbbb5":[19,0,3,48,488],
 "menu__items_8c.html#a330704d30d106268fbb062e6ced61926":[19,0,3,48,103],
 "menu__items_8c.html#a33341dba00d6251c3aac738b843d0b6d":[19,0,3,48,489],
-"menu__items_8c.html#a33697d36ec15d6db80b203d2d7416a14":[19,0,3,48,282],
-"menu__items_8c.html#a3398cf29d209a963651e19d02e49e0ce":[19,0,3,48,442],
-"menu__items_8c.html#a339d2d418704e61fba5d9bd467ebebfd":[19,0,3,48,299]
+"menu__items_8c.html#a33697d36ec15d6db80b203d2d7416a14":[19,0,3,48,282]
 };

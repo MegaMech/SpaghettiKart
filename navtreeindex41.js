@@ -1,5 +1,7 @@
 var NAVTREEINDEX41 =
 {
+"math__util_8h.html#aa6c1453df1ae6c4c840363c4c2977dc9":[19,0,3,10,9,22],
+"math__util_8h.html#aaf43cc8f58adb897c2a997aa12cad88d":[19,0,3,10,9,13],
 "math__util_8h.html#ab5aa72ca9c41c01a1cbf2933a856a3e3":[19,0,3,10,9,35],
 "math__util_8h.html#abd1a0f950c852c8eb022bd4145f8289f":[19,0,3,10,9,14],
 "math__util_8h.html#ac8db283a5f8620da533b57e18b0705b3":[19,0,3,10,9,40],
@@ -52,6 +54,7 @@ var NAVTREEINDEX41 =
 "math__util__2_8c.html#a6f90d4d34932da48fa6a3aaa5fa67ab7":[19,0,3,46,73],
 "math__util__2_8c.html#a72838b5aa6ee317abde4c7a2c30bc44b":[19,0,3,46,50],
 "math__util__2_8c.html#a73fc9c004b7013f9562425001c315571":[19,0,3,46,27],
+"math__util__2_8c.html#a742f148d5670e125f8923ed893139481":[19,0,3,46,75],
 "math__util__2_8c.html#a755fb5deda8e5f14ec98ac8b05eca62e":[19,0,3,46,11],
 "math__util__2_8c.html#a77d7fb3801386144fcd949c0d88dfa34":[19,0,3,46,55],
 "math__util__2_8c.html#a7b47eab675b824ddf3c90276ba5f4abe":[19,0,3,46,6],
@@ -59,7 +62,6 @@ var NAVTREEINDEX41 =
 "math__util__2_8c.html#a8660c1401b46f048a9a5f6db8dfec32d":[19,0,3,46,63],
 "math__util__2_8c.html#a8a3f435eae79cf7c07be83d8889cb24c":[19,0,3,46,30],
 "math__util__2_8c.html#a8beaa5d8880766ff4d0c9c1a1504be79":[19,0,3,46,57],
-"math__util__2_8c.html#a955fb252b16c035884bae06080e13a2e":[19,0,3,46,75],
 "math__util__2_8c.html#a97f152c13270a150c3aff0e7bf79f83b":[19,0,3,46,43],
 "math__util__2_8c.html#a99d173c040cb4a9d0184df2605d71e32":[19,0,3,46,14],
 "math__util__2_8c.html#a99e6304891f46564f00965ce860d1c29":[19,0,3,46,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX41 =
 "md_docs_2BUILDING.html#arch-1":[2,1,1,0,1],
 "md_docs_2BUILDING.html#build":[2,1,1,1],
 "md_docs_2BUILDING.html#clean":[2,0,2,0],
-"md_docs_2BUILDING.html#clean-1":[2,1,4,0],
-"md_docs_2BUILDING.html#clean-2":[2,2,1,0],
-"md_docs_2BUILDING.html#clone-the-repo-and-enter-the-directory":[2,1,0]
+"md_docs_2BUILDING.html#clean-1":[2,1,4,0]
 };
