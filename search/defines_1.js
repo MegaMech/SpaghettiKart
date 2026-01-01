@@ -96,6 +96,6 @@ var searchData=
   ['audio_5flock_5funinitialized_93',['AUDIO_LOCK_UNINITIALIZED',['../data_8h.html#a768612bda2d4cf42332125a5ffee7350',1,'data.h']]],
   ['audio_5fright_5ftyre_94',['AUDIO_RIGHT_TYRE',['../external_8c.html#a627582fcc9de130ccaf1dda2c1e34aa5',1,'external.c']]],
   ['audio_5fsession_5fpresets_5fh_95',['AUDIO_SESSION_PRESETS_H',['../audio__session__presets_8c.html#af9ff8498b568890a69cde25ec1d93900',1,'audio_session_presets.c']]],
-  ['aunkcmd19_96',['aUnkCmd19',['../mixer_8c.html#a8db0bf9437ec20e7cbd32ab01df51801',1,'aUnkCmd19:&#160;mixer.c'],['../mixer_8h.html#a8db0bf9437ec20e7cbd32ab01df51801',1,'aUnkCmd19:&#160;mixer.h']]],
+  ['aunkcmd19_96',['aUnkCmd19',['../mixer_8c.html#a8db0bf9437ec20e7cbd32ab01df51801',1,'aUnkCmd19:&#160;mixer.c'],['../mixer_8h.html#a8db0bf9437ec20e7cbd32ab01df51801',1,'aUnkCmd19:&#160;mixer.h'],['../synthesis_8c.html#a8db0bf9437ec20e7cbd32ab01df51801',1,'aUnkCmd19:&#160;synthesis.c']]],
   ['aunkcmd3_97',['aUnkCmd3',['../mixer_8h.html#aca274540c8ed9e25cb0214ef84bf889e',1,'mixer.h']]]
 ];

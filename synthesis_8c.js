@@ -3,6 +3,7 @@ var synthesis_8c =
     [ "VolumeChange", "structVolumeChange.html", "structVolumeChange" ],
     [ "aSetLoadBufferPair", "synthesis_8c.html#a5adf95c0704d3aec13cd975d0438f38b", null ],
     [ "aSetSaveBufferPair", "synthesis_8c.html#a67fb91e0a54fb1f28d378c3338863d5f", null ],
+    [ "aUnkCmd19", "synthesis_8c.html#a8db0bf9437ec20e7cbd32ab01df51801", null ],
     [ "final_resample", "synthesis_8c.html#afdb8a3b2a3566c114fc20078eb07ba4c", null ],
     [ "func_800B6FB4", "synthesis_8c.html#a831c7a9542071eed3e68885bd89e505b", null ],
     [ "load_wave_samples", "synthesis_8c.html#aed4d56af55356360afaebcb4f194407c", null ],
