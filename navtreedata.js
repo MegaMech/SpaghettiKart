@@ -197,8 +197,8 @@ var NAVTREEINDEX =
 [
 "ActorSpawnDataFactory_8cpp.html",
 "Engine_8cpp.html#a9722639d948bb7c0f3935bfb71101cec",
-"Game_8cpp.html#a892acd610181b8a67f9bd4f74d242a4a",
-"HMAS_8h.html#a34c9fd6476378baf8d508d8c25b0eaf9",
+"Game_8cpp.html#a872b3eafef96f83081b83794fb4681e5",
+"HMAS_8h.html",
 "ModManager_8h.html",
 "TrackBrowser_8cpp.html#a9acd0e28e0a33399d24e6780e91494e0",
 "____osViGetCurrentContext_8c.html#adc61dd137f20ee671234a124a684957f",
