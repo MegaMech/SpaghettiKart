@@ -1050,6 +1050,19 @@ void spawn_and_set_player_spawns(void) {
 
             case SCREEN_MODE_3P_4P_SPLITSCREEN:
                 switch (gModeSelection) {
+                    case GRAND_PRIX: // Added case to allow grand prix in 3/4 player split-screen
+                        D_80165210[0] = (D_80165210[2] = (D_80165210[4] = (D_80165210[6] = sp5E + 0x14)));
+                        D_80165210[1] = (D_80165210[3] = (D_80165210[5] = (D_80165210[7] = sp5E - 0x14)));
+                        D_80165230[0] = sp5C + 0x1E;
+                        D_80165230[1] = sp5C + 0x32;
+                        D_80165230[2] = sp5C + 0x46;
+                        D_80165230[3] = sp5C + 0x5A;
+                        D_80165230[4] = sp5C + 0x6E;
+                        D_80165230[5] = sp5C + 0x82;
+                        D_80165230[6] = sp5C + 0x96;
+                        D_80165230[7] = sp5C + 0xAA;
+                        spawn_players_gp_three_player(D_80165210, D_80165230, sp5A);
+                        break;
                     case VERSUS:
                         D_80165210[0] = sp5E + 0x1E;
                         D_80165210[6] = sp5E - 0xA;
@@ -1252,7 +1265,7 @@ void func_8003CD98(Player* player, Camera* camera, s8 playerId, s8 screenId) {
         } else {
             load_kart_palette(player, playerId, screenId, 0);
             load_kart_palette(player, playerId, screenId, 1);
-            load_kart_texture(player, (s8) (playerId + 4), screenId, (s8) (screenId - 2), 0);
+            load_kart_texture(player, (s8) (playerId), screenId, (s8) (screenId), 0);
 #ifdef TARGET_N64
             mio0decode((u8*) &gEncodedKartTexture[0][screenId - 2][playerId + 4],
                        (u8*) &D_802BFB80.arraySize8[0][screenId - 2][playerId + 4]);
