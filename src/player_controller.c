@@ -444,7 +444,7 @@ void func_80028F70(void) {
             break;
         case SCREEN_MODE_3P_4P_SPLITSCREEN:
             size_t players;
-            if (gGameModeSelection == GRAND_PRIX) {
+            if (gModeSelection == GRAND_PRIX) {
                 players = 8;
             } else { // VERSUS, BATTLE
                 players = 4;
