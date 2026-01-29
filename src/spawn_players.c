@@ -755,6 +755,84 @@ void spawn_players_2p_battle(f32* arg0, f32* arg1, f32 arg2) {
     func_80039AE4();
 }
 
+// Added function
+void spawn_players_gp_three_player(f32* arg0, f32* arg1, f32 arg2) {
+    func_80039DA4();
+    if ((GetCupCursorPosition() == TRACK_ONE) || (gDemoMode == 1) ||
+        (gDebugMenuSelection == DEBUG_MENU_OPTION_SELECTED)) {
+        s16 rand;
+        s16 i;
+        s16 cpuCount;
+
+        // @todo: this is a do-while loop
+    getRand:
+        rand = random_int(7);
+        if (gCharacterSelections[0] == rand) {
+            goto getRand;
+        }
+        if (gCharacterSelections[1] == rand) {
+            goto getRand;
+        }
+
+        chooseCPUPlayers[0] = rand;
+
+
+        if (gPlayerCountSelection1 == 3) {
+            cpuCount = 5;
+        } else { // 4 players
+            cpuCount = 4;
+        }
+
+        for (i = 1; i < cpuCount; i++) {
+            u16* arr = (u16*) cpu_forTwoPlayer[gCharacterSelections[0]][gCharacterSelections[1]];
+            if (rand == arr[i]) {
+                chooseCPUPlayers[i] = arr[0];
+            } else {
+                chooseCPUPlayers[i] = arr[i];
+            }
+        }
+    }
+
+    if (gPlayerCountSelection1 == 3) {
+        spawn_player(gPlayerFour, 3, arg0[D_80165270[3]], arg1[D_80165270[3]], arg2, 32768.0f, chooseCPUPlayers[0],
+                     PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerFive, 4, arg0[D_80165270[4]], arg1[D_80165270[4]], arg2, 32768.0f, chooseCPUPlayers[1],
+                     PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerSix, 5, arg0[D_80165270[5]], arg1[D_80165270[5]], arg2, 32768.0f, chooseCPUPlayers[2],
+                     PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerSeven, 6, arg0[D_80165270[6]], arg1[D_80165270[6]], arg2, 32768.0f, chooseCPUPlayers[3],
+                     PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerEight, 7, arg0[D_80165270[7]], arg1[D_80165270[7]], arg2, 32768.0f, chooseCPUPlayers[4],
+                     PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerOne, 0, arg0[D_80165270[0]], arg1[D_80165270[0]], arg2, 32768.0f, gCharacterSelections[0],
+                    PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
+        spawn_player(gPlayerTwo, 1, arg0[D_80165270[1]], arg1[D_80165270[1]], arg2, 32768.0f,
+                        gCharacterSelections[1], PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
+        spawn_player(gPlayerThree, 2, arg0[D_80165270[2]], arg1[D_80165270[2]], arg2, 32768.0f, gCharacterSelections[2],
+                        PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
+    } else { // 4 player
+        spawn_player(gPlayerFive, 4, arg0[D_80165270[4]], arg1[D_80165270[4]], arg2, 32768.0f, chooseCPUPlayers[0],
+                    PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerSix, 5, arg0[D_80165270[5]], arg1[D_80165270[5]], arg2, 32768.0f, chooseCPUPlayers[1],
+                    PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerSeven, 6, arg0[D_80165270[6]], arg1[D_80165270[6]], arg2, 32768.0f, chooseCPUPlayers[2],
+                    PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerEight, 7, arg0[D_80165270[7]], arg1[D_80165270[7]], arg2, 32768.0f, chooseCPUPlayers[3],
+                    PLAYER_EXISTS | PLAYER_CPU | PLAYER_START_SEQUENCE);
+        spawn_player(gPlayerOne, 0, arg0[D_80165270[0]], arg1[D_80165270[0]], arg2, 32768.0f, gCharacterSelections[0],
+                     PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
+        spawn_player(gPlayerTwo, 1, arg0[D_80165270[1]], arg1[D_80165270[1]], arg2, 32768.0f, gCharacterSelections[1],
+                    PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
+        spawn_player(gPlayerThree, 2, arg0[D_80165270[2]], arg1[D_80165270[2]], arg2, 32768.0f,
+                        gCharacterSelections[2], PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
+        spawn_player(gPlayerFour, 3, arg0[D_80165270[3]], arg1[D_80165270[3]], arg2, 32768.0f, gCharacterSelections[3],
+                        PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
+    }
+
+    D_80164A28 = 0;
+    func_80039AE4();
+}
+
 void func_8003B318(f32* arg0, f32* arg1, f32 arg2) {
     spawn_player(gPlayerOne, 0, arg0[0], arg1[0], arg2, 32768.0f, gCharacterSelections[0],
                  PLAYER_EXISTS | PLAYER_START_SEQUENCE | PLAYER_HUMAN);
