@@ -321,7 +321,7 @@ public:
     std::string ResourceName;
 
     Properties Props;
-    enum class CloudType mCloudType;
+    enum CloudType mCloudType;
 
     // This allows multiple water levels in a map.
     // Ex. DK Jungle where there's a waterfall and you can drive above and below it.
