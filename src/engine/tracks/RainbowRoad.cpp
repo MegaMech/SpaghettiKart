@@ -151,14 +151,6 @@ void RainbowRoad::BeginPlay() {
     }
 }
 
-void RainbowRoad::InitClouds() {
-    init_stars(this->Props.Clouds);
-}
-
-void RainbowRoad::TickClouds(s32 sp1C, Camera* camera) {
-    update_stars(sp1C, camera, this->Props.CloudList);
-}
-
 void RainbowRoad::InitTrackObjects() {
     if (gGamestate != CREDITS_SEQUENCE) {
         size_t i;

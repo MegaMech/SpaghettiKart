@@ -3476,67 +3476,6 @@ void render_object_snowflakes_particles(void) {
     gSPTexture(gDisplayListHead++, 1, 1, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-struct ObjectInterpData {
-    s32 objectIndex;
-    s16 x, y;
-};
-
-struct ObjectInterpData prevObject[OBJECT_LIST_SIZE] = { 0 };
-
-void render_clouds(s32 objectIndex, s16 x, s16 y) {
-
-    // Search all recorded objects for the one we're drawing
-    for (size_t i = 0; i < OBJECT_LIST_SIZE; i++) {
-        if (objectIndex == prevObject[i].objectIndex) {
-            // Coincidence!
-            // Skip drawing the object this frame if it warped to the other side of the screen
-            if ((fabs(x - prevObject[i].x) > SCREEN_WIDTH / 2) || (fabs(y - prevObject[i].y) > SCREEN_HEIGHT / 2)) {
-                prevObject[objectIndex].x = x;
-                prevObject[objectIndex].y = y;
-                prevObject[objectIndex].objectIndex = objectIndex;
-                return;
-            }
-        }
-    }
-
-    if (gObjectList[objectIndex].status & 0x10) {
-
-        // @port: Tag the transform.
-        FrameInterpolation_RecordOpenChild("render_clouds", TAG_CLOUDS(objectIndex));
-
-        if (D_8018D228 != gObjectList[objectIndex].unk_0D5) {
-            D_8018D228 = gObjectList[objectIndex].unk_0D5;
-            func_80044DA0(gObjectList[objectIndex].activeTexture, gObjectList[objectIndex].textureWidth,
-                          gObjectList[objectIndex].textureHeight);
-        }
-        func_80042330_unchanged(x, y, 0, gObjectList[objectIndex].sizeScaling);
-        gSPVertex(gDisplayListHead++, gObjectList[objectIndex].vertex, 4, 0);
-        gSPDisplayList(gDisplayListHead++, common_rectangle_display);
-
-        // @port Pop the transform id.
-        FrameInterpolation_RecordCloseChild();
-    }
-
-    // Save current cloud index and x position
-    prevObject[objectIndex].x = x;
-    prevObject[objectIndex].y = y;
-    prevObject[objectIndex].objectIndex = objectIndex;
-}
-
-void func_800519D4(s32 objectIndex, s16 arg1, s16 arg2) {
-    if (gObjectList[objectIndex].status & 0x10) {
-        if (D_8018D228 != gObjectList[objectIndex].unk_0D5) {
-            D_8018D228 = gObjectList[objectIndex].unk_0D5;
-            func_80044DA0(gObjectList[objectIndex].activeTexture, gObjectList[objectIndex].textureWidth,
-                          gObjectList[objectIndex].textureHeight);
-        }
-        func_8004B138(0x000000FF, 0x000000FF, 0x000000FF, gObjectList[objectIndex].primAlpha);
-        func_80042330_unchanged(arg1, arg2, 0U, gObjectList[objectIndex].sizeScaling);
-        gSPVertex(gDisplayListHead++, gObjectList[objectIndex].vertex, 4, 0);
-        gSPDisplayList(gDisplayListHead++, common_rectangle_display);
-    }
-}
-
 // Render clouds
 void func_80051ABC(s16 arg0, s32 arg1) {
     s32 var_s0;
