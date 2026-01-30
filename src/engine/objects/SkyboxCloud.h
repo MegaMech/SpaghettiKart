@@ -14,12 +14,15 @@ extern "C" {
 
 /**
  * Skybox clouds
+ *
+ * @cloudVariant The cloud texture to use
  */
-class OCloud : public OObject {
+class OSkyboxCloud : public OObject {
+public:
+    OSkyboxCloud() {}
+    OSkyboxCloud(u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent);
 
-    OCloud();
-
-    ~OCloud() {
+    ~OSkyboxCloud() {
         _count--;
     }
 
@@ -29,13 +32,14 @@ class OCloud : public OObject {
 
     virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
-
+    virtual void Draw2(s32 arg0);
+    virtual void Tick2(Camera* camera);
+protected:
     static size_t _count;
     size_t _idx;
-    size_t _objectIndex;
-    int32_t mHeight;
     int32_t mRotY;
 
+    int32_t mX;
     int32_t mOldX;
-    int32_t mOldZ;
+    int32_t mOldY;
 };

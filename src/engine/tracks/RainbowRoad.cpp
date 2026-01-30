@@ -94,6 +94,7 @@ RainbowRoad::RainbowRoad() {
 
     Props.Clouds = gToadsTurnpikeRainbowRoadStars;
     Props.CloudList = gToadsTurnpikeRainbowRoadStars;
+    mCloudType = CloudType::STARS;
 
     Props.Skybox.TopRight = {0, 0, 0};
     Props.Skybox.BottomRight = {0, 0, 0};

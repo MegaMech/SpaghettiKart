@@ -11,6 +11,9 @@
 #include "engine/registry/Registry.h"
 #include "libultraship/bridge/resourcebridge.h"
 #include "align_asset_macro.h"
+#include "engine/objects/SkyboxCloud.h"
+#include "engine/objects/SkyboxStar.h"
+#include "engine/objects/SkyboxSnow.h"
 
 extern "C" {
 #include "main.h"
@@ -31,6 +34,7 @@ extern "C" {
 #include "math_util.h"
 #include "code_80005FD0.h"
 extern StaffGhost* d_mario_raceway_staff_ghost;
+extern s8 gPlayerCount;
 }
 
 void ResizeMinimap(MinimapProps* minimap) {
@@ -406,6 +410,7 @@ Track::Track() {
 
     Props.Clouds = NULL;
     Props.CloudList = NULL;
+    mCloudType = CloudType::CLOUDS;
     Props.Sequence = MusicSeq::MUSIC_SEQ_UNKNOWN;
 
     bFog = false;
@@ -466,9 +471,56 @@ void Track::SpawnActors() {
 }
 
 void Track::InitClouds() {
-    if (this->Props.Clouds) {
-        init_clouds(this->Props.Clouds);
+    size_t iterations = 0;
+    size_t numSnow = 0;
+    CloudData* cloud = &this->Props.Clouds[0];
+
+    // Handle spawning snow
+    if (mCloudType == CloudType::SNOW) {
+        if (gPlayerCount == 1) {
+            numSnow = 50;
+        } else {
+            numSnow = 25;
+        }
+
+        for (size_t i = 0; i < numSnow; i++) {
+            OSkyboxSnow* object = static_cast<OSkyboxSnow*>(GetWorld()->AddObject(std::make_unique<OSkyboxSnow>()));
+            GetWorld()->SkyboxClouds.push_back(object);
+            iterations += 1;
+        }
+        D_8018D230 = 0;
     }
+
+    // Handle spawning the other cloud types
+    if (nullptr != cloud) {
+        while ((cloud->rotY != 0xFFFF) && (iterations < 50)) {
+            switch(mCloudType) {
+                case CloudType::NONE:
+                case CloudType::SNOW:
+                    break;
+                case CloudType::CLOUDS: {
+                    OSkyboxCloud* object = static_cast<OSkyboxCloud*>(GetWorld()->AddObject(
+                        std::make_unique<OSkyboxCloud>(cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent)));
+                    GetWorld()->SkyboxClouds.push_back(object);
+                    D_8018D230 = 0;
+                    break;
+                }
+                case CloudType::STARS: {
+                    OSkyboxStar* object = static_cast<OSkyboxStar*>(GetWorld()->AddObject(std::make_unique<OSkyboxStar>(cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent)));
+                    GetWorld()->SkyboxClouds.push_back(object);
+                    D_8018D230 = 1;
+                    break;
+                }
+            }
+            
+            
+            cloud++;
+            iterations += 1;
+        }
+    }
+
+    D_8018D1F8 += iterations;
+    D_8018D1F0 = iterations;
 }
 
 void Track::TickClouds(s32 arg0, Camera* camera) {
@@ -476,12 +528,14 @@ void Track::TickClouds(s32 arg0, Camera* camera) {
     s32 objectIndex;
     CloudData* cloud;
 
-    if (this->Props.CloudList) {
-        for (cloudIndex = 0; cloudIndex < D_8018D1F0; cloudIndex++) {
-            cloud = &this->Props.CloudList[cloudIndex];
-            objectIndex = D_8018CC80[arg0 + cloudIndex];
-            func_800788F8(objectIndex, cloud->rotY, camera);
-        }
+    for (OSkyboxCloud* cloud : GetWorld()->SkyboxClouds) {
+        cloud->Tick2(camera);
+    }
+}
+
+void Track::DrawClouds(s32 arg0) {
+    for (OSkyboxCloud* cloud : GetWorld()->SkyboxClouds) {
+        cloud->Draw2(arg0);
     }
 }
 

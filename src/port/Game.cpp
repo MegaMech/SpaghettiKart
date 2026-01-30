@@ -358,6 +358,7 @@ void CM_DrawStaticMeshActors() {
 void CM_BeginPlay() {
     static bool tour = false;
     auto track = GetWorld()->GetTrack();
+    GetWorld()->Actors.clear();
     
     if (nullptr == track) {
         return; 
@@ -560,6 +561,12 @@ void CM_InitClouds() {
 void CM_TickClouds(s32 arg0, Camera* camera) {
     if (GetWorld()->GetTrack()) {
         GetWorld()->GetTrack()->TickClouds(arg0, camera);
+    }
+}
+
+void CM_DrawClouds(s32 arg0) {
+    if (GetWorld()->GetTrack()) {
+        GetWorld()->GetTrack()->DrawClouds(arg0);
     }
 }
 

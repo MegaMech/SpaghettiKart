@@ -2230,12 +2230,13 @@ void func_80077D5C(s32 arg0) {
 }
 
 void func_80077E20(s32 objectIndex) {
+    u8* tex = (u8*) LOAD_ASSET(D_0D0293D8);
     Vtx* vtx = (Vtx*) LOAD_ASSET(common_vtx_rectangle);
     Object* object;
 
     object = &gObjectList[objectIndex];
-    object->activeTexture = D_0D0293D8;
-    object->textureList = D_0D0293D8;
+    object->activeTexture = tex;
+    object->textureList = tex;
     //! @bug frappe snowland There's something up with the handling of common_vtx_rectangle and the loading of 0x10
     //! right here
     // root function: func_80078C70

@@ -270,4 +270,5 @@ void World::CleanWorld(void) {
     Objects.clear();
     Emitters.clear();
     Lakitus.clear();
+    SkyboxClouds.clear();
 }

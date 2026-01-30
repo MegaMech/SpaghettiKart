@@ -307,13 +307,21 @@ typedef struct Properties {
 
 class World; // <-- Forward declare
 
-class Track {
 
+class Track {
 public:
+    enum class CloudType {
+        NONE,
+        CLOUDS,
+        SNOW,
+        STARS
+    };
     // Required to save scenefile data
     std::shared_ptr<Ship::Archive> Archive;
     std::string ResourceName;
+
     Properties Props;
+    enum class CloudType mCloudType;
 
     // This allows multiple water levels in a map.
     // Ex. DK Jungle where there's a waterfall and you can drive above and below it.
@@ -345,6 +353,7 @@ public:
     void SpawnActors();
     virtual void InitClouds();
     virtual void TickClouds(s32, Camera*);
+    virtual void DrawClouds(s32);
     virtual void SomeCollisionThing(Player *player, Vec3f arg1, Vec3f arg2, Vec3f arg3, f32* arg4, f32* arg5, f32* arg6, f32* arg7);
     virtual void InitTrackObjects();
     virtual void TickTrackObjects();

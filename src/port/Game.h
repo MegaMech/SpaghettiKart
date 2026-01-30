@@ -102,6 +102,7 @@ void CM_TickParticles(void);
 void CM_DrawParticles(s32 cameraId);
 
 void CM_TickClouds(s32 arg0, Camera* camera);
+void CM_DrawClouds(s32 arg0);
 
 void CM_Waypoints(Player* player, int8_t playerId);
 

@@ -34,6 +34,7 @@ class StaticMeshActor;
 class OBombKart;
 class TrainCrossing;
 class OLakitu;
+class OSkyboxCloud;
 class GameObject; // <-- Editor
 
 class World {
@@ -119,8 +120,9 @@ public:
 
     std::vector<std::unique_ptr<StaticMeshActor>> StaticMeshActors;
     std::vector<std::unique_ptr<AActor>> Actors;
-    std::vector<std::unique_ptr<OObject>> Objects;
+    std::deque<std::unique_ptr<OObject>> Objects;
     std::vector<std::unique_ptr<ParticleEmitter>> Emitters;
+    std::vector<OSkyboxCloud*> SkyboxClouds;
 
     std::unordered_map<s32, OLakitu*> Lakitus;
 
