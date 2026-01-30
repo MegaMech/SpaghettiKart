@@ -2210,25 +2210,6 @@ void update_leaf(void) {
     }
 }
 
-void func_80077D5C(s32 arg0) {
-    s32 objectIndex;
-    s32 var_a1;
-
-    if (D_8016559C == 0) {
-        for (var_a1 = 0; var_a1 < D_8018D1F0; var_a1++) {
-            D_8018D17C += 1;
-            if (D_8018D17C >= D_8018D1F0) {
-                D_8018D17C = 0;
-            }
-            objectIndex = D_8018CC80[arg0 + D_8018D17C];
-            if (gObjectList[objectIndex].state == 0) {
-                init_object(objectIndex, 1);
-                break;
-            }
-        }
-    }
-}
-
 void func_80077E20(s32 objectIndex) {
     u8* tex = (u8*) LOAD_ASSET(D_0D0293D8);
     Vtx* vtx = (Vtx*) LOAD_ASSET(common_vtx_rectangle);
@@ -2293,38 +2274,6 @@ void func_80077F64(s32 objectIndex, Camera* camera) {
         case 3:
             func_80086F60(objectIndex);
             break;
-    }
-}
-
-void func_800780CC(s32 objectIndex, Camera* camera) {
-    switch (gObjectList[objectIndex].state) { /* irregular */
-        case 1:
-            func_80077E20(objectIndex);
-            return;
-        case 2:
-            func_80077F64(objectIndex, camera);
-            if (gObjectList[objectIndex].unk_0AE == 0) {
-                object_next_state(objectIndex);
-                return;
-            }
-        case 0:
-            return;
-        case 3:
-            func_80072428(objectIndex);
-            break;
-    }
-}
-
-void func_80078170(s32 arg0, Camera* arg1) {
-    s32 objectIndex;
-    s32 i;
-
-    func_80077D5C(arg0);
-    for (i = 0; i < D_8018D1F0; i++) {
-        objectIndex = D_8018CC80[arg0 + i];
-        if (gObjectList[objectIndex].state != 0) {
-            func_800780CC(objectIndex, arg1);
-        }
     }
 }
 
