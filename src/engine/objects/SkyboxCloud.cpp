@@ -67,20 +67,16 @@ void OSkyboxCloud::Tick2(Camera* camera) { // func_800788F8
 
     // Check if the object is within the adjusted bounds
     if ((cameraRot >= adjustedLowerBound) && (adjustedUpperBound >= cameraRot)) {
-        // Calculate and update the object's position
+        // Calculate and update the object's X position
         // 160 (SCREEN_WIDTH / 2) + (D_8018D1E8 * cameraRot);
         // Grab center of screen, scale by fov factor, offset based on camera rotation
-        uint32_t offset = (((u32)D_8018D218) + (u32)(D_8018D1E8 * cameraRot));
-        
-        mX = offset;
-        // This was originally used for X. However, there's likely a int16_t overflow issue that couldn't be figured out.
-        gObjectList[_objectIndex].unk_09C = (u16) (u32)offset;
+        gObjectList[_objectIndex].unk_09C = D_8018D218 + (D_8018D1E8 * cameraRot);
 
         // Mark the object as visible
         set_object_flag(_objectIndex, 0x10);
     } else {
         // If outside the bounds, mark the object as not visible
-        set_object_flag(_objectIndex, 0x10);
+        clear_object_flag(_objectIndex, 0x10);
     }
 }
 
@@ -93,7 +89,7 @@ void OSkyboxCloud::Draw2(s32 arg0) { // render_clouds
     s32 posY = arg0 - object->unk_09E;
     func_8004B6C4(255, 255, 255);
     // Skip drawing the object this frame if it warped to the other side of the screen
-    if ((fabs(mX - mOldX) > SCREEN_WIDTH / 2) || (fabs(posY - mOldY) > SCREEN_HEIGHT / 2)) {
+    if ((fabs(gObjectList[_objectIndex].unk_09C - mOldX) > SCREEN_WIDTH / 2) || (fabs(posY - mOldY) > SCREEN_HEIGHT / 2)) {
         mOldX = mX;
         mOldY = posY;
         return;
@@ -108,14 +104,14 @@ void OSkyboxCloud::Draw2(s32 arg0) { // render_clouds
             func_80044DA0((u8*)object->activeTexture, object->textureWidth,
                           object->textureHeight);
         }
-        func_80042330_unchanged(mX, posY, 0, object->sizeScaling);
+        func_80042330_unchanged(gObjectList[_objectIndex].unk_09C, posY, 0, object->sizeScaling);
         gSPVertex(gDisplayListHead++, (uintptr_t)object->vertex, 4, 0);
         gSPDisplayList(gDisplayListHead++, (Gfx*)common_rectangle_display);
 
         // @port Pop the transform id.
         FrameInterpolation_RecordCloseChild();
         
-        mOldX = mX;
+        mOldX = gObjectList[_objectIndex].unk_09C;
         mOldY = posY;
     }
 }
