@@ -59,11 +59,7 @@ void OSkyboxStar::Tick2(Camera* camera) {
         // Calculate and update the object's position
         // 160 (SCREEN_WIDTH / 2) + (D_8018D1E8 * cameraRot);
         // Grab center of screen, scale by fov factor, offset based on camera rotation
-        uint32_t offset = (((u32)D_8018D218) + (u32)(D_8018D1E8 * cameraRot));
-        
-        mX = offset;
-        // This was originally used for X. However, there's likely a int16_t overflow issue that couldn't be figured out.
-        gObjectList[_objectIndex].unk_09C = (u16) (u32)offset;
+        gObjectList[_objectIndex].unk_09C = D_8018D218 + (D_8018D1E8 * cameraRot);
 
         // Mark the object as visible
         set_object_flag(_objectIndex, 0x10);
@@ -113,9 +109,10 @@ void OSkyboxStar::Draw2(s32 arg0) { // render_stars
                           gObjectList[_objectIndex].textureHeight);
         }
         func_8004B138(0xFF, 0xFF, 0xFF, gObjectList[_objectIndex].primAlpha);
-        func_80042330_unchanged(mX, posY, 0, gObjectList[_objectIndex].sizeScaling);
+        func_80042330_unchanged(gObjectList[_objectIndex].unk_09C, posY, 0, gObjectList[_objectIndex].sizeScaling);
         gSPVertex(gDisplayListHead++, (uintptr_t)gObjectList[_objectIndex].vertex, 4, 0);
         gSPDisplayList(gDisplayListHead++, (Gfx*)common_rectangle_display);
         FrameInterpolation_RecordCloseChild();
     }
 }
+
