@@ -65,7 +65,7 @@ void OSkyboxStar::Tick2(Camera* camera) {
         set_object_flag(_objectIndex, 0x10);
     } else {
         // If outside the bounds, mark the object as not visible
-        set_object_flag(_objectIndex, 0x10);
+        clear_object_flag(_objectIndex, 0x10);
     }
     
     // Vary the star based on star index
@@ -115,4 +115,5 @@ void OSkyboxStar::Draw2(s32 arg0) { // render_stars
         FrameInterpolation_RecordCloseChild();
     }
 }
+
 
