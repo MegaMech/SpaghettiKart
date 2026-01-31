@@ -6555,17 +6555,27 @@ void func_8006E058(void) {
 
             break;
         case SCREEN_MODE_3P_4P_SPLITSCREEN:
-            if ((VERSUS == gModeSelection) || (BATTLE == gModeSelection)) {
-                func_8006E420(gPlayerOne, 0, 0);
-                func_8006E420(gPlayerTwo, 1, 0);
-                func_8006E420(gPlayerThree, 2, 0);
-
-                if (gPlayerCountSelection1 == 4) {
+            switch(gModeSelection) {
+                case GRAND_PRIX:
+                    func_8006E420(gPlayerOne, 0, 0);
+                    func_8006E420(gPlayerTwo, 1, 0);
+                    func_8006E420(gPlayerThree, 2, 0);
                     func_8006E420(gPlayerFour, 3, 0);
-                }
+                    func_8006E420(gPlayerFive, 4, 0);
+                    func_8006E420(gPlayerSix, 5, 0);
+                    func_8006E420(gPlayerSeven, 6, 0);
+                    func_8006E420(gPlayerEight, 7, 0);
+                    break;
+                case VERSUS:
+                case BATTLE:
+                    func_8006E420(gPlayerOne, 0, 0);
+                    func_8006E420(gPlayerTwo, 1, 0);
+                    func_8006E420(gPlayerThree, 2, 0);
+                    if (gPlayerCountSelection1 == 4) {
+                        func_8006E420(gPlayerFour, 3, 0);
+                    }
+                    break;
             }
-
-            break;
     }
 }
 
