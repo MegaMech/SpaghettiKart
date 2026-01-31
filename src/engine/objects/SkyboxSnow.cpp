@@ -93,8 +93,7 @@ void OSkyboxSnow::Draw2(s32 arg0) { // render_clouds
 
         // @port Pop the transform id.
         FrameInterpolation_RecordCloseChild();
-        
-        mOldX = object->unk_09C;
-        mOldY = posY;
     }
+    mOldX = object->unk_09C;
+    mOldY = posY;
 }
