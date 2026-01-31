@@ -38,8 +38,6 @@ protected:
     static size_t _count;
     size_t _idx;
     int32_t mRotY;
-
-    int32_t mX;
     int32_t mOldX;
     int32_t mOldY;
 };
