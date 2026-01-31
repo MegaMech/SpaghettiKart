@@ -90,7 +90,7 @@ void OSkyboxCloud::Draw2(s32 arg0) { // render_clouds
     func_8004B6C4(255, 255, 255);
     // Skip drawing the object this frame if it warped to the other side of the screen
     if ((fabs(gObjectList[_objectIndex].unk_09C - mOldX) > SCREEN_WIDTH / 2) || (fabs(posY - mOldY) > SCREEN_HEIGHT / 2)) {
-        mOldX = mX;
+        mOldX = gObjectList[_objectIndex].unk_09C;
         mOldY = posY;
         return;
     }
@@ -111,7 +111,7 @@ void OSkyboxCloud::Draw2(s32 arg0) { // render_clouds
         // @port Pop the transform id.
         FrameInterpolation_RecordCloseChild();
         
-        mOldX = gObjectList[_objectIndex].unk_09C;
-        mOldY = posY;
     }
+    mOldX = gObjectList[_objectIndex].unk_09C;
+    mOldY = posY;
 }
