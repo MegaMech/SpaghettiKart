@@ -115,5 +115,3 @@ void OSkyboxStar::Draw2(s32 arg0) { // render_stars
         FrameInterpolation_RecordCloseChild();
     }
 }
-
-
