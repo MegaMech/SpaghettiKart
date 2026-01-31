@@ -769,30 +769,20 @@ void func_8005902C(void) {
 
 void func_800590D4(void) {
     if (D_8018D2A4 != 0) {
-        if (gModeSelection != BATTLE) {
-            switch (gPlayerCountSelection1) {
-                case 1:
-                    if (gModeSelection != TIME_TRIALS) {
-                        func_8004E800(PLAYER_ONE);
-                        break;
-                    }
-                    break;
-                case 2:
-                    func_8004E800(PLAYER_ONE);
-                    func_8004E800(PLAYER_TWO);
-                    break;
-                case 3:
-                    func_8004E998(PLAYER_ONE);
-                    func_8004E998(PLAYER_TWO);
-                    func_8004E998(PLAYER_THREE);
-                    break;
-                case 4:
-                    func_8004E998(PLAYER_ONE);
-                    func_8004E998(PLAYER_TWO);
-                    func_8004E998(PLAYER_THREE);
-                    func_8004E998(PLAYER_FOUR);
-                    break;
-            }
+        switch(gModeSelection) {
+            case BATTLE:
+            case TIME_TRIALS:
+                break;
+            case GRAND_PRIX:
+                for (size_t i = 0; i < gPlayerCountSelection1; i++) {
+                    func_8004E800(i);
+                }
+                break;
+            case VERSUS:
+                for (size_t i = 0; i < gPlayerCountSelection1; i++) {
+                    func_8004E998(i);
+                }
+                break;
         }
     }
 }
