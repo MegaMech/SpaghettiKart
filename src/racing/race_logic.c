@@ -264,6 +264,9 @@ void func_8028E678(void) {
                 case SCREEN_MODE_2P_SPLITSCREEN_VERTICAL:
                     D_8015F894 = 6;
                     break;
+                case SCREEN_MODE_3P_4P_SPLITSCREEN:
+                    D_8015F894 = 5;
+                    break;
             }
             break;
         case 5:
