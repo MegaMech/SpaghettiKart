@@ -760,36 +760,35 @@ void spawn_players_gp_three_player(f32* arg0, f32* arg1, f32 arg2) {
     func_80039DA4();
     if ((GetCupCursorPosition() == TRACK_ONE) || (gDemoMode == 1) ||
         (gDebugMenuSelection == DEBUG_MENU_OPTION_SELECTED)) {
-        s16 rand;
-        s16 i;
-        s16 cpuCount;
 
-        // @todo: this is a do-while loop
-    getRand:
-        rand = random_int(7);
-        if (gCharacterSelections[0] == rand) {
-            goto getRand;
-        }
-        if (gCharacterSelections[1] == rand) {
-            goto getRand;
-        }
+        // Players
+        s32 arr[] = {MARIO, LUIGI, YOSHI, TOAD, DK, WARIO, PEACH, BOWSER};
 
-        chooseCPUPlayers[0] = rand;
-
-
-        if (gPlayerCountSelection1 == 3) {
-            cpuCount = 5;
-        } else { // 4 players
-            cpuCount = 4;
-        }
-
-        for (i = 1; i < cpuCount; i++) {
-            u16* arr = (u16*) cpu_forTwoPlayer[gCharacterSelections[0]][gCharacterSelections[1]];
-            if (rand == arr[i]) {
-                chooseCPUPlayers[i] = arr[0];
-            } else {
-                chooseCPUPlayers[i] = arr[i];
+        // Remove human players
+        for (size_t i = 0; i < NUM_PLAYERS; i++) {
+            for (size_t j = 0; j < gPlayerCountSelection1; j++) {
+                if (arr[i] == gCharacterSelections[j]) {
+                    arr[i] = -1;
+                    break;
+                 }
             }
+        }
+
+        // Set remaining players into chooseCPUPlayers
+        size_t numCPU = 0;
+        for (size_t i = 0; i < NUM_PLAYERS; i++) {
+            if (arr[i] != -1) {
+                chooseCPUPlayers[numCPU] = arr[i];
+                numCPU++;
+            }
+        }
+
+        // Shuffle
+        for (size_t i = numCPU - 1; i > 0; i--) {
+            size_t j = random_int(i);
+            size_t tmp = chooseCPUPlayers[i];
+            chooseCPUPlayers[i] = chooseCPUPlayers[j];
+            chooseCPUPlayers[j] = tmp;
         }
     }
 
