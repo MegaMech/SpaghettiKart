@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "port/Game.h"
+#include "port/interpolation/FrameInterpolation.h"
 #include "engine/Matrix.h"
 
 extern "C" {
@@ -346,24 +347,6 @@ void OBombKart::Tick() {
 }
 
 void OBombKart::Draw(s32 cameraId) {
-    if (gModeSelection == BATTLE) {
-        for (size_t playerId = 0; playerId < NUM_BOMB_KARTS_BATTLE; playerId++) {
-            Object* object = &gObjectList[_objectIndex];
-            if (object->state != 0) {
-                s32 primAlpha = object->primAlpha;
-                Player* player = &gPlayerOne[playerId];
-                object->pos[0] = player->pos[0];
-                object->pos[1] = player->pos[1] - 2.0;
-                object->pos[2] = player->pos[2];
-                object->surfaceHeight = player->unk_074;
-                func_800563DC(_objectIndex, cameraId, primAlpha);
-                func_8005669C(_objectIndex, cameraId, primAlpha);
-                func_800568A0(_objectIndex, cameraId);
-            }
-        }
-        return;
-    }
-
     if (IsPodiumCeremony()) {
         if ((_idx == 0) && (WaypointIndex < 16)) {
             return;
@@ -398,9 +381,9 @@ void OBombKart::Draw(s32 cameraId) {
             D_80183E80[1] = func_800418AC(Pos[0], Pos[2], camera->pos);
             D_80183E80[2] = 0x8000;
             func_800563DC(_objectIndex, cameraId, 0x000000FF);
-            OBombKart::SomeRender(camera->pos);
+            OBombKart::SomeRender(cameraId, camera->pos);
             if (((u32) temp_s4 < 0x4E21U) && (state != OBombKart::States::EXPLODE)) {
-                OBombKart::LoadMtx();
+                OBombKart::LoadMtx(cameraId);
             }
         }
     }
@@ -410,28 +393,37 @@ void OBombKart::DrawBattle(s32 cameraId) {
 
 }
 
-void OBombKart::SomeRender(Vec3f arg1) {
+void OBombKart::SomeRender(s32 cameraId, Vec3f arg1) {
     D_80183E80[0] = 0;
     D_80183E80[2] = 0x8000;
     gSPDisplayList(gDisplayListHead++, (Gfx*)D_0D0079C8);
     load_texture_block_rgba16_mirror((u8*) D_0D02AA58, 0x00000010, 0x00000010);
     D_80183E80[1] = func_800418AC(WheelPos[0][0], WheelPos[0][2], arg1);
+    FrameInterpolation_RecordOpenChild("bomb_kart_rect", (0 << 12) | (_idx << 5) | cameraId);
     func_800431B0(WheelPos[0], D_80183E80, 0.15f, (Vtx*)common_vtx_rectangle);
+    FrameInterpolation_RecordCloseChild();
     D_80183E80[1] = func_800418AC(WheelPos[1][0], WheelPos[1][2], arg1);
+    FrameInterpolation_RecordOpenChild("bomb_kart_rect2", (1 << 12) | (_idx << 5) | cameraId);
     func_800431B0(WheelPos[1], D_80183E80, 0.15f, (Vtx*)common_vtx_rectangle);
+    FrameInterpolation_RecordCloseChild();
     D_80183E80[1] = func_800418AC(WheelPos[2][0], WheelPos[2][2], arg1);
+    FrameInterpolation_RecordOpenChild("bomb_kart_rect3", (2 << 12) | (_idx << 5) | cameraId);
     func_800431B0(WheelPos[2], D_80183E80, 0.15f, (Vtx*)common_vtx_rectangle);
+    FrameInterpolation_RecordCloseChild();
     D_80183E80[1] = func_800418AC(WheelPos[3][0], WheelPos[3][2], arg1);
+    FrameInterpolation_RecordOpenChild("bomb_kart_rect4", (3 << 12) | (_idx << 5) | cameraId);
     func_800431B0(WheelPos[3], D_80183E80, 0.15f, (Vtx*)common_vtx_rectangle);
+    FrameInterpolation_RecordCloseChild();
     gSPTexture(gDisplayListHead++, 1, 1, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void OBombKart::LoadMtx() {
+void OBombKart::LoadMtx(s32 cameraId) {
     Mat4 mat;
 
     D_80183E50[0] = Pos[0];
     D_80183E50[1] = CenterY + 1.0;
     D_80183E50[2] = Pos[2];
+    FrameInterpolation_RecordOpenChild("object_bomb_kart", (_idx << 4) | cameraId);
     set_transform_matrix(mat, _Collision.orientationVector, D_80183E50, 0U, 0.5f);
     //convert_to_fixed_point_matrix(&gGfxPool->mtxHud[gMatrixHudCount], mat);
 
@@ -440,6 +432,7 @@ void OBombKart::LoadMtx() {
     // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gGfxPool->mtxHud[gMatrixHudCount++]),
     //           G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
     gSPDisplayList(gDisplayListHead++, (Gfx*)D_0D007B98);
+    FrameInterpolation_RecordCloseChild();
 }
 
 void OBombKart::Waypoint(s32 screenId) {
