@@ -1,5 +1,7 @@
 var NAVTREEINDEX42 =
 {
+"matrix_8h.html#a4ee87a98cb62d8b96ff83a90f50194a8":[20,0,3,9,1,3,10],
+"matrix_8h.html#a4fafa88c505aee9f2c70579c30b313ad":[20,0,3,9,1,3,17],
 "matrix_8h.html#a6217a47cf9226d431b7a5e9eef7f8a12":[20,0,3,9,1,3,6],
 "matrix_8h.html#a73bee04950f29c9d15d38a6c821c9b01":[20,0,3,9,1,3,18],
 "matrix_8h.html#a7a4ac97345d4849a382e38678ac9f272":[20,0,3,9,1,3,36],
@@ -57,14 +59,14 @@ var NAVTREEINDEX42 =
 "md_docs_2BUILDING.html#windows":[2,0],
 "md_docs_2custom-audio.html":[5],
 "md_docs_2custom-audio.html#example":[5,0],
-"md_docs_2custom-audio.html#future-plans-1":[5,1],
+"md_docs_2custom-audio.html#future-plans-2":[5,1],
 "md_docs_2custom-characters.html":[6],
-"md_docs_2custom-characters.html#additional-files-1":[6,1],
-"md_docs_2custom-characters.html#change-viewport-render-settings-1":[6,1,0,0],
-"md_docs_2custom-characters.html#examples-for-all-characters-1":[6,0],
-"md_docs_2custom-characters.html#future-plans-2":[6,1,2],
-"md_docs_2custom-characters.html#tips-1":[6,1,0],
-"md_docs_2custom-characters.html#tools-to-help-1":[6,1,1],
+"md_docs_2custom-characters.html#additional-files":[6,1],
+"md_docs_2custom-characters.html#change-viewport-render-settings":[6,1,0,0],
+"md_docs_2custom-characters.html#examples-for-all-characters":[6,0],
+"md_docs_2custom-characters.html#future-plans":[6,1,2],
+"md_docs_2custom-characters.html#tips":[6,1,0],
+"md_docs_2custom-characters.html#tools-to-help":[6,1,1],
 "md_docs_2faq.html":[7],
 "md_docs_2migrations.html":[8],
 "md_docs_2migrations.html#generated-files":[8,1,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX42 =
 "menu__items_8c.html#a26e863afe3f01335a6f0948f40b3f9cc":[20,0,3,48,152],
 "menu__items_8c.html#a283d25c5f642d50e28e226c563c205a7":[20,0,3,48,277],
 "menu__items_8c.html#a2879014cfbef2216fd01cd2c94373dde":[20,0,3,48,191],
-"menu__items_8c.html#a28c8fd71739a04593ccb73a35df88216":[20,0,3,48,429],
-"menu__items_8c.html#a28eb62505c8e923c7c55e98a370cde84":[20,0,3,48,240],
-"menu__items_8c.html#a28efc1e5b84f5ec2006cd7ff5fd6adec":[20,0,3,48,23]
+"menu__items_8c.html#a28c8fd71739a04593ccb73a35df88216":[20,0,3,48,429]
 };
