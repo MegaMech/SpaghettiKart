@@ -424,8 +424,8 @@ void func_802A487C(Vtx* arg0) {
     }
 }
 
-void func_802A4A0C(Vtx* vtx, ScreenContext* arg1) {
-    Camera* camera = arg1->camera;
+void func_802A4A0C(Vtx* vtx, ScreenContext* screen) {
+    Camera* camera = screen->camera;
     s16 temp_t5;
     f32 temp_f0;
     UNUSED s32 pad[2];
@@ -439,6 +439,7 @@ void func_802A4A0C(Vtx* vtx, ScreenContext* arg1) {
 
     func_802A450C(vtx);
     // Widescreen skybox
+    // Note that this is the correct fit for each screen due to how the viewport works
     vtx[0].v.ob[0] = OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH);
     vtx[1].v.ob[0] = OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH);
     vtx[2].v.ob[0] = OTRGetRectDimensionFromLeftEdge(0);
@@ -470,7 +471,7 @@ void func_802A4A0C(Vtx* vtx, ScreenContext* arg1) {
     sp5C[1] *= 120.0f;
 
     temp_t5 = 120 - (s32) sp5C[1];
-    arg1->cameraHeight = temp_t5;
+    screen->cameraHeight = temp_t5;
     vtx[1].v.ob[1] = temp_t5;
     vtx[2].v.ob[1] = temp_t5;
     vtx[4].v.ob[1] = temp_t5;
