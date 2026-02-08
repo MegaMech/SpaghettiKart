@@ -4,6 +4,7 @@
 #include <libultraship.h>
 #include "engine/tracks/Track.h"
 #include "engine/HM_Intro.h"
+#include "macros.h"
 
 #ifdef __cplusplus
 #include "engine/editor/Editor.h"
