@@ -555,15 +555,15 @@ void CM_DrawParticles(s32 cameraId) {
     }
 }
 
-void CM_InitClouds() {
+void CM_InitClouds(ScreenContext* screen) {
     if (GetWorld()->GetTrack()) {
-        GetWorld()->GetTrack()->InitClouds();
+        GetWorld()->GetTrack()->InitClouds(screen);
     }
 }
 
-void CM_TickClouds(s32 arg0, Camera* camera) {
+void CM_TickClouds() {
     if (GetWorld()->GetTrack()) {
-        GetWorld()->GetTrack()->TickClouds(arg0, camera);
+        GetWorld()->GetTrack()->TickClouds();
     }
 }
 

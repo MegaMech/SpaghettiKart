@@ -23,7 +23,7 @@ extern "C" {
  */
 class SkyboxStar : public SkyboxCloud {
 public:
-    SkyboxStar(u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent);
+    SkyboxStar(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent);
 
     virtual ~SkyboxStar() {
         _count--;
@@ -34,7 +34,7 @@ public:
     }
 
     virtual void Draw(ScreenContext* ctx, s32 arg0) override;
-    virtual void Tick(Camera* camera) override;
+    virtual void Tick() override;
     bool star_func_80073B78(s32 arg0, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7);
 private:
     static size_t _count;

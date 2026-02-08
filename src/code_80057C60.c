@@ -487,6 +487,14 @@ void func_80057FC4(ScreenContext* ctx, u32 arg0) {
         case 4:
             func_80052080(ctx);
             break;
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+            if (CVarGetInteger("gMultiplayerNoFeatureCuts", 0) == true) {
+                func_80052080(ctx);
+            }
+            break;
     }
 }
 
@@ -1113,16 +1121,16 @@ void func_80059D00(void) {
                     if (!gDemoMode) {
                         // func_8007AA44(0);
                     }
-                    func_80078C70(0);
+                    func_80078C70();
                     if (playerHUD[PLAYER_ONE].raceCompleteBool == 0) {
                         func_8005C360((gPlayerOne->speed / 18.0f) * 216.0f);
                     }
                     func_8005D0FC(PLAYER_ONE);
                 } else {
                     func_80059820(PLAYER_ONE);
-                    func_80078C70(1);
+                    func_80078C70();
                     func_80059820(PLAYER_TWO);
-                    func_80078C70(2);
+                    //func_80078C70();
                 }
                 break;
             case SCREEN_MODE_2P_SPLITSCREEN_VERTICAL:
@@ -1133,14 +1141,14 @@ void func_80059D00(void) {
                 if (!gDemoMode) {
                     // func_8007AA44(0);
                 }
-                func_80078C70(1);
+                func_80078C70();
                 func_8005D1F4(0);
                 func_80059820(PLAYER_TWO);
                 func_8005D0FC(PLAYER_TWO);
                 if (!gDemoMode) {
                     // func_8007AA44(1);
                 }
-                func_80078C70(2);
+                //func_80078C70();
                 func_8005D1F4(1);
                 break;
             case SCREEN_MODE_2P_SPLITSCREEN_HORIZONTAL:
@@ -1151,14 +1159,13 @@ void func_80059D00(void) {
                 if (!gDemoMode) {
                     // func_8007AA44(0);
                 }
-                func_80078C70(3);
+                func_80078C70();
                 func_8005D1F4(0);
                 func_80059820(PLAYER_TWO);
                 func_8005D0FC(PLAYER_TWO);
                 if (!gDemoMode) {
                     // func_8007AA44(1);
                 }
-                func_80078C70(4);
                 func_8005D1F4(1);
                 break;
             case SCREEN_MODE_3P_4P_SPLITSCREEN:
@@ -1171,6 +1178,7 @@ void func_80059D00(void) {
                 if (!gDemoMode) {
                     // func_8007AA44(0);
                 }
+                func_80078C70();
                 func_8005D1F4(0);
                 func_80059820(PLAYER_TWO);
                 func_8005D0FC(PLAYER_TWO);
@@ -1217,7 +1225,7 @@ void func_8005A070(void) {
             CM_TickParticles();
         } else if (gGamestate == CREDITS_SEQUENCE) {
             func_80059820(PLAYER_ONE);
-            func_80078C70(0);
+            func_80078C70();
             CM_TickObjects();
             CM_TickParticles();
         } else { // normal gameplay

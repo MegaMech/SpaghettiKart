@@ -20,13 +20,18 @@ extern "C" {
 
 size_t SkyboxCloud::_count = 0;
 
-SkyboxCloud::SkyboxCloud(u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) {
+SkyboxCloud::SkyboxCloud(ScreenContext* screen) {
+    mScreen = screen;
+}
+
+SkyboxCloud::SkyboxCloud(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) {
     _idx = _count;
+    mScreen = screen;
+    mCloudVariant = cloudVariant;
     mY = posY;
     mRotY = rotY;
-    mCloudVariant = cloudVariant;
+    mScale = (f32) scalePercent / 100.0;
 
-   mScale = (f32) scalePercent / 100.0;
     if (GameEngine_ResourceGetTexTypeByName((const char*)CM_GetProps()->CloudTexture) != 1) {
         mTexture = ((u8*) LOAD_ASSET_RAW(CM_GetProps()->CloudTexture)) + (cloudVariant * 1024);
         mTextureWidth = 64;
@@ -50,23 +55,30 @@ SkyboxCloud::SkyboxCloud(u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent)
     _count += 1;
 }
 
-void SkyboxCloud::Tick(Camera* camera) { // func_800788F8
+void SkyboxCloud::Tick() { // func_800788F8
     s16 cameraRot;
+
+    s16 mUnk200 = mScreen->camera->fieldOfView + 40.0f;
+    mUnk208 = ((mUnk200 / 2) * 0xB6) + 0x71C;
+    mUnk210 = (-(mUnk200 / 2) * 0xB6) - 0x71C;
+    mUnk1E8 = 1.7578125 / mUnk200;
+    mUnk218 = SCREEN_WIDTH / 2;
+
     // Adjustable culling factor
     const float cullingFactor = OTRGetAspectRatio();
 
     // Calculate the cloud's rotation relative to the camera
-    cameraRot = (u16)camera->rot[1] + (u16)mRotY;
+    cameraRot = (u16)mScreen->camera->rot[1] + (u16)mRotY;
     // Adjust bounds based on the culling factor
-    s16 adjustedLowerBound = (s16) (D_8018D210 * cullingFactor);
-    s16 adjustedUpperBound = (s16) (D_8018D208 * cullingFactor);
+    s16 adjustedLowerBound = (s16) (mUnk210 * cullingFactor);
+    s16 adjustedUpperBound = (s16) (mUnk208 * cullingFactor);
 
     // Check if the object is within the adjusted bounds
     if ((cameraRot >= adjustedLowerBound) && (adjustedUpperBound >= cameraRot)) {
         // Calculate and update the object's X position
         // 160 (SCREEN_WIDTH / 2) + (D_8018D1E8 * cameraRot);
         // Grab center of screen, scale by fov factor, offset based on camera rotation
-        mX = D_8018D218 + (D_8018D1E8 * cameraRot);
+        mX = mUnk218 + (mUnk1E8 * cameraRot);
 
         // Mark the object as visible
         mVisible = true;
@@ -87,7 +99,7 @@ void SkyboxCloud::Draw(ScreenContext* screen, s32 arg0) { // render_clouds
         return;
     }
     if (mVisible) {
-        FrameInterpolation_RecordOpenChild("render_clouds", TAG_CLOUDS((_idx << 4) | (screen - gScreenOneCtx)));
+        FrameInterpolation_RecordOpenChild("render_clouds", TAG_CLOUDS((_idx << 4) | (mScreen - gScreenOneCtx)));
 
         if (D_8018D228 != mCloudVariant) {
             D_8018D228 = mCloudVariant;

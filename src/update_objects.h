@@ -171,7 +171,7 @@ void func_80078288(s32);
 void func_800786EC(s32);
 void func_80078790(void);
 void update_snowflakes(void);
-void func_80078C70(s32);
+void func_80078C70();
 void func_80078F64(void);
 void func_80079054(s32);
 void func_80079084(s32);

@@ -11,9 +11,9 @@
 #include "engine/registry/Registry.h"
 #include "libultraship/bridge/resourcebridge.h"
 #include "align_asset_macro.h"
-#include "engine/objects/SkyboxCloud.h"
-#include "engine/objects/SkyboxStar.h"
-#include "engine/objects/SkyboxSnow.h"
+#include "engine/skybox/SkyboxCloud.h"
+#include "engine/skybox/SkyboxStar.h"
+#include "engine/skybox/SkyboxSnow.h"
 
 extern "C" {
 #include "main.h"
@@ -470,7 +470,7 @@ void Track::SpawnActors() {
     }
 }
 
-void Track::InitClouds() {
+void Track::InitClouds(ScreenContext* screen) {
     size_t iterations = 0;
     size_t numSnow = 0;
     CloudData* cloud = &this->Props.Clouds[0];
@@ -484,7 +484,7 @@ void Track::InitClouds() {
         }
 
         for (size_t i = 0; i < numSnow; i++) {
-            GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxSnow>());
+            GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxSnow>(screen));
             iterations += 1;
         }
         D_8018D230 = 0;
@@ -498,12 +498,12 @@ void Track::InitClouds() {
                 case CloudType::SNOW:
                     break;
                 case CloudType::CLOUDS: {
-                   GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxCloud>(cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent));
+                   GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxCloud>(screen, cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent));
                     D_8018D230 = 0;
                     break;
                 }
                 case CloudType::STARS: {
-                    GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxStar>(cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent));
+                    GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxStar>(screen, cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent));
                     D_8018D230 = 1;
                     break;
                 }
@@ -519,19 +519,21 @@ void Track::InitClouds() {
     D_8018D1F0 = iterations;
 }
 
-void Track::TickClouds(s32 arg0, Camera* camera) {
+void Track::TickClouds() {
     s32 cloudIndex;
     s32 objectIndex;
     CloudData* cloud;
 
     for (auto& cloud : GetWorld()->SkyboxClouds) {
-        cloud->Tick(camera);
+        cloud->Tick();
     }
 }
 
 void Track::DrawClouds(ScreenContext* ctx, s32 arg0) {
     for (auto& cloud : GetWorld()->SkyboxClouds) {
-        cloud->Draw(ctx, arg0);
+        if (cloud->mScreen == ctx) {
+            cloud->Draw(ctx, arg0);
+        }
     }
 }
 

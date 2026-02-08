@@ -23,7 +23,7 @@ void init_cloud_object(s32, s32, CloudData*);
 void init_clouds(CloudData*);
 void init_star_object(s32, s32, StarData*);
 void init_stars(StarData*);
-void func_8007055C(void);
+void func_8007055C(ScreenContext* screen);
 void func_80070714(void);
 void init_course_object(void);
 void init_hud_one_player(void);

@@ -23,7 +23,7 @@ extern "C" {
  */
 class SkyboxSnow : public SkyboxCloud {
 public:
-    SkyboxSnow();
+    SkyboxSnow(ScreenContext* screen);
 
     ~SkyboxSnow() {
         _count--;
@@ -34,7 +34,7 @@ public:
     }
 
     virtual void Draw(ScreenContext* ctx, s32 arg0) override;
-    virtual void Tick(Camera* camera) override;
+    virtual void Tick() override;
     void func_80077E20();
     void func_80077F64(Camera* camera);
 private:

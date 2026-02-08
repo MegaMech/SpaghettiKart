@@ -2334,45 +2334,9 @@ void update_snowflakes(void) {
     }
 }
 
-void func_80078C70(s32 arg0) {
-    s32 sp1C;
-    Camera* camera;
-
+void func_80078C70() {
     if (D_801657C8 == 0) {
-        switch (arg0) { /* switch 1 */
-            case 0:     /* switch 1 */
-                sp1C = 0;
-                camera = camera1;
-                D_8018D200 = camera->fieldOfView + 40.0f;
-                break;
-            case 1: /* switch 1 */
-                sp1C = 0;
-                camera = camera1;
-                D_8018D200 = camera->fieldOfView + 40.0f;
-                break;
-            case 2: /* switch 1 */
-                camera = camera2;
-                sp1C = D_8018D1F0;
-                D_8018D200 = camera->fieldOfView + 40.0f;
-                break;
-            case 3: /* switch 1 */
-                sp1C = 0;
-                camera = camera1;
-                D_8018D200 = camera->fieldOfView + 40.0f;
-                break;
-            case 4: /* switch 1 */
-                camera = camera2;
-                sp1C = D_8018D1F0;
-                D_8018D200 = camera->fieldOfView + 40.0f;
-                break;
-        }
-
-        D_8018D208 = ((D_8018D200 / 2) * 0xB6) + 0x71C;
-        D_8018D210 = (-(D_8018D200 / 2) * 0xB6) - 0x71C;
-        D_8018D1E8 = 1.7578125 / D_8018D200;
-        D_8018D218 = 0xA0;
-
-        CM_TickClouds(sp1C, camera);
+        CM_TickClouds();
     }
 }
 

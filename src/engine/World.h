@@ -16,7 +16,7 @@
 #include "Actor.h"
 #include "StaticMeshActor.h"
 #include "particles/ParticleEmitter.h"
-#include "engine/objects/SkyboxCloud.h"
+#include "engine/skybox/SkyboxCloud.h"
 
 #include "editor/Editor.h"
 #include "editor/GameObject.h"
