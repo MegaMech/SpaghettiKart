@@ -458,7 +458,7 @@ void func_80057DD0(void) {
     }
 }
 
-void func_80057FC4(u32 arg0) {
+void func_80057FC4(ScreenContext* ctx, u32 arg0) {
     UNUSED Gfx* temp_v1;
 
     if ((gHUDDisable != 0)) {
@@ -473,19 +473,19 @@ void func_80057FC4(u32 arg0) {
 
     switch (arg0) {
         case 0:
-            func_80051EBC();
+            func_80051EBC(ctx);
             break;
         case 1:
-            func_80051EF8();
+            func_80051EF8(ctx);
             break;
         case 2:
-            func_80051F9C();
+            func_80051F9C(ctx);
             break;
         case 3:
-            func_80052044();
+            func_80052044(ctx);
             break;
         case 4:
-            func_80052080();
+            func_80052080(ctx);
             break;
     }
 }

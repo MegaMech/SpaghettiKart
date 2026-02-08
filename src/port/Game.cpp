@@ -567,9 +567,9 @@ void CM_TickClouds(s32 arg0, Camera* camera) {
     }
 }
 
-void CM_DrawClouds(s32 arg0) {
+void CM_DrawClouds(ScreenContext* screen, s32 arg0) {
     if (GetWorld()->GetTrack()) {
-        GetWorld()->GetTrack()->DrawClouds(arg0);
+        GetWorld()->GetTrack()->DrawClouds(screen, arg0);
     }
 }
 

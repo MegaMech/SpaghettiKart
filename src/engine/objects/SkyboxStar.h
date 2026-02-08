@@ -16,16 +16,16 @@ extern "C" {
 /**
  * Skybox Stars
  *
- * Inherits from OSkyboxCloud so that stars/clouds can be stored in the same list
+ * Inherits from SkyboxCloud so that stars/clouds can be stored in the same list
  * and called the same way.
  *
  * @cloudVariant unused for stars
  */
-class OSkyboxStar : public OSkyboxCloud {
+class SkyboxStar : public SkyboxCloud {
 public:
-    OSkyboxStar(u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent);
+    SkyboxStar(u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent);
 
-    ~OSkyboxStar() {
+    virtual ~SkyboxStar() {
         _count--;
     }
 
@@ -33,13 +33,15 @@ public:
         return _count;
     }
 
-    virtual void Tick() override;
-    virtual void Draw(s32 cameraId) override;
-    virtual void Draw2(s32 arg0) override;
-    virtual void Tick2(Camera* camera) override;
-protected:
+    virtual void Draw(ScreenContext* ctx, s32 arg0) override;
+    virtual void Tick(Camera* camera) override;
+    bool star_func_80073B78(s32 arg0, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7);
+private:
     static size_t _count;
     size_t _idx;
-    int32_t mRotY;
-};
 
+    s16 mPrimAlpha;
+    s8 mUnk_0CF;
+    s16 mUnk_0AC;
+    s8 mUnk_0D0;
+};

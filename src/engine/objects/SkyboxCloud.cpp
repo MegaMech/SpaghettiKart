@@ -18,43 +18,39 @@ extern "C" {
 #include "render_objects.h"
 }
 
-size_t OSkyboxCloud::_count = 0;
+size_t SkyboxCloud::_count = 0;
 
-OSkyboxCloud::OSkyboxCloud(u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) {
+SkyboxCloud::SkyboxCloud(u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) {
     _idx = _count;
-    ItemWindowObjects* temp_v0;
-    find_unused_obj_index(&_objectIndex);
-    init_object(_objectIndex, 1);
-    temp_v0 = (ItemWindowObjects*) &gObjectList[_objectIndex];
-    temp_v0->unk_0D5 = cloudVariant;
-    temp_v0->currentItem = ITEM_NONE;
-    temp_v0->direction_angle[1] = rotY;
-    temp_v0->unk_09E = posY;
-    temp_v0->sizeScaling = (f32) scalePercent / 100.0;
+    mY = posY;
+    mRotY = rotY;
+    mCloudVariant = cloudVariant;
+
+   mScale = (f32) scalePercent / 100.0;
     if (GameEngine_ResourceGetTexTypeByName((const char*)CM_GetProps()->CloudTexture) != 1) {
-        temp_v0->activeTexture = ((u8*) LOAD_ASSET_RAW(CM_GetProps()->CloudTexture)) + (cloudVariant * 1024);
-        func_80073404(_objectIndex, 0x40U, 0x20U, (Vtx*)D_0D005FB0);
+        mTexture = ((u8*) LOAD_ASSET_RAW(CM_GetProps()->CloudTexture)) + (cloudVariant * 1024);
+        mTextureWidth = 64;
+        mTextureHeight = 32;
+        mVtx = (Vtx*)D_0D005FB0;
     } else {
-        temp_v0->activeTexture = CM_GetProps()->CloudTexture;
+        mTexture = CM_GetProps()->CloudTexture;
         if (strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust0) == 0 ||
             strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust1) == 0 ||
             strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust2) == 0) {
-            func_80073404(_objectIndex, 0x40U, 0x20U, cloudvtx2[cloudVariant]);
+            mTextureWidth = 64;
+            mTextureHeight = 32;
+            mVtx = cloudvtx2[cloudVariant];
         } else {
-            func_80073404(_objectIndex, 0x40U, 0x20U, cloudvtx[cloudVariant]);
+            mTextureWidth = 64;
+            mTextureHeight = 32;
+            mVtx = cloudvtx2[cloudVariant];
         }
     }
-    temp_v0->primAlpha = 0x00FF;
-
-    mRotY = rotY;
 
     _count += 1;
 }
 
-void OSkyboxCloud::Tick() {
-}
-
-void OSkyboxCloud::Tick2(Camera* camera) { // func_800788F8
+void SkyboxCloud::Tick(Camera* camera) { // func_800788F8
     s16 cameraRot;
     // Adjustable culling factor
     const float cullingFactor = OTRGetAspectRatio();
@@ -70,48 +66,39 @@ void OSkyboxCloud::Tick2(Camera* camera) { // func_800788F8
         // Calculate and update the object's X position
         // 160 (SCREEN_WIDTH / 2) + (D_8018D1E8 * cameraRot);
         // Grab center of screen, scale by fov factor, offset based on camera rotation
-        gObjectList[_objectIndex].unk_09C = D_8018D218 + (D_8018D1E8 * cameraRot);
+        mX = D_8018D218 + (D_8018D1E8 * cameraRot);
 
         // Mark the object as visible
-        set_object_flag(_objectIndex, 0x10);
+        mVisible = true;
     } else {
         // If outside the bounds, mark the object as not visible
-        clear_object_flag(_objectIndex, 0x10);
+        mVisible = false;
     }
 }
 
-
-void OSkyboxCloud::Draw(s32 cameraId) {
-}
-
-void OSkyboxCloud::Draw2(s32 arg0) { // render_clouds
-    Object* object = &gObjectList[_objectIndex];
-    s32 posY = arg0 - object->unk_09E;
+void SkyboxCloud::Draw(ScreenContext* screen, s32 arg0) { // render_clouds
+   // Object* object = &gObjectList[_objectIndex];
+    s32 posY = arg0 - mY;
     func_8004B6C4(255, 255, 255);
     // Skip drawing the object this frame if it warped to the other side of the screen
-    if ((fabs(gObjectList[_objectIndex].unk_09C - mOldX) > SCREEN_WIDTH / 2) || (fabs(posY - mOldY) > SCREEN_HEIGHT / 2)) {
-        mOldX = gObjectList[_objectIndex].unk_09C;
+    if ((fabs(mX - mOldX) > SCREEN_WIDTH / 2) || (fabs(posY - mOldY) > SCREEN_HEIGHT / 2)) {
+        mOldX = mX;
         mOldY = posY;
         return;
     }
-    if (object->status & 0x10) {
+    if (mVisible) {
+        FrameInterpolation_RecordOpenChild("render_clouds", TAG_CLOUDS((_idx << 4) | (screen - gScreenOneCtx)));
 
-        // @port: Tag the transform.
-        FrameInterpolation_RecordOpenChild("render_clouds", TAG_CLOUDS(_objectIndex));
-
-        if (D_8018D228 != object->unk_0D5) {
-            D_8018D228 = object->unk_0D5;
-            func_80044DA0((u8*)object->activeTexture, object->textureWidth,
-                          object->textureHeight);
+        if (D_8018D228 != mCloudVariant) {
+            D_8018D228 = mCloudVariant;
+            func_80044DA0(mTexture, mTextureWidth, mTextureHeight);
         }
-        func_80042330_unchanged(gObjectList[_objectIndex].unk_09C, posY, 0, object->sizeScaling);
-        gSPVertex(gDisplayListHead++, (uintptr_t)object->vertex, 4, 0);
+        func_80042330_unchanged(mX, posY, 0, mScale);
+        gSPVertex(gDisplayListHead++, (uintptr_t)mVtx, 4, 0);
         gSPDisplayList(gDisplayListHead++, (Gfx*)common_rectangle_display);
 
-        // @port Pop the transform id.
         FrameInterpolation_RecordCloseChild();
-        
     }
-    mOldX = gObjectList[_objectIndex].unk_09C;
+    mOldX = mX;
     mOldY = posY;
 }

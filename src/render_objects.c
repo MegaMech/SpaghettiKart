@@ -3477,17 +3477,17 @@ void render_object_snowflakes_particles(void) {
 }
 
 // Render clouds
-void func_80051ABC(s16 arg0, s32 arg1) {
+void func_80051ABC(ScreenContext* screen, s16 arg0, s32 arg1) {
     s32 var_s0;
     s32 objectIndex;
     Object* object;
 
     D_8018D228 = 0xFF;
     gSPDisplayList(gDisplayListHead++, D_0D007A60);
-    CM_DrawClouds(arg0);
+    CM_DrawClouds(screen, arg0);
 }
 
-void func_80051C60(s16 arg0, s32 arg1) {
+void func_80051C60(ScreenContext* screen, s16 arg0, s32 arg1) {
     s16 var_s5;
     s32 var_s0;
     s32 objectIndex;
@@ -3511,17 +3511,17 @@ void func_80051C60(s16 arg0, s32 arg1) {
 
     D_8018D228 = 0xFF;
     gSPDisplayList(gDisplayListHead++, D_0D007A60);
-    CM_DrawClouds(arg0);
+    CM_DrawClouds(screen, arg0);
 }
 
-void func_80051EBC(void) {
-    func_80051ABC(240 - gScreenOneCtx->cameraHeight, 0); // 28
+void func_80051EBC(ScreenContext* screen) {
+    func_80051ABC(screen, 240 - screen->cameraHeight, 0); // 28
 }
 
-void func_80051EF8(void) {
+void func_80051EF8(ScreenContext* screen) {
     s16 temp_a0;
 
-    temp_a0 = 0xF0 - gScreenOneCtx->cameraHeight;
+    temp_a0 = 0xF0 - screen->cameraHeight;
     if (IsKoopaTroopaBeach()) {
         temp_a0 = temp_a0 - 0x30;
     } else if (IsMooMooFarm()) {
@@ -3531,13 +3531,13 @@ void func_80051EF8(void) {
     } else {
         temp_a0 = temp_a0 - 0x30;
     }
-    func_80051ABC(temp_a0, 0);
+    func_80051ABC(screen, temp_a0, 0);
 }
 
-void func_80051F9C(void) {
+void func_80051F9C(ScreenContext* screen) {
     s16 temp_a0;
 
-    temp_a0 = 0xF0 - gScreenTwoCtx->cameraHeight;
+    temp_a0 = 0xF0 - screen->cameraHeight;
     if (IsKoopaTroopaBeach()) {
         temp_a0 = temp_a0 - 0x30;
     } else if (IsMooMooFarm()) {
@@ -3547,15 +3547,15 @@ void func_80051F9C(void) {
     } else {
         temp_a0 = temp_a0 - 0x30;
     }
-    func_80051ABC(temp_a0, D_8018D1F0);
+    func_80051ABC(screen, temp_a0, D_8018D1F0);
 }
 
-void func_80052044(void) {
-    func_80051C60(240 - gScreenOneCtx->cameraHeight, 0);
+void func_80052044(ScreenContext* screen) {
+    func_80051C60(screen, 240 - screen->cameraHeight, 0);
 }
 
-void func_80052080(void) {
-    func_80051C60(240 - gScreenTwoCtx->cameraHeight, D_8018D1F0);
+void func_80052080(ScreenContext* screen) {
+    func_80051C60(screen, 240 - screen->cameraHeight, D_8018D1F0);
 }
 
 void func_800520C0(s32 arg0) {

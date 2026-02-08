@@ -16,6 +16,7 @@
 #include "Actor.h"
 #include "StaticMeshActor.h"
 #include "particles/ParticleEmitter.h"
+#include "engine/objects/SkyboxCloud.h"
 
 #include "editor/Editor.h"
 #include "editor/GameObject.h"
@@ -34,7 +35,6 @@ class StaticMeshActor;
 class OBombKart;
 class TrainCrossing;
 class OLakitu;
-class OSkyboxCloud;
 class GameObject; // <-- Editor
 
 class World {
@@ -122,7 +122,7 @@ public:
     std::vector<std::unique_ptr<AActor>> Actors;
     std::deque<std::unique_ptr<OObject>> Objects;
     std::vector<std::unique_ptr<ParticleEmitter>> Emitters;
-    std::vector<OSkyboxCloud*> SkyboxClouds;
+    std::vector<std::unique_ptr<SkyboxCloud>> SkyboxClouds;
 
     std::unordered_map<s32, OLakitu*> Lakitus;
 

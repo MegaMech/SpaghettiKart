@@ -484,8 +484,7 @@ void Track::InitClouds() {
         }
 
         for (size_t i = 0; i < numSnow; i++) {
-            OSkyboxSnow* object = static_cast<OSkyboxSnow*>(GetWorld()->AddObject(std::make_unique<OSkyboxSnow>()));
-            GetWorld()->SkyboxClouds.push_back(object);
+            GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxSnow>());
             iterations += 1;
         }
         D_8018D230 = 0;
@@ -499,15 +498,12 @@ void Track::InitClouds() {
                 case CloudType::SNOW:
                     break;
                 case CloudType::CLOUDS: {
-                    OSkyboxCloud* object = static_cast<OSkyboxCloud*>(GetWorld()->AddObject(
-                        std::make_unique<OSkyboxCloud>(cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent)));
-                    GetWorld()->SkyboxClouds.push_back(object);
+                   GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxCloud>(cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent));
                     D_8018D230 = 0;
                     break;
                 }
                 case CloudType::STARS: {
-                    OSkyboxStar* object = static_cast<OSkyboxStar*>(GetWorld()->AddObject(std::make_unique<OSkyboxStar>(cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent)));
-                    GetWorld()->SkyboxClouds.push_back(object);
+                    GetWorld()->SkyboxClouds.emplace_back(std::make_unique<SkyboxStar>(cloud->subType, cloud->posY, cloud->rotY, cloud->scalePercent));
                     D_8018D230 = 1;
                     break;
                 }
@@ -528,14 +524,14 @@ void Track::TickClouds(s32 arg0, Camera* camera) {
     s32 objectIndex;
     CloudData* cloud;
 
-    for (OSkyboxCloud* cloud : GetWorld()->SkyboxClouds) {
-        cloud->Tick2(camera);
+    for (auto& cloud : GetWorld()->SkyboxClouds) {
+        cloud->Tick(camera);
     }
 }
 
-void Track::DrawClouds(s32 arg0) {
-    for (OSkyboxCloud* cloud : GetWorld()->SkyboxClouds) {
-        cloud->Draw2(arg0);
+void Track::DrawClouds(ScreenContext* ctx, s32 arg0) {
+    for (auto& cloud : GetWorld()->SkyboxClouds) {
+        cloud->Draw(ctx, arg0);
     }
 }
 
