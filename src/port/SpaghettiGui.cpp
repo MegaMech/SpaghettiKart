@@ -159,7 +159,6 @@ namespace Ship {
         }
 
         ImGui::End();
-#if 0
         ImGui::SetNextWindowPos(viewport->WorkPos);
         ImGui::SetNextWindowSize(ImVec2((int)wnd->GetWidth(), (int)wnd->GetHeight()));
 //        ImGui::SetNextWindowViewport(viewport->ID);
@@ -171,7 +170,6 @@ namespace Ship {
         ImGui::PopStyleVar(3);
         GameEngine::RenderHMUI();
         ImGui::End();
-#endif
     }
 
 }

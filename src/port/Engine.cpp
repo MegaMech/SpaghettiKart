@@ -37,11 +37,12 @@
 
 #include <utility>
 
-#include "hmui/src/hmui/HMUI.h"
-#include "hmui/src/hmui/graphics/ImGuiGraphicsContext.h"
-#include "hmui/src/hmui/graphics/GraphicsContext.h"
+#include "hmui/HMUI.h"
+#include "hmui/graphics/ImGuiGraphicsContext.h"
+#include "hmui/graphics/GraphicsContext.h"
 #include "port/ui/hmui/os/LUSOSContext.h"
 #include "port/ui/hmui/demo/DemoView.h"
+#include "port/ui/hmui/demo/Router.h"
 
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
@@ -359,9 +360,8 @@ void GameEngine::Create() {
     hmui = std::make_shared<HMUI>();
     hmui->initialize(std::make_shared<ImGuiGraphicsContext>(), std::make_shared<LUSOSContext>());
 #if 0
-    hmui->show(std::make_shared<DemoView>());
+    hmui->show(std::make_shared<RouterView>());
 #endif
-
     GameUI::SetupGuiElements();
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u

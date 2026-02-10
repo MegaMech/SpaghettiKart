@@ -3,12 +3,13 @@
 #include <utility>
 #include <iostream>
 
-#include "hmui/src/hmui/widgets/Column.h"
-#include "hmui/src/hmui/widgets/Container.h"
-#include "hmui/src/hmui/widgets/GestureDetector.h"
-#include "hmui/src/hmui/widgets/Scrollable.h"
-#include "hmui/src/hmui/widgets/Drawable.h"
-#include "hmui/src/hmui/graphics/GraphicsContext.h"
+#include "hmui/widgets/AppContext.h"
+#include "hmui/widgets/Column.h"
+#include "hmui/widgets/Container.h"
+#include "hmui/widgets/GestureDetector.h"
+#include "hmui/widgets/Scrollable.h"
+#include "hmui/widgets/Drawable.h"
+#include "hmui/graphics/GraphicsContext.h"
 
 std::shared_ptr<D_Container> nestedTest(std::vector<Color2D> entries, size_t index = 0) {
     if (index >= entries.size()) {
@@ -116,12 +117,13 @@ public:
 class DemoView : public Drawable {
 public:
     std::shared_ptr<InternalDrawable> build() override {
-        // Render TestView
-        return std::make_shared<DemoSubView>(
-            std::make_shared<TestView>()
+        return AppContext(
+            .routes = {
+                { "/", []() { return std::make_shared<TestView>(); }}
+            },
+            .initialRoute = "/"
         );
     }
-
     ~DemoView() override = default;
 };
 
