@@ -220,6 +220,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/port/ui
     ${CMAKE_CURRENT_SOURCE_DIR}/src/port/hmui
     ${CMAKE_CURRENT_SOURCE_DIR}/src/port/hmui/os
+    ${CMAKE_CURRENT_SOURCE_DIR}/hmui/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/racing
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ending
     ${CMAKE_CURRENT_SOURCE_DIR}/src/data
