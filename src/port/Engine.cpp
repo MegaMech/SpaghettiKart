@@ -358,7 +358,9 @@ void GameEngine::Create() {
 
     hmui = std::make_shared<HMUI>();
     hmui->initialize(std::make_shared<ImGuiGraphicsContext>(), std::make_shared<LUSOSContext>());
+#if 0
     hmui->show(std::make_shared<DemoView>());
+#endif
 
     GameUI::SetupGuiElements();
 #if defined(__SWITCH__) || defined(__WIIU__)
