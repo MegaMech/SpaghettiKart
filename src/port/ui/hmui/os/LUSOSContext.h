@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include "hmui/src/hmui/os/OSContext.h"
 
 class LUSOSContext : public OSContext {
@@ -24,4 +25,7 @@ public:
     bool isGamepadButtonPressed(int id, ControllerButton button) override;
     float getGamepadAxis(int id, ControllerAxis axis) override;
     ~LUSOSContext() override = default;
+private:
+    std::unordered_map<int, bool> m_LastMouseState;
+    std::unordered_map<int, bool> m_CurrentMouseState;
 };
