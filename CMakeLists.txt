@@ -290,6 +290,8 @@ file(GLOB_RECURSE ALL_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "src/engine/*.h"
     "hmui/src/hmui/HMUI.cpp"
     "hmui/src/hmui/Navigator.cpp"
+    "hmui/src/hmui/MouseEvents.cpp"
+    "hmui/src/hmui/input/FocusManager.cpp"
     "hmui/src/hmui/*.h"
     "hmui/src/hmui/graphics/ImGuiGraphicsContext.cpp"
     "hmui/src/hmui/graphics/ImGuiGraphicsContext.h"

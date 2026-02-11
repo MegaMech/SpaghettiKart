@@ -4,9 +4,10 @@
 #include <iostream>
 
 #include "hmui/Navigator.h"
+#include "hmui/widgets/InternalDrawable.h"
+#include "hmui/widgets/GestureDetector.h"
 #include "hmui/widgets/Column.h"
 #include "hmui/widgets/Container.h"
-#include "hmui/widgets/GestureDetector.h"
 #include "hmui/widgets/Scrollable.h"
 #include "hmui/widgets/Drawable.h"
 #include "hmui/widgets/Text.h"
@@ -36,7 +37,7 @@ public:
 
         for(size_t i = 0; i < numModes; ++i) {
             entries.push_back(GestureDetector(
-                .onTap = [i, numModes](std::shared_ptr<InternalDrawable>& child, float x, float y) {
+                .onTap = [i, numModes](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = Color2D(0.0f, 0.0f, 0.0f, 0.60f);
@@ -46,28 +47,28 @@ public:
                         Navigator::pop();
                     }
                 },
-                .onTapRelease = [](std::shared_ptr<InternalDrawable>& child, float x, float y) {
+                .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = Color2D(0.0f, 0.0f, 0.0f, 0.50f);
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
                 },
-                .onHover = [](std::shared_ptr<InternalDrawable>& child, float x, float y) {
+                .onHover = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle hover event
                     std::cout << "Hovered over child at (" << x << ", " << y << ")\n";
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = Color2D(0.0f, 0.0f, 0.0f, 0.40f);
                 },
-                .onHoverEnd = [](std::shared_ptr<InternalDrawable>& child, float x, float y) {
+                .onHoverEnd = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = Color2D(0.0f, 0.0f, 0.0f, 0.5f);
                 },
                 .child = Container(
                     .width = 300.0f,
                     .height = 50.0f,
-                    .alignment = Alignment::Center,
+                    .alignment = Alignment::Center(),
                     .color = Color2D(0.0f, 0.0f, 0.0f, 0.5f),
-                    .child = TextW(
+                    .child = Text(
                         .text = modes[i],
                         .scale = 1.5f,
                         .color = Color2D(1.0f, 1.0f, 1.0f, 1.0f)
@@ -84,7 +85,7 @@ public:
                 .width = (f32)OTRGetGameRenderWidth(),
                 .height = (f32)OTRGetGameRenderHeight(),
                 .padding = EdgeInsets::all(5.0f),
-                .alignment = Alignment::CenterLeft,
+                .alignment = Alignment::CenterLeft(),
                 .clipToBounds = true,
                 .color = Color2D(0.0f, 0.0f, 0.0f, 0.3f),
                 .child = Scrollable(
