@@ -75,8 +75,6 @@ public:
             //.child = Image(
                 //.texture = "seg2_blue_sky_backgrounD_Imageure",
                 .child = Container(
-                    .width = (f32)OTRGetGameRenderWidth(),
-                    .height = (f32)OTRGetGameRenderHeight(),
                     .padding = EdgeInsets::all(5.0f),
                     .alignment = Alignment::CenterLeft(),
                     .clipToBounds = true,

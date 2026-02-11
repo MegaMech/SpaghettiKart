@@ -166,7 +166,6 @@ namespace Ship {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
         ImGui::Begin("HMUI", nullptr, windowFlags);
-        ImGui::Text("HMUI Overlay");
         ImGui::PopStyleVar(3);
         GameEngine::RenderHMUI();
         ImGui::End();

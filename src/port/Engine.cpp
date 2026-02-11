@@ -457,8 +457,8 @@ void GameEngine::ProcessGfxCommands(Gfx* pool) {
 
     // time_base = fps * original_fps (one second)
     int next_original_frame = fps;
-
-    hmui->update((float) time / next_original_frame);
+    float s = fps / (60.0f / 2 /*gVIsPerFrame*/);
+    hmui->update(s);
 
     // Get matrix replacements for intermediate frames
     while (time + original_fps <= next_original_frame) {

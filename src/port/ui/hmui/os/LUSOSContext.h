@@ -5,6 +5,7 @@
 class LUSOSContext : public OSContext {
 public:
     void init() override;
+    void update() override;
     void dispose() override;
     Coord getMouseDelta() override;
     Coord getMousePosition() override;
@@ -19,5 +20,8 @@ public:
     void setClipboardText(const char* text) override;
     const char* getClipboardText() override;
     void showCursor(bool show) override;
+    bool isGamepadAvailable(int id) override;
+    bool isGamepadButtonPressed(int id, ControllerButton button) override;
+    float getGamepadAxis(int id, ControllerAxis axis) override;
     ~LUSOSContext() override = default;
 };

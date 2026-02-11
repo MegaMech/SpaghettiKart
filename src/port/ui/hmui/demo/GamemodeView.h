@@ -37,6 +37,11 @@ public:
 
         for(size_t i = 0; i < numModes; ++i) {
             entries.push_back(GestureDetector(
+                .focusable = true,
+                .focusDecorator = FocusDecorator {
+                    .color = Color2D(1.0f, 1.0f, 1.0f, 0.8f),
+                    .thickness = 2.0f
+                },
                 .onTap = [i, numModes](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
@@ -82,8 +87,6 @@ public:
     std::shared_ptr<InternalDrawable> build() override {
         return Container(
             .child = Container(
-                .width = (f32)OTRGetGameRenderWidth(),
-                .height = (f32)OTRGetGameRenderHeight(),
                 .padding = EdgeInsets::all(5.0f),
                 .alignment = Alignment::CenterLeft(),
                 .clipToBounds = true,

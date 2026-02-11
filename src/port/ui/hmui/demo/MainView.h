@@ -23,9 +23,14 @@ public:
     void init() override {
 
         std::string modes[] = {"Singleplayer", "Split Screen", "Online"};
-        
+
         for(int i = 0; i < 3; ++i) {
             entries.push_back(GestureDetector(
+                .focusable = true,
+                .focusDecorator = FocusDecorator {
+                    .color = Color2D(1.0f, 1.0f, 1.0f, 0.8f),
+                    .thickness = 2.0f
+                },
                 .onTap = [i](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
@@ -79,8 +84,6 @@ public:
             //.child = Image(
                 //.texture = "seg2_blue_sky_backgrounD_Imageure",
                 .child = Container(
-                    .width = 1200.0f,
-                    .height = 800.0f,
                     .padding = EdgeInsets::all(5.0f),
                     .alignment = Alignment::CenterLeft(),
                     .clipToBounds = true,

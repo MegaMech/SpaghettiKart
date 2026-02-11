@@ -2,7 +2,13 @@
 #include "libultraship.h"
 #include "Engine.h"
 
+#include "main.h"
+#define MAX_AXIS_VALUE 85.0f
+
 void LUSOSContext::init() {}
+void LUSOSContext::update() {
+    // read_controllers();
+}
 void LUSOSContext::dispose() {}
 
 Coord LUSOSContext::getMouseDelta() {
@@ -72,4 +78,63 @@ const char* LUSOSContext::getClipboardText() {
 void LUSOSContext::showCursor(bool show) {
     auto wnd = GameEngine::Instance->context->GetWindow();
     wnd->SetCursorVisibility(show);
+}
+
+bool LUSOSContext::isGamepadAvailable(int id) { 
+    return true;
+}
+
+bool LUSOSContext::isGamepadButtonPressed(int id, ControllerButton button) {
+    switch(button) {
+        case ControllerButton::LEFT_FACE_UP:
+            return gControllerOne->buttonPressed & BTN_DUP;
+        case ControllerButton::LEFT_FACE_RIGHT:
+            return gControllerOne->buttonPressed & BTN_DRIGHT;
+        case ControllerButton::LEFT_FACE_DOWN:
+            return gControllerOne->buttonPressed & BTN_DDOWN;
+        case ControllerButton::LEFT_FACE_LEFT:
+            return gControllerOne->buttonPressed & BTN_DLEFT;
+        case ControllerButton::RIGHT_FACE_UP:
+            return false;
+        case ControllerButton::RIGHT_FACE_RIGHT:
+            return false;
+        case ControllerButton::RIGHT_FACE_DOWN:
+            return gControllerOne->buttonPressed & BTN_A;
+        case ControllerButton::RIGHT_FACE_LEFT:
+            return gControllerOne->buttonPressed & BTN_B;
+        case ControllerButton::LEFT_TRIGGER_1:
+            return gControllerOne->buttonPressed & BTN_L;
+        case ControllerButton::RIGHT_TRIGGER_1:
+            return gControllerOne->buttonPressed & BTN_R;
+        case ControllerButton::LEFT_TRIGGER_2:
+            return gControllerOne->buttonPressed & BTN_Z;
+        case ControllerButton::RIGHT_TRIGGER_2:
+            return gControllerOne->buttonPressed & BTN_Z;
+        case ControllerButton::MIDDLE_LEFT:
+        case ControllerButton::MIDDLE:
+            return gControllerOne->buttonPressed & BTN_START;
+        case ControllerButton::MIDDLE_RIGHT:
+            // Not implemented
+    }
+
+    return false;
+}
+
+float LUSOSContext::getGamepadAxis(int id, ControllerAxis axis) {
+    switch(axis) {
+        case ControllerAxis::LEFT_X:
+            return gControllerOne->rawStickX / MAX_AXIS_VALUE;
+        case ControllerAxis::LEFT_Y:
+            return -gControllerOne->rawStickY / MAX_AXIS_VALUE;
+        case ControllerAxis::RIGHT_X:
+            return gControllerOne->rightRawStickX / MAX_AXIS_VALUE;
+        case ControllerAxis::RIGHT_Y:
+            return -gControllerOne->rightRawStickY / MAX_AXIS_VALUE;
+        case ControllerAxis::LEFT_TRIGGER:
+            return (gControllerFive->button & BTN_L) ? 1.0f : 0.0f;
+        case ControllerAxis::RIGHT_TRIGGER:
+            return (gControllerFive->button & BTN_R) ? 1.0f : 0.0f;
+    }
+
+    return 0.0f;
 }
