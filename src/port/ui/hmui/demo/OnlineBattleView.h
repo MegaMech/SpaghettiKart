@@ -26,6 +26,9 @@ public:
                         case 2:
                             Navigator::pop();
                             break;
+                        default:
+                            Navigator::push("/player_select");
+                            break;
                     }
 
                 },

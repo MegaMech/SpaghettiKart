@@ -27,6 +27,9 @@ public:
                         case 4:
                             Navigator::pop();
                             break;
+                        default:
+                            Navigator::push("/player_select");
+                            break;
                     }
                 },
                 .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {

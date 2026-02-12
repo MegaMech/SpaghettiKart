@@ -79,21 +79,18 @@ public:
         entries.push_back(Container(
             .width = 800,
             .height = 1000,
-            .child = Scrollable(
-                .direction = Direction::Vertical,
-                .child = Row(
-                    .children = {
-                        Column(
-                            .children = col1
-                        ),
-                        Column(
-                            .children = col2
-                        ),
-                        Column(
-                            .children = col3
-                        )
-                    }
-                )
+            .child = Row(
+                .children = {
+                    Column(
+                        .children = col1
+                    ),
+                    Column(
+                        .children = col2
+                    ),
+                    Column(
+                        .children = col3
+                    )
+                }
             )
         ));
         Drawable::init();
