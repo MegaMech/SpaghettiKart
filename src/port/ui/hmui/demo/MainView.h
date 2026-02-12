@@ -31,7 +31,11 @@ public:
 
                     switch(i) {
                         case 0:
+                            view_singleplayer = true;
+                            Navigator::push("/gamemode");
+                            break;
                         case 1:
+                            view_singleplayer = false;
                             Navigator::push("/gamemode");
                             break;
                         case 2:

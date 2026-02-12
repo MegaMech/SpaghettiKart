@@ -4,6 +4,7 @@
 #include "hmui/graphics/GraphicsContext.h"
 #include "hmui/widgets/InternalDrawable.h"
 #include "hmui/widgets/GestureDetector.h"
+#include "hmui/widgets/Row.h"
 #include "hmui/widgets/Column.h"
 #include "hmui/widgets/Container.h"
 #include "hmui/widgets/Scrollable.h"
@@ -14,6 +15,9 @@
 #include "hmui/widgets/Image.h"
 
 //#define DEBUG_COMPONENTS
+
+/** Variables **/
+bool view_singleplayer = false;
 
 /** Buttons **/
 
@@ -43,7 +47,6 @@ inline std::shared_ptr<InternalDrawable> BuildMainMenuLayout(
         .child = Container(
                 .width = INFINITY,
                 .height = INFINITY,
-                //.padding = MARGIN_LEFT_SPACING,
                 .alignment = Alignment::TopLeft(),
                 .clipToBounds = true,
                 .color = BACKGROUND_COLOUR,

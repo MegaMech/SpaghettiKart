@@ -3,6 +3,8 @@
 #include "hmui/widgets/InternalDrawable.h"
 #include "MainView.h"
 #include "GamemodeView.h"
+#include "PlayerSelectView.h"
+#include "TrackSelectView.h"
 #include "OnlineMainView.h"
 #include "OnlineRaceView.h"
 #include "OnlineBattleView.h"
@@ -18,6 +20,8 @@ public:
                 { "/", []() { return std::make_shared<MainView>(); }},
                 { "/gamemode", []() { return std::make_shared<GamemodeView>(); }},
                 { "/cc", []() { return std::make_shared<CCView>(); }},
+                { "/player_select", []() { return std::make_shared<PlayerSelectView>(); }},
+                { "/track_select", []() { return std::make_shared<TrackSelectView>(); }},
                 { "/online_main", []() { return std::make_shared<OnlineMainView>(); }},
                 { "/online_race", []() { return std::make_shared<OnlineRaceView>(); }},
                 { "/online_battle", []() { return std::make_shared<OnlineBattleView>(); }},

@@ -6,37 +6,36 @@
 
 #include "hmui/Navigator.h"
 #include "hmui/widgets/InternalDrawable.h"
-#include "hmui/widgets/GestureDetector.h"
-#include "hmui/widgets/Column.h"
-#include "hmui/widgets/Container.h"
-#include "hmui/widgets/Scrollable.h"
-#include "hmui/widgets/Drawable.h"
-#include "hmui/widgets/Text.h"
-#include "hmui/widgets/Image.h"
-#include "hmui/graphics/GraphicsContext.h"
+
+#include "port/Game.h"
+#include "engine/registry/Registry.h"
+
+extern "C" {
+#include "menu_items.h"
+}
 
 // singleplayer, split-screen, online
-class OnlineRaceViewElements : public Drawable {
+class TrackSelectViewElements : public Drawable {
 public:
     // std::vector<Color2D> entries;
     std::vector<std::shared_ptr<InternalDrawable>> entries;
 
+    
     void init() override {
+        std::vector<std::shared_ptr<InternalDrawable>> col1;
+        std::vector<std::shared_ptr<InternalDrawable>> col2;
+        std::vector<std::shared_ptr<InternalDrawable>> col3;
 
-        std::string modes[] = {"8P", "4P", "Carriage Return"};
+        std::vector<const TrackInfo*> infos = gTrackRegistry.GetAllInfo();
 
-        for(int i = 0; i < 3; ++i) {
-            entries.push_back(GestureDetector(
-                .onTap = [i](std::shared_ptr<InternalDrawable> child, float x, float y) {
+        size_t i = 0;
+        for(const TrackInfo* info : infos) {
+            auto entry = GestureDetector(
+                .onTap = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = BUTTON_ON_TAP_COLOUR;
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
-                    switch(i) {
-                        case 2:
-                            Navigator::pop();
-                            break;
-                    }
                 },
                 .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
@@ -60,13 +59,41 @@ public:
                     .alignment = Alignment::Center(),
                     .color = MENU_BUTTON_COLOUR,
                     .child = Text(
-                        .text = modes[i],
+                        .text = info->Name,
                         .scale = MENU_BUTTON_TEXT_SCALE,
                         .color = MENU_BUTTON_TEXT_COLOUR
-                    ),
+                    )
                 )
-            ));
+            );
+
+            if (i % 3 == 0)
+                col1.push_back(entry);
+            else if (i % 3 == 1)
+                col2.push_back(entry);
+            else
+                col3.push_back(entry);
+
+            i += 1;
         }
+
+        entries.push_back(Container(
+            .child = Scrollable(
+                .direction = Direction::Vertical,
+                .child = Row(
+                    .children = {
+                        Column(
+                            .children = col1
+                        ),
+                        Column(
+                            .children = col2
+                        ),
+                        Column(
+                            .children = col3
+                        )
+                    }
+                )
+            )
+        ));
         Drawable::init();
     }
 
@@ -74,15 +101,15 @@ public:
         return BuildMainMenuLayout(entries);
     }
 
-    ~OnlineRaceViewElements() override = default;
+    ~TrackSelectViewElements() override = default;
 };
 
-class OnlineRaceView : public Drawable {
+class TrackSelectView : public Drawable {
 public:
     std::shared_ptr<InternalDrawable> build() override {
-        // Render OnlineRaceView
-        return std::make_shared<OnlineRaceViewElements>();
+        // Render TrackSelectView
+        return std::make_shared<TrackSelectViewElements>();
     }
 
-    ~OnlineRaceView() override = default;
+    ~TrackSelectView() override = default;
 };

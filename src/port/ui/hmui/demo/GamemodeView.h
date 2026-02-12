@@ -23,7 +23,7 @@ public:
         // This is really bad code... Too bad!
         std::string* modes = &multiplayer_modes[0];
         size_t numModes = 5;
-        if (gPlayerCountSelection1 == 1) {
+        if (view_singleplayer == true) {
             numModes = 3;
             modes = &single_player_modes[0];
         }
@@ -43,6 +43,22 @@ public:
 
                     if (i == numModes - 1) {
                         Navigator::pop();
+                        return;
+                    }
+
+                    switch(i) {
+                        case 0:
+                            Navigator::push("/cc");
+                            break;
+                        case 1:
+                            Navigator::push("/player_select");
+                            break;
+                        case 2:
+                            Navigator::push("/cc");
+                            break;
+                        case 3:
+                            Navigator::push("/player_select");
+                            break;
                     }
                 },
                 .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {

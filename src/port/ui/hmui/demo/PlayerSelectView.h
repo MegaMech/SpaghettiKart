@@ -6,37 +6,33 @@
 
 #include "hmui/Navigator.h"
 #include "hmui/widgets/InternalDrawable.h"
-#include "hmui/widgets/GestureDetector.h"
-#include "hmui/widgets/Column.h"
-#include "hmui/widgets/Container.h"
-#include "hmui/widgets/Scrollable.h"
-#include "hmui/widgets/Drawable.h"
-#include "hmui/widgets/Text.h"
-#include "hmui/widgets/Image.h"
-#include "hmui/graphics/GraphicsContext.h"
+
+extern "C" {
+#include "menu_items.h"
+}
 
 // singleplayer, split-screen, online
-class OnlineRaceViewElements : public Drawable {
+class PlayerSelectViewElements : public Drawable {
 public:
     // std::vector<Color2D> entries;
     std::vector<std::shared_ptr<InternalDrawable>> entries;
 
     void init() override {
 
-        std::string modes[] = {"8P", "4P", "Carriage Return"};
-
-        for(int i = 0; i < 3; ++i) {
+        for(int i = 0; i < 8; ++i) {
             entries.push_back(GestureDetector(
                 .onTap = [i](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = BUTTON_ON_TAP_COLOUR;
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
+                    Navigator::push("/track_select");
                     switch(i) {
-                        case 2:
+                        case 4:
                             Navigator::pop();
                             break;
                     }
+
                 },
                 .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
@@ -60,7 +56,7 @@ public:
                     .alignment = Alignment::Center(),
                     .color = MENU_BUTTON_COLOUR,
                     .child = Text(
-                        .text = modes[i],
+                        .text = D_800E76A8[i], // names
                         .scale = MENU_BUTTON_TEXT_SCALE,
                         .color = MENU_BUTTON_TEXT_COLOUR
                     ),
@@ -74,15 +70,15 @@ public:
         return BuildMainMenuLayout(entries);
     }
 
-    ~OnlineRaceViewElements() override = default;
+    ~PlayerSelectViewElements() override = default;
 };
 
-class OnlineRaceView : public Drawable {
+class PlayerSelectView : public Drawable {
 public:
     std::shared_ptr<InternalDrawable> build() override {
-        // Render OnlineRaceView
-        return std::make_shared<OnlineRaceViewElements>();
+        // Render PlayerSelectView
+        return std::make_shared<PlayerSelectViewElements>();
     }
 
-    ~OnlineRaceView() override = default;
+    ~PlayerSelectView() override = default;
 };

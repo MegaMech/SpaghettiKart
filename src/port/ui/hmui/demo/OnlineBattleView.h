@@ -13,8 +13,7 @@ public:
     std::vector<std::shared_ptr<InternalDrawable>> entries;
 
     void init() override {
-
-        std::string modes[] = {"Main Battle", "Split Screen", "Carriage Return"};
+        std::string modes[] = {"8P", "4P", "Carriage Return"};
 
         for(int i = 0; i < 3; ++i) {
             entries.push_back(GestureDetector(
