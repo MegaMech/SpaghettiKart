@@ -71,35 +71,7 @@ public:
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return Container(
-            .child = Container(
-                    .width = INFINITY,
-                    .height = INFINITY,
-                    //.padding = MARGIN_LEFT_SPACING,
-                    .alignment = Alignment::TopLeft(),
-                    .clipToBounds = true,
-                    .color = BACKGROUND_COLOUR,
-                    //.child = Stack(
-                        // .children = {
-                            //  Image(
-                            //      .provider = AssetImage("__OTR__seg2_blue_sky_background_texture"),
-                            //      .fit = BoxFit::Cover
-                            //  ),
-                         .child =    Container(
-                                .width = MENU_BUTTON_WIDTH,
-                                .height = CONTENT_HEIGHT,
-                                .margin = MARGIN_LEFT_SPACING,
-                                .child = Scrollable(
-                                    .direction = Direction::Vertical,
-                                    .child = Column(
-                                        .children = entries
-                                    )
-                            )
-                        )
-                       // }
-                   // )
-                )
-        );
+        return BuildMainMenuLayout(entries);
     }
 
     ~OnlineRaceViewElements() override = default;

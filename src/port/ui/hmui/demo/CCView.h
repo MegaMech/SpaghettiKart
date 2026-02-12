@@ -5,15 +5,6 @@
 #include "LayoutSettings.h"
 
 #include "hmui/Navigator.h"
-#include "hmui/widgets/InternalDrawable.h"
-#include "hmui/widgets/GestureDetector.h"
-#include "hmui/widgets/Column.h"
-#include "hmui/widgets/Container.h"
-#include "hmui/widgets/Scrollable.h"
-#include "hmui/widgets/Drawable.h"
-#include "hmui/widgets/Text.h"
-#include "hmui/widgets/Image.h"
-#include "hmui/graphics/GraphicsContext.h"
 
 // singleplayer, split-screen, online
 class CCViewElements : public Drawable {
@@ -71,35 +62,7 @@ public:
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return Container(
-            .child = Container(
-                    .width = INFINITY,
-                    .height = INFINITY,
-                    //.padding = MARGIN_LEFT_SPACING,
-                    .alignment = Alignment::TopLeft(),
-                    .clipToBounds = true,
-                    .color = BACKGROUND_COLOUR,
-                    //.child = Stack(
-                        // .children = {
-                            //  Image(
-                            //      .provider = AssetImage("__OTR__seg2_blue_sky_background_texture"),
-                            //      .fit = BoxFit::Cover
-                            //  ),
-                         .child =    Container(
-                                .width = MENU_BUTTON_WIDTH,
-                                .height = CONTENT_HEIGHT,
-                                .margin = MARGIN_LEFT_SPACING,
-                                .child = Scrollable(
-                                    .direction = Direction::Vertical,
-                                    .child = Column(
-                                        .children = entries
-                                    )
-                            )
-                        )
-                       // }
-                   // )
-                )
-        );
+        return BuildMainMenuLayout(entries);
     }
 
     ~CCViewElements() override = default;
