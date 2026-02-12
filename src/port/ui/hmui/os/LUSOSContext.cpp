@@ -7,7 +7,12 @@
 
 void LUSOSContext::init() {}
 void LUSOSContext::update() {
-    // read_controllers();
+    auto wnd = GameEngine::Instance->context->GetWindow();
+
+    for (int i = 0; i < 3; i++) {
+        m_LastMouseState[i] = m_CurrentMouseState[i];
+        m_CurrentMouseState[i] = wnd->GetMouseState(static_cast<Ship::MouseBtn>(i));
+    }
 }
 void LUSOSContext::dispose() {}
 
@@ -36,18 +41,15 @@ Coord LUSOSContext::getMouseWheel() {
 }
 
 bool LUSOSContext::isMouseButtonPressed(int button) {
-    auto wnd = GameEngine::Instance->context->GetWindow();
-    return wnd->GetMouseState(static_cast<Ship::MouseBtn>(button));
+    return m_CurrentMouseState[button] && !m_LastMouseState[button];
 }
 
 bool LUSOSContext::isMouseButtonReleased(int button) {
-    auto wnd = GameEngine::Instance->context->GetWindow();
-    return !wnd->GetMouseState(static_cast<Ship::MouseBtn>(button));
+    return !m_CurrentMouseState[button] && m_LastMouseState[button];
 }
 
 bool LUSOSContext::isMouseButtonDown(int button) {
-    auto wnd = GameEngine::Instance->context->GetWindow();
-    return wnd->GetMouseState(static_cast<Ship::MouseBtn>(button));
+    return m_CurrentMouseState[button];
 }
 
 void LUSOSContext::setMouseCursor(int cursor) {
