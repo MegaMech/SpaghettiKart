@@ -115,6 +115,7 @@ bool LUSOSContext::isGamepadButtonPressed(int id, ControllerButton button) {
             return gControllerOne->buttonPressed & BTN_START;
         case ControllerButton::MIDDLE_RIGHT:
             // Not implemented
+            break;
     }
 
     return false;

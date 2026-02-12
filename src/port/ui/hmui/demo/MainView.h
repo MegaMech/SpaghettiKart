@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <iostream>
+#include "LayoutSettings.h"
 
 #include "hmui/Navigator.h"
 #include "hmui/widgets/InternalDrawable.h"
@@ -13,6 +14,9 @@
 #include "hmui/widgets/Text.h"
 #include "hmui/widgets/Image.h"
 #include "hmui/graphics/GraphicsContext.h"
+#include "hmui/widgets/Stack.h"
+#include "hmui/widgets/Image.h"
+#include "ui/hmui/provider/LUSImageProvider.h"
 
 // singleplayer, split-screen, online
 class MainViewElements : public Drawable {
@@ -22,7 +26,7 @@ public:
 
     void init() override {
 
-        std::string modes[] = {"Singleplayer", "Split Screen", "Online"};
+        std::string modes[] = {"Singleplayer", "Split Screen", "Coming Soon!"};
 
         for(int i = 0; i < 3; ++i) {
             entries.push_back(GestureDetector(
@@ -34,7 +38,7 @@ public:
                 .onTap = [i](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
-                    c->properties.color = Color2D(0.0f, 0.0f, 0.0f, 0.60f);
+                    c->properties.color = BUTTON_ON_TAP_COLOUR;
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
 
                     switch(i) {
@@ -50,28 +54,28 @@ public:
                 .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
-                    c->properties.color = Color2D(0.0f, 0.0f, 0.0f, 0.50f);
+                    c->properties.color = MENU_BUTTON_COLOUR;
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
                 },
                 .onHover = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle hover event
                     std::cout << "Hovered over child at (" << x << ", " << y << ")\n";
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
-                    c->properties.color = Color2D(0.0f, 0.0f, 0.0f, 0.40f);
+                    c->properties.color = BUTTON_ON_HOVER_COLOUR;
                 },
                 .onHoverEnd = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
-                    c->properties.color = Color2D(0.0f, 0.0f, 0.0f, 0.5f);
+                    c->properties.color = MENU_BUTTON_COLOUR;
                 },
                 .child = Container(
-                    .width = 300.0f,
-                    .height = 50.0f,
+                    .width = MENU_BUTTON_WIDTH,
+                    .height = MENU_BUTTON_HEIGHT,
                     .alignment = Alignment::Center(),
-                    .color = Color2D(0.0f, 0.0f, 0.0f, 0.5f),
+                    .color = MENU_BUTTON_COLOUR,
                     .child = Text(
                         .text = modes[i],
-                        .scale = 1.5f,
-                        .color = Color2D(1.0f, 1.0f, 1.0f, 1.0f)
+                        .scale = MENU_BUTTON_TEXT_SCALE,
+                        .color = MENU_BUTTON_TEXT_COLOUR
                     ),
                 )
             ));
@@ -81,21 +85,33 @@ public:
 
     std::shared_ptr<InternalDrawable> build() override {
         return Container(
-            //.child = Image(
-                //.texture = "seg2_blue_sky_backgrounD_Imageure",
-                .child = Container(
-                    .padding = EdgeInsets::all(5.0f),
-                    .alignment = Alignment::CenterLeft(),
+                .child = Container( // background
+                    .width = INFINITY,
+                    .height = INFINITY,
+                    //.padding = MARGIN_LEFT_SPACING,
+                    .alignment = Alignment::TopLeft(),
                     .clipToBounds = true,
-                    .color = Color2D(0.0f, 0.0f, 0.0f, 0.3f),
-                    .child = Scrollable(
-                        .direction = Direction::Vertical,
-                        .child = Column(
-                            .children = entries
+                    .color = BACKGROUND_COLOUR,
+                    //.child = Stack(
+                        // .children = {
+                            //  Image(
+                            //      .provider = AssetImage("__OTR__seg2_blue_sky_background_texture"),
+                            //      .fit = BoxFit::Cover
+                            //  ),
+                         .child =    Container(
+                                .width = MENU_BUTTON_WIDTH,
+                                .height = CONTENT_HEIGHT,
+                                .margin = MARGIN_LEFT_SPACING,
+                                .child = Scrollable(
+                                    .direction = Direction::Vertical,
+                                    .child = Column(
+                                        .children = entries
+                                    )
+                            )
                         )
-                    )
+                       // }
+                   // )
                 )
-           // )
         );
     }
 
