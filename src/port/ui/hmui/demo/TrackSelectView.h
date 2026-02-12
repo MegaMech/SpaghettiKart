@@ -6,6 +6,7 @@
 
 #include "hmui/Navigator.h"
 #include "hmui/widgets/InternalDrawable.h"
+#include "hmui/widgets/Wrap.h"
 
 #include "port/Game.h"
 #include "engine/registry/Registry.h"
@@ -23,12 +24,9 @@ public:
     
     void init() override {
         std::vector<std::shared_ptr<InternalDrawable>> col1;
-        std::vector<std::shared_ptr<InternalDrawable>> col2;
-        std::vector<std::shared_ptr<InternalDrawable>> col3;
 
         std::vector<const TrackInfo*> infos = gTrackRegistry.GetAllInfo();
 
-        size_t i = 0;
         for(const TrackInfo* info : infos) {
             auto entry = GestureDetector(
                 .onTap = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
@@ -66,38 +64,40 @@ public:
                 )
             );
 
-            if (i % 3 == 0)
-                col1.push_back(entry);
-            else if (i % 3 == 1)
-                col2.push_back(entry);
-            else
-                col3.push_back(entry);
-
-            i += 1;
+            entries.push_back(entry);
         }
-
-        entries.push_back(Container(
-            .width = 800,
-            .height = 1000,
-            .child = Row(
-                .children = {
-                    Column(
-                        .children = col1
-                    ),
-                    Column(
-                        .children = col2
-                    ),
-                    Column(
-                        .children = col3
-                    )
-                }
-            )
-        ));
         Drawable::init();
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return BuildMainMenuLayout(entries);
+        return Container(
+            .child = Container(
+                .width = INFINITY,
+                .height = INFINITY,
+                .alignment = Alignment::Center(),
+                .clipToBounds = true,
+                .color = BACKGROUND_COLOUR,
+                //.child = Stack(
+                    // .children = {
+                        //  Image(
+                        //      .provider = AssetImage("__OTR__seg2_blue_sky_background_texture"),
+                        //      .fit = BoxFit::Cover
+                        //  ),
+                    .child = Container(
+                        // Width + spacing
+                        .width = (MENU_BUTTON_WIDTH + 10.0f) * 3,
+                        .child = Wrap(
+                            .direction = Direction::Horizontal,
+                            .spacing = 10.0f,
+                            .runSpacing = 10.0f,
+                            .alignment = MainAxisAlignment::CENTER,
+                            .children = entries
+                        )
+                    )
+                // }
+            // )
+            )
+        );
     }
 
     ~TrackSelectViewElements() override = default;
