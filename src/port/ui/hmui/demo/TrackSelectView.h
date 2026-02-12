@@ -77,6 +77,8 @@ public:
         }
 
         entries.push_back(Container(
+            .width = 800,
+            .height = 1000,
             .child = Scrollable(
                 .direction = Direction::Vertical,
                 .child = Row(
