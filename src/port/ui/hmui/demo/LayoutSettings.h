@@ -39,6 +39,9 @@ bool view_singleplayer = false;
 #define BUTTON_ON_TAP_COLOUR Color2D(0.0f, 0.0f, 0.0f, 0.60f)
 #define BUTTON_ON_HOVER_COLOUR Color2D(0.0f, 0.0f, 0.0f, 0.40f)
 
+#define PLAYER_SELECT_ROWS 4
+#define TRACK_SELECT_ROWS 3
+
 /**
  * Shared background / initial elements
  * @arg entries, the elements to be drawn

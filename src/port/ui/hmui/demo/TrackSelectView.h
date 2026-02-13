@@ -84,7 +84,7 @@ public:
                     .children = entries
                 )
             ),
-            (MENU_BUTTON_WIDTH + 10.0f) * 3, // width
+            (MENU_BUTTON_WIDTH + 10.0f) * TRACK_SELECT_ROWS, // width
             350 // height
         );
     }

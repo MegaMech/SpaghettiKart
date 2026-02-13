@@ -6,6 +6,7 @@
 
 #include "hmui/Navigator.h"
 #include "hmui/widgets/InternalDrawable.h"
+#include "hmui/widgets/Wrap.h"
 
 extern "C" {
 #include "menu_items.h"
@@ -68,12 +69,15 @@ public:
 
     std::shared_ptr<InternalDrawable> build() override {
         return BuildMainMenuLayout2(
-            static_cast<std::shared_ptr<InternalDrawable>>(
-                Column(
-                    .children = entries
+            static_cast<std::shared_ptr<InternalDrawable>>(Wrap(
+                .direction = Direction::Horizontal,
+                .spacing = 10.0f,
+                .runSpacing = 10.0f,
+                .alignment = MainAxisAlignment::CENTER,
+                .children = entries
                 )
             ),
-            MENU_BUTTON_WIDTH,
+            (MENU_BUTTON_WIDTH + 10.0f) * PLAYER_SELECT_ROWS,
             entries.size() * MENU_BUTTON_HEIGHT
         );
     }
