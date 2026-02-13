@@ -39,9 +39,16 @@ bool view_singleplayer = false;
 #define BUTTON_ON_TAP_COLOUR Color2D(0.0f, 0.0f, 0.0f, 0.60f)
 #define BUTTON_ON_HOVER_COLOUR Color2D(0.0f, 0.0f, 0.0f, 0.40f)
 
-// Shared Background
-inline std::shared_ptr<InternalDrawable> BuildMainMenuLayout(
-    const std::vector<std::shared_ptr<InternalDrawable>>& entries
+/**
+ * Shared background / initial elements
+ * @arg entries, the elements to be drawn
+ * @arg width the overrall content width
+ * @arg heihgt the overrall content height
+ */
+inline std::shared_ptr<InternalDrawable> BuildMainMenuLayout2(
+    const std::shared_ptr<InternalDrawable> entries,
+    const float width,
+    const float height
 ) {
     return Container(
         .child = Container(
@@ -56,17 +63,15 @@ inline std::shared_ptr<InternalDrawable> BuildMainMenuLayout(
                         //      .provider = AssetImage("__OTR__seg2_blue_sky_background_texture"),
                         //      .fit = BoxFit::Cover
                         //  ),
-                    .child =    Container(
-                            .width = MENU_BUTTON_WIDTH,
-                            .height = CONTENT_HEIGHT,
-                            .margin = MARGIN_LEFT_SPACING,
-                            .child = Scrollable(
-                                .direction = Direction::Vertical,
-                                .child = Column(
-                                    .children = entries
-                                )
-                        )
+                .child = Container(
+                    .width = width,
+                    .height = height,
+                    .margin = MARGIN_LEFT_SPACING,
+                    .child = Scrollable(
+                        .direction = Direction::Vertical,
+                        .child = entries
                     )
+                )
                 // }
             // )
             )

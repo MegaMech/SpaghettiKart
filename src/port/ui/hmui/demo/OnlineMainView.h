@@ -68,7 +68,15 @@ public:
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return BuildMainMenuLayout(entries);
+        return BuildMainMenuLayout2(
+            static_cast<std::shared_ptr<InternalDrawable>>(
+                Column(
+                    .children = entries
+                )
+            ),
+            MENU_BUTTON_WIDTH,
+            entries.size() * MENU_BUTTON_HEIGHT
+        );
     }
 
     ~OnlineMainViewElements() override = default;

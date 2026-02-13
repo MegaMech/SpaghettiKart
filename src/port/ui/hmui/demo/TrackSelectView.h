@@ -29,6 +29,11 @@ public:
 
         for(const TrackInfo* info : infos) {
             auto entry = GestureDetector(
+                .focusable = true,
+                .focusDecorator = FocusDecorator {
+                    .color = Color2D(1.0f, 1.0f, 1.0f, 0.8f),
+                    .thickness = 2.0f
+                },
                 .onTap = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
@@ -70,33 +75,17 @@ public:
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return Container(
-            .child = Container(
-                .width = INFINITY,
-                .height = INFINITY,
-                .alignment = Alignment::Center(),
-                .clipToBounds = true,
-                .color = BACKGROUND_COLOUR,
-                //.child = Stack(
-                    // .children = {
-                        //  Image(
-                        //      .provider = AssetImage("__OTR__seg2_blue_sky_background_texture"),
-                        //      .fit = BoxFit::Cover
-                        //  ),
-                    .child = Container(
-                        // Width + spacing
-                        .width = (MENU_BUTTON_WIDTH + 10.0f) * 3,
-                        .child = Wrap(
-                            .direction = Direction::Horizontal,
-                            .spacing = 10.0f,
-                            .runSpacing = 10.0f,
-                            .alignment = MainAxisAlignment::CENTER,
-                            .children = entries
-                        )
-                    )
-                // }
-            // )
-            )
+        return BuildMainMenuLayout2(
+            static_cast<std::shared_ptr<InternalDrawable>>(Wrap(
+                    .direction = Direction::Horizontal,
+                    .spacing = 10.0f,
+                    .runSpacing = 10.0f,
+                    .alignment = MainAxisAlignment::CENTER,
+                    .children = entries
+                )
+            ),
+            (MENU_BUTTON_WIDTH + 10.0f) * 3, // width
+            350 // height
         );
     }
 
