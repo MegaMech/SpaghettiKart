@@ -1,6 +1,7 @@
 #include "LUSOSContext.h"
 #include "libultraship.h"
 #include "Engine.h"
+#include "freecam/freecam.h"
 
 #include "main.h"
 #define MAX_AXIS_VALUE 85.0f
@@ -134,10 +135,15 @@ float LUSOSContext::getGamepadAxis(int id, ControllerAxis axis) {
         case ControllerAxis::RIGHT_Y:
             return -gControllerOne->rightRawStickY / MAX_AXIS_VALUE;
         case ControllerAxis::LEFT_TRIGGER:
-            return (gControllerFive->button & BTN_L) ? 1.0f : 0.0f;
+            return (gControllerOne->button & BTN_L) ? 1.0f : 0.0f;
         case ControllerAxis::RIGHT_TRIGGER:
-            return (gControllerFive->button & BTN_R) ? 1.0f : 0.0f;
+            return (gControllerOne->button & BTN_R) ? 1.0f : 0.0f;
     }
 
     return 0.0f;
+}
+
+// Usage IsKeyboardButtonPressed('A') for keyboard A button
+bool LUSOSContext::IsKeyboardButtonPressed(int virtualKey) {
+    return FreecamKeyDown(virtualKey);
 }

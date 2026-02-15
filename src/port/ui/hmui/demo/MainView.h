@@ -76,14 +76,29 @@ public:
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return BuildMainMenuLayout2(
-            static_cast<std::shared_ptr<InternalDrawable>>(
-                Column(
-                    .children = entries
-                )
+
+        std::vector<std::shared_ptr<InternalDrawable>> stuff = {
+            Positioned(
+                .child = BuildMenuBackground(),
+                .left = 0,
+                .top = 0,
+                .right = 0,
+                .bottom = 0,
             ),
-            MENU_BUTTON_WIDTH, entries.size() * MENU_BUTTON_HEIGHT
-        );
+            Positioned(
+                .child = BuildMenuInfoBar(),
+                .left = 0,
+                .bottom = 0
+            ),
+            Positioned(
+                .child = BuildMenuContent(entries),
+                .left = 0,
+                .top = 0,
+                .right = 0,
+                .bottom = 0
+            ),
+        };
+    return BuildMenuStack(stuff);
     }
 
     ~MainViewElements() override = default;

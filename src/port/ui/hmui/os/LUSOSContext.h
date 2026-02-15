@@ -24,6 +24,7 @@ public:
     bool isGamepadAvailable(int id) override;
     bool isGamepadButtonPressed(int id, ControllerButton button) override;
     float getGamepadAxis(int id, ControllerAxis axis) override;
+    bool IsKeyboardButtonPressed(int virtualKey);
     ~LUSOSContext() override = default;
 private:
     std::unordered_map<int, bool> m_LastMouseState;

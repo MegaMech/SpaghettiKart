@@ -3,7 +3,9 @@
 #include <utility>
 #include <iostream>
 #include "LayoutSettings.h"
+#include <optional>
 
+#include "port/Engine.h"
 #include "hmui/Navigator.h"
 
 extern "C" {
@@ -17,14 +19,14 @@ public:
 
     void init() override {
 
-        std::string multiplayer_modes[] = {"Grand Prix", "Time Trials", "Versus", "Battle", "Carriage Return"};
-        std::string single_player_modes[] = {"Grand Prix", "Time Trials", "Carriage Return"};
+        std::string multiplayer_modes[] = {"Grand Prix", "Versus", "Battle"};
+        std::string single_player_modes[] = {"Grand Prix", "Time Trials"};
 
         // This is really bad code... Too bad!
         std::string* modes = &multiplayer_modes[0];
-        size_t numModes = 5;
+        size_t numModes = 3;
         if (view_singleplayer == true) {
-            numModes = 3;
+            numModes = 2;
             modes = &single_player_modes[0];
         }
 
@@ -41,23 +43,19 @@ public:
                     c->properties.color = BUTTON_ON_TAP_COLOUR;
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
 
-                    if (i == numModes - 1) {
-                        Navigator::pop();
-                        return;
-                    }
-
                     switch(i) {
                         case 0:
                             Navigator::push("/cc");
                             break;
                         case 1:
-                            Navigator::push("/player_select");
+                            if (view_singleplayer) {
+                                Navigator::push("/player_select");
+                            } else {
+                                Navigator::push("/cc");
+                            }
                             break;
                         case 2:
-                            Navigator::push("/cc");
-                            break;
-                        case 3:
-                            Navigator::push("/player_select");
+                                Navigator::push("/player_select");
                             break;
                     }
                 },
@@ -94,14 +92,30 @@ public:
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return BuildMainMenuLayout2(
-            static_cast<std::shared_ptr<InternalDrawable>>(
-                Column(
-                    .children = entries
-                )
+
+        std::vector<std::shared_ptr<InternalDrawable>> stuff = {
+            Positioned(
+                .child = BuildMenuBackground(),
+                .left = 0,
+                .top = 0,
+                .right = 0,
+                .bottom = 0,
             ),
-            MENU_BUTTON_WIDTH, entries.size() * MENU_BUTTON_HEIGHT
-        );
+            Positioned(
+                .child = BuildMenuInfoBar(),
+                .left = 0,
+                .bottom = 0
+            ),
+            Positioned(
+                .child = BuildMenuContent(entries),
+                .left = 0,
+                .top = 0,
+                .right = 0,
+                .bottom = 0
+            ),
+        };
+
+        return BuildMenuStack(stuff);
     }
 
     ~GamemodeViewElements() override = default;

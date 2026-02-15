@@ -57,14 +57,36 @@ public:
                     c->properties.color = MENU_BUTTON_COLOUR;
                 },
                 .child = Container(
-                    .width = MENU_BUTTON_WIDTH,
-                    .height = MENU_BUTTON_HEIGHT,
-                    .alignment = Alignment::Center(),
+                    .width = TRACK_SELECT_BUTTON_WIDTH,
+                    .height = TRACK_SELECT_BUTTON_HEIGHT,
                     .color = MENU_BUTTON_COLOUR,
-                    .child = Text(
-                        .text = info->Name,
-                        .scale = MENU_BUTTON_TEXT_SCALE,
-                        .color = MENU_BUTTON_TEXT_COLOUR
+                    .child = Stack(
+                        .children = {
+                            Positioned(
+                                .child = Container(
+                                    .width = TRACK_SELECT_BUTTON_WIDTH,
+                                    .alignment = Alignment::Center(),
+                                    .child = Text(.text = "Preview"),
+                                ),
+                                .top = 0,
+                                .bottom = TRACK_SELECT_LABEL_HEIGHT
+                            ),
+                            Positioned(
+                                .child = Container(
+                                    .width = TRACK_SELECT_BUTTON_WIDTH,
+                                    .height = TRACK_SELECT_LABEL_HEIGHT,
+                                    .alignment = Alignment::Center(),
+                                    .color = MENU_BUTTON_COLOUR,
+                                    .child = Text(
+                                        .text = info->Name,
+                                        .scale = MENU_BUTTON_TEXT_SCALE,
+                                        .color = MENU_BUTTON_TEXT_COLOUR
+                                    )
+                                ),
+                                .bottom = 0,
+                            ),
+                        },
+                        .fit = StackFit::Expand,
                     )
                 )
             );
@@ -75,18 +97,46 @@ public:
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return BuildMainMenuLayout2(
-            static_cast<std::shared_ptr<InternalDrawable>>(Wrap(
-                    .direction = Direction::Horizontal,
-                    .spacing = 10.0f,
-                    .runSpacing = 10.0f,
-                    .alignment = MainAxisAlignment::CENTER,
-                    .children = entries
-                )
+        std::vector<std::shared_ptr<InternalDrawable>> stuff = {
+            Positioned(
+                .child = BuildMenuBackground(),
+                .left = 0,
+                .top = 0,
+                .right = 0,
+                .bottom = 0,
             ),
-            (MENU_BUTTON_WIDTH + 10.0f) * TRACK_SELECT_ROWS, // width
-            350 // height
-        );
+            Positioned(
+                .child = BuildMenuInfoBar(),
+                .left = 0,
+                .bottom = 0
+            ),
+            Positioned(
+                .child = Container(
+                    .width = (TRACK_SELECT_BUTTON_WIDTH + TRACK_SELECT_BUTTON_SPACING) * TRACK_SELECT_ROWS,
+                    .height = 900.0f,
+                    .alignment = Alignment::Center(),
+                    .clipToBounds = true,
+                    .child = GestureDetector(
+                        .focusable = true,
+                        .child = Scrollable(
+                            .direction = Direction::Vertical,
+                            .child = Wrap(
+                                .direction = Direction::Horizontal,
+                                .spacing = TRACK_SELECT_BUTTON_SPACING,
+                                .runSpacing = TRACK_SELECT_BUTTON_RUN_SPACING,
+                                .alignment = MainAxisAlignment::CENTER,
+                                .children = entries
+                            ),
+                        ),
+                    ),
+                ),
+                .left = 0,
+                .top = 0,
+                .right = 0,
+                .bottom = 0
+            ),
+        };
+        return BuildMenuStack(stuff);
     }
 
     ~TrackSelectViewElements() override = default;

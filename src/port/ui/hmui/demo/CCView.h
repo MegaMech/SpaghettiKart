@@ -14,19 +14,21 @@ public:
 
     void init() override {
 
-        std::string modes[] = {"50CC", "100CC", "150CC", "Extra", "Carriage Return"};
+        std::string modes[] = {"50CC", "100CC", "150CC", "Extra"};
 
-        for(int i = 0; i < 5; ++i) {
+        for(int i = 0; i < 4; ++i) {
             entries.push_back(GestureDetector(
+                .focusable = true,
+                .focusDecorator = FocusDecorator {
+                    .color = Color2D(1.0f, 1.0f, 1.0f, 0.8f),
+                    .thickness = 2.0f
+                },
                 .onTap = [i](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = BUTTON_ON_TAP_COLOUR;
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
                     switch(i) {
-                        case 4:
-                            Navigator::pop();
-                            break;
                         default:
                             Navigator::push("/player_select");
                             break;
@@ -65,14 +67,29 @@ public:
     }
 
     std::shared_ptr<InternalDrawable> build() override {
-        return BuildMainMenuLayout2(
-            static_cast<std::shared_ptr<InternalDrawable>>(
-                Column(
-                    .children = entries
-                )
+
+        std::vector<std::shared_ptr<InternalDrawable>> stuff = {
+            Positioned(
+                .child = BuildMenuBackground(),
+                .left = 0,
+                .top = 0,
+                .right = 0,
+                .bottom = 0,
             ),
-            MENU_BUTTON_WIDTH, entries.size() * MENU_BUTTON_HEIGHT
-        );
+            Positioned(
+                .child = BuildMenuInfoBar(),
+                .left = 0,
+                .bottom = 0
+            ),
+            Positioned(
+                .child = BuildMenuContent(entries),
+                .left = 0,
+                .top = 0,
+                .right = 0,
+                .bottom = 0
+            ),
+        };
+        return BuildMenuStack(stuff);
     }
 
     ~CCViewElements() override = default;
