@@ -14,7 +14,7 @@ public:
 
     void init() override {
 
-        std::string modes[] = {"Singleplayer", "Split Screen", "Coming Soon!"};
+        std::string modes[] = {"Singleplayer", "Multiplayer", "Online"};
 
         for(int i = 0; i < 3; ++i) {
             entries.push_back(GestureDetector(
@@ -32,6 +32,8 @@ public:
                     switch(i) {
                         case 0:
                             view_singleplayer = true;
+                            View_SetPlayerCount(1);
+                            View_SetScreenMode(SCREEN_MODE_1P);
                             Navigator::push("/gamemode");
                             break;
                         case 1:

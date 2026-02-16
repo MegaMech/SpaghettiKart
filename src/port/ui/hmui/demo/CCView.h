@@ -28,11 +28,9 @@ public:
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = BUTTON_ON_TAP_COLOUR;
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
-                    switch(i) {
-                        default:
-                            Navigator::push("/player_select");
-                            break;
-                    }
+
+                    View_SetCC(i);
+                    Navigator::push("/player_select");
                 },
                 .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event

@@ -111,3 +111,40 @@ inline std::shared_ptr<InternalDrawable> BuildMenuInfoBar() {
     );
 }
 
+#include "engine/TrackBrowser.h"
+extern "C" {
+#include "main.h"
+#include "menus.h"
+#include "code_800029B0.h"
+extern s8 gPlayerCount;
+}
+
+/** Menu Game Actions **/
+void View_SetPlayerCount(size_t count) {
+    gPlayerCountSelection1 = count;
+    gPlayerCount = count;
+}
+
+void View_SetScreenMode(s32 screenMode) {
+    gScreenModeSelection = screenMode;
+}
+
+void View_SetCC(s32 cc) {
+    gCCSelection = cc;
+}
+
+void View_SetGamemode(s32 gamemode) {
+    gModeSelection = gamemode;
+}
+
+void View_SelectPlayer(s32 playerId, s32 characterId) {
+    if ((playerId >= 0) && (playerId < 4)) {
+        gCharacterSelections[playerId] = characterId;
+    }
+}
+
+void View_SetTrack(const std::string& resourceName) {
+    TrackBrowser::Instance->SetTrack(resourceName.c_str());
+    gGamestateNext = RACING;
+    HMUI::Instance->close();
+}

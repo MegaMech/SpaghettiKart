@@ -34,10 +34,11 @@ public:
                     .color = Color2D(1.0f, 1.0f, 1.0f, 0.8f),
                     .thickness = 2.0f
                 },
-                .onTap = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
+                .onTap = [info](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event
                     std::shared_ptr<D_Container> c = std::dynamic_pointer_cast<D_Container>(child);
                     c->properties.color = BUTTON_ON_TAP_COLOUR;
+                    View_SetTrack(info->ResourceName);
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
                 },
                 .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
@@ -116,8 +117,6 @@ public:
                     .height = 900.0f,
                     .alignment = Alignment::Center(),
                     .clipToBounds = true,
-                    .child = GestureDetector(
-                        .focusable = true,
                         .child = Scrollable(
                             .direction = Direction::Vertical,
                             .child = Wrap(
@@ -128,7 +127,6 @@ public:
                                 .children = entries
                             ),
                         ),
-                    ),
                 ),
                 .left = 0,
                 .top = 0,
