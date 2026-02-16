@@ -70,7 +70,7 @@ Fast::Interpreter* GetInterpreter() {
 }
 
 GameEngine* GameEngine::Instance;
-std::shared_ptr<HMUI> hmui;
+std::shared_ptr<HMUI> hmui; // New menu system
 
 bool CreateDirectoryRecursive(std::string const& dirName, std::error_code& err) {
     err.clear();
@@ -358,7 +358,8 @@ void GameEngine::Create() {
 
     hmui = std::make_shared<HMUI>();
     hmui->initialize(std::make_shared<ImGuiGraphicsContext>(), std::make_shared<LUSOSContext>());
-    hmui->show(std::make_shared<RouterView>());
+    hmui->setRouter(std::make_shared<RouterView>());
+    hmui->setActive(false);
     GameUI::SetupGuiElements();
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u
@@ -637,6 +638,10 @@ ImFont* GameEngine::CreateFontWithSize(float size, std::string fontPath) {
 }
 
 // End
+
+extern "C" void HMUI_SetActive(bool state) {
+    hmui->setActive(state);
+}
 
 extern "C" uint32_t GameEngine_GetSampleRate() {
     auto player = Ship::Context::GetInstance()->GetAudio()->GetAudioPlayer();

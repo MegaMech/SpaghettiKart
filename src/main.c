@@ -856,7 +856,7 @@ void game_state_handler(void) {
             }
             init_rcp();
             if ((CVarGetInteger("gNewMenus", true) == true) && (gMenuSelection == MAIN_MENU)) {
-                HMUI_Show();
+                HMUI_SetActive(true);
             } else {
                 func_80094A64(gGfxPool); // Draw old menu
             }

@@ -111,6 +111,7 @@ struct AudioSequenceData* GameEngine_LoadSequence(uint8_t seqId);
 uint32_t GameEngine_GetSequenceCount();
 uint8_t GameEngine_IsSequenceLoaded(uint8_t seqId);
 void GameEngine_UnloadSequence(uint8_t seqId);
+void HMUI_SetActive(bool state);
 // bool GameEngine_OTRSigCheck(char* imgData); -> align_asset_macro.h
 float OTRGetAspectRatio(void);
 float OTRGetDimensionFromLeftEdge(float v);

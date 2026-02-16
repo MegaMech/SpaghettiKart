@@ -2,6 +2,8 @@
 
 #include "port/Engine.h"
 #include "port/ui/hmui/provider/LUSImageProvider.h"
+
+#include "hmui/Navigator.h"
 #include "hmui/graphics/GraphicsContext.h"
 #include "hmui/widgets/InternalDrawable.h"
 #include "hmui/widgets/GestureDetector.h"
@@ -146,5 +148,6 @@ void View_SelectPlayer(s32 playerId, s32 characterId) {
 void View_SetTrack(const std::string& resourceName) {
     TrackBrowser::Instance->SetTrack(resourceName.c_str());
     gGamestateNext = RACING;
-    HMUI::Instance->close();
+    Navigator::pushReplacement("/");
+    HMUI::Instance->setActive(false);
 }

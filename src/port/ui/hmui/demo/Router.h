@@ -1,3 +1,5 @@
+#pragma once
+
 #include "hmui/widgets/AppContext.h"
 #include "hmui/widgets/Drawable.h"
 #include "hmui/widgets/InternalDrawable.h"
