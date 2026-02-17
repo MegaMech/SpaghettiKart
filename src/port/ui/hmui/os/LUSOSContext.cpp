@@ -90,32 +90,32 @@ bool LUSOSContext::isGamepadAvailable(int id) {
 bool LUSOSContext::isGamepadButtonPressed(int id, ControllerButton button) {
     switch(button) {
         case ControllerButton::LEFT_FACE_UP:
-            return gControllerOne->buttonPressed & BTN_DUP;
+            return gControllers[id].buttonPressed & BTN_DUP;
         case ControllerButton::LEFT_FACE_RIGHT:
-            return gControllerOne->buttonPressed & BTN_DRIGHT;
+            return gControllers[id].buttonPressed & BTN_DRIGHT;
         case ControllerButton::LEFT_FACE_DOWN:
-            return gControllerOne->buttonPressed & BTN_DDOWN;
+            return gControllers[id].buttonPressed & BTN_DDOWN;
         case ControllerButton::LEFT_FACE_LEFT:
-            return gControllerOne->buttonPressed & BTN_DLEFT;
+            return gControllers[id].buttonPressed & BTN_DLEFT;
         case ControllerButton::RIGHT_FACE_UP:
             return false;
         case ControllerButton::RIGHT_FACE_RIGHT:
             return false;
         case ControllerButton::RIGHT_FACE_DOWN:
-            return gControllerOne->buttonPressed & BTN_A;
+            return gControllers[id].buttonPressed & BTN_A;
         case ControllerButton::RIGHT_FACE_LEFT:
-            return gControllerOne->buttonPressed & BTN_B;
+            return gControllers[id].buttonPressed & BTN_B;
         case ControllerButton::LEFT_TRIGGER_1:
-            return gControllerOne->buttonPressed & BTN_L;
+            return gControllers[id].buttonPressed & BTN_L;
         case ControllerButton::RIGHT_TRIGGER_1:
-            return gControllerOne->buttonPressed & BTN_R;
+            return gControllers[id].buttonPressed & BTN_R;
         case ControllerButton::LEFT_TRIGGER_2:
-            return gControllerOne->buttonPressed & BTN_Z;
+            return gControllers[id].buttonPressed & BTN_Z;
         case ControllerButton::RIGHT_TRIGGER_2:
-            return gControllerOne->buttonPressed & BTN_Z;
+            return gControllers[id].buttonPressed & BTN_Z;
         case ControllerButton::MIDDLE_LEFT:
         case ControllerButton::MIDDLE:
-            return gControllerOne->buttonPressed & BTN_START;
+            return gControllers[id].buttonPressed & BTN_START;
         case ControllerButton::MIDDLE_RIGHT:
             // Not implemented
             break;
@@ -124,26 +124,46 @@ bool LUSOSContext::isGamepadButtonPressed(int id, ControllerButton button) {
     return false;
 }
 
+uint16_t LUSOSContext::getButtons(int id) {
+    return gControllers[id].buttonDepressed;
+}
+
+bool LUSOSContext::isBackButtonPressed(int id) {
+    bool pressed = gControllers[id].buttonDepressed & B_BUTTON;
+    if (pressed) {
+        return pressed;
+    }
+#define SDL_SCANCODE_BACKSPACE 42
+#define VK_BACK 8
+#ifdef _WIN32
+    if (isKeyboardButtonPressed(VK_BACK) || isMouseButtonPressed(2)) { // right click
+#else
+    if (isKeyboardButtonPressed(SDL_SCANCODE_BACKSPACE) || isMouseButtonPressed(2)) {
+#endif
+        return true;
+    }
+}
+
 float LUSOSContext::getGamepadAxis(int id, ControllerAxis axis) {
     switch(axis) {
         case ControllerAxis::LEFT_X:
-            return gControllerOne->rawStickX / MAX_AXIS_VALUE;
+            return gControllers[id].rawStickX / MAX_AXIS_VALUE;
         case ControllerAxis::LEFT_Y:
-            return -gControllerOne->rawStickY / MAX_AXIS_VALUE;
+            return -gControllers[id].rawStickY / MAX_AXIS_VALUE;
         case ControllerAxis::RIGHT_X:
-            return gControllerOne->rightRawStickX / MAX_AXIS_VALUE;
+            return gControllers[id].rightRawStickX / MAX_AXIS_VALUE;
         case ControllerAxis::RIGHT_Y:
-            return -gControllerOne->rightRawStickY / MAX_AXIS_VALUE;
+            return -gControllers[id].rightRawStickY / MAX_AXIS_VALUE;
         case ControllerAxis::LEFT_TRIGGER:
-            return (gControllerOne->button & BTN_L) ? 1.0f : 0.0f;
+            return (gControllers[id].button & BTN_L) ? 1.0f : 0.0f;
         case ControllerAxis::RIGHT_TRIGGER:
-            return (gControllerOne->button & BTN_R) ? 1.0f : 0.0f;
+            return (gControllers[id].button & BTN_R) ? 1.0f : 0.0f;
     }
 
     return 0.0f;
 }
 
-// Usage IsKeyboardButtonPressed('A') for keyboard A button
-bool LUSOSContext::IsKeyboardButtonPressed(int virtualKey) {
+// Usage isKeyboardButtonPressed('A') for keyboard A button
+bool LUSOSContext::isKeyboardButtonPressed(int virtualKey) {
     return FreecamKeyDown(virtualKey);
 }

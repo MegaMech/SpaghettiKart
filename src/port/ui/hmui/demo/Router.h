@@ -4,6 +4,7 @@
 #include "hmui/widgets/Drawable.h"
 #include "hmui/widgets/InternalDrawable.h"
 #include "MainView.h"
+#include "MultiplayerView.h"
 #include "GamemodeView.h"
 #include "PlayerSelectView.h"
 #include "TrackSelectView.h"
@@ -20,6 +21,7 @@ public:
         return AppContext(
             .routes = {
                 { "/", []() { return std::make_shared<MainView>(); }},
+                { "/multiplayer", []() { return std::make_shared<MultiplayerView>(); }},
                 { "/gamemode", []() { return std::make_shared<GamemodeView>(); }},
                 { "/cc", []() { return std::make_shared<CCView>(); }},
                 { "/player_select", []() { return std::make_shared<PlayerSelectView>(); }},

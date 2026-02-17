@@ -32,6 +32,7 @@ public:
                     c->properties.color = BUTTON_ON_TAP_COLOUR;
                     std::cout << "Tapped on child at (" << x << ", " << y << ")\n";
                     Navigator::push("/track_select");
+                    View_SelectPlayer(0, i);
                 },
                 .onTapRelease = [](std::shared_ptr<InternalDrawable> child, float x, float y) {
                     // Handle tap event

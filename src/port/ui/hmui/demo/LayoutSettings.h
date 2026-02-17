@@ -43,6 +43,12 @@ bool view_singleplayer = false;
 #define BUTTON_ON_TAP_COLOUR Color2D(0.0f, 0.0f, 0.0f, 0.60f)
 #define BUTTON_ON_HOVER_COLOUR Color2D(0.0f, 0.0f, 0.0f, 0.40f)
 
+/** Multiplayer Player Count Select */
+#define MULTIPLAYER_SELECT_BUTTON_WIDTH 300.0f
+#define MULTIPLAYER_SELECT_BUTTON_HEIGHT 300.0f
+#define MULTIPLAYER_SELECT_BUTTON_SPACING 60.0f
+#define MULTIPLAYER_SELECT_BUTTON_COLOUR Color2D(0.3f, 0.3f, 0.6f, 0.4f)
+
 /** Player Select **/
 #define PLAYER_SELECT_ROWS 4
 #define PLAYER_SELECT_BUTTON_WIDTH 367.0f

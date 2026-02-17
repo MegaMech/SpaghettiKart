@@ -38,7 +38,7 @@ public:
                             break;
                         case 1:
                             view_singleplayer = false;
-                            Navigator::push("/gamemode");
+                            Navigator::push("/multiplayer");
                             break;
                         case 2:
                             Navigator::push("/online_main");
