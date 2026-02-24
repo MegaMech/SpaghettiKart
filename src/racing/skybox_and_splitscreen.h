@@ -36,7 +36,7 @@ void func_802A4D18(void);
 void func_802A4EF4(void);
 void race_begin_viewport(ScreenContext* screen, s32 mode);
 void race_blank_viewport(ScreenContext* screen);
-void race_begin_viewport_4p(void);
+void race_begin_viewport_4p(ScreenContext* screen);
 void render_screens(ScreenContext* screen, s32 mode, s32 someId, s32 playerId);
 void func_802A74BC(void);
 void copy_framebuffer(s32, s32, s32, s32, u16*, u16*);

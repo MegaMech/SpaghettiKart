@@ -602,14 +602,14 @@ void race_blank_viewport(ScreenContext* screen) {
     race_set_viewport(screen);
 }
 
-void race_begin_viewport_4p(void) {
+void race_begin_viewport_4p(ScreenContext* screen) {
     init_rdp();
 
     gSPClearGeometryMode(gDisplayListHead++, G_CLEAR_ALL_MODES);
     gSPSetGeometryMode(gDisplayListHead++, G_SHADE | G_SHADING_SMOOTH | G_CLIPPING);
 
-    race_set_viewport(gScreenFourCtx);
-    func_802A39E0(gScreenFourCtx);
+    race_set_viewport(screen);
+    func_802A39E0(screen);
 }
 
 void render_screens(ScreenContext* screen, s32 mode, s32 someId, s32 playerId) {
