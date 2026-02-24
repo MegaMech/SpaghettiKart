@@ -8,6 +8,8 @@
 
 #include "SkyActor.h"
 
+#include "defines.h"
+
 EXTERN_C_START
 #include "code_800029B0.h"
 EXTERN_C_END
