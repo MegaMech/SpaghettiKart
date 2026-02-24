@@ -1,6 +1,6 @@
 #include <libultraship.h>
 #include <libultra/gbi.h>
-#include "SkyboxCloud.h"
+#include "SkyCloud.h"
 #include <vector>
 #include "engine/tracks/Track.h"
 #include "engine/World.h"
@@ -18,13 +18,9 @@ extern "C" {
 #include "render_objects.h"
 }
 
-size_t SkyboxCloud::_count = 0;
+size_t SkyCloud::_count = 0;
 
-SkyboxCloud::SkyboxCloud(ScreenContext* screen) {
-    mScreen = screen;
-}
-
-SkyboxCloud::SkyboxCloud(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) {
+SkyCloud::SkyCloud(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) : SkyActor(screen) {
     _idx = _count;
     mScreen = screen;
     mCloudVariant = cloudVariant;
@@ -55,7 +51,7 @@ SkyboxCloud::SkyboxCloud(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 
     _count += 1;
 }
 
-void SkyboxCloud::Tick() { // func_800788F8
+void SkyCloud::Tick() { // func_800788F8
     s16 cameraRot;
 
     s16 mUnk200 = mScreen->camera->fieldOfView + 40.0f;
@@ -88,7 +84,7 @@ void SkyboxCloud::Tick() { // func_800788F8
     }
 }
 
-void SkyboxCloud::Draw(ScreenContext* screen, s32 arg0) { // render_clouds
+void SkyCloud::Draw(ScreenContext* screen, s32 arg0) { // render_clouds
    // Object* object = &gObjectList[_objectIndex];
     s32 posY = arg0 - mY;
     func_8004B6C4(255, 255, 255);

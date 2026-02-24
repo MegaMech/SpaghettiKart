@@ -1,12 +1,13 @@
 #pragma once
 
 #include <libultraship.h>
-#include "SkyboxCloud.h"
+#include "SkyCloud.h"
 #include "engine/registry/RegisterContent.h"
 #include "engine/World.h"
 #include "engine/SpawnParams.h"
 #include "engine/CoreMath.h"
 
+#include "engine/sky/SkyActor.h"
 #include "engine/objects/Object.h"
 
 extern "C" {
@@ -16,16 +17,16 @@ extern "C" {
 /**
  * Skybox Stars
  *
- * Inherits from SkyboxCloud so that stars/clouds can be stored in the same list
+ * Inherits from SkyCloud so that stars/clouds can be stored in the same list
  * and called the same way.
  *
  * @cloudVariant unused for stars
  */
-class SkyboxStar : public SkyboxCloud {
+class SkyStar : public SkyActor {
 public:
-    SkyboxStar(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent);
+    SkyStar(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent);
 
-    virtual ~SkyboxStar() {
+    virtual ~SkyStar() {
         _count--;
     }
 

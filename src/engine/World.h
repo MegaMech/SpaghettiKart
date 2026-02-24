@@ -16,7 +16,7 @@
 #include "Actor.h"
 #include "StaticMeshActor.h"
 #include "particles/ParticleEmitter.h"
-#include "engine/skybox/SkyboxCloud.h"
+#include "engine/sky/SkyCloud.h"
 
 #include "editor/Editor.h"
 #include "editor/GameObject.h"
@@ -122,7 +122,6 @@ public:
     std::vector<std::unique_ptr<AActor>> Actors;
     std::deque<std::unique_ptr<OObject>> Objects;
     std::vector<std::unique_ptr<ParticleEmitter>> Emitters;
-    std::vector<std::unique_ptr<SkyboxCloud>> SkyboxClouds;
 
     std::unordered_map<s32, OLakitu*> Lakitus;
 

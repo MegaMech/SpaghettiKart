@@ -1,6 +1,6 @@
 #include <libultraship.h>
 #include <libultra/gbi.h>
-#include "SkyboxSnow.h"
+#include "SkySnow.h"
 #include <vector>
 #include "engine/tracks/Track.h"
 #include "engine/World.h"
@@ -20,9 +20,9 @@ extern "C" {
 #include "math_util.h"
 }
 
-size_t SkyboxSnow::_count = 0;
+size_t SkySnow::_count = 0;
 
-SkyboxSnow::SkyboxSnow(ScreenContext* screen) : SkyboxCloud(screen) {
+SkySnow::SkySnow(ScreenContext* screen) : SkyActor(screen) {
     _idx = _count;
 
     mState = 0;
@@ -31,7 +31,7 @@ SkyboxSnow::SkyboxSnow(ScreenContext* screen) : SkyboxCloud(screen) {
     _count += 1;
 }
 
-void SkyboxSnow::Tick() {
+void SkySnow::Tick() {
 
     s16 mUnk200 = mScreen->camera->fieldOfView + 40.0f;
     mUnk208 = ((mUnk200 / 2) * 0xB6) + 0x71C;
@@ -52,10 +52,10 @@ void SkyboxSnow::Tick() {
 
     switch (mState) {
         case 1:
-            SkyboxSnow::func_80077E20();
+            SkySnow::func_80077E20();
             break;
         case 2:
-            SkyboxSnow::func_80077F64(mScreen->camera);
+            SkySnow::func_80077F64(mScreen->camera);
             if (mState2 == 0) { // unk_0AE
                 mState2 += 1;
                 //object_next_state(_objectIndex);
@@ -73,7 +73,7 @@ void SkyboxSnow::Tick() {
     }
 }
 
-void SkyboxSnow::Draw(ScreenContext* screen, s32 arg0) { // render_clouds
+void SkySnow::Draw(ScreenContext* screen, s32 arg0) { // render_clouds
     s32 posY = arg0 - mY;
     func_8004B6C4(255, 255, 255);
     // Skip drawing the object this frame if it warped to the other side of the screen
@@ -100,7 +100,7 @@ void SkyboxSnow::Draw(ScreenContext* screen, s32 arg0) { // render_clouds
     mOldY = posY;
 }
 
-void SkyboxSnow::func_80077E20() {
+void SkySnow::func_80077E20() {
     u8* tex = (u8*) LOAD_ASSET(D_0D0293D8);
     Vtx* vtx = (Vtx*) LOAD_ASSET(common_vtx_rectangle);
 
@@ -119,7 +119,7 @@ void SkyboxSnow::func_80077E20() {
     //object_next_state(objectIndex);
 }
 
-void SkyboxSnow::func_80077F64(Camera* camera) {
+void SkySnow::func_80077F64(Camera* camera) {
 
     f64 rand;
 

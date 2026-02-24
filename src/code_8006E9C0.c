@@ -31,6 +31,7 @@
 #include "port/Engine.h"
 #include "engine/editor/Editor.h"
 #include "engine/tracks/Track.h"
+#include "engine/sky/Sky.h"
 
 void init_hud(void) {
 
@@ -617,7 +618,7 @@ void func_8007055C(ScreenContext* screen) {
     s32 var_s0;
     s32 var_s4;
 
-    CM_InitClouds(screen);
+    InitSkyActors(screen);
     func_8008C23C();
 }
 

@@ -45,6 +45,7 @@
 #include <assets/textures/tracks/rainbow_road/rainbow_road_data.h>
 
 #include "engine/RaceManager.h"
+#include "engine/sky/Sky.h"
 
 float OTRGetAspectRatio(void);
 
@@ -2336,7 +2337,7 @@ void update_snowflakes(void) {
 
 void func_80078C70() {
     if (D_801657C8 == 0) {
-        CM_TickClouds();
+        TickSkyActors();
     }
 }
 

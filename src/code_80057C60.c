@@ -412,31 +412,31 @@ void func_80057C60(void) {
 void func_80057CE4(void) {
     switch (D_8018D21C) {
         case 0:
-            func_802A3730(gScreenOneCtx);
+            race_set_viewport(gScreenOneCtx);
             break;
         case 1:
-            func_802A3730(gScreenOneCtx);
+            race_set_viewport(gScreenOneCtx);
             break;
         case 2:
-            func_802A3730(gScreenTwoCtx);
+            race_set_viewport(gScreenTwoCtx);
             break;
         case 3:
-            func_802A3730(gScreenOneCtx);
+            race_set_viewport(gScreenOneCtx);
             break;
         case 4:
-            func_802A3730(gScreenTwoCtx);
+            race_set_viewport(gScreenTwoCtx);
             break;
         case 8:
-            func_802A3730(gScreenOneCtx);
+            race_set_viewport(gScreenOneCtx);
             break;
         case 9:
-            func_802A3730(gScreenTwoCtx);
+            race_set_viewport(gScreenTwoCtx);
             break;
         case 10:
-            func_802A3730(gScreenThreeCtx);
+            race_set_viewport(gScreenThreeCtx);
             break;
         case 11:
-            func_802A3730(gScreenFourCtx);
+            race_set_viewport(gScreenFourCtx);
             break;
     }
 }

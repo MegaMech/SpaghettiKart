@@ -1,6 +1,6 @@
 #include <libultraship.h>
 #include <libultra/gbi.h>
-#include "SkyboxStar.h"
+#include "SkyStar.h"
 #include <vector>
 #include "engine/tracks/Track.h"
 #include "engine/World.h"
@@ -19,9 +19,9 @@ extern "C" {
 #include "render_objects.h"
 }
 
-size_t SkyboxStar::_count = 0;
+size_t SkyStar::_count = 0;
 
-SkyboxStar::SkyboxStar(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) : SkyboxCloud(screen) {
+SkyStar::SkyStar(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) : SkyActor(screen) {
     _idx = _count;
 
     // ItemWindowObjects* temp_v0;
@@ -53,7 +53,7 @@ SkyboxStar::SkyboxStar(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 ro
     _count += 1;
 }
 
-void SkyboxStar::Tick() {
+void SkyStar::Tick() {
     s16 cameraRot;
 
     s16 mUnk200 = mScreen->camera->fieldOfView + 40.0f;
@@ -103,7 +103,7 @@ void SkyboxStar::Tick() {
     }
 }
 
-void SkyboxStar::Draw(ScreenContext* screen, s32 arg0) { // render_stars
+void SkyStar::Draw(ScreenContext* screen, s32 arg0) { // render_stars
     s32 posY = arg0 - mY;
     func_8004B414(255, 255, 255, 255);
     if (mVisible) {
@@ -119,7 +119,7 @@ void SkyboxStar::Draw(ScreenContext* screen, s32 arg0) { // render_stars
     }
 }
 
-bool SkyboxStar::star_func_80073B78(s32 arg0, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+bool SkyStar::star_func_80073B78(s32 arg0, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
     s32 phi_t0;
 
     phi_t0 = false;

@@ -47,6 +47,7 @@
 #include "engine/Matrix.h"
 #include "engine/tracks/Track.h"
 #include "engine/TrackBrowser.h"
+#include "engine/sky/Sky.h"
 
 #include "port/interpolation/FrameInterpolation.h"
 #include "assets/textures/tracks/sherbet_land/sherbet_land_data.h"
@@ -3484,7 +3485,7 @@ void func_80051ABC(ScreenContext* screen, s16 arg0, s32 arg1) {
 
     D_8018D228 = 0xFF;
     gSPDisplayList(gDisplayListHead++, D_0D007A60);
-    CM_DrawClouds(screen, arg0);
+    DrawSkyActors(screen, arg0);
 }
 
 void func_80051C60(ScreenContext* screen, s16 arg0, s32 arg1) {
@@ -3511,7 +3512,7 @@ void func_80051C60(ScreenContext* screen, s16 arg0, s32 arg1) {
 
     D_8018D228 = 0xFF;
     gSPDisplayList(gDisplayListHead++, D_0D007A60);
-    CM_DrawClouds(screen, arg0);
+    DrawSkyActors(screen, arg0);
 }
 
 void func_80051EBC(ScreenContext* screen) {

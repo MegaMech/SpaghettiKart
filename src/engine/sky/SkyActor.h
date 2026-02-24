@@ -10,25 +10,19 @@ extern "C" {
 }
 
 /**
- * Skybox clouds
+ * SkyActor base class
  *
- * @cloudVariant The cloud texture to use
+ *
  */
-class SkyboxCloud {
+class SkyActor {
 public:
-    SkyboxCloud(ScreenContext* screen);
-    SkyboxCloud(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent);
+    SkyActor(ScreenContext* screen) {
+        mScreen = screen;
+    };
+    SkyActor(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, u16 scalePercent) {};
 
-    ~SkyboxCloud() {
-        _count--;
-    }
-
-    static size_t GetCount() {
-        return _count;
-    }
-
-    virtual void Draw(ScreenContext* ctx, s32 arg0);
-    virtual void Tick();
+    virtual void Draw(ScreenContext* ctx, s32 arg0) {};
+    virtual void Tick() {};
     ScreenContext* mScreen;
 protected:
     f32 mScale;
@@ -48,7 +42,4 @@ protected:
     s16 mUnk210;
     f32 mUnk1E8;
     s16 mUnk218;
-private:
-    static size_t _count;
-    size_t _idx;
 };

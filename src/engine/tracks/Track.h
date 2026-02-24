@@ -351,9 +351,6 @@ public:
      */
     virtual void BeginPlay();
     void SpawnActors();
-    void InitClouds(ScreenContext* screen);
-    void TickClouds();
-    virtual void DrawClouds(ScreenContext* ctx, s32);
     virtual void SomeCollisionThing(Player *player, Vec3f arg1, Vec3f arg2, Vec3f arg3, f32* arg4, f32* arg5, f32* arg6, f32* arg7);
     virtual void InitTrackObjects();
     virtual void TickTrackObjects();
