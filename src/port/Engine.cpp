@@ -176,7 +176,7 @@ GameEngine::GameEngine() {
     // auto wnd = std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({}));
     // auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
 
-    this->context->Init({assets_path}, {}, 3, { 26800, 512, SAMPLES_LOW }, wnd, controlDeck);
+    this->context->Init({assets_path}, {}, 3, { 26800, 2048, SAMPLES_LOW }, wnd, controlDeck);
 
 #ifndef __SWITCH__
     Ship::Context::GetInstance()->GetLogger()->set_level(
