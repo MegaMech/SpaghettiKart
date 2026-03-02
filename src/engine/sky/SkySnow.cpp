@@ -25,7 +25,7 @@ size_t SkySnow::_count = 0;
 SkySnow::SkySnow(ScreenContext* screen) : SkyActor(screen) {
     _idx = _count;
 
-    mVtx = LOAD_ASSET(common_vtx_rectangle);
+    mVtx = (Vtx*)LOAD_ASSET(common_vtx_rectangle);
     mState = 0;
     mState2 = 0;
 
