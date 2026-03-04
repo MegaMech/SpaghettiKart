@@ -994,6 +994,7 @@ extern "C"
         push_frame();
     }
     CustomEngineDestroy();
+    RaphnetShutdown();
     // GameEngine::Instance->ProcessFrame(push_frame);
     GameEngine::Instance->Destroy();
     return 0;
