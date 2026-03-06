@@ -29,7 +29,7 @@ void PlayerBombKart::Draw(size_t playerId, s32 cameraId) { // render_player_bomb
         surfaceHeight = player->unk_074;
         PlayerBombKart::func_800563DC(cameraId, _primAlpha);
         PlayerBombKart::func_8005669C(cameraId, _primAlpha);
-        PlayerBombKart::func_800568A0(cameraId);
+        PlayerBombKart::LoadMtx(cameraId);
     }
 }
 
@@ -123,7 +123,7 @@ void PlayerBombKart::func_8005669C(s32 cameraId, s32 arg2) {
     gSPTexture(gDisplayListHead++, 1, 1, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void PlayerBombKart::func_800568A0(s32 cameraId) {
+void PlayerBombKart::LoadMtx(s32 cameraId) { // func_800568A0
     Mat4 mtx;
     Player* player;
 
