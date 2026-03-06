@@ -1,5 +1,10 @@
 var NAVTREEINDEX40 =
 {
+"main_8c.html#ab4592c36d85296c8afaef47d21ba69b4":[20,0,3,44,178],
+"main_8c.html#ab56d73cf9e098528ad12698c2317f0cb":[20,0,3,44,146],
+"main_8c.html#ab5e1beb2a24d8119d788c07e60ab12a3":[20,0,3,44,89],
+"main_8c.html#ab6de5c4a438055408ee2c63f8a86464a":[20,0,3,44,36],
+"main_8c.html#aba0c596d5110b8f262bd184243438624":[20,0,3,44,165],
 "main_8c.html#abae3d034568d1ee43039f8039da558f5":[20,0,3,44,136],
 "main_8c.html#abce1f62cff197652e4fb9de28d2c1fda":[20,0,3,44,170],
 "main_8c.html#ac0a4ad3e8d61954f342561c8188a6353":[20,0,3,44,166],
@@ -244,10 +249,5 @@ var NAVTREEINDEX40 =
 "mario__sign_2update_8inc_8c_source.html":[20,0,3,0,10,1],
 "materials.html":[14,3],
 "materials.html#materials":[14,3,0],
-"math_8h.html":[20,0,2,2,0],
-"math_8h.html#a0546342e76f932239ccd5f92144a311b":[20,0,2,2,0,2],
-"math_8h.html#a312367f3e117fc37059783c301766042":[20,0,2,2,0,4],
-"math_8h.html#a37bde043e94a6f074c78f10518fb5d99":[20,0,2,2,0,5],
-"math_8h.html#a75f4e4dd379376514613d7ec27902d07":[20,0,2,2,0,1],
-"math_8h.html#ad910bc71940a50c2a35d308c236013b6":[20,0,2,2,0,3]
+"math_8h.html":[20,0,2,2,0]
 };
