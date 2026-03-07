@@ -28,22 +28,22 @@ SkyCloud::SkyCloud(ScreenContext* screen, u16 cloudVariant, u16 posY, u16 rotY, 
     mRotY = rotY;
     mScale = (f32) scalePercent / 100.0;
 
+    // Stock
     if (GameEngine_ResourceGetTexTypeByName((const char*)CM_GetProps()->CloudTexture) != 1) {
         mTexture = ((u8*) LOAD_ASSET_RAW(CM_GetProps()->CloudTexture)) + (cloudVariant * 1024);
-        mTextureWidth = 64;
-        mTextureHeight = 32;
         mVtx = (Vtx*)D_0D005FB0;
-    } else {
+    } else { // Texture pack
         mTexture = CM_GetProps()->CloudTexture;
-        if (strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust0) == 0 ||
+
+        if ((strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust3) == 0) ||
+           (strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust4) == 0) ||
+           (strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust5) == 0)) {
+            mVtx = cloudvtx[cloudVariant];
+        } else if (strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust0) == 0 ||
             strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust1) == 0 ||
             strcmp((const char*)CM_GetProps()->CloudTexture, gTextureExhaust2) == 0) {
-            mTextureWidth = 64;
-            mTextureHeight = 32;
             mVtx = cloudvtx2[cloudVariant];
         } else {
-            mTextureWidth = 64;
-            mTextureHeight = 32;
             mVtx = cloudvtx2[cloudVariant];
         }
     }
