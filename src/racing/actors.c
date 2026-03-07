@@ -568,6 +568,7 @@ void render_cows(Camera* camera, Mat4 arg1) {
                         break;
                 }
             } else {
+                FrameInterpolation_RecordCloseChild();
                 return;
             }
 
