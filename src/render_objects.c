@@ -3502,7 +3502,7 @@ void func_80051C60(ScreenContext* screen, s16 arg0, s32 arg1) {
 
     D_8018D228 = 0xFF;
     gSPDisplayList(gDisplayListHead++, D_0D007A60);
-    DrawSkyActors(screen, arg0);
+    DrawSkyActors(screen, var_s5);
 }
 
 void func_80051EBC(ScreenContext* screen) {
