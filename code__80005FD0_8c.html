@@ -119,17 +119,17 @@ $(function(){initNavTree('code__80005FD0_8c.html',''); initResizable(true); });
 <code>#include &quot;<a class="el" href="course__metadata_8h_source.html">course_metadata.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="align__asset__macro_8h_source.html">align_asset_macro.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="code__80005FD0_8h_source.html">code_80005FD0.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="math__util_8h_source.html">math_util.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="math__util_8h_source.html">racing/math_util.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="code__800029B0_8h_source.html">code_800029B0.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="memory_8h_source.html">racing/memory.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="waypoints_8h_source.html">waypoints.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="camera_8h_source.html">camera.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="actors_8h_source.html">actors.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="actors__extended_8h_source.html">actors_extended.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="actors_8h_source.html">racing/actors.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="actors__extended_8h_source.html">racing/actors_extended.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="render__player_8h_source.html">render_player.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="player__controller_8h_source.html">player_controller.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="update__objects_8h_source.html">update_objects.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="collision_8h_source.html">collision.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="collision_8h_source.html">racing/collision.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="actor__types_8h_source.html">actor_types.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="vehicles_8h_source.html">vehicles.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="render__objects_8h_source.html">render_objects.h</a>&quot;</code><br />
@@ -153,6 +153,7 @@ $(function(){initNavTree('code__80005FD0_8c.html',''); initResizable(true); });
 <code>#include &lt;<a class="el" href="other_2tracks_2dks__jungle__parkway_2dks__jungle__parkway__data_8h_source.html">assets/other/tracks/dks_jungle_parkway/dks_jungle_parkway_data.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="stdio_8h_source.html">stdio.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="Game_8h_source.html">port/Game.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="FrameInterpolation_8h_source.html">port/interpolation/FrameInterpolation.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Track_8h_source.html">engine/tracks/Track.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="RaceManager_8h_source.html">engine/RaceManager.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -467,8 +468,8 @@ Functions</h2></td></tr>
 <tr class="separator:a61da9c57e00b21e4a075bf9d41b932a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6065fa509a905eea7a2993cc3cfbb21e" id="r_a6065fa509a905eea7a2993cc3cfbb21e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6065fa509a905eea7a2993cc3cfbb21e">func_80019760</a> (<a class="el" href="structCamera.html">Camera</a> *camera, <a class="el" href="macros_8h.html#addf5ec070e9499d36b7f2009ce736076">UNUSED</a> <a class="el" href="structPlayer.html">Player</a> *player, <a class="el" href="macros_8h.html#addf5ec070e9499d36b7f2009ce736076">UNUSED</a> s32 arg2, s32 cameraId)</td></tr>
 <tr class="separator:a6065fa509a905eea7a2993cc3cfbb21e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d21c866c74e866e873dfd2f67c3c8da" id="r_a8d21c866c74e866e873dfd2f67c3c8da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d21c866c74e866e873dfd2f67c3c8da">func_80019890</a> (s32 playerId, s32 cameraId)</td></tr>
-<tr class="separator:a8d21c866c74e866e873dfd2f67c3c8da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04597eec92885142343602eb9cd67c8a" id="r_a04597eec92885142343602eb9cd67c8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04597eec92885142343602eb9cd67c8a">camera_start_cinematic_shot</a> (s32 playerId, s32 cameraId)</td></tr>
+<tr class="separator:a04597eec92885142343602eb9cd67c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab87e9390ad2244500d6a53bc8e2a691d" id="r_ab87e9390ad2244500d6a53bc8e2a691d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab87e9390ad2244500d6a53bc8e2a691d">func_80019B50</a> (s32 cameraIndex, u16 arg1)</td></tr>
 <tr class="separator:ab87e9390ad2244500d6a53bc8e2a691d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac306b17b11732c3c7c9af2345a8ae11" id="r_aac306b17b11732c3c7c9af2345a8ae11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac306b17b11732c3c7c9af2345a8ae11">func_80019C50</a> (s32 arg0)</td></tr>
@@ -532,8 +533,8 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a7473afe7e772bc76f862d6f6c4a13e6c" id="r_a7473afe7e772bc76f862d6f6c4a13e6c"><td class="memItemLeft" align="right" valign="top">s32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7473afe7e772bc76f862d6f6c4a13e6c">unk_code_80005FD0_pad</a> [24]</td></tr>
 <tr class="separator:a7473afe7e772bc76f862d6f6c4a13e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f1bec6a948cfc6fb38f786373418818" id="r_a0f1bec6a948cfc6fb38f786373418818"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCollision.html">Collision</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f1bec6a948cfc6fb38f786373418818">D_80162E70</a></td></tr>
-<tr class="separator:a0f1bec6a948cfc6fb38f786373418818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8804235d6340bbd1db534a4d85492d86" id="r_a8804235d6340bbd1db534a4d85492d86"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structCollision.html">Collision</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8804235d6340bbd1db534a4d85492d86">D_80162E70</a></td></tr>
+<tr class="separator:a8804235d6340bbd1db534a4d85492d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea1b0842597217be22e4a206f8e04f14" id="r_aea1b0842597217be22e4a206f8e04f14"><td class="memItemLeft" align="right" valign="top">s16&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea1b0842597217be22e4a206f8e04f14">D_80162EB0</a></td></tr>
 <tr class="separator:aea1b0842597217be22e4a206f8e04f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67b8b27a93b08bee86ed5f88a479e2e3" id="r_a67b8b27a93b08bee86ed5f88a479e2e3"><td class="memItemLeft" align="right" valign="top">s16&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67b8b27a93b08bee86ed5f88a479e2e3">D_80162EB2</a></td></tr>
@@ -738,8 +739,8 @@ Variables</h2></td></tr>
 <tr class="separator:a09e11c2d2b010ef391c82fa12e4bd5fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3cbac5b1e139c4891df180254ec34b3" id="r_ac3cbac5b1e139c4891df180254ec34b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structBombKart.html">BombKart</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3cbac5b1e139c4891df180254ec34b3">gBombKarts</a> [<a class="el" href="bomb__kart_8h.html#a4e55b67d5f1a388b6fb2cec53ec24846">NUM_BOMB_KARTS_MAX</a>]</td></tr>
 <tr class="separator:ac3cbac5b1e139c4891df180254ec34b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6453b1c7409232f848e8fbda7987b763" id="r_a6453b1c7409232f848e8fbda7987b763"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCollision.html">Collision</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6453b1c7409232f848e8fbda7987b763">gBombKartCollision</a> [<a class="el" href="bomb__kart_8h.html#a4e55b67d5f1a388b6fb2cec53ec24846">NUM_BOMB_KARTS_MAX</a>]</td></tr>
-<tr class="separator:a6453b1c7409232f848e8fbda7987b763"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9633fe2991cdb194ba4214a324a96549" id="r_a9633fe2991cdb194ba4214a324a96549"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structCollision.html">Collision</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9633fe2991cdb194ba4214a324a96549">gBombKartCollision</a> [<a class="el" href="bomb__kart_8h.html#a4e55b67d5f1a388b6fb2cec53ec24846">NUM_BOMB_KARTS_MAX</a>]</td></tr>
+<tr class="separator:a9633fe2991cdb194ba4214a324a96549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84f9a428f9485f5a469a669ee4f0777b" id="r_a84f9a428f9485f5a469a669ee4f0777b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structunexpiredActors.html">unexpiredActors</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84f9a428f9485f5a469a669ee4f0777b">gUnexpiredActorsList</a> [8]</td></tr>
 <tr class="separator:a84f9a428f9485f5a469a669ee4f0777b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9bd3f08a3c4ccb917b736090c68e272" id="r_ac9bd3f08a3c4ccb917b736090c68e272"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCpuItemStrategyData.html">CpuItemStrategyData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9bd3f08a3c4ccb917b736090c68e272">cpu_ItemStrategy</a> [8]</td></tr>
@@ -1259,7 +1260,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structBananaActor.html">BananaActor</a>*) (actor))</div>
-<div class="ttc" id="astructBananaActor_html"><div class="ttname"><a href="structBananaActor.html">BananaActor</a></div><div class="ttdef"><b>Definition</b> actor_types.h:400</div></div>
+<div class="ttc" id="astructBananaActor_html"><div class="ttname"><a href="structBananaActor.html">BananaActor</a></div><div class="ttdef"><b>Definition</b> actor_types.h:408</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1278,7 +1279,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structBananaBunchParent.html">BananaBunchParent</a>*) (actor))</div>
-<div class="ttc" id="astructBananaBunchParent_html"><div class="ttname"><a href="structBananaBunchParent.html">BananaBunchParent</a></div><div class="ttdef"><b>Definition</b> actor_types.h:384</div></div>
+<div class="ttc" id="astructBananaBunchParent_html"><div class="ttname"><a href="structBananaBunchParent.html">BananaBunchParent</a></div><div class="ttdef"><b>Definition</b> actor_types.h:392</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1300,7 +1301,7 @@ Variables</h2></td></tr>
 <div class="line">    b = <a class="code hl_define" href="#afca0f7e6a7fc5d3e6f51a6426cfb755a">calc_b</a>(50, table[<a class="code hl_define" href="defines_8h.html#a3aa8951f5d490e4f7c381143fd66e8ee">CC_50</a>], a);                  \</div>
 <div class="line">    <a class="code hl_variable" href="#a5d79d803e6d03e10108fbd6ff715ca4c">cpu_TargetSpeed</a>[playerId] = a * CVarGetFloat(<span class="stringliteral">&quot;gCustomCC&quot;</span>, 150.0f) + b;</div>
 <div class="ttc" id="acode__80005FD0_8c_html_a2570dc81a51135eddff01c799994f684"><div class="ttname"><a href="#a2570dc81a51135eddff01c799994f684">calc_a</a></div><div class="ttdeci">#define calc_a(x, y, x2, y2)</div></div>
-<div class="ttc" id="acode__80005FD0_8c_html_a5d79d803e6d03e10108fbd6ff715ca4c"><div class="ttname"><a href="#a5d79d803e6d03e10108fbd6ff715ca4c">cpu_TargetSpeed</a></div><div class="ttdeci">f32 cpu_TargetSpeed[10]</div><div class="ttdef"><b>Definition</b> code_80005FD0.c:78</div></div>
+<div class="ttc" id="acode__80005FD0_8c_html_a5d79d803e6d03e10108fbd6ff715ca4c"><div class="ttname"><a href="#a5d79d803e6d03e10108fbd6ff715ca4c">cpu_TargetSpeed</a></div><div class="ttdeci">f32 cpu_TargetSpeed[10]</div><div class="ttdef"><b>Definition</b> code_80005FD0.c:79</div></div>
 <div class="ttc" id="acode__80005FD0_8c_html_afca0f7e6a7fc5d3e6f51a6426cfb755a"><div class="ttname"><a href="#afca0f7e6a7fc5d3e6f51a6426cfb755a">calc_b</a></div><div class="ttdeci">#define calc_b(x, y, b)</div></div>
 <div class="ttc" id="adefines_8h_html_a3aa8951f5d490e4f7c381143fd66e8ee"><div class="ttname"><a href="defines_8h.html#a3aa8951f5d490e4f7c381143fd66e8ee">CC_50</a></div><div class="ttdeci">#define CC_50</div><div class="ttdoc">Options for gCCSelection CC stands for cubic-centimetres. It measures engine displacement composed fr...</div><div class="ttdef"><b>Definition</b> defines.h:169</div></div>
 <div class="ttc" id="adefines_8h_html_a7f414af5293a3216eae978df3b0594db"><div class="ttname"><a href="defines_8h.html#a7f414af5293a3216eae978df3b0594db">CC_150</a></div><div class="ttdeci">#define CC_150</div><div class="ttdef"><b>Definition</b> defines.h:171</div></div>
@@ -1381,7 +1382,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structFakeItemBox.html">FakeItemBox</a>*) (actor))</div>
-<div class="ttc" id="astructFakeItemBox_html"><div class="ttname"><a href="structFakeItemBox.html">FakeItemBox</a></div><div class="ttdef"><b>Definition</b> actor_types.h:367</div></div>
+<div class="ttc" id="astructFakeItemBox_html"><div class="ttname"><a href="structFakeItemBox.html">FakeItemBox</a></div><div class="ttdef"><b>Definition</b> actor_types.h:375</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1422,7 +1423,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structShellActor.html">ShellActor</a>*) (actor))</div>
-<div class="ttc" id="astructShellActor_html"><div class="ttname"><a href="structShellActor.html">ShellActor</a></div><div class="ttdef"><b>Definition</b> actor_types.h:320</div></div>
+<div class="ttc" id="astructShellActor_html"><div class="ttname"><a href="structShellActor.html">ShellActor</a></div><div class="ttdef"><b>Definition</b> actor_types.h:328</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1915,6 +1916,37 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a04597eec92885142343602eb9cd67c8a" name="a04597eec92885142343602eb9cd67c8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04597eec92885142343602eb9cd67c8a">&#9670;&#160;</a></span>camera_start_cinematic_shot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void camera_start_cinematic_shot </td>
+          <td>(</td>
+          <td class="paramtype">s32</td>          <td class="paramname"><span class="paramname"><em>playerId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">s32</td>          <td class="paramname"><span class="paramname"><em>cameraId</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="code__80005FD0_8c_a04597eec92885142343602eb9cd67c8a_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="code__80005FD0_8c_a04597eec92885142343602eb9cd67c8a_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
 <a id="af5bf18570443fd4bb2f6ec223f78007e" name="af5bf18570443fd4bb2f6ec223f78007e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af5bf18570443fd4bb2f6ec223f78007e">&#9670;&#160;</a></span>check_ai_crossing_distance()</h2>
 
@@ -1977,11 +2009,6 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="code__80005FD0_8c_a1d577f6ac2cae56acf36da0dcc5e21f8_cgraph.svg" width="248" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -4012,37 +4039,6 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a8d21c866c74e866e873dfd2f67c3c8da" name="a8d21c866c74e866e873dfd2f67c3c8da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d21c866c74e866e873dfd2f67c3c8da">&#9670;&#160;</a></span>func_80019890()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void func_80019890 </td>
-          <td>(</td>
-          <td class="paramtype">s32</td>          <td class="paramname"><span class="paramname"><em>playerId</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">s32</td>          <td class="paramname"><span class="paramname"><em>cameraId</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="code__80005FD0_8c_a8d21c866c74e866e873dfd2f67c3c8da_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="code__80005FD0_8c_a8d21c866c74e866e873dfd2f67c3c8da_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
 <a id="ab87e9390ad2244500d6a53bc8e2a691d" name="ab87e9390ad2244500d6a53bc8e2a691d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab87e9390ad2244500d6a53bc8e2a691d">&#9670;&#160;</a></span>func_80019B50()</h2>
 
@@ -5561,7 +5557,7 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo</a></b></dt><dd>Confirm this comment </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo</a></b></dt><dd>Confirm this comment </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -9656,14 +9652,14 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a0f1bec6a948cfc6fb38f786373418818" name="a0f1bec6a948cfc6fb38f786373418818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f1bec6a948cfc6fb38f786373418818">&#9670;&#160;</a></span>D_80162E70</h2>
+<a id="a8804235d6340bbd1db534a4d85492d86" name="a8804235d6340bbd1db534a4d85492d86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8804235d6340bbd1db534a4d85492d86">&#9670;&#160;</a></span>D_80162E70</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structCollision.html">Collision</a> D_80162E70</td>
+          <td class="memname">struct <a class="el" href="structCollision.html">Collision</a> D_80162E70</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -10818,14 +10814,14 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a6453b1c7409232f848e8fbda7987b763" name="a6453b1c7409232f848e8fbda7987b763"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6453b1c7409232f848e8fbda7987b763">&#9670;&#160;</a></span>gBombKartCollision</h2>
+<a id="a9633fe2991cdb194ba4214a324a96549" name="a9633fe2991cdb194ba4214a324a96549"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9633fe2991cdb194ba4214a324a96549">&#9670;&#160;</a></span>gBombKartCollision</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structCollision.html">Collision</a> gBombKartCollision[<a class="el" href="bomb__kart_8h.html#a4e55b67d5f1a388b6fb2cec53ec24846">NUM_BOMB_KARTS_MAX</a>]</td>
+          <td class="memname">struct <a class="el" href="structCollision.html">Collision</a> gBombKartCollision[<a class="el" href="bomb__kart_8h.html#a4e55b67d5f1a388b6fb2cec53ec24846">NUM_BOMB_KARTS_MAX</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">

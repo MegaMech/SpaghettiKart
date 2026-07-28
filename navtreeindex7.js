@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"all__course__offsets_8h.html":[20,0,0,23],
+"all__course__offsets_8h.html#a148f6ab81ba12bea276eb1a9b909b7a3":[20,0,0,23,0],
+"all__course__offsets_8h.html#a16768b11051ff2525aea44815a1a845d":[20,0,0,23,12],
 "all__course__offsets_8h.html#a1752f55f9a1868983cdb97b5ce7e03b5":[20,0,0,23,5],
 "all__course__offsets_8h.html#a1ecd299d09faca95e0415207acde8c87":[20,0,0,23,10],
 "all__course__offsets_8h.html#a274efac433b244bdfadbd0b2f434d488":[20,0,0,23,6],
@@ -153,8 +156,8 @@ var NAVTREEINDEX7 =
 "bomb__kart_8h.html#a32c125e2e9ef53f9b6115a90a09788aa":[20,0,2,6,3],
 "bomb__kart_8h.html#a4e55b67d5f1a388b6fb2cec53ec24846":[20,0,2,6,9],
 "bomb__kart_8h.html#a5ca28a405707226930e06ee84dde962a":[20,0,2,6,6],
-"bomb__kart_8h.html#a6453b1c7409232f848e8fbda7987b763":[20,0,2,6,11],
 "bomb__kart_8h.html#a7478ae92d607d5622fc21aab2ad5bd46":[20,0,2,6,13],
+"bomb__kart_8h.html#a9633fe2991cdb194ba4214a324a96549":[20,0,2,6,11],
 "bomb__kart_8h.html#aa5f0e977131ff31701339219d424359f":[20,0,2,6,10],
 "bomb__kart_8h.html#abcecd1bb778612f9abaec48133c6f248":[20,0,2,6,8],
 "bomb__kart_8h.html#ac3cbac5b1e139c4891df180254ec34b3":[20,0,2,6,12],
@@ -185,7 +188,6 @@ var NAVTREEINDEX7 =
 "bstring_8h.html#a41defc2ecf285507e63eb254a8b427fd":[20,0,3,8,31,0],
 "bstring_8h.html#a8f1a0f470802fada1c57bec05015a780":[20,0,3,8,31,2],
 "bstring_8h.html#aa4c3aee2deb111efd7af25f98541c29a":[20,0,3,8,31,1],
-"bstring_8h.html#ab828ad07c8ebf898973f27778c543651":[20,0,3,8,31,3],
 "bstring_8h_source.html":[20,0,3,8,31],
 "buffers_8c.html":[20,0,3,2,2],
 "buffers_8c.html#a3c3037936f404262e994e5d5b6c62d3a":[20,0,3,2,2,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "camera_8c.html#adb508bad7e7abb808379aa8124ed4f4e":[20,0,3,14,4],
 "camera_8c.html#ae341a27f4172416f06cc042880ec71e8":[20,0,3,14,12],
 "camera_8c.html#ae3b59a842743caf3f4fdf2a1072291b9":[20,0,3,14,37],
-"camera_8c.html#afc696d330a43c679b7e2765f676a6082":[20,0,3,14,25],
-"camera_8h.html":[20,0,3,15],
-"camera_8h.html#a039df712daf24662159a64e93e417daf":[20,0,3,15,13]
+"camera_8c.html#afc696d330a43c679b7e2765f676a6082":[20,0,3,14,25]
 };

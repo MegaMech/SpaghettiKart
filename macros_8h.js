@@ -2,6 +2,7 @@ var macros_8h =
 [
     [ "ALIGN16", "macros_8h.html#a08b2c3c00c27891c0b0179c9d8a1c2b6", null ],
     [ "ALIGNED16", "macros_8h.html#a3fcac48969e76bd4245894796b40b7b6", null ],
+    [ "ALIGNED4096", "macros_8h.html#a75331565a964c7a959c3bcd10588551d", null ],
     [ "ALIGNED8", "macros_8h.html#afcf59d0855225b13f2060708ce1d6a9f", null ],
     [ "ARRAY_COUNT", "macros_8h.html#a4bf0a01781df461ad257e5391ac09ae7", null ],
     [ "BSWAP16", "macros_8h.html#a5b9670220af6a7b1f964e53887255cab", null ],
@@ -17,7 +18,6 @@ var macros_8h =
     [ "MAX", "macros_8h.html#afa99ec4acc4ecb2dc3c2d05da15d0e3f", null ],
     [ "MIN", "macros_8h.html#a3acffbd305ee72dcd4593c0d8af64a4f", null ],
     [ "NO_REORDER", "macros_8h.html#a981d727c769c9516175fef643b82477d", null ],
-    [ "NORETURN", "macros_8h.html#aa1728270d73c5d1598de1fd691762eb1", null ],
     [ "NORETURN", "macros_8h.html#aa1728270d73c5d1598de1fd691762eb1", null ],
     [ "PHYSICAL_TO_VIRTUAL", "macros_8h.html#ac1d0bb67b7c87d4c00796bc18d1f2e23", null ],
     [ "STATIC_ASSERT", "macros_8h.html#a8ce491b27b644889db1ca99d8c99c24e", null ],
