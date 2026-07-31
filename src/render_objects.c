@@ -2133,119 +2133,12 @@ void draw_hud_2d_texture_8x8(s32 x, s32 y, u8* texture) {
     }
 }
 
-UNUSED void draw_hud_2d_texture_8x16(s32 x, s32 y, u8* texture) {
-    draw_hud_2d_texture_wide(x, y, 8, 16, texture);
-}
-
-UNUSED void draw_hud_2d_texture_16x16(s32 x, s32 y, u8* texture) {
-    draw_hud_2d_texture_wide(x, y, 16, 16, texture);
-}
-
 void draw_hud_2d_texture_32x8(s32 x, s32 y, u8* texture) {
     draw_hud_2d_texture_wide(x, y, 32, 8, texture);
 }
 
 void draw_hud_2d_texture_32x16(s32 x, s32 y, u8* texture) {
     draw_hud_2d_texture_wide(x, y, 32, 16, texture);
-}
-
-UNUSED void func_8004CBC0(s32 arg0, s32 arg1, f32 arg2, u8* texture) {
-    func_8004CA58(arg0, arg1, arg2, texture, 32, 16);
-}
-
-UNUSED void draw_hud_2d_texture_32x32(s32 x, s32 y, u8* texture) {
-    draw_hud_2d_texture_wide(x, y, 32, 32, texture);
-}
-
-UNUSED void func_8004CC24(s32 arg0, s32 arg1, u8* texture) {
-    func_8004C628(arg0, arg1, 32, 32, texture);
-}
-
-UNUSED void draw_hud_2d_texture_40x32(s32 x, s32 y, u8* texture) {
-    draw_hud_2d_texture_wide(x, y, 40, 32, texture);
-}
-
-UNUSED void func_8004CC84(s32 x, s32 y, u8* texture) {
-    func_8004C91C(x, y, texture, 48, 48, 24);
-}
-
-UNUSED void func_8004CCB4(s32 x, s32 y, u8* texture) {
-    draw_hud_2d_texture_wide(x, y, 64, 32, texture);
-}
-
-UNUSED void func_8004CCE4(s32 arg0, s32 arg1, f32 arg2, u8* texture) {
-    func_8004CA58(arg0, arg1, arg2, texture, 64, 32);
-}
-
-UNUSED void func_8004CD18(s32 arg0, s32 arg1, u8* texture) {
-    func_8004C91C(arg0, arg1, texture, 64, 64, 32);
-}
-
-UNUSED void func_8004CD48(s32 arg0, s32 arg1, UNUSED u8* texture, s32 width, s32 arg4, s32 height) {
-    UNUSED s32 pad;
-    s32 var_s0;
-    s32 i;
-    u8* img;
-
-    var_s0 = arg1 - (arg4 / 2);
-    gSPDisplayList(gDisplayListHead++, D_0D007FE0);
-
-    for (i = 0; i < arg4 / height; i++) {
-        load_texture_block_ia16_nomirror(img, width, height);
-        func_8004B97C_wide(arg0 - (width / 2), var_s0, width, height, 1);
-        img += width * height * 2;
-        var_s0 += height;
-    }
-}
-
-UNUSED void func_8004CE8C(s32 arg0, s32 arg1, u8* texture, s32 width, s32 arg4, s32 height) {
-    s32 var_s0 = arg1 - (arg4 / 2);
-    s32 i;
-    u8* img = texture;
-
-    for (i = 0; i < arg4 / height; i++) {
-        load_texture_block_ia8_nomirror(img, width, height);
-        func_8004B97C_wide(arg0 - (width / 2), var_s0, width, height, 1);
-        img += width * height;
-        var_s0 += height;
-    }
-}
-
-UNUSED void func_8004CF9C(s32 arg0, s32 arg1, u8* texture, s32 arg3, s32 arg4, UNUSED s32 arg5, s32 arg6) {
-    gSPDisplayList(gDisplayListHead++, D_0D007FE0);
-    func_8004CE8C(arg0, arg1, texture, arg3, arg4, arg6);
-}
-
-UNUSED void func_8004CFF0(s32 arg0, s32 arg1, u8* texture, s32 arg3, s32 arg4, UNUSED s32 arg5, s32 arg6) {
-    gSPDisplayList(gDisplayListHead++, D_0D008000);
-    func_8004CE8C(arg0, arg1, texture, arg3, arg4, arg6);
-}
-
-UNUSED void func_8004D044(s32 arg0, s32 arg1, u8* texture, s32 red, s32 green, s32 blue, s32 alpha, s32 arg7, s32 arg8,
-                          UNUSED s32 arg9, s32 argA) {
-    gSPDisplayList(gDisplayListHead++, D_0D007FE0);
-    func_8004B35C(red, green, blue, alpha);
-    func_8004CE8C(arg0, arg1, texture, arg7, arg8, argA);
-}
-
-UNUSED void func_8004D0CC(void) {
-}
-
-UNUSED void func_8004D0D4(s32 arg0, s32 arg1, u8* texture, s32 width, s32 arg4, s32 height) {
-    s32 var_s0;
-    u8* img;
-    s32 i;
-
-    var_s0 = arg1 - (arg4 / 2);
-    img = texture;
-    gSPDisplayList(gDisplayListHead++, D_0D007FE0);
-
-    for (i = 0; i < arg4 / height; i++) {
-        func_80044924(img, width, height);
-        func_8004B97C_wide(arg0 - (width / 2), var_s0, width, height, 1);
-        img += width * height;
-        var_s0 += height;
-    }
 }
 
 void func_8004D210(s32 arg0, s32 arg1, u8* texture, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 width, s32 arg8,
