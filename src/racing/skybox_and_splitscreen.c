@@ -257,13 +257,6 @@ UNUSED void func_802A40D4(void) {
 UNUSED void func_802A40DC(void) {
 }
 
-UNUSED s32 set_viewport2(void) {
-    gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&gScreenOneCtx->viewport));
-    gSPClearGeometryMode(gDisplayListHead++, G_CLEAR_ALL_MODES);
-    gSPSetGeometryMode(gDisplayListHead++,
-                       G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH | G_CLIPPING);
-}
-
 void set_viewport(void) {
     gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(D_802B8880));
     gSPClearGeometryMode(gDisplayListHead++, G_CLEAR_ALL_MODES);
