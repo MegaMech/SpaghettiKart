@@ -71,7 +71,6 @@ Vtx common_vtx_crab[] = {
     { { { -32, 31, 0 }, 0, { 0, 3968 }, { 255, 255, 255, 255 } } },
 };
 
-
 void OCrab::Draw(s32 cameraId) {
     Camera* camera;
     s32 objectIndex = _objectIndex;
