@@ -71,9 +71,17 @@ Vtx common_vtx_crab[] = {
     { { { -32, 31, 0 }, 0, { 0, 3968 }, { 255, 255, 255, 255 } } },
 };
 
+
 void OCrab::Draw(s32 cameraId) {
     Camera* camera;
     s32 objectIndex = _objectIndex;
+
+    // With this the crab disappears too early when the camera is rotating away from the crab
+    // func_8008A364(objectIndex, cameraId, 0x2AABU, 800);
+    // if (is_obj_flag_status_active(objectIndex, VISIBLE) == 0) {
+    //     return;
+    // }
+    
     if (gObjectList[objectIndex].state >= 2) {
         camera = &camera1[cameraId];
         FrameInterpolation_RecordOpenChild("crab", (_idx << 5) | cameraId);
