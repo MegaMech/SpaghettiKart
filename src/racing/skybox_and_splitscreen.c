@@ -240,23 +240,6 @@ void init_rdp(void) {
     gSPClipRatio(gDisplayListHead++, FRUSTRATIO_1);
 }
 
-UNUSED void func_802A40A4(void) {
-}
-UNUSED void func_802A40AC(void) {
-}
-UNUSED void func_802A40B4(void) {
-}
-UNUSED void func_802A40BC(void) {
-}
-UNUSED void func_802A40C4(void) {
-}
-UNUSED void func_802A40CC(void) {
-}
-UNUSED void func_802A40D4(void) {
-}
-UNUSED void func_802A40DC(void) {
-}
-
 void set_viewport(void) {
     gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(D_802B8880));
     gSPClearGeometryMode(gDisplayListHead++, G_CLEAR_ALL_MODES);
