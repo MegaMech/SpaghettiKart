@@ -1,10 +1,5 @@
 var NAVTREEINDEX42 =
 {
-"math__util__2_8h.html#a616f40d23cc329cdffcbe5fcf6cee747":[18,0,3,47,46],
-"math__util__2_8h.html#a66052313bcfde0d6781810162ab0fa2f":[18,0,3,47,1],
-"math__util__2_8h.html#a679de4d82fcefa320278cd247a5f8d42":[18,0,3,47,54],
-"math__util__2_8h.html#a73a14e50dd3e7844fac7d576f0c8adb9":[18,0,3,47,48],
-"math__util__2_8h.html#a742f148d5670e125f8923ed893139481":[18,0,3,47,72],
 "math__util__2_8h.html#a755fb5deda8e5f14ec98ac8b05eca62e":[18,0,3,47,10],
 "math__util__2_8h.html#a75bfb5b9c5e3191aaf80542caf2aa42a":[18,0,3,47,32],
 "math__util__2_8h.html#a7ae92ff6cd417f23d4dcca06468abad7":[18,0,3,47,36],
@@ -25,7 +20,8 @@ var NAVTREEINDEX42 =
 "math__util__2_8h.html#ac02ca5a7638356175eb5cd199942dd1f":[18,0,3,47,58],
 "math__util__2_8h.html#ac9379d5f612b4b31cfc268aa7501e303":[18,0,3,47,24],
 "math__util__2_8h.html#aca41c87b03119401300c019622c87031":[18,0,3,47,64],
-"math__util__2_8h.html#ad692d06c2c62cfc4e1b91e03cc0acf00":[18,0,3,47,68],
+"math__util__2_8h.html#acdb16b98e532a6c33650ea8e919895ea":[18,0,3,47,68],
+"math__util__2_8h.html#adf347da42d3898aada24b00843c5c1f4":[18,0,3,47,71],
 "math__util__2_8h.html#ae15bc6ce6fee54c5f799fb71393c1b46":[18,0,3,47,47],
 "math__util__2_8h.html#ae4327c5df49b333e448da750f14387ce":[18,0,3,47,26],
 "math__util__2_8h.html#ae43d750d31e45ae2a51b6ca6d87d1570":[18,0,3,47,18],
@@ -155,7 +151,7 @@ var NAVTREEINDEX42 =
 "md_docs_2migrations.html#other-textures":[6,2,0,2],
 "md_docs_2migrations.html#overview":[6,0],
 "md_docs_2migrations.html#path-changes":[6,2],
-"md_docs_2migrations.html#see-also-1":[6,7],
+"md_docs_2migrations.html#see-also":[6,7],
 "md_docs_2migrations.html#textures":[6,2,0],
 "md_docs_2migrations.html#track-textures":[6,2,0,0],
 "md_docs_2migrations.html#troubleshooting":[6,6],
@@ -171,7 +167,7 @@ var NAVTREEINDEX42 =
 "md_docs_2mods-toml.html#location":[8,0],
 "md_docs_2mods-toml.html#migration-script-support":[8,8],
 "md_docs_2mods-toml.html#mod-section":[8,3,0],
-"md_docs_2mods-toml.html#see-also":[8,9],
+"md_docs_2mods-toml.html#see-also-1":[8,9],
 "md_docs_2mods-toml.html#validation":[8,5],
 "md_docs_2mods-toml.html#version-requirements":[8,3,1,0],
 "md_docs_2sequences-information.html":[9],
@@ -249,5 +245,9 @@ var NAVTREEINDEX42 =
 "memory__pool_8c.html#afd9f792a1f297c9829bb3d02f883427c":[18,0,3,2,5,1],
 "menu__items_8c.html":[18,0,3,48],
 "menu__items_8c.html#a00c2408ac6e619d56cd16d2797adf066":[18,0,3,48,352],
-"menu__items_8c.html#a01003958fcc81831bd82f619ae874ac1":[18,0,3,48,71]
+"menu__items_8c.html#a01003958fcc81831bd82f619ae874ac1":[18,0,3,48,71],
+"menu__items_8c.html#a01b11df9ace8117de81f74fe87b271f8":[18,0,3,48,333],
+"menu__items_8c.html#a0251328e47f8e91a57248d686a24aca6":[18,0,3,48,6],
+"menu__items_8c.html#a02725eac97d0c70af5637b7d0752b51d":[18,0,3,48,331],
+"menu__items_8c.html#a03041e2974bd7ffc1c8a5d4507a02206":[18,0,3,48,216]
 };
