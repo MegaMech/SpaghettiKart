@@ -3,6 +3,8 @@
 #include "ship/resource/archive/FolderArchive.h"
 #include "ship/resource/archive/O2rArchive.h"
 #include "port/Engine.h"
+#include "port/ShipCompat.h"
+#include <ship/core/Context.h>
 #include "semver.hpp"
 #include "utils/StringHelper.h"
 #include <cstdlib>
@@ -42,8 +44,7 @@ void InitModsSystem() {
         }
         loadedArchives.push_back(archive);
     }
-    auto context = GameEngine::Instance->context;
-    auto resourceManager = context->GetResourceManager();
+    auto resourceManager = ShipCompat::GetResourceManager();
     auto archiveManager = resourceManager->GetArchiveManager();
     archiveManager->SetArchives(std::make_shared<std::vector<std::shared_ptr<Ship::Archive>>>(loadedArchives));
 }
