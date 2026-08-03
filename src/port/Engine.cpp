@@ -627,7 +627,7 @@ void GameEngine::AudioInit() {
     const auto resourceMgr = ShipCompat::GetResourceManager();
 
     auto audios = std::make_shared<Ship::Audio>(
-        Ship::AudioSettings{ .SampleRate = 27000, .SampleLength = 512, .DesiredBuffered = 1100 },
+        Ship::AudioSettings{ .SampleRate = 26800, .SampleLength = 512, .DesiredBuffered = 1100 },
         ShipCompat::GetConfig());
     context->GetChildren().Add(audios);
     audios->Init();
