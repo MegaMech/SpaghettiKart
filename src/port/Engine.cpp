@@ -257,6 +257,7 @@ GameEngine::GameEngine() {
     ultraBridge->Init();
     ultraBridge->UpdateCaches(context);
     
+    gsFast3dWindow->SetRendererUCode(ucode_f3dex);
     gsFast3dWindow->Init();
 
     //    auto wnd = std::make_shared<Fast::Fast3dWindow>(gui);
@@ -266,11 +267,13 @@ GameEngine::GameEngine() {
     
     //auto controlDeck = std::make_shared<LUS::ControlDeck>(gsFast3dWindow, consoleVariables);
     //auto gui = ShipCompat::GetWindow()->GetGui();
-    auto gui = std::make_shared<Ship::SpaghettiGui>(std::vector<std::shared_ptr<Ship::GuiWindow>>({}));
+    //auto gui = std::make_shared<Ship::SpaghettiGui>(std::vector<std::shared_ptr<Ship::GuiWindow>>({  }));
     //gui->SetMenu(spaghettiGui);
 
-    gui->AddGuiWindow(std::make_shared<LUS::InputEditorWindow>(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, "Input Editor", controlDeck, gsFast3dWindow));
-    gui->AddGuiWindow(std::make_shared<LUS::GfxDebuggerWindow>(CVAR_GFX_DEBUGGER_WINDOW_OPEN, "GfxDebuggerWindow", gsFast3dWindow, gfxDebugger, resourceManager));// ImVec2(520, 600)));
+if (gui) {
+    // gui->AddGuiWindow(std::make_shared<LUS::InputEditorWindow>(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, "Input Editor", controlDeck, gsFast3dWindow));
+    // gui->AddGuiWindow(std::make_shared<LUS::GfxDebuggerWindow>(CVAR_GFX_DEBUGGER_WINDOW_OPEN, "Gfx Debugger", gsFast3dWindow, gfxDebugger, resourceManager));// ImVec2(520, 600)));
+    }
 
 
     //this->context->Init({assets_path}, {}, 3, { 26800, 512, 1100 }, wnd, controlDeck);
@@ -278,7 +281,6 @@ GameEngine::GameEngine() {
     SPDLOG_INFO("Spaghetti Kart " SPAGHETTI_VERSION);
     SPDLOG_INFO(CVarGetInteger("gEnableDebugMode", 0) == 0 ? "Debug Mode deactivated" : "Debug Mode activated");
 
-    gsFast3dWindow->SetRendererUCode(ucode_f3dex);
     //this->context->InitGfxDebugger();
 
     auto loader = ShipCompat::GetResourceManager()->GetResourceLoader();
