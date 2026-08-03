@@ -7,6 +7,7 @@
 #include "ui/ImguiUI.h"
 #include "port/ShipCompat.h"
 #include "ship/controller/controldevice/controller/mapping/ControllerDefaultMappings.h"
+#include <ship/audio/Audio.h>
 #include "resource/type/ResourceType.h"
 #include "fast/resource/ResourceType.h"
 #include "resource/importers/GenericArrayFactory.h"
@@ -626,10 +627,14 @@ void GameEngine::AudioInit() {
     const auto resourceMgr = ShipCompat::GetResourceManager();
 
     auto audios = std::make_shared<Ship::Audio>(
-        Ship::AudioSettings{ .SampleRate = 32000, .SampleLength = 512, .DesiredBuffered = 1100 },
+        Ship::AudioSettings{ .SampleRate = 27000, .SampleLength = 512, .DesiredBuffered = 1100 },
         ShipCompat::GetConfig());
     context->GetChildren().Add(audios);
     audios->Init();
+
+    if (auto ultraBridge = context->GetChildren().GetFirst<LUS::UltraBridge>()) {
+        ultraBridge->UpdateCaches(context);
+    }
 
     resourceMgr->LoadResources("sound");
     const auto banksFiles = resourceMgr->GetArchiveManager()->ListFiles("sound/banks/*");
