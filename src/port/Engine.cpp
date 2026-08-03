@@ -62,7 +62,10 @@ float gInterpolationStep = 0.0f;
 #include "audio/GameAudio.h"
 }
 
+std::shared_ptr<Ship::SpaghettiGui> gsSpaghettiGui;
 std::shared_ptr<Fast::Fast3dWindow> gsFast3dWindow;
+std::shared_ptr<LUS::InputEditorWindow> gsInputEditorWindow;
+std::shared_ptr<LUS::GfxDebuggerWindow> gsGfxDebuggerWindow;
 
 Fast::Interpreter* GetInterpreter() {
     return static_pointer_cast<Fast::Fast3dWindow>(ShipCompat::GetWindow())
@@ -121,7 +124,9 @@ GameEngine::GameEngine() {
     auto ultraBridge = std::make_shared<LUS::UltraBridge>();
     context->GetChildren().Add(ultraBridge);
 
-    gsFast3dWindow = std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({}), config,
+    gsSpaghettiGui = std::make_shared<Ship::SpaghettiGui>(std::vector<std::shared_ptr<Ship::GuiWindow>>({}));
+
+    gsFast3dWindow = std::make_shared<Fast::Fast3dWindow>(gsSpaghettiGui, config,
                                                           consoleVariables);
 
 #if (_DEBUG)
@@ -257,31 +262,26 @@ GameEngine::GameEngine() {
     ultraBridge->Init();
     ultraBridge->UpdateCaches(context);
     
-    gsFast3dWindow->SetRendererUCode(ucode_f3dex);
     gsFast3dWindow->Init();
+    gsFast3dWindow->SetRendererUCode(ucode_f3dex);
 
-    //    auto wnd = std::make_shared<Fast::Fast3dWindow>(gui);
-    
-    // auto wnd = std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({}));
-    // auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(ShipCompat::GetWindow());
-    
-    //auto controlDeck = std::make_shared<LUS::ControlDeck>(gsFast3dWindow, consoleVariables);
-    //auto gui = ShipCompat::GetWindow()->GetGui();
-    //auto gui = std::make_shared<Ship::SpaghettiGui>(std::vector<std::shared_ptr<Ship::GuiWindow>>({  }));
-    //gui->SetMenu(spaghettiGui);
+    if (gsSpaghettiGui) {
 
-if (gui) {
-    // gui->AddGuiWindow(std::make_shared<LUS::InputEditorWindow>(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, "Input Editor", controlDeck, gsFast3dWindow));
-    // gui->AddGuiWindow(std::make_shared<LUS::GfxDebuggerWindow>(CVAR_GFX_DEBUGGER_WINDOW_OPEN, "Gfx Debugger", gsFast3dWindow, gfxDebugger, resourceManager));// ImVec2(520, 600)));
+        gsInputEditorWindow = std::make_shared<LUS::InputEditorWindow>(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, "Input Editor", controlDeck, gsFast3dWindow);
+        gsGfxDebuggerWindow = std::make_shared<LUS::GfxDebuggerWindow>(CVAR_GFX_DEBUGGER_WINDOW_OPEN, "GfxDebuggerWindow",  std::dynamic_pointer_cast<Fast::Fast3dWindow>(ShipCompat::GetWindow()), gfxDebugger, resourceManager);
+        gsGfxDebuggerWindow->SetOriginalSize(ImVec2(520, 600));
+        gsSpaghettiGui->AddGuiWindow(gsInputEditorWindow);
+        gsSpaghettiGui->AddGuiWindow(gsGfxDebuggerWindow);// ImVec2(520, 600)));
+
+
+
+
+
+       // gsGfxDebuggerWindow->mOriginalSize = ImVec2(520, 600);
     }
-
-
-    //this->context->Init({assets_path}, {}, 3, { 26800, 512, 1100 }, wnd, controlDeck);
 
     SPDLOG_INFO("Spaghetti Kart " SPAGHETTI_VERSION);
     SPDLOG_INFO(CVarGetInteger("gEnableDebugMode", 0) == 0 ? "Debug Mode deactivated" : "Debug Mode activated");
-
-    //this->context->InitGfxDebugger();
 
     auto loader = ShipCompat::GetResourceManager()->GetResourceLoader();
     loader->RegisterResourceFactory(std::make_shared<SM64::AudioBankFactoryV0>(), RESOURCE_FORMAT_BINARY, "AudioBank",
@@ -297,10 +297,6 @@ if (gui) {
     loader->RegisterResourceFactory(std::make_shared<SF64::ResourceFactoryBinaryGenericArrayV0>(),
                                     RESOURCE_FORMAT_BINARY, "GenericArray",
                                     static_cast<uint32_t>(SF64::ResourceType::GenericArray), 0);
-    // loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY,
-    //                                 "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 0);
-    // loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY,
-    //                                 "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 1);
     loader->RegisterResourceFactory(std::make_shared<MK64::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY,
                                     "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 0);
     loader->RegisterResourceFactory(std::make_shared<MK64::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY,
