@@ -225,9 +225,9 @@ void FindAndLoadMods() {
         const std::string extension = std::filesystem::path(path).extension().string();
         std::shared_ptr<Ship::Archive> archive = nullptr;
         if (StringHelper::IEquals(extension, ".o2r") || StringHelper::IEquals(extension, ".zip")) {
-            archive = dynamic_pointer_cast<Ship::Archive>(std::make_shared<Ship::O2rArchive>(path));
+            archive = dynamic_pointer_cast<Ship::Archive>(std::make_shared<Ship::O2rArchive>(path, ShipCompat::GetResourceManager()));
         } else if (StringHelper::IEquals(extension, "") && std::filesystem::is_directory(path)) {
-            archive = dynamic_pointer_cast<Ship::Archive>(std::make_shared<Ship::FolderArchive>(path));
+            archive = dynamic_pointer_cast<Ship::Archive>(std::make_shared<Ship::FolderArchive>(path, ShipCompat::GetResourceManager()));
         } else if (StringHelper::IEquals(extension, ".disabled")) {
             // Skip disabled mods
             continue;
