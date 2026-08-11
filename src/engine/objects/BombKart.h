@@ -80,7 +80,7 @@ class OBombKart : public OObject {
         return _count;
     }
 
-    virtual void Tick60fps() override;
+    virtual void Tick() override;
     virtual void Draw(s32 cameraId) override;
     virtual void Translate(FVector pos) override;
     virtual void DrawEditorProperties() override;

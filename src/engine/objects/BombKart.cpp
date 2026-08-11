@@ -89,7 +89,7 @@ OBombKart::OBombKart(const SpawnParams& params) : OObject(params) {
     _count++;
 }
 
-void OBombKart::Tick60fps() {
+void OBombKart::Tick() {
     f32 sp118;
     f32 var_f18;
     TrackPathPoint* temp_v0_2;
