@@ -121,7 +121,7 @@ public:
     std::vector<std::unique_ptr<GameCamera>> Cameras;
 
     std::vector<std::unique_ptr<StaticMeshActor>> StaticMeshActors;
-    std::vector<std::unique_ptr<AActor>> Actors;
+    std::deque<std::unique_ptr<AActor>> Actors;
     std::deque<std::unique_ptr<OObject>> Objects;
     std::vector<std::unique_ptr<ParticleEmitter>> Emitters;
 
