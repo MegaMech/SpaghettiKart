@@ -193,6 +193,7 @@ s16 sNumVBlanks = 0;
 UNUSED s16 D_800DC590 = 0;
 f32 gVBlankTimer = 0.0f;
 f32 gCourseTimer = 0.0f;
+uint64_t gTickCounter;
 
 void create_thread(OSThread* thread, OSId id, void (*entry)(void*), void* arg, void* sp, OSPri pri) {
     thread->next = NULL;
@@ -662,6 +663,7 @@ void display_debug_info(void) {
 }
 
 void process_game_tick(void) {
+    gTickCounter += 1;
 
     if (Editor_IsPaused() == false) {
         if (D_8015011E) {
@@ -685,6 +687,9 @@ void process_game_tick(void) {
     func_80059AC8();
     update_course_actors();
     CM_TickActors();
+    if (gTickCounter & 1) { // Only run once per game loop
+        CM_TickActors60fps();
+    }
     CM_TickTrack();
     if (CM_IsTourEnabled() == false) {
         func_8028FCBC();
