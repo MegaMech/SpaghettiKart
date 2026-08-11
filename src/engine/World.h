@@ -72,6 +72,7 @@ public:
     AActor* GetActor(size_t index);
 
     void TickActors();
+    void TickActors60fps();
     AActor* ConvertActorToAActor(Actor* actor);
     Actor* ConvertAActorToActor(AActor* actor);
 

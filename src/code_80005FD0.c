@@ -118,7 +118,6 @@ u16 D_8016334C[8]; // Increased from 2 to 8 to prevent array overflow.
 u16 gSpeedCPUBehaviour[12];
 s32 D_80163368[4];
 s32 gIncrementUpdatePlayer;
-s32 D_8016337C;
 s16 gCurrentPlayerLookAhead[12];
 s16 D_80163398[12];
 s16 D_801633B0[12];
@@ -1556,7 +1555,7 @@ void update_player_path_completion(s32 playerId, Player* player) {
 void update_vehicles(void) {
     s32 i;
     generate_player_smoke();
-    D_8016337C++;
+    // D_8016337C++;
 
     // CM_TickBombKarts();
     // CM_VehiclesTick();
@@ -3623,7 +3622,7 @@ void init_players(void) {
     D_8016435C = 1;
     gBestRankedHumanPlayer = 0;
     gIncrementUpdatePlayer = 0;
-    D_8016337C = 0;
+    gTickCounter = 0; // Originally D_8016337C = 0;
     gPathStartZ = (f32) gTrackPaths[0][0].z; // [i][2]
     D_801634F0 = 0;
     D_801634F4 = 0;
