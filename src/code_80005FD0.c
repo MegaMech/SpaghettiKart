@@ -3464,8 +3464,8 @@ void init_course_path_point(void) {
         if (D_80163368[i] >= 2) {
             load_track_path(i);
             calculate_track_boundaries(i);
-            analyze_track_section(i);
-            analyse_angle_path(i);
+            analyze_track_sections(i);
+            analyze_path_angle(i);
             analyze_curved_path(i);
         }
     }
@@ -3801,7 +3801,7 @@ f32 calculate_track_curvature(s32 pathIndex, u16 waypointIndex) {
     return -((temp_f10 * temp_f10_2) - (temp_f8_2 * temp_f8)) / (root2 * root1);
 }
 
-void analyze_track_section(s32 pathIndex) {
+void analyze_track_sections(s32 pathIndex) {
     f64 sectionCurvature;
     UNUSED s32 pad;
     s32 k;
@@ -3876,7 +3876,7 @@ s16 calculate_angle_path(s32 pathIndex, s32 waypointIndex) {
 }
 
 // Populates gPathExpectedRotation
-void analyse_angle_path(s32 pathIndex) {
+void analyze_path_angle(s32 pathIndex) {
     s32 waypointIndex;
     u16* angle;
 
