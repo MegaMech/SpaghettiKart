@@ -1,5 +1,8 @@
 var NAVTREEINDEX81 =
 {
+"structUnkPlayerStruct258.html#af7d27efc8971f5631dfbeb69c5514afb":[17,0,478,3],
+"structUnkPool.html":[17,0,479],
+"structUnkPool.html#a54e0b9a13c0b02bbd2dd4cbe4c539bfb":[17,0,479,1],
 "structUnkPool.html#ab3cfce0714280493c920b0d583e1943c":[17,0,479,0],
 "structUnkPool.html#ae09f5a40fa70785e43743f4d447ed669":[17,0,479,2],
 "structUnkPool.html#af095c6f51178e3247e6b5d59bd6c24ef":[17,0,479,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX81 =
 "struct____OSContRequesFormat.html#ae534a71fa222287340270d8522824ad7":[17,0,11,3],
 "struct____OSContRequesFormat.html#af4b94504c17988bc257ae9c47db6493d":[17,0,11,7],
 "struct____OSContRequesFormat.html#af67fa1b58e4d63b2d57338f7002de3ea":[17,0,11,2],
-"struct____OSContRequesFormatShort.html":[17,0,12],
-"struct____OSContRequesFormatShort.html#a11335316967e1abb320c2c5afb9e1c0d":[17,0,12,5],
-"struct____OSContRequesFormatShort.html#a2d3676fbdec4ba633297dcae16f6641e":[17,0,12,2],
-"struct____OSContRequesFormatShort.html#a41dadecdf276106af319132f83676e4b":[17,0,12,4]
+"struct____OSContRequesFormatShort.html":[17,0,12]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX88 =
 {
+"structstruct__80282C40.html#a768e31f3532cbb14806b64bc05c74acd":[17,0,429,6],
+"structstruct__80282C40.html#a777636ae37b7b1166b5637367ca43e09":[17,0,429,2],
+"structstruct__80282C40.html#a7a8d9d55482be617a49624f9f96c1f94":[17,0,429,5],
 "structstruct__80282C40.html#a980f5993d906481b10f804228917d313":[17,0,429,3],
 "structstruct__80282C40.html#ac10458c9ad8ef631018c2fac0cf9ce58":[17,0,429,4],
 "structstruct__80283430.html":[17,0,430],
@@ -246,8 +249,5 @@ var NAVTREEINDEX88 =
 "textures_2tracks_2banshee__boardwalk_2banshee__boardwalk__data_8h.html#a2dcc3f597c10ebb75352c5f9accd72b2":[18,0,2,0,3,1,0,0,0],
 "textures_2tracks_2banshee__boardwalk_2banshee__boardwalk__data_8h_source.html":[18,0,2,0,3,1,0,0],
 "textures_2tracks_2bowsers__castle_2bowsers__castle__data_8h.html":[18,0,2,0,3,1,1,0],
-"textures_2tracks_2bowsers__castle_2bowsers__castle__data_8h.html#a73e851d2edebf2c5c91a808275a8aece":[18,0,2,0,3,1,1,0,1],
-"textures_2tracks_2bowsers__castle_2bowsers__castle__data_8h.html#a758d9a51e1ad285b00f24e27c6293358":[18,0,2,0,3,1,1,0,0],
-"textures_2tracks_2bowsers__castle_2bowsers__castle__data_8h_source.html":[18,0,2,0,3,1,1,0],
-"textures_2tracks_2choco__mountain_2choco__mountain__data_8h.html":[18,0,2,0,3,1,2,0]
+"textures_2tracks_2bowsers__castle_2bowsers__castle__data_8h.html#a73e851d2edebf2c5c91a808275a8aece":[18,0,2,0,3,1,1,0,1]
 };
