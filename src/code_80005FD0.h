@@ -349,7 +349,6 @@ extern u16 gSpeedCPUBehaviour[];
 enum { SPEED_CPU_BEHAVIOUR_NORMAL, SPEED_CPU_BEHAVIOUR_FAST, SPEED_CPU_BEHAVIOUR_SLOW, SPEED_CPU_BEHAVIOUR_MAX };
 
 extern s32 gIncrementUpdatePlayer;
-extern s32 D_8016337C;
 extern s16 gCurrentPlayerLookAhead[];
 extern s16 D_80163398[];
 extern s16 D_801633B0[];
