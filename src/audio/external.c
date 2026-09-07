@@ -176,10 +176,13 @@ void audio_reset_session_eu(s32 presetId) {
     //    osRecvMesg(D_800EA3B4, &mesg, OS_MESG_BLOCK);
     // }
 
-    // The above code is for a threaded asynchronous system
-    // libultraship uses single-threaded Recv/Send which means values do not
-    // get set at the correct times:
-    // So, the code that 'does the work' must run *right now!* instead of 'later'
+    /** 
+     * The above code is for a threaded asynchronous system
+     * libultraship uses single-threaded Recv/Send which means values do not
+     * get set at the correct times:
+     * So, the code that 'does the work' must run *right now!* instead of 'later'
+     * Taken from audio_shut_down_and_reset_step() case 5:
+     **/
     for (size_t i = 0; i < SEQUENCE_PLAYERS; i++) {
         sequence_player_disable(&gSequencePlayers[i]);
     }
