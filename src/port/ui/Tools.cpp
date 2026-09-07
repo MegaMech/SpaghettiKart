@@ -156,7 +156,7 @@ namespace TrackEditor {
                     printf("[Tools.cpp] Failed load scenefile, TrackInfo nullptr\n");
                 }
             } else {
-                CM_ResetAudio();
+                func_800CA330(0x19); // Reset audio
                 CVarSetInteger("gFreecam", true);
                 CM_SetFreeCamera(true);
             }
