@@ -12,6 +12,7 @@
 #include "audio/seqplayer.h"
 #include "audio/data.h"
 #include "audio/port_eu.h"
+#include "port/Engine.h"
 #include "code_800029B0.h"
 #include "code_80005FD0.h"
 #include "menu_items.h"
@@ -183,11 +184,11 @@ void audio_reset_session_eu(s32 presetId) {
      * So, the code that 'does the work' must run *right now!* instead of 'later'
      * Taken from audio_shut_down_and_reset_step() case 5:
      **/
+    GameEngine_LockAudio();
     for (size_t i = 0; i < SEQUENCE_PLAYERS; i++) {
         sequence_player_disable(&gSequencePlayers[i]);
     }
-    gAudioResetFadeOutFramesLeft = 4;
-    gAudioResetStatus--;
+    GameEngine_UnlockAudio();
 
     // Reset HMAS audio
     if(HMAS_IsPlaying(HMAS_MUSIC)){
