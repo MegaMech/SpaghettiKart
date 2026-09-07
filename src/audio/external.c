@@ -176,14 +176,20 @@ void audio_reset_session_eu(s32 presetId) {
     // }
 
     // The above code is for a threaded asynchronous system
-    // libultraship does not work with that kind of system as values are not set
-    // at the correct times:
+    // libultraship uses single-threaded Recv/Send which means values do not
+    // get set at the correct times:
     // So, the code that 'does the work' must run *right now!* instead of 'later'
     for (size_t i = 0; i < SEQUENCE_PLAYERS; i++) {
         sequence_player_disable(&gSequencePlayers[i]);
     }
     gAudioResetFadeOutFramesLeft = 4;
     gAudioResetStatus--;
+
+    // Reset HMAS audio
+    if(HMAS_IsPlaying(HMAS_MUSIC)){
+        HMAS_AddEffect(HMAS_MUSIC, HMAS_EFFECT_VOLUME, HMAS_LINEAR, 10, 0);
+        HMAS_AddEffect(HMAS_MUSIC, HMAS_EFFECT_STOP,   HMAS_INSTANT, 1, 0);
+    }
 }
 
 f32 func_800C1480(u8 bank, u8 soundId) {
