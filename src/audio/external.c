@@ -9,6 +9,7 @@
 #include "audio/external.h"
 #include "audio/heap.h"
 #include "audio/load.h"
+#include "audio/seqplayer.h"
 #include "audio/data.h"
 #include "audio/port_eu.h"
 #include "code_800029B0.h"
